@@ -1,2 +1,4 @@
 # Ignore IntelliJ generated Files
 /.idea
+
+/target
