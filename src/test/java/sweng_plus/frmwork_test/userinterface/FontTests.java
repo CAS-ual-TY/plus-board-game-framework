@@ -15,6 +15,9 @@ public class FontTests
     //TODO properly setup JUnit 5 with maven
     
     @Test
+    /**
+     * Erstelle PNG Datei für den ChicagoFLF Font, um zu prüfen, ob das Einlesen und Character-Parsing korrekt geklappt hat.
+     */
     public void createFontPNG() throws IOException
     {
         File fileChicagoFLF = new File("src/main/resources/fonts/chicagoFLF.ttf");

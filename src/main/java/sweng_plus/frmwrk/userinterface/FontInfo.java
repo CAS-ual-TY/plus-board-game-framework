@@ -71,6 +71,7 @@ public class FontInfo
         
         int charWidth;
         
+        // Breite jedes einzelnen characters herausfinden und speichern
         for(char c : availableCharacters.toCharArray())
         {
             charWidth = fontMetrics.charWidth(c);
@@ -80,33 +81,42 @@ public class FontInfo
                 System.out.println("Font " + font.getName() + ": Char width of char '" + (c >= '!' ? c : "\\0x" + Integer.toHexString((int)c).toUpperCase()) + "' is 0");
             }
             
-            // Get the size for each character and update global image size
             CharInfo charInfo = new CharInfo(width, charWidth);
             charMap.put(c, charInfo);
             width += charWidth;
         }
-        
         g2D.dispose();
         
-        // Create the image associated to the charset
+        // Nun eigentliche Bilddatei erstellen mit allen Characteren von links nach rechts
+        // Diese Datei wird nur virtuell im Arbeitsspeicher erstellt, nicht auf dem Festspeicher
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         g2D = img.createGraphics();
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2D.setFont(font);
         fontMetrics = g2D.getFontMetrics();
         g2D.setColor(Color.WHITE);
-        int startX = 0;
+        
+        // Alle Charactere nun auf die Bilddatei "malen"
+        int x = 0;
         for(char c : availableCharacters.toCharArray())
         {
             CharInfo charInfo = charMap.get(c);
-            g2D.drawString(String.valueOf(c), startX, fontMetrics.getAscent());
-            startX += charInfo.getCharW();
+            g2D.drawString(String.valueOf(c), x, fontMetrics.getAscent());
+            x += charInfo.getCharW();
         }
         g2D.dispose();
         
+        // Bilddatei als Feld abspeichern für spätere Benutzung
         image = img;
     }
     
+    /**
+     * Erstellt eine {@link Font} Instanz von der angegebenen Datei @file in der angegebenen Größe @size
+     * @param file Font Datei, muss auf ".ttf" enden und ein True Type Font sein
+     * @param size Gewünschte Größe des Fonts
+     * @return {@link Font} entsprechend nach Parametern
+     * @throws IllegalArgumentException Wenn etwas mit der angegebenen Font Datei oder deren Format nicht stimmt
+     */
     public static Font createFont(File file, float size) throws IllegalArgumentException
     {
         if(!file.getName().endsWith(".ttf"))
@@ -128,6 +138,9 @@ public class FontInfo
         }
     }
     
+    /**
+     * Gibt einen String mit allen Characteren aus, die im angegebenen Char Set enthalten sind.
+     */
     public static String getAvailableChars(String charSet)
     {
         CharsetEncoder ce = Charset.forName(charSet).newEncoder();
@@ -144,6 +157,9 @@ public class FontInfo
         return result.toString();
     }
     
+    /**
+     * Gibt einen String mit allen Characteren aus, für die gilt: 0 <= c <= @lastChar.
+     */
     public static String getAvailableChars(char lastChar)
     {
         StringBuilder result = new StringBuilder();
