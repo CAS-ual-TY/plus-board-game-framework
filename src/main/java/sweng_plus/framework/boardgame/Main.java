@@ -1,19 +1,13 @@
 package sweng_plus.framework.boardgame;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
 import sweng_plus.boardgames.ludo.Ludo;
+import sweng_plus.framework.userinterface.InputHandler;
+import sweng_plus.framework.userinterface.Window;
 
-import java.nio.IntBuffer;
 import java.util.concurrent.TimeUnit;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class Main implements Runnable
 {
@@ -21,7 +15,8 @@ public class Main implements Runnable
     
     private final IGame game;
     
-    private long window;
+    private Window window;
+    private InputHandler inputHandler;
     
     public Main(IGame game)
     {
@@ -40,7 +35,7 @@ public class Main implements Runnable
         return game;
     }
     
-    public long getGLFWWindow()
+    public Window getWindow()
     {
         return window;
     }
@@ -51,17 +46,17 @@ public class Main implements Runnable
         initGLFW();
         game.preInit();
         
-        initWindow();
+        window = game.createWindow();
         game.init();
         
-        setupInputCallbacks();
+        inputHandler = window.createInputHandler();
         game.postInit();
         
         loop();
         
         game.cleanup();
-        freeInputCallbacks();
-        destroyWindow();
+        inputHandler.free();
+        window.destroy();
         cleanupGLFW();
     }
     
@@ -78,9 +73,9 @@ public class Main implements Runnable
         
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while(!glfwWindowShouldClose(window))
+        while(!window.shouldClose())
         {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            window.preUpdate();
             
             // --------- LOOP ---------
             
@@ -99,11 +94,7 @@ public class Main implements Runnable
             
             // --------- LOOP ---------
             
-            glfwSwapBuffers(window); // swap the color buffers
-            
-            // Poll for window events. The key callback above will only be
-            // invoked during this call.
-            glfwPollEvents();
+            window.postUpdate();
         }
     }
     
@@ -116,82 +107,6 @@ public class Main implements Runnable
         // Returnt false wenns nicht geklappt hat
         if(!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
-    }
-    
-    private void initWindow()
-    {
-        // Konfiguration
-        glfwDefaultWindowHints(); // "Window Hints" = z.B. Fenster skalierbar? Fenster sichtbar? etc.
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Setzt das Fenster unsichtbar
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // Setzt das Fenster skalierbar
-        
-        // Fenster erstellen
-        window = glfwCreateWindow(300, 300, game.getWindowTitle(), MemoryUtil.NULL, MemoryUtil.NULL);
-        
-        if(window == MemoryUtil.NULL)
-            throw new RuntimeException("Failed to create the GLFW window");
-        
-        // Wir setzen das Fenster hier in die Mitte
-        // Beispiel, wie wir uns Daten von GLFW holen
-        try(MemoryStack stack = stackPush())
-        {
-            // Diese brauchen wir, um uns Daten von GLFW zu holen
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
-            
-            // Wir bekommen die Fenstergröße in den Buffern (ist die selbe wie oben, bei glfwCreateWindow)
-            glfwGetWindowSize(window, pWidth, pHeight);
-            
-            // Auflösung des Hauptmonitors
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-            
-            // Fenster Zentieren
-            glfwSetWindowPos(
-                    window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
-            );
-        } // Oben war Push, Pop passier automatisch dank try und close()
-        
-        // Das jetzt erstellte Fenster wird nun der Kontext für OpenGL
-        glfwMakeContextCurrent(window);
-        
-        // Enable v-sync
-        glfwSwapInterval(1);
-        
-        // Fenster sichtbar machen
-        glfwShowWindow(window);
-        
-        // s. http://forum.lwjgl.org/index.php?topic=6858.0 und http://forum.lwjgl.org/index.php?topic=6459.0
-        // OpenGL auf gerade gesetzten Kontext ausrichten
-        GL.createCapabilities();
-    }
-    
-    private void setupInputCallbacks()
-    {
-        // Callback für Tasten; wird bei jedem drücken, wiederholtem drücken oder loslassen gecallt
-        // TODO Input Handler
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                glfwSetWindowShouldClose(window, true); // Aktuell: Fenster schliessen bei ESC
-        });
-        
-        // TODO Input Handler
-        //glfwSetMouseButtonCallback()
-        //glfwSetCursorEnterCallback()
-        //glfwSetScrollCallback()
-        //glfwSetCursorPosCallback()
-        //glfwSetFramebufferSizeCallback() // Für Fenster skalierungen
-    }
-    
-    private void freeInputCallbacks()
-    {
-        glfwFreeCallbacks(window);
-    }
-    
-    private void destroyWindow()
-    {
-        glfwDestroyWindow(window);
     }
     
     private void cleanupGLFW()

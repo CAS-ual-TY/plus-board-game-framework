@@ -14,7 +14,7 @@ public class FontInfo
     private final Font font;
     private final String charSet;
     
-    private String availableCharacters;
+    private final String availableCharacters;
     private final Map<Character, CharInfo> charMap;
     
     private int width;
@@ -78,7 +78,7 @@ public class FontInfo
             
             if(charWidth == 0)
             {
-                System.out.println("Font " + font.getName() + ": Char width of char '" + (c >= '!' ? c : "\\0x" + Integer.toHexString((int)c).toUpperCase()) + "' is 0");
+                System.out.println("Font " + font.getName() + ": Char width of char '" + (c >= '!' ? c : "\\0x" + Integer.toHexString(c).toUpperCase()) + "' is 0");
             }
             
             CharInfo charInfo = new CharInfo(width, charWidth);
@@ -112,6 +112,7 @@ public class FontInfo
     
     /**
      * Erstellt eine {@link Font} Instanz von der angegebenen Datei @file in der angegebenen Größe @size
+     *
      * @param file Font Datei, muss auf ".ttf" enden und ein True Type Font sein
      * @param size Gewünschte Größe des Fonts
      * @return {@link Font} entsprechend nach Parametern
@@ -123,7 +124,7 @@ public class FontInfo
         {
             throw new IllegalArgumentException("Font must be truetype and file must end with \".ttf\"");
         }
-    
+        
         try
         {
             return Font.createFont(Font.TRUETYPE_FONT, file).deriveFont(size);

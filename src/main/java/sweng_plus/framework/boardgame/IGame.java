@@ -1,23 +1,38 @@
 package sweng_plus.framework.boardgame;
 
+import sweng_plus.framework.userinterface.Window;
+
+import static org.lwjgl.glfw.GLFW.*;
+
 public interface IGame
 {
-    public default void preInit() {}
+    default void preInit() {}
     
-    public default void init() {}
+    default void init() {}
     
-    public default void postInit() {}
+    default void postInit() {}
     
-    public default void cleanup() {}
+    default void cleanup() {}
     
-    public String getWindowTitle();
+    String getWindowTitle();
     
-    public void update();
+    void update();
     
-    public void render(float deltaTick);
+    void render(float deltaTick);
     
-    public default int getTicksPerSecond()
+    default int getTicksPerSecond()
     {
         return 20;
+    }
+    
+    default Window createWindow()
+    {
+        Window window = new Window(getWindowTitle())
+                .hint(GLFW_VISIBLE, GLFW_FALSE) // Setzt das Fenster unsichtbar
+                .hint(GLFW_RESIZABLE, GLFW_TRUE); // Setzt das Fenster skalierbar
+        
+        window.init();
+        
+        return window;
     }
 }
