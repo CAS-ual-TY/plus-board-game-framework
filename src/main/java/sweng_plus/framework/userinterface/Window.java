@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 
 import java.nio.IntBuffer;
 
@@ -14,13 +15,19 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 public class Window
 {
     private final String title;
+    private final IScreenHolder screenHolder;
     
     private long windowHandle;
     private InputHandler inputHandler;
     
-    public Window(String title)
+    public Window(String title, IScreenHolder screenHolder)
     {
         this.title = title;
+        this.screenHolder = screenHolder;
+        
+        this.windowHandle = -1;
+        this.inputHandler = null;
+        
         glfwDefaultWindowHints(); // "Window Hints" = z.B. Fenster skalierbar? Fenster sichtbar? etc.
     }
     
@@ -86,15 +93,16 @@ public class Window
     
     public void preUpdate()
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+        // FrameBuffer leeren
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
     
     public void postUpdate()
     {
-        glfwSwapBuffers(windowHandle); // swap the color buffers
+        // ColorBuffers tauschen
+        glfwSwapBuffers(windowHandle);
         
-        // Poll for window events. The key callback above will only be
-        // invoked during this call.
+        // Fenster Events ausführen, z.B. alle InputCallbacks
         glfwPollEvents();
     }
     

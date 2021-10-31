@@ -1,6 +1,8 @@
 package sweng_plus.framework.boardgame;
 
-public interface IGame
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
+
+public interface IGame extends IScreenHolder
 {
     default void preInit() {}
     

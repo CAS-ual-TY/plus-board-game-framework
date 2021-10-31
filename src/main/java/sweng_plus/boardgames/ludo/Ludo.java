@@ -1,11 +1,14 @@
 package sweng_plus.boardgames.ludo;
 
 import sweng_plus.framework.boardgame.IGame;
+import sweng_plus.framework.userinterface.gui.Screen;
 
 import static org.lwjgl.opengl.GL11.glClearColor;
 
 public class Ludo implements IGame
 {
+    private Screen screen;
+    
     @Override
     public void postInit()
     {
@@ -29,5 +32,11 @@ public class Ludo implements IGame
     public void render(float deltaTick)
     {
     
+    }
+    
+    @Override
+    public Screen getScreen()
+    {
+        return screen;
     }
 }

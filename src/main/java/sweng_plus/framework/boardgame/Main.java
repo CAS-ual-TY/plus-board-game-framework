@@ -101,7 +101,7 @@ public class Main implements Runnable
     
     private void createWindow()
     {
-        window = new Window(game.getWindowTitle())
+        window = new Window(game.getWindowTitle(), game)
                 .hint(GLFW_VISIBLE, GLFW_FALSE) // Setzt das Fenster unsichtbar
                 .hint(GLFW_RESIZABLE, GLFW_TRUE); // Setzt das Fenster skalierbar
     }
