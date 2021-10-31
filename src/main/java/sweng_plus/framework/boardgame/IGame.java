@@ -1,4 +1,4 @@
-package sweng_plus.frmwrk.boardgame;
+package sweng_plus.framework.boardgame;
 
 public interface IGame
 {

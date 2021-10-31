@@ -1,4 +1,4 @@
-package sweng_plus.frmwrk.boardgame;
+package sweng_plus.framework.boardgame;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;

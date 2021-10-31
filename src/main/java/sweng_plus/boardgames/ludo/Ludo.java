@@ -1,6 +1,6 @@
 package sweng_plus.boardgames.ludo;
 
-import sweng_plus.frmwrk.boardgame.IGame;
+import sweng_plus.framework.boardgame.IGame;
 
 import static org.lwjgl.opengl.GL11.glClearColor;
 
