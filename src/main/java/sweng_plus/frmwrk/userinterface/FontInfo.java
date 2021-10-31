@@ -37,16 +37,6 @@ public class FontInfo
         this(font, charSet, getAvailableChars(charSet));
     }
     
-    public FontInfo(File file, String charSet, String availableCharacters) throws IllegalArgumentException
-    {
-        this(createFont(file), charSet, availableCharacters);
-    }
-    
-    public FontInfo(File file, String charSet) throws IllegalArgumentException
-    {
-        this(createFont(file), charSet);
-    }
-    
     public int getWidth()
     {
         return width;
@@ -55,6 +45,11 @@ public class FontInfo
     public int getHeight()
     {
         return height;
+    }
+    
+    public BufferedImage getImage()
+    {
+        return image;
     }
     
     public CharInfo getCharInfo(char c)
@@ -82,7 +77,7 @@ public class FontInfo
             
             if(charWidth == 0)
             {
-                System.out.println("Font " + font.getName() + ": Char width of char '" + c + "' is 0");
+                System.out.println("Font " + font.getName() + ": Char width of char '" + (c >= '!' ? c : "\\0x" + Integer.toHexString((int)c).toUpperCase()) + "' is 0");
             }
             
             // Get the size for each character and update global image size
@@ -112,7 +107,7 @@ public class FontInfo
         image = img;
     }
     
-    public static Font createFont(File file) throws IllegalArgumentException
+    public static Font createFont(File file, float size) throws IllegalArgumentException
     {
         if(!file.getName().endsWith(".ttf"))
         {
@@ -121,7 +116,7 @@ public class FontInfo
     
         try
         {
-            return Font.createFont(Font.TRUETYPE_FONT, file);
+            return Font.createFont(Font.TRUETYPE_FONT, file).deriveFont(size);
         }
         catch(IOException | NullPointerException | SecurityException e)
         {
