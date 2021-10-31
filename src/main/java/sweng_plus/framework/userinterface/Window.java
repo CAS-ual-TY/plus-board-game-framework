@@ -15,12 +15,12 @@ public class Window
 {
     private final String title;
     
-    private long window;
+    private long windowHandle;
+    private InputHandler inputHandler;
     
     public Window(String title)
     {
         this.title = title;
-        
         glfwDefaultWindowHints(); // "Window Hints" = z.B. Fenster skalierbar? Fenster sichtbar? etc.
     }
     
@@ -32,15 +32,20 @@ public class Window
     
     public long getWindowHandle()
     {
-        return window;
+        return windowHandle;
+    }
+    
+    public InputHandler getInputHandler()
+    {
+        return inputHandler;
     }
     
     public void init()
     {
         // Fenster erstellen
-        window = glfwCreateWindow(300, 300, title, MemoryUtil.NULL, MemoryUtil.NULL);
+        windowHandle = glfwCreateWindow(300, 300, title, MemoryUtil.NULL, MemoryUtil.NULL);
         
-        if(window == MemoryUtil.NULL)
+        if(windowHandle == MemoryUtil.NULL)
             throw new RuntimeException("Failed to create the GLFW window");
         
         // Wir setzen das Fenster hier in die Mitte
@@ -52,27 +57,27 @@ public class Window
             IntBuffer pHeight = stack.mallocInt(1); // int*
             
             // Wir bekommen die Fenstergröße in den Buffern (ist die selbe wie oben, bei glfwCreateWindow)
-            glfwGetWindowSize(window, pWidth, pHeight);
+            glfwGetWindowSize(windowHandle, pWidth, pHeight);
             
             // Auflösung des Hauptmonitors
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
             
             // Fenster Zentieren
             glfwSetWindowPos(
-                    window,
+                    windowHandle,
                     (vidmode.width() - pWidth.get(0)) / 2,
                     (vidmode.height() - pHeight.get(0)) / 2
             );
         } // Oben war Push, Pop passier automatisch dank try und close()
         
         // Das jetzt erstellte Fenster wird nun der Kontext für OpenGL
-        glfwMakeContextCurrent(window);
+        glfwMakeContextCurrent(windowHandle);
         
         // Enable v-sync
         glfwSwapInterval(1);
         
         // Fenster sichtbar machen
-        glfwShowWindow(window);
+        glfwShowWindow(windowHandle);
         
         // s. http://forum.lwjgl.org/index.php?topic=6858.0 und http://forum.lwjgl.org/index.php?topic=6459.0
         // OpenGL auf gerade gesetzten Kontext ausrichten
@@ -86,7 +91,7 @@ public class Window
     
     public void postUpdate()
     {
-        glfwSwapBuffers(window); // swap the color buffers
+        glfwSwapBuffers(windowHandle); // swap the color buffers
         
         // Poll for window events. The key callback above will only be
         // invoked during this call.
@@ -95,16 +100,16 @@ public class Window
     
     public void destroy()
     {
-        glfwDestroyWindow(window);
+        glfwDestroyWindow(windowHandle);
     }
     
     public boolean shouldClose()
     {
-        return glfwWindowShouldClose(window);
+        return glfwWindowShouldClose(windowHandle);
     }
     
     public InputHandler createInputHandler()
     {
-        return new InputHandler(this);
+        return this.inputHandler = new InputHandler(this);
     }
 }

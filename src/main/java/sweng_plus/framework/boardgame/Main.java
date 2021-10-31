@@ -46,7 +46,8 @@ public class Main implements Runnable
         initGLFW();
         game.preInit();
         
-        window = game.createWindow();
+        createWindow();
+        window.init();
         game.init();
         
         inputHandler = window.createInputHandler();
@@ -96,6 +97,13 @@ public class Main implements Runnable
             
             window.postUpdate();
         }
+    }
+    
+    private void createWindow()
+    {
+        window = new Window(game.getWindowTitle())
+                .hint(GLFW_VISIBLE, GLFW_FALSE) // Setzt das Fenster unsichtbar
+                .hint(GLFW_RESIZABLE, GLFW_TRUE); // Setzt das Fenster skalierbar
     }
     
     private void initGLFW()
