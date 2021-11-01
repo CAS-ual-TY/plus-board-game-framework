@@ -2,6 +2,8 @@ package sweng_plus.framework.userinterface.gui;
 
 import sweng_plus.framework.boardgame.Engine;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -14,6 +16,9 @@ public class DebugScreen extends Screen
     private float b = 0.7F;
     private boolean bUp = true;
     private final float colorChange = 0.02F;
+    
+    private double fps;
+    private long nanos = 1;
     
     @Override
     public void update(int mouseX, int mouseY)
@@ -65,6 +70,11 @@ public class DebugScreen extends Screen
         {
             b += bUp ? colorChange : -colorChange;
         }
+    
+        calculateFPS();
+        
+        if(Engine.instance().getInputHandler().isKeyDown(GLFW_KEY_SPACE))
+            System.out.println(fps);
     }
     
     @Override
@@ -78,6 +88,12 @@ public class DebugScreen extends Screen
         glColor3f(r, g, b);
         glVertex3f(400, 400, 0); // Vertex three
         glEnd();
+    }
+    
+    private void calculateFPS()
+    {
+        fps = TimeUnit.SECONDS.toNanos(1) / (double) (System.nanoTime() - nanos);
+        nanos = System.nanoTime();
     }
     
     @Override
