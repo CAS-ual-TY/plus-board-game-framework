@@ -81,7 +81,6 @@ public class InputHandler
         
         // TODO Input Handler
         //glfwSetScrollCallback() // Mausrad
-        //glfwSetFramebufferSizeCallback() // Für Fenster skalierungen
     }
     
     public void free()

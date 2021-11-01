@@ -20,15 +20,30 @@ public class Window
     private long windowHandle;
     private InputHandler inputHandler;
     
-    public Window(String title, IScreenHolder screenHolder)
+    private int screenW;
+    private int screenH;
+    
+    private boolean wasResized;
+    
+    public Window(String title, IScreenHolder screenHolder, int screenW, int screenH)
     {
         this.title = title;
         this.screenHolder = screenHolder;
         
         this.windowHandle = -1;
-        this.inputHandler = this.createInputHandler();
+        this.inputHandler = createInputHandler();
+        
+        this.screenW = screenW;
+        this.screenH = screenH;
+        
+        wasResized = false;
         
         glfwDefaultWindowHints(); // "Window Hints" = z.B. Fenster skalierbar? Fenster sichtbar? etc.
+    }
+    
+    public Window(String title, IScreenHolder screenHolder)
+    {
+        this(title, screenHolder, 300, 300);
     }
     
     public Window hint(int hint, int value)
@@ -47,10 +62,25 @@ public class Window
         return inputHandler;
     }
     
+    public int getScreenW()
+    {
+        return screenW;
+    }
+    
+    public int getScreenH()
+    {
+        return screenH;
+    }
+    
+    public boolean getWasResized()
+    {
+        return wasResized;
+    }
+    
     public void init()
     {
         // Fenster erstellen
-        windowHandle = glfwCreateWindow(300, 300, title, MemoryUtil.NULL, MemoryUtil.NULL);
+        windowHandle = glfwCreateWindow(screenW, screenH, title, MemoryUtil.NULL, MemoryUtil.NULL);
         
         if(windowHandle == MemoryUtil.NULL)
             throw new RuntimeException("Failed to create the GLFW window");
@@ -89,6 +119,14 @@ public class Window
         // s. http://forum.lwjgl.org/index.php?topic=6858.0 und http://forum.lwjgl.org/index.php?topic=6459.0
         // OpenGL auf gerade gesetzten Kontext ausrichten
         GL.createCapabilities();
+        
+        //glfwSetFramebufferSizeCallback() // Für Fenster skalierungen
+        glfwSetFramebufferSizeCallback(windowHandle, (window, screenW, screenH) ->
+        {
+            this.screenW = screenW;
+            this.screenH = screenH;
+            wasResized = true;
+        });
     }
     
     public void preUpdate()
@@ -99,6 +137,8 @@ public class Window
     
     public void postUpdate()
     {
+        wasResized = false;
+        
         // ColorBuffers tauschen
         glfwSwapBuffers(windowHandle);
         

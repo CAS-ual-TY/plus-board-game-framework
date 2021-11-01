@@ -44,4 +44,10 @@ public class Ludo implements IGame
     {
         return screen;
     }
+    
+    @Override
+    public void setScreen(Screen screen)
+    {
+        this.screen = screen;
+    }
 }

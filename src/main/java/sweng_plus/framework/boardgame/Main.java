@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.InputHandler;
 import sweng_plus.framework.userinterface.Window;
+import sweng_plus.framework.userinterface.gui.Screen;
 
 import java.util.concurrent.TimeUnit;
 
@@ -73,6 +74,8 @@ public class Main implements Runnable
         long lastMillis = System.currentTimeMillis();
         float deltaTick;
         
+        Screen screen = null;
+        
         // Render Schleife wiederholen, bis das Fenster geschlossen wird
         // Oder bis ESC gedrückt wird TODO entfernen (ist auch als TODO markiert)
         while(!window.shouldClose())
@@ -84,12 +87,20 @@ public class Main implements Runnable
             currentMillis += System.currentTimeMillis() - lastMillis;
             lastMillis = System.currentTimeMillis();
             
-            inputHandler.inputScreen(game.getScreen());
+            if(window.getWasResized() || game.getScreen() != screen)
+            {
+                if(game.getScreen() != screen)
+                    screen = game.getScreen();
+                
+                screen.init(window.getScreenW(), window.getScreenH());
+            }
+            
+            inputHandler.inputScreen(screen);
             
             if(currentMillis >= millisPerTick)
             {
                 game.update();
-                game.getScreen().update(inputHandler.getMouseX(), inputHandler.getMouseY());
+                screen.update(inputHandler.getMouseX(), inputHandler.getMouseY());
                 
                 currentMillis -= millisPerTick;
             }
@@ -98,7 +109,7 @@ public class Main implements Runnable
             
             // vielleicht zu HZ von Monitor limitieren? s. GLFWVidMode
             game.render(deltaTick);
-            game.getScreen().render(deltaTick, inputHandler.getMouseX(), inputHandler.getMouseY());
+            screen.render(deltaTick, inputHandler.getMouseX(), inputHandler.getMouseY());
             
             inputHandler.postUpdate();
             
