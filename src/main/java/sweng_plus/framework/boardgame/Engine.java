@@ -10,23 +10,23 @@ import java.util.concurrent.TimeUnit;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Main implements Runnable
+public class Engine implements Runnable
 {
-    private static Main instance;
+    private static Engine instance;
     
     private final IGame game;
     
     private Window window;
     private InputHandler inputHandler;
     
-    public Main(IGame game)
+    public Engine(IGame game)
     {
         this.game = game;
         
         instance = this;
     }
     
-    public Main instance()
+    public Engine instance()
     {
         return instance;
     }
@@ -142,10 +142,5 @@ public class Main implements Runnable
         // GLFW terminieren, Fehler callback free'n
         glfwTerminate();
         glfwSetErrorCallback(null).free();
-    }
-    
-    public static void main(String... args)
-    {
-        new Main(new Ludo()).run();
     }
 }
