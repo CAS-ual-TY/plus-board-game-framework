@@ -1,7 +1,6 @@
 package sweng_plus.framework.boardgame;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.InputHandler;
 import sweng_plus.framework.userinterface.Window;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -26,7 +25,7 @@ public class Engine implements Runnable
         instance = this;
     }
     
-    public Engine instance()
+    public static Engine instance()
     {
         return instance;
     }
@@ -39,6 +38,11 @@ public class Engine implements Runnable
     public Window getWindow()
     {
         return window;
+    }
+    
+    public InputHandler getInputHandler()
+    {
+        return inputHandler;
     }
     
     @Override
