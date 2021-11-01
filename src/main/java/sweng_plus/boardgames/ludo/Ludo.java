@@ -9,6 +9,11 @@ public class Ludo implements IGame
 {
     private Screen screen;
     
+    public Ludo()
+    {
+        screen = Screen.EMPTY_SCREEN;
+    }
+    
     @Override
     public void postInit()
     {

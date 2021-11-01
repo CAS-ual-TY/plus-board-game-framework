@@ -50,7 +50,8 @@ public class Main implements Runnable
         window.init();
         game.init();
         
-        inputHandler = window.createInputHandler();
+        inputHandler = window.getInputHandler();
+        inputHandler.setup();
         game.postInit();
         
         loop();
@@ -83,15 +84,22 @@ public class Main implements Runnable
             currentMillis += System.currentTimeMillis() - lastMillis;
             lastMillis = System.currentTimeMillis();
             deltaTick = (float) currentMillis / ticksPerMillis;
+    
+            inputHandler.inputScreen(game.getScreen());
             
             if(currentMillis >= millisPerTick)
             {
                 game.update();
+                game.getScreen().update(inputHandler.getMouseX(), inputHandler.getMouseY());
+                
                 currentMillis -= millisPerTick;
             }
             
             // vielleicht zu HZ von Monitor limitieren? s. GLFWVidMode
             game.render(deltaTick);
+            game.getScreen().render(deltaTick, inputHandler.getMouseX(), inputHandler.getMouseY());
+            
+            inputHandler.postUpdate();
             
             // --------- LOOP ---------
             

@@ -26,7 +26,7 @@ public class Window
         this.screenHolder = screenHolder;
         
         this.windowHandle = -1;
-        this.inputHandler = null;
+        this.inputHandler = this.createInputHandler();
         
         glfwDefaultWindowHints(); // "Window Hints" = z.B. Fenster skalierbar? Fenster sichtbar? etc.
     }
@@ -116,8 +116,8 @@ public class Window
         return glfwWindowShouldClose(windowHandle);
     }
     
-    public InputHandler createInputHandler()
+    protected InputHandler createInputHandler()
     {
-        return this.inputHandler = new InputHandler(this);
+        return new InputHandler(this);
     }
 }
