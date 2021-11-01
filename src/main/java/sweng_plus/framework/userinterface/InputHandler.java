@@ -266,7 +266,5 @@ public class InputHandler
         {
             return mods;
         }
-        
-        ;
     }
 }

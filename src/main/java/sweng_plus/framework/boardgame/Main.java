@@ -83,7 +83,7 @@ public class Main implements Runnable
             
             currentMillis += System.currentTimeMillis() - lastMillis;
             lastMillis = System.currentTimeMillis();
-    
+            
             inputHandler.inputScreen(game.getScreen());
             
             if(currentMillis >= millisPerTick)
@@ -93,7 +93,7 @@ public class Main implements Runnable
                 
                 currentMillis -= millisPerTick;
             }
-    
+            
             deltaTick = (float) currentMillis / ticksPerMillis;
             
             // vielleicht zu HZ von Monitor limitieren? s. GLFWVidMode
