@@ -73,8 +73,8 @@ public class Main implements Runnable
         long lastMillis = System.currentTimeMillis();
         float deltaTick;
         
-        // Run the rendering loop until the user has attempted to close
-        // the window or has pressed the ESCAPE key.
+        // Render Schleife wiederholen, bis das Fenster geschlossen wird
+        // Oder bis ESC gedrückt wird TODO entfernen (ist auch als TODO markiert)
         while(!window.shouldClose())
         {
             window.preUpdate();
@@ -83,7 +83,6 @@ public class Main implements Runnable
             
             currentMillis += System.currentTimeMillis() - lastMillis;
             lastMillis = System.currentTimeMillis();
-            deltaTick = (float) currentMillis / ticksPerMillis;
     
             inputHandler.inputScreen(game.getScreen());
             
@@ -94,6 +93,8 @@ public class Main implements Runnable
                 
                 currentMillis -= millisPerTick;
             }
+    
+            deltaTick = (float) currentMillis / ticksPerMillis;
             
             // vielleicht zu HZ von Monitor limitieren? s. GLFWVidMode
             game.render(deltaTick);
