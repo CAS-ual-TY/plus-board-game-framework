@@ -99,7 +99,7 @@ public class Engine implements Runnable
                 screen.init(window.getScreenW(), window.getScreenH());
             }
             
-            inputHandler.inputScreen(screen);
+            inputHandler.inputListener(screen);
             
             if(currentMillis >= millisPerTick)
             {
@@ -123,7 +123,7 @@ public class Engine implements Runnable
         }
     }
     
-    private void createWindow()
+    protected void createWindow()
     {
         window = new Window(game.getWindowTitle(), game)
                 .hint(GLFW_VISIBLE, GLFW_FALSE) // Setzt das Fenster unsichtbar

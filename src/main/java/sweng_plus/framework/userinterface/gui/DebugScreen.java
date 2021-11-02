@@ -82,11 +82,11 @@ public class DebugScreen extends Screen
     {
         glBegin(GL_TRIANGLES);
         glColor3f(r, g, b);
-        glVertex3f(200, 0, 0); // Vertex one
+        glVertex3f(200, 0, 0); // Oben
         glColor3f(r, g, b);
-        glVertex3f(0, 400, 0); // Vertex two
+        glVertex3f(0, 400, 0); // Links Unten
         glColor3f(r, g, b);
-        glVertex3f(400, 400, 0); // Vertex three
+        glVertex3f(400, 400, 0); // Rechts Unten
         glEnd();
     }
     

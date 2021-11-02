@@ -151,7 +151,7 @@ public class InputHandler
         return this;
     }
     
-    public void inputScreen(IInputListener listener)
+    public void inputListener(IInputListener listener)
     {
         for(TrackedKey trackedKey : mouseButtons)
         {
