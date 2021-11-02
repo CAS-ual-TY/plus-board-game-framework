@@ -1,4 +1,4 @@
-package sweng_plus.frmwork_test.userinterface;
+package sweng_plus.framework_test.userinterface;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
