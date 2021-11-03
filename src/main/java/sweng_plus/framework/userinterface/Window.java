@@ -18,7 +18,7 @@ public class Window
     private final IScreenHolder screenHolder;
     
     private long windowHandle;
-    private InputHandler inputHandler;
+    private final InputHandler inputHandler;
     
     private int screenW;
     private int screenH;

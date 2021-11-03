@@ -30,7 +30,7 @@ public class TestMessage
             
             return new TestMessage(s.toString(), timestamp);
         }
-    
+        
         @Override
         public void sendBytes(ByteBuffer buf, TestMessage msg)
         {
@@ -39,11 +39,11 @@ public class TestMessage
                 buf.putChar(c);
             }
             
-            buf.putChar((char)0);
+            buf.putChar((char) 0);
             
             buf.putLong(msg.timestamp);
         }
-    
+        
         @Override
         public void handleMessage(TestMessage msg)
         {

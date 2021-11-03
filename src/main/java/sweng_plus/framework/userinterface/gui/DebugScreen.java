@@ -70,7 +70,7 @@ public class DebugScreen extends Screen
         {
             b += bUp ? colorChange : -colorChange;
         }
-    
+        
         calculateFPS();
         
         if(Engine.instance().getInputHandler().isKeyDown(GLFW_KEY_SPACE))
