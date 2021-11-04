@@ -50,14 +50,8 @@ public class Dimensions
     
     public void init(int screenW, int screenH)
     {
-        x = headAnchor.widthToX(screenW);
-        y = headAnchor.heightToY(screenH);
-        
-        x += innerAnchor.widthToX(w) - w;
-        y += innerAnchor.heightToY(h) - h;
-        
-        x += offX;
-        y += offY;
+        x = headAnchor.widthToX(screenW) - innerAnchor.widthToX(w) + offX;
+        y = headAnchor.heightToY(screenH) - innerAnchor.heightToY(h) + offY;
     }
     
     public boolean isMouseOver(int mouseX, int mouseY)

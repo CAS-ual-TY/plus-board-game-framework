@@ -8,7 +8,7 @@ public class Widget implements IWidget
     
     protected Dimensions dimensions;
     
-    private boolean isMouseOver;
+    public boolean isMouseOver;
     
     public Widget(Screen screen, Dimensions dimensions)
     {

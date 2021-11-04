@@ -1,6 +1,9 @@
 package sweng_plus.framework.userinterface.gui;
 
 import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
+import sweng_plus.framework.userinterface.gui.widget.ColoredQuad;
+import sweng_plus.framework.userinterface.gui.widget.Dimensions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,9 +23,19 @@ public class DebugScreen extends Screen
     private double fps;
     private long nanos = 1;
     
+    public DebugScreen()
+    {
+        super();
+        //AnchorPoint anchor = AnchorPoint.M;
+        for(AnchorPoint anchor : AnchorPoint.values())
+            this.widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
+                    new Color4f(1F, 0F, 0F), new Color4f(1F, 1F, 1F)));
+    }
+    
     @Override
     public void update(int mouseX, int mouseY)
     {
+        /*
         if(r >= 1F && rUp)
         {
             r = 1F;
@@ -75,19 +88,13 @@ public class DebugScreen extends Screen
         
         if(Engine.instance().getInputHandler().isKeyDown(GLFW_KEY_SPACE))
             System.out.println(fps);
+        */
     }
     
     @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        glBegin(GL_TRIANGLES);
-        glColor3f(r, g, b);
-        glVertex3f(200, 0, 0); // Oben
-        glColor3f(r, g, b);
-        glVertex3f(0, 400, 0); // Links Unten
-        glColor3f(r, g, b);
-        glVertex3f(400, 400, 0); // Rechts Unten
-        glEnd();
+        super.render(deltaTick, mouseX, mouseY);
     }
     
     private void calculateFPS()
