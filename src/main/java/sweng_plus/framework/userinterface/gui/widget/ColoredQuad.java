@@ -23,12 +23,12 @@ public class ColoredQuad extends Widget
         super.render(deltaTick, mouseX, mouseY);
         
         Color4f color = isMouseOver ? hoverColor : baseColor;
-    
+        
         int x1 = dimensions.x;
         int x2 = dimensions.x + dimensions.w;
         int y1 = dimensions.y;
         int y2 = dimensions.y + dimensions.h;
-    
+        
         glBegin(GL_QUADS);
         color.glColor3f();
         glVertex3f(x1, y1, 0); // Oben Links
