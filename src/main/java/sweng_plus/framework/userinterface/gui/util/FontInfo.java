@@ -1,4 +1,4 @@
-package sweng_plus.framework.userinterface;
+package sweng_plus.framework.userinterface.gui.util;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -2,7 +2,7 @@ package sweng_plus.framework_test.userinterface;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import sweng_plus.framework.userinterface.FontInfo;
+import sweng_plus.framework.userinterface.gui.util.FontInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
