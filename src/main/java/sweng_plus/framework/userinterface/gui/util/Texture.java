@@ -1,11 +1,12 @@
 package sweng_plus.framework.userinterface.gui.util;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
 
 public class Texture
 {
-    private int textureID;
-    private String texture;
+    private final int textureID;
+    private final String texture;
     
     public Texture(int textureID, String texture)
     {

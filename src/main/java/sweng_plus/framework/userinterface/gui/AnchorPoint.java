@@ -49,19 +49,29 @@ public enum AnchorPoint
         this.POS_Y = y;
     }
     
+    public float getX()
+    {
+        return POS_X;
+    }
+    
+    public float getY()
+    {
+        return POS_Y;
+    }
+    
     public int widthToX(int width)
     {
         return floatMultToIntShift(width, POS_X);
     }
     
-    public int heightToX(int height)
+    public int heightToY(int height)
     {
         return floatMultToIntShift(height, POS_Y);
     }
     
     public void widthHeightToXY(int width, int height, PositionConsumer positionConsumer)
     {
-        positionConsumer.accept(widthToX(width), heightToX(height));
+        positionConsumer.accept(widthToX(width), heightToY(height));
     }
     
     private int floatMultToIntShift(int integer, float factor)

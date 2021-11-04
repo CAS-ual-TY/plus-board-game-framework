@@ -1,7 +1,6 @@
 package sweng_plus.framework.boardgame;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL11;
 import sweng_plus.framework.userinterface.InputHandler;
 import sweng_plus.framework.userinterface.Window;
 import sweng_plus.framework.userinterface.gui.Screen;

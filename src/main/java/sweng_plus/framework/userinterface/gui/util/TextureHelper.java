@@ -2,20 +2,19 @@ package sweng_plus.framework.userinterface.gui.util;
 
 import org.lwjgl.BufferUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
-import javax.imageio.ImageIO;
-
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.*;
+import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 
 public class TextureHelper
 {
-    private static HashMap<String, Texture> TEXTURE_MAP = new HashMap<>();
+    private static final HashMap<String, Texture> TEXTURE_MAP = new HashMap<>();
     
     public static Texture createTexture(String path) throws IOException
     {
@@ -52,7 +51,7 @@ public class TextureHelper
         int[] pixels = new int[w * h];
         image.getRGB(0, 0, w, h, pixels, 0, w);
         ByteBuffer buffer = BufferUtils.createByteBuffer(w * h * 4); //4 für RGBA, also 4 Bytes pro Farbe (RGB wäre 3 Bytes)
-    
+        
         for(int x = 0; x < w; x++)
         {
             for(int y = 0; y < h; y++)
@@ -66,14 +65,14 @@ public class TextureHelper
         }
         
         buffer.flip();
-    
+        
         final int textureID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, textureID);
-    
+        
         // Texture Skalierungs Filter, es gibt auch z.B. GL_LINEAR
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
+        
         // Wrap Mode
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
