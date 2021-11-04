@@ -1,6 +1,7 @@
 package sweng_plus.framework.boardgame;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL11;
 import sweng_plus.framework.userinterface.InputHandler;
 import sweng_plus.framework.userinterface.Window;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -8,6 +9,7 @@ import sweng_plus.framework.userinterface.gui.Screen;
 import java.util.concurrent.TimeUnit;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Engine implements Runnable
 {
@@ -57,6 +59,7 @@ public class Engine implements Runnable
         
         inputHandler = window.getInputHandler();
         inputHandler.setup();
+        initOpenGL();
         game.postInit();
         
         loop();
@@ -146,5 +149,13 @@ public class Engine implements Runnable
         // GLFW terminieren, Fehler callback free'n
         glfwTerminate();
         glfwSetErrorCallback(null).free();
+    }
+    
+    protected void initOpenGL()
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        glEnable(GL_TEXTURE_2D);
     }
 }
