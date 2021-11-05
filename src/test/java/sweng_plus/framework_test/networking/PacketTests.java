@@ -18,9 +18,13 @@ public class PacketTests
         r.registerMessage((byte)0, new TestMessage.Handler(), TestMessage.class);
         r.encodeMessage(buffer, msg);
         buffer.flip();
-        TestMessage msg2 = r.decodeMessage(buffer);
-        Assertions.assertFalse(buffer.hasRemaining());
-        Assertions.assertEquals(msg.message, msg2.message);
-        Assertions.assertEquals(msg.timestamp, msg2.timestamp);
+        
+        r.<TestMessage>decodeMessage(buffer, (handler, msg2) ->
+        {
+            Assertions.assertFalse(buffer.hasRemaining());
+            Assertions.assertEquals(msg.message, msg2.message);
+            Assertions.assertEquals(msg.timestamp, msg2.timestamp);
+            handler.handleMessage(msg2);
+        });
     }
 }

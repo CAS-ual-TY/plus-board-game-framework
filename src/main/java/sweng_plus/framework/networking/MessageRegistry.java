@@ -56,9 +56,14 @@ public class MessageRegistry
         IMessageHandler<M> handler = (IMessageHandler<M>) this.handlers[messageID];
         writeBuffer.put(messageID);
         writeBuffer.putInt(0);
-        handler.sendBytes(writeBuffer, message);
+        encodeMessage(writeBuffer, message, handler);
         int newPos = writeBuffer.position();
         writeBuffer.putInt(oldPos, newPos - oldPos);
+    }
+    
+    public <M> void encodeMessage(ByteBuffer writeBuffer, M message, IMessageHandler<M> handler)
+    {
+        handler.sendBytes(writeBuffer, message);
     }
     
     /**
@@ -66,12 +71,32 @@ public class MessageRegistry
      * @param <M>
      * @return Eine {@link Runnable}, welche beim Ausführen {@link IMessageHandler#handleMessage(M)} ausführt
      */
-    public <M> M decodeMessage(ByteBuffer readBuffer)
+    public <M> Runnable decodeMessage(ByteBuffer readBuffer)
     {
         int size = readBuffer.getInt();
-        
         byte messageID = readBuffer.get();
         IMessageHandler<M> handler = (IMessageHandler<M>) this.handlers[messageID];
+        M msg = decodeMessage(readBuffer, handler);
+        
+        return () -> handler.handleMessage(msg);
+    }
+    
+    public <M> M decodeMessage(ByteBuffer readBuffer, IMessageHandler<M> handler)
+    {
         return handler.receiveBytes(readBuffer);
+    }
+    
+    public <M> void decodeMessage(ByteBuffer readBuffer, MessageInfoConsumer<M> consumer)
+    {
+        int size = readBuffer.getInt();
+        byte messageID = readBuffer.get();
+        IMessageHandler<M> handler = (IMessageHandler<M>) this.handlers[messageID];
+        M msg = decodeMessage(readBuffer, handler);
+        consumer.accept(handler, msg);
+    }
+    
+    public static interface MessageInfoConsumer<M>
+    {
+        void accept(IMessageHandler<M> handler, M msg);
     }
 }
