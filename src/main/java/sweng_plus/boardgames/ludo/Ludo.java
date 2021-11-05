@@ -7,17 +7,25 @@ import sweng_plus.framework.userinterface.gui.Screen;
 
 public class Ludo implements IGame
 {
+    public static Ludo instance;
+    
     private Screen screen;
     
     public Ludo()
     {
-        screen = new DebugScreen();
+        instance = this;
     }
     
     @Override
     public String getWindowTitle()
     {
         return "Ludo";
+    }
+    
+    @Override
+    public void postInit()
+    {
+        screen = new DebugScreen();
     }
     
     @Override

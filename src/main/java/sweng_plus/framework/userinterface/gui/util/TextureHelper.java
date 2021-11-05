@@ -80,7 +80,7 @@ public class TextureHelper
         // Daten Binden
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
         
-        Texture texture = new Texture(textureID, name);
+        Texture texture = new Texture(textureID, name, w, h);
         
         TEXTURE_MAP.put(name, texture);
         

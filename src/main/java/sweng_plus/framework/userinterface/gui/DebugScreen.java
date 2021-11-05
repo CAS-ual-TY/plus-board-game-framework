@@ -1,10 +1,14 @@
 package sweng_plus.framework.userinterface.gui;
 
+import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
+import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 import sweng_plus.framework.userinterface.gui.widget.ColoredQuad;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.TextureWidget;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -22,6 +26,16 @@ public class DebugScreen extends Screen
         for(AnchorPoint anchor : AnchorPoint.values())
             this.widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
                     new Color4f(1F, 0F, 0F), new Color4f(1F, 1F, 1F)));
+    
+        try
+        {
+            this.widgets.add(new TextureWidget(this, new Dimensions(128, 128, AnchorPoint.TL, 100, 100),
+                    TextureHelper.createTexture("src/main/resources/textures/test_texture.png")));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     @Override
