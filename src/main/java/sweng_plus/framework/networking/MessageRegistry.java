@@ -50,10 +50,15 @@ public class MessageRegistry
     
     public <M> void encodeMessage(ByteBuffer writeBuffer, M message)
     {
+        int oldPos = writeBuffer.position();
+        
         byte messageID = getIDForMessage(message);
         IMessageHandler<M> handler = (IMessageHandler<M>) this.handlers[messageID];
         writeBuffer.put(messageID);
+        writeBuffer.putInt(0);
         handler.sendBytes(writeBuffer, message);
+        int newPos = writeBuffer.position();
+        writeBuffer.putInt(oldPos, newPos - oldPos);
     }
     
     /**
@@ -61,11 +66,12 @@ public class MessageRegistry
      * @param <M>
      * @return Eine {@link Runnable}, welche beim Ausführen {@link IMessageHandler#handleMessage(M)} ausführt
      */
-    public <M> Runnable decodeMessage(ByteBuffer readBuffer)
+    public <M> M decodeMessage(ByteBuffer readBuffer)
     {
+        int size = readBuffer.getInt();
+        
         byte messageID = readBuffer.get();
         IMessageHandler<M> handler = (IMessageHandler<M>) this.handlers[messageID];
-        M message = handler.receiveBytes(readBuffer);
-        return () -> handler.handleMessage(message);
+        return handler.receiveBytes(readBuffer);
     }
 }
