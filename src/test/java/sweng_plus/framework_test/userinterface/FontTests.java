@@ -2,7 +2,9 @@ package sweng_plus.framework_test.userinterface;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import sweng_plus.framework.userinterface.gui.util.FontInfo;
+
+import sweng_plus.framework.userinterface.gui.font.FontHelper;
+import sweng_plus.framework.userinterface.gui.font.FontInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -26,8 +28,8 @@ public class FontTests
         if(pngChicagoFLF.exists())
             pngChicagoFLF.delete();
         
-        Font fontChicagoFLF = FontInfo.createFont(fileChicagoFLF, 64F);
-        FontInfo fontInfoChicagoFLF = new FontInfo(fontChicagoFLF, StandardCharsets.UTF_8.name(), FontInfo.getAvailableChars((char)0xFF));
+        Font fontChicagoFLF = FontHelper.createFont(fileChicagoFLF, 64F);
+        FontInfo fontInfoChicagoFLF = new FontInfo(fontChicagoFLF, StandardCharsets.UTF_8.name(), FontHelper.getAvailableChars((char)0xFF));
         ImageIO.write(fontInfoChicagoFLF.getImage(), "png", pngChicagoFLF);
         
         assertTrue(pngChicagoFLF::exists);

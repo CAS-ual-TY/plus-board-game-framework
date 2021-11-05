@@ -51,6 +51,8 @@ public class DebugScreen extends Screen
     public void render(float deltaTick, int mouseX, int mouseY)
     {
         super.render(deltaTick, mouseX, mouseY);
+    
+        Ludo.instance.fontRenderer.render(100, 200, "Ein Test");
     }
     
     private void calculateFPS()

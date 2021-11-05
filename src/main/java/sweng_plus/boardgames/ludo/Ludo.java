@@ -4,12 +4,21 @@ import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.userinterface.gui.DebugScreen;
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.font.FontHelper;
+import sweng_plus.framework.userinterface.gui.font.FontInfo;
+import sweng_plus.framework.userinterface.gui.font.FontRenderer;
+
+import java.awt.*;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 public class Ludo implements IGame
 {
     public static Ludo instance;
     
     private Screen screen;
+    
+    public FontRenderer fontRenderer;
     
     public Ludo()
     {
@@ -25,6 +34,9 @@ public class Ludo implements IGame
     @Override
     public void postInit()
     {
+        Font fontChicagoFLF = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"), 64F);
+        fontRenderer = new FontRenderer(new FontInfo(fontChicagoFLF, StandardCharsets.UTF_8.name(), FontHelper.getAvailableChars((char)0xFF)));
+        
         screen = new DebugScreen();
     }
     
