@@ -35,7 +35,8 @@ public class Ludo implements IGame
     public void postInit()
     {
         Font fontChicagoFLF = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"), 64F);
-        fontRenderer = new FontRenderer(new FontInfo(fontChicagoFLF, StandardCharsets.UTF_8.name(), FontHelper.getAvailableChars((char)0xFF)));
+        FontInfo fontInfo = new FontInfo(fontChicagoFLF, StandardCharsets.UTF_8.name(), FontHelper.getAvailableChars((char)0xFF));
+        fontRenderer = new FontRenderer(fontInfo);
         
         screen = new DebugScreen();
     }
