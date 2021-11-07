@@ -11,10 +11,10 @@ public class Color4f
     
     public Color4f(int r, int g, int b, int a)
     {
-        this.rf = r / 255f;
-        this.gf = g / 255f;
-        this.bf = b / 255f;
-        this.af = a / 255f;
+        rf = r / 255f;
+        gf = g / 255f;
+        bf = b / 255f;
+        af = a / 255f;
     }
     
     public Color4f(int r, int g, int b)
@@ -25,10 +25,10 @@ public class Color4f
     
     public Color4f(float r, float g, float b, float a)
     {
-        this.rf = r;
-        this.gf = g;
-        this.bf = b;
-        this.af = a;
+        rf = r;
+        gf = g;
+        bf = b;
+        af = a;
     }
     
     public Color4f(float r, float g, float b)

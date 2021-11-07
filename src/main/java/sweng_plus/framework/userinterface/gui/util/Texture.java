@@ -1,11 +1,5 @@
 package sweng_plus.framework.userinterface.gui.util;
 
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.system.MemoryUtil;
-
 import static org.lwjgl.opengl.GL11.*;
 
 public class Texture
@@ -21,7 +15,7 @@ public class Texture
     public Texture(int textureID, String textureName, int width, int height)
     {
         this.textureID = textureID;
-        this.texture = textureName;
+        texture = textureName;
         this.width = width;
         this.height = height;
     }

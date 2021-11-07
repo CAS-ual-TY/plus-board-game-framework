@@ -3,8 +3,6 @@ package sweng_plus.framework.userinterface.gui.font;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 
-import java.io.IOException;
-
 public class FontRenderer
 {
     private final FontInfo font;
@@ -13,7 +11,7 @@ public class FontRenderer
     public FontRenderer(FontInfo font)
     {
         this.font = font;
-        this.texture = TextureHelper.createTexture(font.getFont().getName() + "_" + font.getFont().getSize(), font.getImage());
+        texture = TextureHelper.createTexture(font.getFont().getName() + "_" + font.getFont().getSize(), font.getImage());
     }
     
     public int getTextWidth(String text)
@@ -22,7 +20,7 @@ public class FontRenderer
         
         for(char c : text.toCharArray())
         {
-            width += this.font.getCharInfo(c).getCharW();
+            width += font.getCharInfo(c).getCharW();
         }
         
         return width;

@@ -18,7 +18,7 @@ public class Screen implements INestedInputListener
     
     public Screen()
     {
-        this.widgets = new LinkedList<>();
+        widgets = new LinkedList<>();
     }
     
     /** Wird immer gecallt, wenn das Window resized wird, oder der Screen zum ersten mal wieder aktiv ist */

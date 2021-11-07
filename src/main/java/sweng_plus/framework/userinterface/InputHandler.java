@@ -21,15 +21,15 @@ public class InputHandler
     {
         this.window = window;
         
-        this.keys = new LinkedList<>();
+        keys = new LinkedList<>();
         
-        this.mouseButtons = new TrackedKey[GLFW_MOUSE_BUTTON_LAST + 1];
+        mouseButtons = new TrackedKey[GLFW_MOUSE_BUTTON_LAST + 1];
         for(int i = 0; i <= GLFW_MOUSE_BUTTON_LAST; ++i)
         {
             mouseButtons[i] = new TrackedKey(i);
         }
         
-        this.chars = new LinkedList<>();
+        chars = new LinkedList<>();
     }
     
     public void setup()
@@ -74,8 +74,8 @@ public class InputHandler
         {
             char character = (char) charCode;
             
-            if(!this.chars.contains(character))
-                this.chars.add(character);
+            if(!chars.contains(character))
+                chars.add(character);
         });
         
         
@@ -90,17 +90,17 @@ public class InputHandler
     
     public void postUpdate()
     {
-        for(TrackedKey trackedKey : this.keys)
+        for(TrackedKey trackedKey : keys)
         {
             trackedKey.setUnchanged();
         }
         
-        for(TrackedKey trackedKey : this.mouseButtons)
+        for(TrackedKey trackedKey : mouseButtons)
         {
             trackedKey.setUnchanged();
         }
         
-        this.chars.clear();
+        chars.clear();
     }
     
     protected TrackedKey getMouseButtonTracking(int mouseButton)
@@ -115,7 +115,7 @@ public class InputHandler
     
     protected TrackedKey getKeyTracking(int key)
     {
-        for(TrackedKey trackedKey : this.keys)
+        for(TrackedKey trackedKey : keys)
         {
             if(trackedKey.getKey() == key)
             {
@@ -145,7 +145,7 @@ public class InputHandler
     {
         if(!isKeyTracked(key))
         {
-            this.keys.add(new TrackedKey(key));
+            keys.add(new TrackedKey(key));
         }
         
         return this;
@@ -159,11 +159,11 @@ public class InputHandler
             {
                 if(trackedKey.getPressed())
                 {
-                    listener.mouseButtonPressed(this.getMouseX(), this.getMouseY(), trackedKey.getKey(), trackedKey.getMods());
+                    listener.mouseButtonPressed(getMouseX(), getMouseY(), trackedKey.getKey(), trackedKey.getMods());
                 }
                 else
                 {
-                    listener.mouseButtonReleased(this.getMouseX(), this.getMouseY(), trackedKey.getKey(), trackedKey.getMods());
+                    listener.mouseButtonReleased(getMouseX(), getMouseY(), trackedKey.getKey(), trackedKey.getMods());
                 }
             }
         }
@@ -183,7 +183,7 @@ public class InputHandler
             }
         }
         
-        for(char c : this.chars)
+        for(char c : chars)
         {
             listener.charTyped(c);
         }
@@ -225,9 +225,9 @@ public class InputHandler
         public TrackedKey(int key)
         {
             this.key = key;
-            this.pressed = false;
-            this.changed = false;
-            this.mods = 0;
+            pressed = false;
+            changed = false;
+            mods = 0;
         }
         
         public int getKey()
@@ -239,7 +239,7 @@ public class InputHandler
         {
             this.pressed = pressed;
             
-            this.changed = true;
+            changed = true;
             this.mods = mods;
         }
         

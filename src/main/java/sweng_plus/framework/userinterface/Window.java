@@ -30,8 +30,8 @@ public class Window
         this.title = title;
         this.screenHolder = screenHolder;
         
-        this.windowHandle = -1;
-        this.inputHandler = createInputHandler();
+        windowHandle = -1;
+        inputHandler = createInputHandler();
         
         this.screenW = screenW;
         this.screenH = screenH;

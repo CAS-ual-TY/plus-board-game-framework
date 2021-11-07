@@ -45,8 +45,8 @@ public enum AnchorPoint
     
     AnchorPoint(float x, float y)
     {
-        this.POS_X = x;
-        this.POS_Y = y;
+        POS_X = x;
+        POS_Y = y;
     }
     
     public float getX()

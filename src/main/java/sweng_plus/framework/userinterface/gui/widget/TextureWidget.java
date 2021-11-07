@@ -1,10 +1,9 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import sweng_plus.framework.userinterface.gui.Screen;
-import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class TextureWidget extends Widget
 {

@@ -2,6 +2,7 @@ package sweng_plus.framework.networking;
 
 import java.nio.ByteBuffer;
 
+@SuppressWarnings("unchecked")
 public class MessageRegistry
 {
     private final IMessageHandler<?>[] handlers;
@@ -14,20 +15,20 @@ public class MessageRegistry
             throw new IllegalArgumentException("Max 128 message types allowed");
         }
         
-        this.handlers = new IMessageHandler<?>[messages];
-        this.messageClasses = new Class<?>[messages];
+        handlers = new IMessageHandler<?>[messages];
+        messageClasses = new Class<?>[messages];
     }
     
     public <M> MessageRegistry registerMessage(byte id, IMessageHandler<M> handler, Class<M> messageClass)
     {
-        if(id < 0 || id >= handlers.length || this.handlers[id] != null)
+        if(id < 0 || id >= handlers.length || handlers[id] != null)
         {
             throw new IllegalArgumentException();
         }
         else
         {
-            this.handlers[id] = handler;
-            this.messageClasses[id] = messageClass;
+            handlers[id] = handler;
+            messageClasses[id] = messageClass;
         }
         
         return this;
@@ -53,7 +54,7 @@ public class MessageRegistry
         int oldPos = writeBuffer.position();
         
         byte messageID = getIDForMessage(message);
-        IMessageHandler<M> handler = (IMessageHandler<M>) this.handlers[messageID];
+        IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
         writeBuffer.put(messageID);
         writeBuffer.putInt(0);
         encodeMessage(writeBuffer, message, handler);
@@ -75,7 +76,7 @@ public class MessageRegistry
     {
         int size = readBuffer.getInt();
         byte messageID = readBuffer.get();
-        IMessageHandler<M> handler = (IMessageHandler<M>) this.handlers[messageID];
+        IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
         M msg = decodeMessage(readBuffer, handler);
         
         return () -> handler.handleMessage(msg);
@@ -90,12 +91,12 @@ public class MessageRegistry
     {
         int size = readBuffer.getInt();
         byte messageID = readBuffer.get();
-        IMessageHandler<M> handler = (IMessageHandler<M>) this.handlers[messageID];
+        IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
         M msg = decodeMessage(readBuffer, handler);
         consumer.accept(handler, msg);
     }
     
-    public static interface MessageInfoConsumer<M>
+    public interface MessageInfoConsumer<M>
     {
         void accept(IMessageHandler<M> handler, M msg);
     }

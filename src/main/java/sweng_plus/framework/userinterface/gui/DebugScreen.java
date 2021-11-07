@@ -2,17 +2,12 @@ package sweng_plus.framework.userinterface.gui;
 
 import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 import sweng_plus.framework.userinterface.gui.widget.ColoredQuad;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
-import sweng_plus.framework.userinterface.gui.widget.TextureWidget;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class DebugScreen extends Screen
@@ -25,7 +20,7 @@ public class DebugScreen extends Screen
         super();
         
         for(AnchorPoint anchor : AnchorPoint.values())
-            this.widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
+            widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
                     new Color4f(1F, 0F, 0F), new Color4f(1F, 1F, 1F)));
     }
     
@@ -39,7 +34,7 @@ public class DebugScreen extends Screen
     public void render(float deltaTick, int mouseX, int mouseY)
     {
         super.render(deltaTick, mouseX, mouseY);
-    
+        
         GL11.glColor4f(1F, 1F, 1F, 1F);
         Ludo.instance.fontRenderer.render(110, 0, "FPS: " + Math.round(fps));
     }
@@ -54,7 +49,7 @@ public class DebugScreen extends Screen
     public void init(int screenW, int screenH)
     {
         System.out.println("init " + screenW + " " + screenH);
-    
+        
         super.init(screenW, screenH);
         
         glViewport(0, 0, screenW, screenH);
@@ -68,7 +63,7 @@ public class DebugScreen extends Screen
     public void mouseButtonPressed(int mouseX, int mouseY, int mouseButton, int mods)
     {
         System.out.println("mouseButtonPressed " + mouseX + " " + mouseY + " " + mouseButton + " " + Integer.toBinaryString(mods));
-    
+        
         super.mouseButtonPressed(mouseX, mouseY, mouseButton, mods);
     }
     

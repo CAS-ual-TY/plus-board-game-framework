@@ -6,6 +6,7 @@ public interface INestedInputListener extends IInputListener
 {
     List<? extends IInputListener> getListeners();
     
+    @Override
     default void mouseButtonPressed(int mouseX, int mouseY, int mouseButton, int mods)
     {
         for(IInputListener listener : getListeners())
@@ -14,6 +15,7 @@ public interface INestedInputListener extends IInputListener
         }
     }
     
+    @Override
     default void mouseButtonReleased(int mouseX, int mouseY, int mouseButton, int mods)
     {
         for(IInputListener listener : getListeners())
@@ -22,6 +24,7 @@ public interface INestedInputListener extends IInputListener
         }
     }
     
+    @Override
     default void keyPressed(int key, int mods)
     {
         for(IInputListener listener : getListeners())
@@ -30,6 +33,7 @@ public interface INestedInputListener extends IInputListener
         }
     }
     
+    @Override
     default void keyReleased(int key, int mods)
     {
         for(IInputListener listener : getListeners())
@@ -38,6 +42,7 @@ public interface INestedInputListener extends IInputListener
         }
     }
     
+    @Override
     default void charTyped(char character)
     {
         for(IInputListener listener : getListeners())

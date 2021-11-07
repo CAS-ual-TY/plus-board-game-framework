@@ -16,13 +16,13 @@ public class Widget implements IWidget
         
         this.dimensions = dimensions;
         
-        this.init(screen.screenW, screen.screenH);
+        init(screen.screenW, screen.screenH);
     }
     
     @Override
     public void init(int screenW, int screenH)
     {
-        this.dimensions.init(screenW, screenH);
+        dimensions.init(screenW, screenH);
     }
     
     @Override

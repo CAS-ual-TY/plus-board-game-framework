@@ -38,6 +38,7 @@ public class TextureHelper
         return createTexture(name, ImageIO.read(file));
     }
     
+    @SuppressWarnings("PointlessBitwiseExpression")
     public static Texture createTexture(String name, BufferedImage image)
     {
         if(TEXTURE_MAP.containsKey(name))

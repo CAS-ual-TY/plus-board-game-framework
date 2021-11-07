@@ -15,7 +15,7 @@ public class PacketTests
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         TestMessage msg = new TestMessage("Hello World!", System.currentTimeMillis());
         MessageRegistry r = new MessageRegistry(2);
-        r.registerMessage((byte)0, new TestMessage.Handler(), TestMessage.class);
+        r.registerMessage((byte) 0, new TestMessage.Handler(), TestMessage.class);
         r.encodeMessage(buffer, msg);
         buffer.flip();
         
