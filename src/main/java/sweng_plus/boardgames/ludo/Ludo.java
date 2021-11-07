@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Ludo implements IGame
 {
-    public static Ludo instance;
+    private static Ludo instance;
     
     private Screen screen;
     
@@ -27,6 +27,11 @@ public class Ludo implements IGame
     public Ludo()
     {
         instance = this;
+    }
+    
+    public static Ludo instance()
+    {
+        return instance;
     }
     
     @Override

@@ -51,7 +51,7 @@ public class DebugScreen extends Screen
         {
             GL11.glColor4f(1F, 1F, 1F, 1F);
         }
-        Ludo.instance.fontRenderer32.render(110, 0, "FPS: " + String.valueOf(Math.round(fpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
+        Ludo.instance().fontRenderer32.render(110, 0, "FPS: " + String.valueOf(Math.round(fpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
     
         if(tpsAverage.size() < 50)
         {
@@ -61,23 +61,23 @@ public class DebugScreen extends Screen
         {
             GL11.glColor4f(1F, 1F, 1F, 1F);
         }
-        Ludo.instance.fontRenderer32.render(110, Ludo.instance.fontRenderer32.getHeight(), "TPS: " + String.valueOf(Math.round(tpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
+        Ludo.instance().fontRenderer32.render(110, Ludo.instance().fontRenderer32.getHeight(), "TPS: " + String.valueOf(Math.round(tpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
     
         GL11.glColor4f(1F, 1F, 1F, 1F);
         final String abc = "abcdefghijklmnopqrstuvpxyz";
         final String ABC = abc.toUpperCase();
         int x = 110;
         int y = 110;
-        Ludo.instance.fontRenderer64.render(x, y, "64: " + ABC);
-        Ludo.instance.fontRenderer64.render(x, y += Ludo.instance.fontRenderer64.getHeight(), "64: " + abc);
-        Ludo.instance.fontRenderer48.render(x, y += Ludo.instance.fontRenderer64.getHeight(), "48: " + ABC);
-        Ludo.instance.fontRenderer48.render(x, y += Ludo.instance.fontRenderer48.getHeight(), "48: " + abc);
-        Ludo.instance.fontRenderer32.render(x, y += Ludo.instance.fontRenderer48.getHeight(), "32: " + ABC);
-        Ludo.instance.fontRenderer32.render(x, y += Ludo.instance.fontRenderer32.getHeight(), "32: " + abc);
-        Ludo.instance.fontRenderer24.render(x, y += Ludo.instance.fontRenderer32.getHeight(), "24: " + ABC);
-        Ludo.instance.fontRenderer24.render(x, y += Ludo.instance.fontRenderer24.getHeight(), "24: " + abc);
-        Ludo.instance.fontRenderer16.render(x, y += Ludo.instance.fontRenderer24.getHeight(), "16: " + ABC);
-        Ludo.instance.fontRenderer16.render(x, y += Ludo.instance.fontRenderer16.getHeight(), "16: " + abc);
+        Ludo.instance().fontRenderer64.render(x, y, "64: " + ABC);
+        Ludo.instance().fontRenderer64.render(x, y += Ludo.instance().fontRenderer64.getHeight(), "64: " + abc);
+        Ludo.instance().fontRenderer48.render(x, y += Ludo.instance().fontRenderer64.getHeight(), "48: " + ABC);
+        Ludo.instance().fontRenderer48.render(x, y += Ludo.instance().fontRenderer48.getHeight(), "48: " + abc);
+        Ludo.instance().fontRenderer32.render(x, y += Ludo.instance().fontRenderer48.getHeight(), "32: " + ABC);
+        Ludo.instance().fontRenderer32.render(x, y += Ludo.instance().fontRenderer32.getHeight(), "32: " + abc);
+        Ludo.instance().fontRenderer24.render(x, y += Ludo.instance().fontRenderer32.getHeight(), "24: " + ABC);
+        Ludo.instance().fontRenderer24.render(x, y += Ludo.instance().fontRenderer24.getHeight(), "24: " + abc);
+        Ludo.instance().fontRenderer16.render(x, y += Ludo.instance().fontRenderer24.getHeight(), "16: " + ABC);
+        Ludo.instance().fontRenderer16.render(x, y += Ludo.instance().fontRenderer16.getHeight(), "16: " + abc);
     }
     
     private void calculateFPS()

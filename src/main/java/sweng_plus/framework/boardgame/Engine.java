@@ -31,11 +31,6 @@ public class Engine implements Runnable
         return instance;
     }
     
-    public IGame getGame()
-    {
-        return game;
-    }
-    
     public Window getWindow()
     {
         return window;
