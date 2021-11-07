@@ -113,9 +113,13 @@ public class Engine implements Runnable
             
             deltaTick = (float) currentMillis / ticksPerMillis;
             
+            glPushMatrix();
+            
             // vielleicht zu HZ von Monitor limitieren? s. GLFWVidMode
             game.render(deltaTick);
             screen.render(deltaTick, inputHandler.getMouseX(), inputHandler.getMouseY());
+            
+            glPopMatrix();
             
             inputHandler.postUpdate();
             
@@ -152,9 +156,12 @@ public class Engine implements Runnable
     
     protected void initOpenGL()
     {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glEnable(GL_TEXTURE_2D);
+    
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
-        glEnable(GL_TEXTURE_2D);
     }
 }
