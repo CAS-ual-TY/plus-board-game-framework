@@ -21,6 +21,7 @@ public class TextureWidget extends Widget
     {
         super.render(deltaTick, mouseX, mouseY);
         
+        glColor4f(1F, 1F, 1F, 1F);
         texture.render(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
     }
 }
