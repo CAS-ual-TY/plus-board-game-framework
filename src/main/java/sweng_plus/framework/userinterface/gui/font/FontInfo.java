@@ -38,6 +38,11 @@ public class FontInfo
         return font;
     }
     
+    public String getCharSet()
+    {
+        return charSet;
+    }
+    
     public int getWidth()
     {
         return width;
