@@ -13,16 +13,7 @@ public class FontRenderer
     public FontRenderer(FontInfo font)
     {
         this.font = font;
-        //this.texture = TextureHelper.createTexture(font.getFont().getName() + "_" + font.getFont().getSize(), font.getImage());
-        try
-        {
-            this.texture = TextureHelper.createTexture("src/test/resources/fonts/chicagoFLF.png");
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-            texture = Texture.NULL_TEXTURE;
-        }
+        this.texture = TextureHelper.createTexture(font.getFont().getName() + "_" + font.getFont().getSize(), font.getImage());
     }
     
     public int getTextWidth(String text)
@@ -40,8 +31,6 @@ public class FontRenderer
     public void render(int x, int y, String text)
     {
         int x0 = x;
-        
-        //texture.render(x, y);
         
         for(char c : text.toCharArray())
         {
