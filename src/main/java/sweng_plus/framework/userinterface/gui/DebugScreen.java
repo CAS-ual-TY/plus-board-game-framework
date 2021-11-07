@@ -6,6 +6,7 @@ import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.ColoredQuad;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
 
+import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -13,7 +14,12 @@ import static org.lwjgl.opengl.GL11.*;
 public class DebugScreen extends Screen
 {
     private double fps;
-    private long nanos = 1;
+    private long millisFPS = System.currentTimeMillis();
+    private LinkedList<Double> fpsAverage = new LinkedList<>();
+    
+    private double tps;
+    private long millisTPS = System.currentTimeMillis();
+    private LinkedList<Double> tpsAverage = new LinkedList<>();
     
     public DebugScreen()
     {
@@ -21,13 +27,13 @@ public class DebugScreen extends Screen
         
         for(AnchorPoint anchor : AnchorPoint.values())
             widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
-                    new Color4f(1F, 0F, 0F), new Color4f(1F, 1F, 1F)));
+                    new Color4f(0F, 0F, 0F), new Color4f(1F, 0F, 0F)));
     }
     
     @Override
     public void update(int mouseX, int mouseY)
     {
-        calculateFPS();
+        calculateTPS();
     }
     
     @Override
@@ -35,14 +41,53 @@ public class DebugScreen extends Screen
     {
         super.render(deltaTick, mouseX, mouseY);
         
+        calculateFPS();
+        
+        if(fpsAverage.size() < 50)
+        {
+            GL11.glColor4f(1F, 0F, 0F, 1F);
+        }
+        else
+        {
+            GL11.glColor4f(1F, 1F, 1F, 1F);
+        }
+        Ludo.instance.fontRenderer.render(110, 0, "FPS: " + String.valueOf(Math.round(fpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
+    
+        if(tpsAverage.size() < 50)
+        {
+            GL11.glColor4f(1F, 0F, 0F, 1F);
+        }
+        else
+        {
+            GL11.glColor4f(1F, 1F, 1F, 1F);
+        }
+        Ludo.instance.fontRenderer.render(110, 60, "TPS: " + String.valueOf(Math.round(tpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
+    
         GL11.glColor4f(1F, 1F, 1F, 1F);
-        Ludo.instance.fontRenderer.render(110, 0, "FPS: " + Math.round(fps));
     }
     
     private void calculateFPS()
     {
-        fps = TimeUnit.SECONDS.toNanos(1) / (double) (System.nanoTime() - nanos);
-        nanos = System.nanoTime();
+        fps = TimeUnit.SECONDS.toMillis(1) / (double) (System.currentTimeMillis() - millisFPS);
+        millisFPS = System.currentTimeMillis();
+        fpsAverage.add(fps);
+        
+        while(fpsAverage.size() > 50)
+        {
+            fpsAverage.removeFirst();
+        }
+    }
+    
+    private void calculateTPS()
+    {
+        tps = TimeUnit.SECONDS.toMillis(1) / (double) (System.currentTimeMillis() - millisTPS);
+        millisTPS = System.currentTimeMillis();
+        tpsAverage.add(tps);
+    
+        while(tpsAverage.size() > 50)
+        {
+            tpsAverage.removeFirst();
+        }
     }
     
     @Override
