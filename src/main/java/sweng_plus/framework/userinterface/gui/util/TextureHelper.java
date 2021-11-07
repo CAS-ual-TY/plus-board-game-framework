@@ -52,11 +52,11 @@ public class TextureHelper
         image.getRGB(0, 0, w, h, pixels, 0, w);
         ByteBuffer buffer = BufferUtils.createByteBuffer(w * h * 4); //4 für RGBA, also 4 Bytes pro Farbe (RGB wäre 3 Bytes)
         
-        for(int x = 0; x < w; x++)
+        for(int y = 0; y < h; y++)
         {
-            for(int y = 0; y < h; y++)
+            for(int x = 0; x < w; x++)
             {
-                int rgba = pixels[y * h + x];
+                int rgba = pixels[y * w + x];
                 buffer.put((byte) ((rgba >> 0x10) & 0xFF)); // Rot
                 buffer.put((byte) ((rgba >> 0x08) & 0xFF)); // Grün
                 buffer.put((byte) ((rgba >> 0x00) & 0xFF)); // Blau
