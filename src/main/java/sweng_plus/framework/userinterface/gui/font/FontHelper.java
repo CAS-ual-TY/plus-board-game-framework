@@ -12,11 +12,10 @@ public class FontHelper
      * Erstellt eine {@link Font} Instanz von der angegebenen Datei @file in der angegebenen Größe @size
      *
      * @param file Font Datei, muss auf ".ttf" enden und ein True Type Font sein
-     * @param size Gewünschte Größe des Fonts
      * @return {@link Font} entsprechend nach Parametern
      * @throws IllegalArgumentException Wenn etwas mit der angegebenen Font Datei oder deren Format nicht stimmt
      */
-    public static Font createFont(File file, float size) throws IllegalArgumentException
+    public static Font createFont(File file) throws IllegalArgumentException
     {
         if(!file.getName().endsWith(".ttf"))
         {
@@ -25,7 +24,7 @@ public class FontHelper
         
         try
         {
-            return Font.createFont(Font.TRUETYPE_FONT, file).deriveFont(size);
+            return Font.createFont(Font.TRUETYPE_FONT, file);
         }
         catch(IOException | NullPointerException | SecurityException e)
         {

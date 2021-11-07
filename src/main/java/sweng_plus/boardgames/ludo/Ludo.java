@@ -18,7 +18,11 @@ public class Ludo implements IGame
     
     private Screen screen;
     
-    public FontRenderer fontRenderer;
+    public FontRenderer fontRenderer64;
+    public FontRenderer fontRenderer48;
+    public FontRenderer fontRenderer32;
+    public FontRenderer fontRenderer24;
+    public FontRenderer fontRenderer16;
     
     public Ludo()
     {
@@ -34,10 +38,15 @@ public class Ludo implements IGame
     @Override
     public void postInit()
     {
-        Font fontChicagoFLF = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"), 64F);
-        FontInfo fontInfo = new FontInfo(fontChicagoFLF, StandardCharsets.UTF_8.name(), FontHelper.getAvailableChars((char) 0xFF));
-        fontRenderer = new FontRenderer(fontInfo);
+        String chars = FontHelper.getAvailableChars((char) 0xFF);
+        Font fontChicagoFLF = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"));
         
+        fontRenderer64 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(64F), StandardCharsets.UTF_8.name(), chars));
+        fontRenderer48 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(48F), StandardCharsets.UTF_8.name(), chars));
+        fontRenderer32 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(32F), StandardCharsets.UTF_8.name(), chars));
+        fontRenderer24 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(24F), StandardCharsets.UTF_8.name(), chars));
+        fontRenderer16 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(16F), StandardCharsets.UTF_8.name(), chars));
+    
         screen = new DebugScreen();
     }
     

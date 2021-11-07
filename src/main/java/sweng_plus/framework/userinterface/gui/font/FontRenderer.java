@@ -5,13 +5,13 @@ import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 
 public class FontRenderer
 {
-    private final FontInfo font;
+    private final FontInfo fontInfo;
     private Texture texture;
     
-    public FontRenderer(FontInfo font)
+    public FontRenderer(FontInfo fontInfo)
     {
-        this.font = font;
-        texture = TextureHelper.createTexture(font.getFont().getName() + "_" + font.getFont().getSize(), font.getImage());
+        this.fontInfo = fontInfo;
+        texture = TextureHelper.createTexture(fontInfo.getFont().getName() + "_" + fontInfo.getFont().getSize(), fontInfo.getImage());
     }
     
     public int getTextWidth(String text)
@@ -20,10 +20,20 @@ public class FontRenderer
         
         for(char c : text.toCharArray())
         {
-            width += font.getCharInfo(c).getCharW();
+            width += fontInfo.getCharInfo(c).getCharW();
         }
         
         return width;
+    }
+    
+    public int getHeight()
+    {
+        return fontInfo.getHeight();
+    }
+    
+    public FontInfo getFontInfo()
+    {
+        return fontInfo;
     }
     
     public void render(int x, int y, String text)
@@ -32,8 +42,8 @@ public class FontRenderer
         
         for(char c : text.toCharArray())
         {
-            FontInfo.CharInfo info = font.getCharInfo(c);
-            texture.render(x0, y, info.getCharW(), font.getHeight(), info.getCharX(), 0);
+            FontInfo.CharInfo info = fontInfo.getCharInfo(c);
+            texture.render(x0, y, info.getCharW(), fontInfo.getHeight(), info.getCharX(), 0);
             x0 += info.getCharW();
         }
     }

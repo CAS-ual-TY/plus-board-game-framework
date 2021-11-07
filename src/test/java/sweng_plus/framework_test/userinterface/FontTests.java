@@ -28,7 +28,7 @@ public class FontTests
         if(pngChicagoFLF.exists())
             pngChicagoFLF.delete();
         
-        Font fontChicagoFLF = FontHelper.createFont(fileChicagoFLF, 64F);
+        Font fontChicagoFLF = FontHelper.createFont(fileChicagoFLF).deriveFont(64);
         FontInfo fontInfoChicagoFLF = new FontInfo(fontChicagoFLF, StandardCharsets.UTF_8.name(), FontHelper.getAvailableChars((char) 0xFF));
         ImageIO.write(fontInfoChicagoFLF.getImage(), "png", pngChicagoFLF);
         
