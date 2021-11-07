@@ -1,5 +1,9 @@
 package sweng_plus.framework.userinterface.gui.util;
 
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryUtil;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -14,12 +18,32 @@ public class Texture
     private final int width;
     private final int height;
     
-    public Texture(int textureID, String texture, int width, int height)
+    public Texture(int textureID, String textureName, int width, int height)
     {
         this.textureID = textureID;
-        this.texture = texture;
+        this.texture = textureName;
         this.width = width;
         this.height = height;
+    }
+    
+    public int getTextureID()
+    {
+        return textureID;
+    }
+    
+    public String getTextureName()
+    {
+        return texture;
+    }
+    
+    public int getWidth()
+    {
+        return width;
+    }
+    
+    public int getHeight()
+    {
+        return height;
     }
     
     public void bind()
@@ -34,23 +58,22 @@ public class Texture
     
     public void render(int x, int y, int w, int h, int texX, int texY, int texW, int texH)
     {
-        glColor4f(1F, 1F, 1F, 1F);
         bind();
         
         glBegin(GL_QUADS);
-    
+        
         glTexCoord2f(texX / (float) width, texY / (float) height);
         glVertex3f(x, y, 0);
-    
+        
         glTexCoord2f(texX / (float) width, (texY + texH) / (float) height);
         glVertex3f(x, y + h, 0);
-    
+        
         glTexCoord2f((texX + texW) / (float) width, (texY + texH) / (float) height);
         glVertex3f(x + w, y + h, 0);
-    
+        
         glTexCoord2f((texX + texW) / (float) width, texY / (float) height);
         glVertex3f(x + w, y, 0);
-    
+        
         glEnd();
         
         unbind();
