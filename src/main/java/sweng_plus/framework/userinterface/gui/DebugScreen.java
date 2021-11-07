@@ -1,5 +1,6 @@
 package sweng_plus.framework.userinterface.gui;
 
+import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
@@ -26,25 +27,12 @@ public class DebugScreen extends Screen
         for(AnchorPoint anchor : AnchorPoint.values())
             this.widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
                     new Color4f(1F, 0F, 0F), new Color4f(1F, 1F, 1F)));
-    
-        try
-        {
-            this.widgets.add(new TextureWidget(this, new Dimensions(128, 128, AnchorPoint.TL, 100, 100),
-                    TextureHelper.createTexture("src/main/resources/textures/test_texture.png")));
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
     }
     
     @Override
     public void update(int mouseX, int mouseY)
     {
         calculateFPS();
-        
-        if(Engine.instance().getInputHandler().isKeyDown(GLFW_KEY_SPACE))
-            System.out.println(fps);
     }
     
     @Override
@@ -52,7 +40,8 @@ public class DebugScreen extends Screen
     {
         super.render(deltaTick, mouseX, mouseY);
     
-        Ludo.instance.fontRenderer.render(100, 200, "Ein Test");
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+        Ludo.instance.fontRenderer.render(110, 0, "FPS: " + Math.round(fps));
     }
     
     private void calculateFPS()
