@@ -16,22 +16,30 @@ public class FontTests
 {
     //TODO properly setup JUnit 5 with maven
     
-    @Test
     /**
      * Erstelle PNG Datei für den ChicagoFLF Font, um zu prüfen, ob das Einlesen und Character-Parsing korrekt geklappt hat.
      */
+    @Test
     public void createFontPNG() throws IOException
     {
-        File fileChicagoFLF = new File("src/main/resources/fonts/chicagoFLF.ttf");
-        File pngChicagoFLF = new File("src/test/resources/fonts/chicagoFLF.png");
-        
-        if(pngChicagoFLF.exists())
-            pngChicagoFLF.delete();
-        
-        Font fontChicagoFLF = FontHelper.createFont(fileChicagoFLF).deriveFont(64);
-        FontInfo fontInfoChicagoFLF = new FontInfo(fontChicagoFLF, StandardCharsets.UTF_8.name(), FontHelper.getAvailableChars((char) 0xFF));
-        ImageIO.write(fontInfoChicagoFLF.getImage(), "png", pngChicagoFLF);
-        
-        assertTrue(pngChicagoFLF::exists);
+        Font font = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"));
+        String chars = FontHelper.getAvailableChars((char) 0xFF);
+    
+        assertTrue(createFontFile(font, 64, chars).exists());
+        assertTrue(createFontFile(font, 48, chars).exists());
+        assertTrue(createFontFile(font, 32, chars).exists());
+        assertTrue(createFontFile(font, 24, chars).exists());
+        assertTrue(createFontFile(font, 16, chars).exists());
+    }
+    
+    private File createFontFile(Font font, int size, String chars) throws IOException
+    {
+        File file = new File("src/test/resources/fonts/chicagoFLF_" + size + ".png");
+        if(file.exists())
+        {
+            file.delete();
+        }
+        ImageIO.write(new FontInfo(font.deriveFont((float)size), StandardCharsets.UTF_8.name(), chars).getImage(), "png", file);
+        return file;
     }
 }
