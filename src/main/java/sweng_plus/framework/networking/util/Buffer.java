@@ -1,7 +1,14 @@
 package sweng_plus.framework.networking.util;
 
+import org.lwjgl.system.CallbackI;
+
+import java.math.BigInteger;
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class Buffer
 {
@@ -32,9 +39,9 @@ public class Buffer
         this(DEFAULT_SIZE);
     }
     
-    public void write(byte c)
+    public void write(byte b)
     {
-        buffer[numWrites % size] = c;
+        buffer[numWrites % size] = b;
         numWrites++;
     }
     
@@ -45,12 +52,25 @@ public class Buffer
         return read;
     }
     
-    public boolean canWrite() {
-        return numWrites >= numReads && (numWrites-numReads) < size;
+    public void write(int i) {
+        System.out.println(BigInteger.valueOf(i).toByteArray().length);
+        for(byte b : BigInteger.valueOf(i).toByteArray()) {
+            write(b);
+        }
     }
+    
+    public void write(char c, Charset charset) {
+        write(String.valueOf(c), charset);
+    }
+    
+    public void write(String s, Charset charset) {
+        for(byte b : s.getBytes(charset)) {
+            write(b);
+        }
+    }
+    
     public void startWriting()
     {
-        "".b
         startNumWrites = numWrites;
         if(numWrites < numReads || (numWrites-numReads) >= size) {
             throw new BufferOverflowException();

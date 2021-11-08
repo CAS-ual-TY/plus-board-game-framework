@@ -6,6 +6,7 @@ import sweng_plus.framework.networking.util.Buffer;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
+import java.nio.charset.StandardCharsets;
 
 public class BufferTest
 {
@@ -61,7 +62,48 @@ public class BufferTest
         buffer.write((byte) 'b');
         buffer.write((byte) 'c');
         Assertions.assertDoesNotThrow(buffer::endWriting);
-        Assertions.assertFalse(buffer.canWrite());
         Assertions.assertThrows(BufferOverflowException.class, buffer::startWriting);
+    }
+    
+    @Test
+    void testWriteInteger() {
+        Buffer buffer = new Buffer(1024);
+        Assertions.assertDoesNotThrow(buffer::startWriting);
+        Assertions.assertDoesNotThrow(() -> buffer.write(1));
+        Assertions.assertDoesNotThrow(() -> buffer.write(0xFF));
+        Assertions.assertDoesNotThrow(() -> buffer.write(0xFFFF));
+        Assertions.assertDoesNotThrow(() -> buffer.write(0xFFFFFF));
+        Assertions.assertDoesNotThrow(() -> buffer.write(0xFFFFFFFF));
+        Assertions.assertDoesNotThrow(buffer::endWriting);
+    }
+    
+    @Test
+    void testWriteCharacter() {
+        Buffer buffer = new Buffer(1024);
+        Assertions.assertDoesNotThrow(buffer::startWriting);
+        Assertions.assertDoesNotThrow(() -> buffer.write('a', StandardCharsets.UTF_8));
+        Assertions.assertDoesNotThrow(() -> buffer.write('b', StandardCharsets.UTF_8));
+        Assertions.assertDoesNotThrow(() -> buffer.write('c', StandardCharsets.UTF_8));
+        Assertions.assertDoesNotThrow(buffer::endWriting);
+    
+        Assertions.assertDoesNotThrow(buffer::startReading);
+        Assertions.assertEquals('a', buffer.read());
+        Assertions.assertEquals('b', buffer.read());
+        Assertions.assertEquals('c', buffer.read());
+        Assertions.assertDoesNotThrow(buffer::endReading);
+    }
+    
+    @Test
+    void testWriteString() {
+        Buffer buffer = new Buffer(1024);
+        Assertions.assertDoesNotThrow(buffer::startWriting);
+        Assertions.assertDoesNotThrow(() -> buffer.write("abc", StandardCharsets.UTF_8));
+        Assertions.assertDoesNotThrow(buffer::endWriting);
+        
+        Assertions.assertDoesNotThrow(buffer::startReading);
+        Assertions.assertEquals('a', buffer.read());
+        Assertions.assertEquals('b', buffer.read());
+        Assertions.assertEquals('c', buffer.read());
+        Assertions.assertDoesNotThrow(buffer::endReading);
     }
 }
