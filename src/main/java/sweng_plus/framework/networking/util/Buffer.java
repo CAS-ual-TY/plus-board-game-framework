@@ -12,13 +12,19 @@ public class Buffer
     private int numReads;
     private int numWrites;
     
+    private int startNumReads;
+    private int startNumWrites;
+    
     
     public Buffer(int size)
     {
         this.size = (size > 0) ? size : DEFAULT_SIZE;
         buffer = new byte[size];
         numReads = 0;
+        startNumReads = 0;
+        
         numWrites = 0;
+        startNumWrites = 0;
     }
     
     public Buffer()
@@ -28,16 +34,12 @@ public class Buffer
     
     public void write(byte c)
     {
-        validateWrite();
-        
         buffer[numWrites % size] = c;
         numWrites++;
     }
     
     public byte read()
     {
-        validateRead();
-        
         byte read = buffer[numReads % size];
         numReads++;
         return read;
@@ -46,21 +48,31 @@ public class Buffer
     public boolean canWrite() {
         return numWrites >= numReads && (numWrites-numReads) < size;
     }
-    
-    public boolean canRead() {
-        return numReads < numWrites;
-    }
-    
-    private void validateWrite()
+    public void startWriting()
     {
-        if(!canWrite()) {
+        "".b
+        startNumWrites = numWrites;
+        if(numWrites < numReads || (numWrites-numReads) >= size) {
+            throw new BufferOverflowException();
+        }
+    }
+    public void endWriting()
+    {
+        if(numWrites - startNumWrites > size || (numWrites-numReads) > size) {
             throw new BufferOverflowException();
         }
     }
     
-    private void validateRead()
+    public void startReading()
     {
-        if(!canRead()) {
+        startNumReads = numReads;
+        if(numReads >= numWrites) {
+            throw new BufferUnderflowException();
+        }
+    }
+    public void endReading()
+    {
+        if(numReads > numWrites) {
             throw new BufferUnderflowException();
         }
     }
