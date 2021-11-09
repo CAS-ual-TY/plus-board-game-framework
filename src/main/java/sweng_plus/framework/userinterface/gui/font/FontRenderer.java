@@ -47,4 +47,12 @@ public class FontRenderer
             x0 += info.getCharW();
         }
     }
+    
+    public void renderCentered(int x, int y, String text)
+    {
+        int w = getTextWidth(text);
+        int h = getHeight();
+        
+        render(x - w / 2, y - h / 2, text);
+    }
 }
