@@ -50,12 +50,8 @@ public class Texture
         glBindTexture(GL_TEXTURE_2D, 0);
     }
     
-    public void render(int x, int y, int w, int h, int texX, int texY, int texW, int texH)
+    private void doQuad(int x, int y, int w, int h, int texX, int texY, int texW, int texH)
     {
-        bind();
-        
-        glBegin(GL_QUADS);
-        
         glTexCoord2f(texX / (float) width, texY / (float) height);
         glVertex3f(x, y, 0);
         
@@ -67,9 +63,14 @@ public class Texture
         
         glTexCoord2f((texX + texW) / (float) width, texY / (float) height);
         glVertex3f(x + w, y, 0);
-        
+    }
+    
+    public void render(int x, int y, int w, int h, int texX, int texY, int texW, int texH)
+    {
+        bind();
+        glBegin(GL_QUADS);
+        doQuad(x, y, w, h, texX, texY, texW, texH);
         glEnd();
-        
         unbind();
     }
     
@@ -86,5 +87,24 @@ public class Texture
     public void render(int x, int y)
     {
         render(x, y, width, height, 0, 0, width, height);
+    }
+    
+    public void renderCornered(int x, int y, int w, int h)
+    {
+        int w1 = w / 2;
+        int w2 = w - w1;
+        int h1 = h / 2;
+        int h2 = h - h1;
+        
+        bind();
+        glBegin(GL_QUADS);
+        
+        doQuad(x, y, w1, h1, 0, 0, w1, h1);
+        doQuad(x + w1, y, w2, h1, getWidth() - w2, 0, w2, h1);
+        doQuad(x, y + h1, w1, h2, 0, getHeight() - h2, w1, h2);
+        doQuad(x + w1, y + h1, w2, h2, getWidth() - w2, getHeight() - h2, w2, h2);
+        
+        glEnd();
+        unbind();
     }
 }
