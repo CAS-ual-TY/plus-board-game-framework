@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 
-public class ButtonWidget extends Widget
+public abstract class ButtonWidget extends Widget
 {
     protected Texture active;
     protected Texture inactive;
@@ -39,9 +39,5 @@ public class ButtonWidget extends Widget
         }
     }
     
-    //abstract machen
-    protected void clicked(int mouseX, int mouseY, int mods)
-    {
-        System.out.println("Button clicked!");
-    }
+    protected abstract void clicked(int mouseX, int mouseY, int mods);
 }

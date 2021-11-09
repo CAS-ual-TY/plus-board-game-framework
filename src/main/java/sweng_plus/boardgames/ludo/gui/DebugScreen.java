@@ -6,9 +6,9 @@ import sweng_plus.framework.userinterface.gui.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
-import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.ColoredQuad;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -33,13 +33,14 @@ public class DebugScreen extends Screen
         for(AnchorPoint anchor : AnchorPoint.values())
             widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
                     new Color4f(0F, 0F, 0F), new Color4f(1F, 0F, 0F)));
-    
+        
         try
         {
-            widgets.add(new ButtonWidget(this, new Dimensions(150,50, AnchorPoint.TL, 40, 250),
+            widgets.add(new FunctionalButtonWidget(this, new Dimensions(150, 50, AnchorPoint.TL, 40, 250),
                     TextureHelper.createTexture("src/main/resources/textures/button_test_active.png"),
-                    TextureHelper.createTexture("src/main/resources/textures/button_test_inactive.png")
-                    ));
+                    TextureHelper.createTexture("src/main/resources/textures/button_test_inactive.png"),
+                    ((mouseX, mouseY, mods) -> System.out.println("Button clicked!"))
+            ));
         }
         catch(IOException e)
         {
@@ -69,7 +70,7 @@ public class DebugScreen extends Screen
             GL11.glColor4f(1F, 1F, 1F, 1F);
         }
         Ludo.instance().fontRenderer32.render(110, 0, "FPS: " + String.valueOf(Math.round(fpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
-    
+        
         if(tpsAverage.size() < 50)
         {
             GL11.glColor4f(1F, 0F, 0F, 1F);
@@ -79,7 +80,7 @@ public class DebugScreen extends Screen
             GL11.glColor4f(1F, 1F, 1F, 1F);
         }
         Ludo.instance().fontRenderer32.render(110, Ludo.instance().fontRenderer32.getHeight(), "TPS: " + String.valueOf(Math.round(tpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
-    
+        
         GL11.glColor4f(1F, 1F, 1F, 1F);
         final String abc = "abcdefghijklmnopqrstuvpxyz";
         final String ABC = abc.toUpperCase();
@@ -114,7 +115,7 @@ public class DebugScreen extends Screen
         tps = TimeUnit.SECONDS.toMillis(1) / (double) (System.currentTimeMillis() - millisTPS);
         millisTPS = System.currentTimeMillis();
         tpsAverage.add(tps);
-    
+        
         while(tpsAverage.size() > 50)
         {
             tpsAverage.removeFirst();
