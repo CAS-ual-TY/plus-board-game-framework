@@ -1,7 +1,9 @@
-package sweng_plus.framework.userinterface.gui;
+package sweng_plus.boardgames.ludo.gui;
 
 import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.Ludo;
+import sweng_plus.framework.userinterface.gui.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.ColoredQuad;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
