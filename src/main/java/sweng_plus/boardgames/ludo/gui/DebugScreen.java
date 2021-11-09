@@ -5,9 +5,12 @@ import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
+import sweng_plus.framework.userinterface.gui.util.TextureHelper;
+import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.ColoredQuad;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +33,18 @@ public class DebugScreen extends Screen
         for(AnchorPoint anchor : AnchorPoint.values())
             widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
                     new Color4f(0F, 0F, 0F), new Color4f(1F, 0F, 0F)));
+    
+        try
+        {
+            widgets.add(new ButtonWidget(this, new Dimensions(150,50, AnchorPoint.TL, 40, 250),
+                    TextureHelper.createTexture("src/main/resources/textures/button_test_active.png"),
+                    TextureHelper.createTexture("src/main/resources/textures/button_test_inactive.png")
+                    ));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     @Override
