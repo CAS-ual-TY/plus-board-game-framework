@@ -1,5 +1,6 @@
 package sweng_plus.boardgames.ludo.gui;
 
+import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
@@ -158,6 +159,11 @@ public class DebugScreen extends Screen
         System.out.println("keyPressed " + key + " " + Integer.toBinaryString(mods));
         
         super.keyPressed(key, mods);
+    
+        if(key == GLFW.GLFW_KEY_SPACE)
+        {
+            screenHolder.setScreen(new OptionsScreen(this));
+        }
     }
     
     @Override

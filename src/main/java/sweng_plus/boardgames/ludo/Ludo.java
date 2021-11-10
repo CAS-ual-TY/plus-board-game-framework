@@ -1,5 +1,6 @@
 package sweng_plus.boardgames.ludo;
 
+import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.gui.DebugScreen;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
@@ -53,6 +54,8 @@ public class Ludo implements IGame
         fontRenderer16 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(16F), StandardCharsets.UTF_8.name(), chars));
         
         screen = new DebugScreen(this);
+        
+        Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_SPACE);
     }
     
     @Override
