@@ -29,14 +29,12 @@ public class ColoredQuad extends Widget
         int y1 = dimensions.y;
         int y2 = dimensions.y + dimensions.h;
         
+        color.glColor4f();
+        
         glBegin(GL_QUADS);
-        color.glColor3f();
         glVertex3f(x1, y1, 0); // Oben Links
-        color.glColor3f();
         glVertex3f(x1, y2, 0); // Unten Links
-        color.glColor3f();
         glVertex3f(x2, y2, 0); // Unten Rechts
-        color.glColor3f();
         glVertex3f(x2, y1, 0); // Oben Rechts
         glEnd();
     }

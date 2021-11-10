@@ -4,31 +4,40 @@ import org.lwjgl.opengl.GL11;
 
 public class Color4f
 {
-    public final float rf;
-    public final float gf;
-    public final float bf;
-    public final float af;
+    public static final Color4f NEUTRAL = new Color4f(1F, 1F, 1F, 1F);
+    
+    public static final Color4f WHITE = NEUTRAL;
+    public static final Color4f BLACK = new Color4f(0F, 0F, 0F, 1F);
+    
+    public static final Color4f RED = new Color4f(1F, 0F, 0F, 1F);
+    public static final Color4f GREEN = new Color4f(0F, 1F, 0F, 1F);
+    public static final Color4f BLUE = new Color4f(0F, 0F, 1F, 1F);
+    
+    public final float r;
+    public final float g;
+    public final float b;
+    public final float a;
     
     public Color4f(int r, int g, int b, int a)
     {
-        rf = r / 255f;
-        gf = g / 255f;
-        bf = b / 255f;
-        af = a / 255f;
+        this.r = r / 255f;
+        this.g = g / 255f;
+        this.b = b / 255f;
+        this.a = a / 255f;
     }
     
     public Color4f(int r, int g, int b)
     {
         // Byte.MAX_VALUE - Byte.MIN_VALUE = 127 - (-128) = 255 = Unsigned Byte MAX_VALUE
-        this(r, g, b, Byte.MAX_VALUE - Byte.MIN_VALUE);
+        this(r, g, b, (int) Byte.MAX_VALUE - (int) Byte.MIN_VALUE);
     }
     
     public Color4f(float r, float g, float b, float a)
     {
-        rf = r;
-        gf = g;
-        bf = b;
-        af = a;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
     }
     
     public Color4f(float r, float g, float b)
@@ -36,13 +45,8 @@ public class Color4f
         this(r, g, b, 1.0F);
     }
     
-    public void glColor3f()
-    {
-        GL11.glColor3f(rf, gf, bf);
-    }
-    
     public void glColor4f()
     {
-        GL11.glColor4f(rf, gf, bf, af);
+        GL11.glColor4f(r, g, b, a);
     }
 }

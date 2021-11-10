@@ -1,9 +1,8 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.Texture;
-
-import static org.lwjgl.opengl.GL11.glColor4f;
 
 public class TextureWidget extends Widget
 {
@@ -20,7 +19,7 @@ public class TextureWidget extends Widget
     {
         super.render(deltaTick, mouseX, mouseY);
         
-        glColor4f(1F, 1F, 1F, 1F);
+        Color4f.NEUTRAL.glColor4f();
         texture.render(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
     }
 }

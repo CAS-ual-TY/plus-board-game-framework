@@ -1,6 +1,5 @@
 package sweng_plus.boardgames.ludo.gui;
 
-import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -32,7 +31,7 @@ public class DebugScreen extends Screen
         
         for(AnchorPoint anchor : AnchorPoint.values())
             widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
-                    new Color4f(0F, 0F, 0F), new Color4f(1F, 0F, 0F)));
+                    Color4f.BLACK, Color4f.RED));
         
         try
         {
@@ -63,25 +62,25 @@ public class DebugScreen extends Screen
         
         if(fpsAverage.size() < 50)
         {
-            GL11.glColor4f(1F, 0F, 0F, 1F);
+            Color4f.RED.glColor4f();
         }
         else
         {
-            GL11.glColor4f(1F, 1F, 1F, 1F);
+            Color4f.NEUTRAL.glColor4f();
         }
         Ludo.instance().fontRenderer32.render(110, 0, "FPS: " + String.valueOf(Math.round(fpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
         
         if(tpsAverage.size() < 50)
         {
-            GL11.glColor4f(1F, 0F, 0F, 1F);
+            Color4f.RED.glColor4f();
         }
         else
         {
-            GL11.glColor4f(1F, 1F, 1F, 1F);
+            Color4f.NEUTRAL.glColor4f();
         }
         Ludo.instance().fontRenderer32.render(110, Ludo.instance().fontRenderer32.getHeight(), "TPS: " + String.valueOf(Math.round(tpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
         
-        GL11.glColor4f(1F, 1F, 1F, 1F);
+        Color4f.NEUTRAL.glColor4f();
         final String abc = "abcdefghijklmnopqrstuvpxyz";
         final String ABC = abc.toUpperCase();
         int x = 110;

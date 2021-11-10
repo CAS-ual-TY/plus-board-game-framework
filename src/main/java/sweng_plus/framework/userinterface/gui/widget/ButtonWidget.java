@@ -1,8 +1,8 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 
 public abstract class ButtonWidget extends Widget
@@ -22,7 +22,7 @@ public abstract class ButtonWidget extends Widget
     {
         super.render(deltaTick, mouseX, mouseY);
         
-        GL11.glColor4f(1F, 1F, 1F, 1F);
+        Color4f.NEUTRAL.glColor4f();
         
         Texture texture = isMouseOver ? active : inactive;
         texture.renderCornered(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
