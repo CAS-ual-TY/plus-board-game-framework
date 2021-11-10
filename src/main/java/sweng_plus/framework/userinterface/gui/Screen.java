@@ -9,15 +9,16 @@ import java.util.List;
 
 public class Screen implements INestedInputListener
 {
-    public static final Screen EMPTY_SCREEN = new Screen();
+    public final IScreenHolder screenHolder;
     
     public int screenW;
     public int screenH;
     
     public List<IWidget> widgets;
     
-    public Screen()
+    public Screen(IScreenHolder screenHolder)
     {
+        this.screenHolder = screenHolder;
         widgets = new LinkedList<>();
     }
     

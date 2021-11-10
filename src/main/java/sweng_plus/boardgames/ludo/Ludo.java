@@ -1,8 +1,8 @@
 package sweng_plus.boardgames.ludo;
 
+import sweng_plus.boardgames.ludo.gui.DebugScreen;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
-import sweng_plus.boardgames.ludo.gui.DebugScreen;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
 import sweng_plus.framework.userinterface.gui.font.FontInfo;
@@ -51,8 +51,8 @@ public class Ludo implements IGame
         fontRenderer32 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(32F), StandardCharsets.UTF_8.name(), chars));
         fontRenderer24 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(24F), StandardCharsets.UTF_8.name(), chars));
         fontRenderer16 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(16F), StandardCharsets.UTF_8.name(), chars));
-    
-        screen = new DebugScreen();
+        
+        screen = new DebugScreen(this);
     }
     
     @Override

@@ -2,6 +2,7 @@ package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
@@ -25,9 +26,9 @@ public class DebugScreen extends Screen
     private long millisTPS = System.currentTimeMillis();
     private LinkedList<Double> tpsAverage = new LinkedList<>();
     
-    public DebugScreen()
+    public DebugScreen(IScreenHolder screenHolder)
     {
-        super();
+        super(screenHolder);
         
         for(AnchorPoint anchor : AnchorPoint.values())
             widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
