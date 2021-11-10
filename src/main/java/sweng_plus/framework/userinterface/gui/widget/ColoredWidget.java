@@ -5,12 +5,12 @@ import sweng_plus.framework.userinterface.gui.util.Color4f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class ColoredQuad extends Widget
+public class ColoredWidget extends Widget
 {
     public Color4f baseColor;
     public Color4f hoverColor;
     
-    public ColoredQuad(Screen screen, Dimensions dimensions, Color4f baseColor, Color4f hoverColor)
+    public ColoredWidget(Screen screen, Dimensions dimensions, Color4f baseColor, Color4f hoverColor)
     {
         super(screen, dimensions);
         this.baseColor = baseColor;

@@ -7,7 +7,7 @@ import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
-import sweng_plus.framework.userinterface.gui.widget.ColoredQuad;
+import sweng_plus.framework.userinterface.gui.widget.ColoredWidget;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 
@@ -32,7 +32,7 @@ public class DebugScreen extends Screen
         super(screenHolder);
         
         for(AnchorPoint anchor : AnchorPoint.values())
-            widgets.add(new ColoredQuad(this, new Dimensions(100, 100, anchor),
+            widgets.add(new ColoredWidget(this, new Dimensions(100, 100, anchor),
                     Color4f.BLACK, Color4f.RED));
         
         try
