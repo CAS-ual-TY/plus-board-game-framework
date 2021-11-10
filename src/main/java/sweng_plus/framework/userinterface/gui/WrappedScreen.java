@@ -8,9 +8,9 @@ public class WrappedScreen extends Screen
 {
     public Screen subScreen;
     
-    public WrappedScreen(IScreenHolder screenHolder, Screen subScreen)
+    public WrappedScreen(Screen subScreen)
     {
-        super(screenHolder);
+        super(subScreen.screenHolder);
         this.subScreen = subScreen;
     }
     
