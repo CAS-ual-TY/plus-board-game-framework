@@ -2,7 +2,9 @@ package sweng_plus.framework.userinterface.gui.widget;
 
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
 
-public class Dimensions
+import java.util.Objects;
+
+public class Dimensions implements Cloneable
 {
     public int x;
     public int y;
@@ -58,5 +60,36 @@ public class Dimensions
     {
         return mouseX >= x && mouseX < x + w
                 && mouseY >= y && mouseY < y + h;
+    }
+    
+    public Dimensions clone()
+    {
+        return new Dimensions(w, h, headAnchor, innerAnchor, offX, offY);
+    }
+    
+    @Override
+    public boolean equals(Object o)
+    {
+        if(this == o)
+        {
+            return true;
+        }
+        
+        if(o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        
+        Dimensions that = (Dimensions) o;
+        return x == that.x && y == that.y &&
+                w == that.w && h == that.h &&
+                offX == that.offX && offY == that.offY &&
+                headAnchor == that.headAnchor && innerAnchor == that.innerAnchor;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(x, y, w, h, offX, offY, headAnchor, innerAnchor);
     }
 }
