@@ -3,6 +3,8 @@ package sweng_plus.framework.userinterface.gui.font;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 
+import java.util.List;
+
 public class FontRenderer
 {
     private final FontInfo fontInfo;
@@ -45,6 +47,17 @@ public class FontRenderer
             FontInfo.CharInfo info = fontInfo.getCharInfo(c);
             texture.render(x0, y, info.getCharW(), fontInfo.getHeight(), info.getCharX(), 0);
             x0 += info.getCharW();
+        }
+    }
+    
+    public void render(int x, int y, List<String> text)
+    {
+        int y0 = y;
+        
+        for(String line : text)
+        {
+            render(x, y0, line);
+            y0 += getHeight();
         }
     }
     
