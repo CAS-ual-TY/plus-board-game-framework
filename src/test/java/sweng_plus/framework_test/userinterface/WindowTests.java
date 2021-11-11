@@ -16,16 +16,20 @@ public class WindowTests
                 .add(3840, 2160)
                 .build();
         
-        for(WindowScale.SingleScale scale : s.smallerScales)
+        for(WindowScale.SingleScale scale : s.baseScales)
         {
             System.out.println(scale.w + " " + scale.h + " " + scale.scaleFactor);
         }
+        
+        System.out.println("---");
+        
+        for(WindowScale.SingleScale scale : s.thresholds)
+        {
+            System.out.println(scale.w + " " + scale.h + " " + scale.scaleFactor);
+        }
+        
+        System.out.println("---");
         
         System.out.println(s.defaultScale.w + " " + s.defaultScale.h + " " + s.defaultScale.scaleFactor);
-        
-        for(WindowScale.SingleScale scale : s.biggerScales)
-        {
-            System.out.println(scale.w + " " + scale.h + " " + scale.scaleFactor);
-        }
     }
 }

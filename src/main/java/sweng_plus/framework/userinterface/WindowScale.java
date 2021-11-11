@@ -8,15 +8,20 @@ public class WindowScale
     private final SingleScale aspectRatio;
     
     public final SingleScale defaultScale;
-    public final ArrayList<SingleScale> smallerScales;
-    public final ArrayList<SingleScale> biggerScales;
+    public final int defaultScaleIndex;
     
-    public WindowScale(SingleScale aspectRatio, SingleScale defaultScale, ArrayList<SingleScale> smallerScales, ArrayList<SingleScale> biggerScales)
+    public final ArrayList<SingleScale> baseScales;
+    public final ArrayList<SingleScale> thresholds;
+    
+    public WindowScale(SingleScale aspectRatio, SingleScale defaultScale, ArrayList<SingleScale> baseScales, ArrayList<SingleScale> thresholds)
     {
         this.aspectRatio = aspectRatio;
+        
         this.defaultScale = defaultScale;
-        this.smallerScales = smallerScales;
-        this.biggerScales = biggerScales;
+        defaultScaleIndex = baseScales.indexOf(defaultScale);
+        
+        this.baseScales = baseScales;
+        this.thresholds = thresholds;
     }
     
     public SingleScale getAspectRatio()
@@ -39,15 +44,15 @@ public class WindowScale
     {
         private final SingleScale defaultScale;
         private final SingleScale aspectRatio;
-        private final LinkedList<SingleScale> smallerScales;
-        private final LinkedList<SingleScale> biggerScales;
+        
+        private final LinkedList<SingleScale> baseScales;
         
         public Builder(SingleScale defaultScale, SingleScale aspectRatio)
         {
             this.defaultScale = defaultScale;
             this.aspectRatio = aspectRatio;
-            smallerScales = new LinkedList<>();
-            biggerScales = new LinkedList<>();
+            baseScales = new LinkedList<>();
+            baseScales.add(defaultScale);
         }
         
         public Builder add(int w, int h)
@@ -59,73 +64,37 @@ public class WindowScale
                 throw new IllegalArgumentException("Wrong aspect ratio");
             }
             
-            LinkedList<SingleScale> list;
-            
-            if(w < defaultScale.w)
-            {
-                list = smallerScales;
-            }
-            else if(w > defaultScale.w)
-            {
-                list = biggerScales;
-            }
-            else
+            if(defaultScale.w == scale.w)
             {
                 throw new IllegalArgumentException("Default scale");
             }
             
-            if(list.stream().anyMatch(s -> s.w == defaultScale.w))
+            if(baseScales.stream().anyMatch(s -> s.w == scale.w))
             {
                 throw new IllegalArgumentException("Duplicate");
             }
             
-            addToListSorted(list, scale);
+            baseScales.add(scale);
             
             return this;
         }
         
-        private void addToListSorted(LinkedList<SingleScale> list, SingleScale scale)
+        private ArrayList<SingleScale> buildThresholdList(ArrayList<SingleScale> list)
         {
-            if(list.isEmpty() || scale.w < list.get(0).w)
-            {
-                list.add(scale);
-            }
-            else
-            {
-                int i = 1;
-                for(SingleScale s : list)
-                {
-                    if(scale.w > s.w)
-                    {
-                        break;
-                    }
-                    
-                    ++i;
-                }
-                
-                list.add(i, scale);
-            }
-        }
-        
-        private ArrayList<SingleScale> buildList(LinkedList<SingleScale> list, boolean smaller)
-        {
-            int size = list.size();
+            boolean smaller = true;
             
-            if(smaller)
-            {
-                smallerScales.addLast(defaultScale);
-            }
-            else
-            {
-                biggerScales.addFirst(defaultScale);
-            }
+            ArrayList<SingleScale> thresholds = new ArrayList<>(list.size());
             
-            ArrayList<SingleScale> thresholds = new ArrayList<>(size);
-            
-            for(int i = 0; i < size; ++i)
+            for(int i = 0; i < list.size() - 1; ++i)
             {
                 SingleScale s1 = list.get(i);
                 SingleScale s2 = list.get(i + 1);
+                
+                if(s1 == defaultScale)
+                {
+                    smaller = false;
+                }
+                
                 thresholds.add(new SingleScale((s1.w + s2.w) / 2, (s1.h + s2.h) / 2, smaller ? s1.scaleFactor : s2.scaleFactor));
             }
             
@@ -134,7 +103,11 @@ public class WindowScale
         
         public WindowScale build()
         {
-            return new WindowScale(aspectRatio, defaultScale, buildList(smallerScales, true), buildList(biggerScales, false));
+            ArrayList<SingleScale> baseScales = new ArrayList<>(this.baseScales.size());
+            baseScales.addAll(this.baseScales);
+            baseScales.sort((s1, s2) -> Integer.compare(s1.w, s2.w));
+            
+            return new WindowScale(aspectRatio, defaultScale, baseScales, buildThresholdList(baseScales));
         }
     }
     
