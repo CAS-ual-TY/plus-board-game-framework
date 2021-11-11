@@ -20,12 +20,15 @@ public class Window
     private long windowHandle;
     private final InputHandler inputHandler;
     
+    private int windowW;
+    private int windowH;
+    
     private int screenW;
     private int screenH;
     
     private boolean wasResized;
     
-    public Window(String title, IScreenHolder screenHolder, int screenW, int screenH)
+    public Window(String title, IScreenHolder screenHolder, int windowW, int windowH)
     {
         this.title = title;
         this.screenHolder = screenHolder;
@@ -33,8 +36,11 @@ public class Window
         windowHandle = -1;
         inputHandler = createInputHandler();
         
-        this.screenW = screenW;
-        this.screenH = screenH;
+        this.windowW = windowW;
+        this.windowH = windowH;
+        
+        screenW = windowW;
+        screenH = windowH;
         
         wasResized = false;
         
@@ -43,7 +49,7 @@ public class Window
     
     public Window(String title, IScreenHolder screenHolder)
     {
-        this(title, screenHolder, 300, 300);
+        this(title, screenHolder, 640, 360);
     }
     
     public Window hint(int hint, int value)
@@ -82,6 +88,14 @@ public class Window
         // Fenster erstellen
         windowHandle = glfwCreateWindow(screenW, screenH, title, MemoryUtil.NULL, MemoryUtil.NULL);
         
+        // Auflösung des Hauptmonitors
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        
+        int monitorW = vidmode.width();
+        int monitorH = vidmode.height();
+        
+        glfwSetWindowSizeLimits(windowHandle, 640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
+        
         if(windowHandle == MemoryUtil.NULL)
             throw new RuntimeException("Failed to create the GLFW window");
         
@@ -96,14 +110,11 @@ public class Window
             // Wir bekommen die Fenstergröße in den Buffern (ist die selbe wie oben, bei glfwCreateWindow)
             glfwGetWindowSize(windowHandle, pWidth, pHeight);
             
-            // Auflösung des Hauptmonitors
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-            
             // Fenster Zentieren
             glfwSetWindowPos(
                     windowHandle,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
+                    (monitorW - pWidth.get(0)) / 2,
+                    (monitorH - pHeight.get(0)) / 2
             );
         } // Oben war Push, Pop passier automatisch dank try und close()
         
