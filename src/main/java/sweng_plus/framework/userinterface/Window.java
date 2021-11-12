@@ -20,15 +20,18 @@ public class Window
     private long windowHandle;
     private final InputHandler inputHandler;
     
+    private final WindowScale windowScale;
+    
     private int windowW;
     private int windowH;
     
+    private float scaleFactor;
     private int screenW;
     private int screenH;
     
     private boolean wasResized;
     
-    public Window(String title, IScreenHolder screenHolder, int windowW, int windowH)
+    public Window(String title, IScreenHolder screenHolder, int windowW, int windowH, WindowScale windowScale)
     {
         this.title = title;
         this.screenHolder = screenHolder;
@@ -36,11 +39,9 @@ public class Window
         windowHandle = -1;
         inputHandler = createInputHandler();
         
-        this.windowW = windowW;
-        this.windowH = windowH;
+        this.windowScale = windowScale;
         
-        screenW = windowW;
-        screenH = windowH;
+        this.windowResized(windowW, windowH);
         
         wasResized = false;
         
@@ -49,7 +50,7 @@ public class Window
     
     public Window(String title, IScreenHolder screenHolder)
     {
-        this(title, screenHolder, 640, 360);
+        this(title, screenHolder, 640, 360, WindowScale.DEFAULT_WINDOW_SCALE_16_9);
     }
     
     public Window hint(int hint, int value)
@@ -68,6 +69,21 @@ public class Window
         return inputHandler;
     }
     
+    public int getWindowW()
+    {
+        return windowW;
+    }
+    
+    public int getWindowH()
+    {
+        return windowH;
+    }
+    
+    public float getScaleFactor()
+    {
+        return scaleFactor;
+    }
+    
     public int getScreenW()
     {
         return screenW;
@@ -76,6 +92,16 @@ public class Window
     public int getScreenH()
     {
         return screenH;
+    }
+    
+    public int getScaledWindowW()
+    {
+        return (int) (windowW * scaleFactor);
+    }
+    
+    public int getScaledWindowH()
+    {
+        return (int) (windowH * scaleFactor);
     }
     
     public boolean getWasResized()
@@ -110,7 +136,7 @@ public class Window
             // Wir bekommen die Fenstergröße in den Buffern (ist die selbe wie oben, bei glfwCreateWindow)
             glfwGetWindowSize(windowHandle, pWidth, pHeight);
             
-            // Fenster Zentieren
+            // Fenster Zentrieren
             glfwSetWindowPos(
                     windowHandle,
                     (monitorW - pWidth.get(0)) / 2,
@@ -132,12 +158,23 @@ public class Window
         GL.createCapabilities();
         
         //glfwSetFramebufferSizeCallback() // Für Fenster skalierungen
-        glfwSetFramebufferSizeCallback(windowHandle, (window, screenW, screenH) ->
+        glfwSetFramebufferSizeCallback(windowHandle, (window, windowW, windowH) ->
         {
-            this.screenW = screenW;
-            this.screenH = screenH;
-            wasResized = true;
+            this.windowResized(windowW, windowH);
         });
+    }
+    
+    private void windowResized(int windowW, int windowH)
+    {
+        this.windowW = windowW;
+        this.windowH = windowH;
+    
+        WindowScale.SingleScale scale = windowScale.getScaleForWindowSize(windowW, windowH);
+        scaleFactor = scale.scaleFactor;
+    
+        screenW = scale.w;
+        screenH = scale.h;
+        wasResized = true;
     }
     
     public void preUpdate()

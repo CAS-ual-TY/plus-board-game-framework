@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
-import static org.lwjgl.opengl.GL11.*;
-
 public class DebugScreen extends Screen
 {
     private double fps;
@@ -129,12 +127,6 @@ public class DebugScreen extends Screen
         System.out.println("init " + screenW + " " + screenH);
         
         super.init(screenW, screenH);
-        
-        glViewport(0, 0, screenW, screenH);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, screenW, screenH, 0, 1, -1);
-        glClearColor(0, 0.7f, 1, 0);
     }
     
     @Override
@@ -159,7 +151,7 @@ public class DebugScreen extends Screen
         System.out.println("keyPressed " + key + " " + Integer.toBinaryString(mods));
         
         super.keyPressed(key, mods);
-    
+        
         if(key == GLFW.GLFW_KEY_SPACE)
         {
             screenHolder.setScreen(new OptionsScreen(this));

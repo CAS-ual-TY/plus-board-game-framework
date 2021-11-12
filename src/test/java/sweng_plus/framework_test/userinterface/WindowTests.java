@@ -31,5 +31,35 @@ public class WindowTests
         System.out.println("---");
         
         System.out.println(s.defaultScale.w + " " + s.defaultScale.h + " " + s.defaultScale.scaleFactor);
+        
+        System.out.println("---");
+        System.out.println("---");
+        
+        for(WindowScale.SingleScale baseScale : s.baseScales)
+        {
+            WindowScale.SingleScale scale = s.getScaleForWindowSize(baseScale.w, baseScale.h);
+            System.out.println(scale.w + " " + scale.h + " " + scale.scaleFactor);
+        }
+        
+        System.out.println("---");
+        
+        WindowScale.SingleScale scale = s.getScaleForWindowSize(s.getAspectRatio().w, s.getAspectRatio().h);
+        System.out.println(scale.w + " " + scale.h + " " + scale.scaleFactor);
+        
+        for(WindowScale.SingleScale baseScale : s.thresholds)
+        {
+            scale = s.getScaleForWindowSize(baseScale.w, baseScale.h);
+            System.out.println(scale.w + " " + scale.h + " " + scale.scaleFactor);
+        }
+        
+        System.out.println("---");
+        
+        scale = s.getScaleForWindowSize(640, 2160);
+        System.out.println(scale.w + " " + scale.h + " " + scale.scaleFactor);
+        
+        System.out.println("---");
+        
+        scale = s.getScaleForWindowSize(3840, 360);
+        System.out.println(scale.w + " " + scale.h + " " + scale.scaleFactor);
     }
 }

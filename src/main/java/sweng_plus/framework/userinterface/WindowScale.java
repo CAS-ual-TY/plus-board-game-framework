@@ -5,6 +5,14 @@ import java.util.LinkedList;
 
 public class WindowScale
 {
+    public static final WindowScale DEFAULT_WINDOW_SCALE_16_9 = newWindowScale(1920, 1080, 16, 9)
+            .add(640, 360)
+            .add(1280, 720)
+            .add(2560, 1440)
+            .add(3200, 1800)
+            .add(3840, 2160)
+            .build();
+    
     private final SingleScale aspectRatio;
     
     public final SingleScale defaultScale;
@@ -27,6 +35,35 @@ public class WindowScale
     public SingleScale getAspectRatio()
     {
         return aspectRatio;
+    }
+    
+    public SingleScale getScaleForWindowSize(int windowW, int windowH)
+    {
+        int index = 0;
+        
+        SingleScale scale;
+        
+        for(int i = 0; i < defaultScaleIndex; ++i)
+        {
+            scale = thresholds.get(i);
+            
+            if(windowW < scale.w || windowH < scale.h)
+            {
+                return baseScales.get(i);
+            }
+        }
+        
+        for(int i = defaultScaleIndex; i < thresholds.size(); ++i)
+        {
+            scale = thresholds.get(i);
+            
+            if(windowW < scale.w || windowH < scale.h)
+            {
+                return baseScales.get(i);
+            }
+        }
+        
+        return baseScales.get(thresholds.size());
     }
     
     public static boolean checkAspectRatio(SingleScale scale, SingleScale aspectRatio)
