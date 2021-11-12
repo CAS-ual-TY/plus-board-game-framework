@@ -10,6 +10,7 @@ import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 import sweng_plus.framework.userinterface.gui.widget.ColoredWidget;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
+import sweng_plus.framework.userinterface.gui.widget.TextureWidget;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -28,7 +29,24 @@ public class DebugScreen extends Screen
     public DebugScreen(IScreenHolder screenHolder)
     {
         super(screenHolder);
-        
+    
+        try
+        {
+            widgets.add(new TextureWidget(this, new Dimensions(2048, 2048, AnchorPoint.M), TextureHelper.createTexture("src/main/resources/textures/test_raster.png"))
+            {
+                @Override
+                public void render(float deltaTick, int mouseX, int mouseY)
+                {
+                    Color4f.HALF_VISIBLE.glColor4f();
+                    texture.render(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
+                }
+            });
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    
         for(AnchorPoint anchor : AnchorPoint.values())
             widgets.add(new ColoredWidget(this, new Dimensions(100, 100, anchor),
                     Color4f.BLACK, Color4f.RED));

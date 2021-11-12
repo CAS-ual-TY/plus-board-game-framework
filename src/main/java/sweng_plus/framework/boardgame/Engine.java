@@ -96,10 +96,10 @@ public class Engine implements Runnable
                 glViewport(0, 0, window.getWindowW(), window.getWindowH());
                 glMatrixMode(GL_PROJECTION);
                 glLoadIdentity();
-                glOrtho(0, window.getScaledWindowW(), window.getScaledWindowH(), 0, 1, -1);
+                glOrtho(0, window.getScreenW(), window.getScreenH(), 0, 1, -1);
                 glClearColor(0, 0.7f, 1, 0);
                 
-                screen.init(window.getScaledWindowW(), window.getScaledWindowH());
+                screen.init(window.getScreenW(), window.getScreenH());
             }
             
             inputHandler.inputListener(screen);

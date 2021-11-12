@@ -41,7 +41,7 @@ public class Window
         
         this.windowScale = windowScale;
         
-        this.windowResized(windowW, windowH);
+        windowResized(windowW, windowH);
         
         wasResized = false;
         
@@ -94,16 +94,6 @@ public class Window
         return screenH;
     }
     
-    public int getScaledWindowW()
-    {
-        return (int) (windowW * scaleFactor);
-    }
-    
-    public int getScaledWindowH()
-    {
-        return (int) (windowH * scaleFactor);
-    }
-    
     public boolean getWasResized()
     {
         return wasResized;
@@ -112,7 +102,7 @@ public class Window
     public void init()
     {
         // Fenster erstellen
-        windowHandle = glfwCreateWindow(screenW, screenH, title, MemoryUtil.NULL, MemoryUtil.NULL);
+        windowHandle = glfwCreateWindow(windowW, windowH, title, MemoryUtil.NULL, MemoryUtil.NULL);
         
         // Auflösung des Hauptmonitors
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -157,10 +147,10 @@ public class Window
         // OpenGL auf gerade gesetzten Kontext ausrichten
         GL.createCapabilities();
         
-        //glfwSetFramebufferSizeCallback() // Für Fenster skalierungen
+        //glfwSetFramebufferSizeCallback() // Für Fenster Skalierungen
         glfwSetFramebufferSizeCallback(windowHandle, (window, windowW, windowH) ->
         {
-            this.windowResized(windowW, windowH);
+            windowResized(windowW, windowH);
         });
     }
     
@@ -168,12 +158,12 @@ public class Window
     {
         this.windowW = windowW;
         this.windowH = windowH;
-    
+        
         WindowScale.SingleScale scale = windowScale.getScaleForWindowSize(windowW, windowH);
         scaleFactor = scale.scaleFactor;
-    
-        screenW = scale.w;
-        screenH = scale.h;
+        
+        screenW = (int) (windowW * scaleFactor);
+        screenH = (int) (windowH * scaleFactor);
         wasResized = true;
     }
     

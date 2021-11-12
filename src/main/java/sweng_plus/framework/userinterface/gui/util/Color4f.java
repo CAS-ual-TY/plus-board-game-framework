@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 public class Color4f
 {
     public static final Color4f NEUTRAL = new Color4f(1F, 1F, 1F, 1F);
+    public static final Color4f HALF_VISIBLE = new Color4f(1F, 1F, 1F, 0.5F);
     public static final Color4f BACKGROUND = new Color4f(0F, 0F, 0F, 0.5F);
     
     public static final Color4f WHITE = NEUTRAL;

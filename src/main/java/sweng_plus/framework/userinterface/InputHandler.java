@@ -196,12 +196,12 @@ public class InputHandler
     
     public int getMouseX()
     {
-        return (int) mouseX;
+        return (int) (mouseX * window.getScaleFactor());
     }
     
     public int getMouseY()
     {
-        return (int) mouseY;
+        return (int) (mouseY * window.getScaleFactor());
     }
     
     public boolean isMouseButtonDown(int mouseButton)
