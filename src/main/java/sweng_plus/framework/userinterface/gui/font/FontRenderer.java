@@ -68,4 +68,20 @@ public class FontRenderer
         
         render(x - w / 2, y - h / 2, text);
     }
+    
+    public void renderCentered(int x, int y, List<String> text)
+    {
+        int w = text.stream().mapToInt(line -> getTextWidth(line)).max().orElse(0);
+        int h = text.size() * getHeight();
+        
+        int x0;
+        int y0 = y - h / 2;
+        
+        for(String line : text)
+        {
+            x0 = x - getTextWidth(line) / 2;
+            render(x0, y0, line);
+            y0 += getHeight();
+        }
+    }
 }
