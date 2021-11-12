@@ -20,6 +20,13 @@ public class WrappedScreen extends Screen
     }
     
     @Override
+    public void init(int screenW, int screenH)
+    {
+        subScreen.init(screenW, screenH);
+        super.init(screenW, screenH);
+    }
+    
+    @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
         renderBackground(deltaTick);
