@@ -189,7 +189,7 @@ public class Window
         glfwDestroyWindow(windowHandle);
     }
     
-    public boolean shouldClose()
+    public boolean shouldClose() // Threadsafe
     {
         return glfwWindowShouldClose(windowHandle);
     }

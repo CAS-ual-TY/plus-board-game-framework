@@ -79,7 +79,7 @@ public class Engine implements Runnable
         
         // Render Schleife wiederholen, bis das Fenster geschlossen wird
         // Oder bis ESC gedrückt wird TODO entfernen (ist auch als TODO markiert)
-        while(!window.shouldClose())
+        while(!isBeingClosed())
         {
             window.preUpdate();
             
@@ -164,5 +164,10 @@ public class Engine implements Runnable
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+    
+    public boolean isBeingClosed() // Threadsafe
+    {
+        return window.shouldClose();
     }
 }
