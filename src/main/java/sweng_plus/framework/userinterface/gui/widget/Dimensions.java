@@ -35,6 +35,11 @@ public class Dimensions implements Cloneable
         this(w, h, headAnchor, innerAnchor, 0, 0);
     }
     
+    public Dimensions(AnchorPoint headAnchor, AnchorPoint innerAnchor)
+    {
+        this(0, 0, headAnchor, innerAnchor, 0, 0);
+    }
+    
     public Dimensions(int w, int h, AnchorPoint anchor, int offX, int offY)
     {
         this(w, h, anchor, anchor, offX, offY);
@@ -43,6 +48,11 @@ public class Dimensions implements Cloneable
     public Dimensions(int w, int h, AnchorPoint anchor)
     {
         this(w, h, anchor, 0, 0);
+    }
+    
+    public Dimensions(AnchorPoint anchor)
+    {
+        this(0, 0, anchor, 0, 0);
     }
     
     public Dimensions(int x, int y, int w, int h)
@@ -62,6 +72,7 @@ public class Dimensions implements Cloneable
                 && mouseY >= y && mouseY < y + h;
     }
     
+    @Override
     public Dimensions clone()
     {
         return new Dimensions(w, h, headAnchor, innerAnchor, offX, offY);

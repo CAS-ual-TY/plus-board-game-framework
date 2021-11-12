@@ -28,6 +28,18 @@ public class FontRenderer
         return width;
     }
     
+    public int getTextHeight(String text) {return getHeight();}
+    
+    public int getTextWidth(List<String> text)
+    {
+        return text.stream().mapToInt(line -> getTextWidth(line)).max().orElse(0);
+    }
+    
+    public int getTextHeight(List<String> text)
+    {
+        return text.size() * getHeight();
+    }
+    
     public int getHeight()
     {
         return fontInfo.getHeight();
@@ -71,8 +83,7 @@ public class FontRenderer
     
     public void renderCentered(int x, int y, List<String> text)
     {
-        int w = text.stream().mapToInt(line -> getTextWidth(line)).max().orElse(0);
-        int h = text.size() * getHeight();
+        int h = getTextHeight(text);
         
         int x0;
         int y0 = y - h / 2;

@@ -18,6 +18,9 @@ public class TextWidget extends Widget
         this.renderer = renderer;
         this.text = text;
         this.color = color;
+        
+        this.dimensions.w = renderer.getTextWidth(text);
+        this.dimensions.h = renderer.getTextHeight(text);
     }
     
     public TextWidget(Screen screen, Dimensions dimensions, FontRenderer renderer, List<String> text)
@@ -31,6 +34,6 @@ public class TextWidget extends Widget
         super.render(deltaTick, mouseX, mouseY);
         
         color.glColor4f();
-        renderer.renderCentered(dimensions.x, dimensions.y, text);
+        renderer.renderCentered(dimensions.x + dimensions.w / 2, dimensions.y + dimensions.h / 2, text);
     }
 }
