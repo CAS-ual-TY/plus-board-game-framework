@@ -1,24 +1,23 @@
-package sweng_plus.framework.userinterface.gui;
+package sweng_plus.framework.userinterface.gui.widget;
 
-import sweng_plus.framework.userinterface.gui.widget.IWidget;
-import sweng_plus.framework.userinterface.gui.widget.IWidgetParent;
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
-public class Screen implements IWidgetParent
+public class ParentWidget extends Widget implements IWidgetParent
 {
-    public final IScreenHolder screenHolder;
+    protected List<IWidget> widgets;
     
-    public int screenW;
-    public int screenH;
-    
-    public List<IWidget> widgets;
-    
-    public Screen(IScreenHolder screenHolder)
+    public ParentWidget(IWidgetParent parent, Dimensions dimensions, List<IWidget> widgets)
     {
-        this.screenHolder = screenHolder;
-        widgets = new LinkedList<>();
+        super(parent, dimensions);
+        this.widgets = widgets;
+    }
+    
+    public ParentWidget(IWidgetParent parent, Dimensions dimensions, IWidget... widgets)
+    {
+        this(parent, dimensions, Arrays.asList(widgets));
     }
     
     @Override
@@ -31,15 +30,6 @@ public class Screen implements IWidgetParent
     public void update(int mouseX, int mouseY)
     {
         IWidgetParent.super.update(mouseX, mouseY);
-    }
-    
-    /** Wird immer gecallt, wenn das Window resized wird, oder der Screen zum ersten mal wieder aktiv ist */
-    public void init(int screenW, int screenH)
-    {
-        this.screenW = screenW;
-        this.screenH = screenH;
-        
-        IWidgetParent.super.init();
     }
     
     @Override
@@ -75,31 +65,31 @@ public class Screen implements IWidgetParent
     @Override
     public int getParentX()
     {
-        return 0;
+        return dimensions.x;
     }
     
     @Override
     public int getParentY()
     {
-        return 0;
+        return dimensions.y;
     }
     
     @Override
     public int getParentW()
     {
-        return screenW;
+        return dimensions.w;
     }
     
     @Override
     public int getParentH()
     {
-        return screenH;
+        return dimensions.h;
     }
     
     @Override
     public IScreenHolder getScreenHolder()
     {
-        return screenHolder;
+        return parent.getScreenHolder();
     }
     
     @Override
