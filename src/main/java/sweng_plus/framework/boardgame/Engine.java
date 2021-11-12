@@ -12,12 +12,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Engine implements Runnable
 {
-    private static Engine instance;
+    protected static Engine instance;
     
-    private final IGame game;
+    protected final IGame game;
     
-    private Window window;
-    private InputHandler inputHandler;
+    protected Window window;
+    protected InputHandler inputHandler;
     
     public Engine(IGame game)
     {
@@ -64,7 +64,7 @@ public class Engine implements Runnable
         cleanupGLFW();
     }
     
-    private void loop()
+    protected void loop()
     {
         final int ticksPerSecond = game.getTicksPerSecond(); // eg. 20
         final long millisPerSecond = TimeUnit.SECONDS.toMillis(1); // 1000
@@ -137,7 +137,7 @@ public class Engine implements Runnable
                 .hint(GLFW_RESIZABLE, GLFW_TRUE); // Setzt das Fenster skalierbar
     }
     
-    private void initGLFW()
+    protected void initGLFW()
     {
         // Fehlernachrichten in System.err ausgeben
         GLFWErrorCallback.createPrint(System.err).set();
@@ -148,7 +148,7 @@ public class Engine implements Runnable
             throw new IllegalStateException("Unable to initialize GLFW");
     }
     
-    private void cleanupGLFW()
+    protected void cleanupGLFW()
     {
         // GLFW terminieren, Fehler callback free'n
         glfwTerminate();
