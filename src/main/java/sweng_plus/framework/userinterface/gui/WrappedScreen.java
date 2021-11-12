@@ -4,26 +4,15 @@ import sweng_plus.framework.userinterface.gui.util.Color4f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class WrappedScreen extends Screen
+public class WrappedScreen extends StackedScreen
 {
-    public Screen subScreen;
+    // Screen ist auf anderem Screen aufgebaut
+    // (alter Screen wird nicht weggeworfen und man kann zu diesem zurückkehren)
+    // Unterschied zu StackedScreen: SubScreen wird im Hintergrund verdunkelt gerendert
     
     public WrappedScreen(Screen subScreen)
     {
-        super(subScreen.screenHolder);
-        this.subScreen = subScreen;
-    }
-    
-    public void returnToSubScreen()
-    {
-        screenHolder.setScreen(subScreen);
-    }
-    
-    @Override
-    public void init(int screenW, int screenH)
-    {
-        subScreen.init(screenW, screenH);
-        super.init(screenW, screenH);
+        super(subScreen);
     }
     
     @Override
@@ -44,12 +33,5 @@ public class WrappedScreen extends Screen
         glVertex3f(screenW, screenH, 0); // Unten Rechts
         glVertex3f(screenW, 0, 0); // Oben Rechts
         glEnd();
-    }
-    
-    @Override
-    public void update(int mouseX, int mouseY)
-    {
-        subScreen.update(mouseX, mouseY);
-        super.update(mouseX, mouseY);
     }
 }
