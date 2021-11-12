@@ -3,6 +3,7 @@ package sweng_plus.framework.userinterface.gui.font;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class FontRenderer
@@ -94,5 +95,65 @@ public class FontRenderer
             render(x0, y0, line);
             y0 += getHeight();
         }
+    }
+    
+    public String trimStringToWidth(int w, String text)
+    {
+        for(int i = 1; i < text.length(); ++i)
+        {
+            if(getTextWidth(text.substring(0, i)) > w)
+            {
+                return text.substring(0, i - 1);
+            }
+        }
+        
+        return text;
+    }
+    
+    public List<String> splitStringToWidth(int w, String text)
+    {
+        List<String> list = new LinkedList<String>();
+        
+        String[] words = text.split(" ");
+        
+        int w0 = w + 1;
+        int wordW;
+        StringBuilder line = new StringBuilder();
+        
+        final int spaceW = getTextWidth(" ");
+        
+        for(String word : words)
+        {
+            wordW = getTextWidth(word);
+            
+            if((w0 += wordW + spaceW) <= w)
+            {
+                line.append(" ").append(word);
+            }
+            else
+            {
+                list.add(line.toString());
+                line.setLength(0);
+                w0 = wordW;
+                
+                while(w0 > w)
+                {
+                    String word1 = trimStringToWidth(w, word);
+                    list.add(word1);
+                    
+                    word = word.substring(word1.length());
+                    w0 -= getTextWidth(word1);
+                }
+                
+                line.append(word);
+            }
+        }
+        
+        if(!line.isEmpty())
+        {
+            list.add(line.toString());
+        }
+        
+        return list;
     }
 }
