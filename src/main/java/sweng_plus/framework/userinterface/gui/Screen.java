@@ -79,25 +79,25 @@ public class Screen implements IWidgetParent
     }
     
     @Override
-    public int getScreenX()
+    public int getParentX()
     {
         return 0;
     }
     
     @Override
-    public int getScreenY()
+    public int getParentY()
     {
         return 0;
     }
     
     @Override
-    public int getScreenW()
+    public int getParentW()
     {
         return screenW;
     }
     
     @Override
-    public int getScreenH()
+    public int getParentH()
     {
         return screenH;
     }

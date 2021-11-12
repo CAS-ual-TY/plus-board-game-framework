@@ -60,10 +60,10 @@ public class Dimensions implements Cloneable
         this(w, h, AnchorPoint.TL, x, y);
     }
     
-    public void init(int screenW, int screenH)
+    public void init(int screenX, int screenY, int screenW, int screenH)
     {
-        x = headAnchor.widthToX(screenW) - innerAnchor.widthToX(w) + offX;
-        y = headAnchor.heightToY(screenH) - innerAnchor.heightToY(h) + offY;
+        x = screenX + headAnchor.widthToX(screenW) - innerAnchor.widthToX(w) + offX;
+        y = screenY + headAnchor.heightToY(screenH) - innerAnchor.heightToY(h) + offY;
     }
     
     public boolean isMouseOver(int mouseX, int mouseY)

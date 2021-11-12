@@ -1,6 +1,5 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
-import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 
@@ -12,9 +11,9 @@ public class TextWidget extends Widget
     protected List<String> text;
     protected Color4f color;
     
-    public TextWidget(Screen screen, Dimensions dimensions, FontRenderer renderer, List<String> text, Color4f color)
+    public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, List<String> text, Color4f color)
     {
-        super(screen, dimensions);
+        super(parent, dimensions);
         this.renderer = renderer;
         this.text = text;
         this.color = color;
@@ -23,9 +22,9 @@ public class TextWidget extends Widget
         this.dimensions.h = renderer.getTextHeight(text);
     }
     
-    public TextWidget(Screen screen, Dimensions dimensions, FontRenderer renderer, List<String> text)
+    public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, List<String> text)
     {
-        this(screen, dimensions, renderer, text, Color4f.NEUTRAL);
+        this(parent, dimensions, renderer, text, Color4f.NEUTRAL);
     }
     
     @Override

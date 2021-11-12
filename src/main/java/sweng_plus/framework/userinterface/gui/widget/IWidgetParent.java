@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface IWidgetParent extends INestedInputListener
 {
-    int getScreenX();
+    int getParentX();
     
-    int getScreenY();
+    int getParentY();
     
-    int getScreenW();
+    int getParentW();
     
-    int getScreenH();
+    int getParentH();
     
     IScreenHolder getScreenHolder();
     
@@ -40,7 +40,7 @@ public interface IWidgetParent extends INestedInputListener
     {
         for(IWidget w : getWidgets())
         {
-            w.init(getScreenW(), getScreenH());
+            w.init(getParentX(), getParentY(), getParentW(), getParentH());
         }
     }
     

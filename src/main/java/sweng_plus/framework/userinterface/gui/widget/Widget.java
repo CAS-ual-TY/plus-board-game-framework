@@ -2,22 +2,22 @@ package sweng_plus.framework.userinterface.gui.widget;
 
 public class Widget implements IWidget
 {
-    public final IWidgetParent screen;
+    public final IWidgetParent parent;
     
     protected Dimensions dimensions;
     
     public boolean isMouseOver;
     
-    public Widget(IWidgetParent screen, Dimensions dimensions)
+    public Widget(IWidgetParent parent, Dimensions dimensions)
     {
-        this.screen = screen;
+        this.parent = parent;
         this.dimensions = dimensions;
     }
     
     @Override
-    public void init(int screenW, int screenH)
+    public void init(int parentX, int parentY, int parentW, int parentH)
     {
-        dimensions.init(screenW, screenH);
+        dimensions.init(parentX, parentY, parentW, parentH);
     }
     
     @Override

@@ -8,5 +8,5 @@ public interface IWidget extends IInputListener
     
     void update(int mouseX, int mouseY);
     
-    void init(int screenW, int screenH);
+    void init(int parentX, int parentY, int parentW, int parentH);
 }

@@ -1,7 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
-import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 
@@ -10,9 +9,9 @@ public abstract class ButtonWidget extends Widget
     protected Texture active;
     protected Texture inactive;
     
-    public ButtonWidget(Screen screen, Dimensions dimensions, Texture active, Texture inactive)
+    public ButtonWidget(IWidgetParent parent, Dimensions dimensions, Texture active, Texture inactive)
     {
-        super(screen, dimensions);
+        super(parent, dimensions);
         this.active = active;
         this.inactive = inactive;
     }
