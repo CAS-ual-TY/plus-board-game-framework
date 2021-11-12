@@ -32,7 +32,8 @@ public class DebugScreen extends Screen
     
         try
         {
-            widgets.add(new TextureWidget(this, new Dimensions(2048, 2048, AnchorPoint.M), TextureHelper.createTexture("src/main/resources/textures/test_raster.png"))
+            widgets.add(new TextureWidget(this, new Dimensions(2048, 2048, AnchorPoint.M),
+                    TextureHelper.createTexture("src/test/resources/textures/test_raster.png"))
             {
                 @Override
                 public void render(float deltaTick, int mouseX, int mouseY)
@@ -54,8 +55,8 @@ public class DebugScreen extends Screen
         try
         {
             widgets.add(new FunctionalButtonWidget(this, new Dimensions(150, 50, AnchorPoint.TL, 40, 250),
-                    TextureHelper.createTexture("src/main/resources/textures/button_test_active.png"),
-                    TextureHelper.createTexture("src/main/resources/textures/button_test_inactive.png"),
+                    TextureHelper.createTexture("src/test/resources/textures/button_test_active.png"),
+                    TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png"),
                     ((mouseX, mouseY, mods) -> System.out.println("Button clicked!"))
             ));
         }
