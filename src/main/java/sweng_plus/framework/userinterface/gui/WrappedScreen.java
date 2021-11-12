@@ -38,4 +38,11 @@ public class WrappedScreen extends Screen
         glVertex3f(screenW, 0, 0); // Oben Rechts
         glEnd();
     }
+    
+    @Override
+    public void update(int mouseX, int mouseY)
+    {
+        subScreen.update(mouseX, mouseY);
+        super.update(mouseX, mouseY);
+    }
 }

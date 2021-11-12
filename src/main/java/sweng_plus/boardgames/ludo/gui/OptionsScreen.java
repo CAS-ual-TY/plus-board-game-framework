@@ -1,6 +1,7 @@
 package sweng_plus.boardgames.ludo.gui;
 
 import org.lwjgl.glfw.GLFW;
+import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
@@ -8,8 +9,10 @@ import sweng_plus.framework.userinterface.gui.util.Texture;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class OptionsScreen extends WrappedScreen
 {
@@ -57,6 +60,10 @@ public class OptionsScreen extends WrappedScreen
         {
             e.printStackTrace();
         }
+    
+        widgets.add(new TextWidget(this, topButton.clone(), Ludo.instance().fontRenderer32, Arrays.asList("Top Button")));
+        widgets.add(new TextWidget(this, middleButton.clone(), Ludo.instance().fontRenderer32, Arrays.asList("Middle Button")));
+        widgets.add(new TextWidget(this, bottomButton.clone(), Ludo.instance().fontRenderer32, Arrays.asList("Bottom Button")));
     }
     
     @Override
