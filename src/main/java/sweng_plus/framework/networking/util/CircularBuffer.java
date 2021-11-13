@@ -32,30 +32,28 @@ public class CircularBuffer
         this(DEFAULT_SIZE);
     }
     
-    public void write(byte b)
+    public void writeByte(byte b)
     {
         buffer[numWrites % capacity] = b;
         numWrites++;
     }
     
+    public void writeShort(short i)
+    {
+        writeByte((byte) ((i >> 0x08) & 0xFF));
+        writeByte((byte) (i & 0xFF));
+    }
+    
     public void writeInt(int i)
     {
-        write((byte) ((i >> 0x18) & 0xFF));
-        write((byte) ((i >> 0x10) & 0xFF));
-        write((byte) ((i >> 0x08) & 0xFF));
-        write((byte) (i & 0xFF));
+        writeShort((short) ((i >> 0x10) & 0xFFFF));
+        writeShort((short) (i & 0xFFFF));
     }
     
     public void writeLong(long i)
     {
-        write((byte) ((i >> 0x38) & 0xFF));
-        write((byte) ((i >> 0x30) & 0xFF));
-        write((byte) ((i >> 0x28) & 0xFF));
-        write((byte) ((i >> 0x20) & 0xFF));
-        write((byte) ((i >> 0x18) & 0xFF));
-        write((byte) ((i >> 0x10) & 0xFF));
-        write((byte) ((i >> 0x08) & 0xFF));
-        write((byte) (i & 0xFF));
+        writeInt((int) ((i >> 0x20)));
+        writeInt((int) (i));
     }
     
     public void writeChar(char c, Charset charset)
@@ -66,38 +64,41 @@ public class CircularBuffer
     public void writeString(String s, Charset charset)
     {
         byte[] bs = s.getBytes(charset);
-        writeInt(bs.length);
-        for(byte b : bs)
+        writeShort((short) bs.length);
+        writeBytes(bs);
+    }
+    
+    public void writeBytes(byte[] arr)
+    {
+        for(byte b : arr)
         {
-            write(b);
+            writeByte(b);
         }
     }
     
-    public byte read()
+    public byte readByte()
     {
         byte read = buffer[numReads % capacity];
         numReads++;
         return read;
     }
     
+    public short readShort()
+    {
+        return (short) ((readByte() << 0x08) |
+                (readByte()));
+    }
+    
     public int readInt()
     {
-        return (read() << 0x18) |
-                (read() << 0x10) |
-                (read() << 0x08) |
-                (read());
+        return (readShort() << 0x10) |
+                (readShort());
     }
     
     public long readLong()
     {
-        return ((long) read() << 0x38) |
-                ((long) read() << 0x30) |
-                ((long) read() << 0x28) |
-                ((long) read() << 0x20) |
-                (read() << 0x18) |
-                (read() << 0x10) |
-                (read() << 0x08) |
-                (read());
+        return ((long) readInt() << 0x20) |
+                (readInt());
     }
     
     public char readChar(Charset charset)
@@ -107,14 +108,19 @@ public class CircularBuffer
     
     public String readString(Charset charset)
     {
-        int length = readInt();
-        byte[] readBytes = new byte[length];
-        for(int i = 0; i < length; i++)
-        {
-            readBytes[i] = read();
-        }
+        int length = readShort();
+        return new String(readBytes(length), charset);
+    }
+    
+    public byte[] readBytes(int numBytes)
+    {
+        byte[] read = new byte[numBytes];
         
-        return new String(readBytes, charset);
+        for(int i = 0; i < numBytes; i++)
+        {
+            read[i] = readByte();
+        }
+        return read;
     }
     
     public void startWriting()
