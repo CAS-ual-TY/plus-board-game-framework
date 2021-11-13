@@ -149,10 +149,6 @@ public class CircularBuffer
     public void startReading()
     {
         startNumReads = numReads;
-        if(numReads >= numWrites)
-        {
-            throw new BufferUnderflowException();
-        }
     }
     
     public void endReading()
