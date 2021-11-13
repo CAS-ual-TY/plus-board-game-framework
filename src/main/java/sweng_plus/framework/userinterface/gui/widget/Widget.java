@@ -57,6 +57,12 @@ public class Widget implements IWidget
     }
     
     @Override
+    public void keyRepeated(int key, int mods)
+    {
+    
+    }
+    
+    @Override
     public void charTyped(char character)
     {
     

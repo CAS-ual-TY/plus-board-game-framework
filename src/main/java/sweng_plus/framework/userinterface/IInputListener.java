@@ -10,5 +10,7 @@ public interface IInputListener
     
     void keyReleased(int key, int mods);
     
+    void keyRepeated(int key, int mods);
+    
     void charTyped(char character);
 }

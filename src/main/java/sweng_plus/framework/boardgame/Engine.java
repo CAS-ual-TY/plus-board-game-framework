@@ -109,7 +109,7 @@ public class Engine implements Runnable
                 game.update();
                 screen.update(inputHandler.getMouseX(), inputHandler.getMouseY());
                 
-                currentMillis -= millisPerTick;
+                currentMillis %= millisPerTick;
             }
             
             deltaTick = (float) currentMillis / ticksPerMillis;

@@ -67,6 +67,12 @@ public class Screen implements IWidgetParent
     }
     
     @Override
+    public void keyRepeated(int key, int mods)
+    {
+        IWidgetParent.super.keyRepeated(key, mods);
+    }
+    
+    @Override
     public void charTyped(char character)
     {
         IWidgetParent.super.charTyped(character);
