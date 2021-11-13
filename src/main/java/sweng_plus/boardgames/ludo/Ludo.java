@@ -58,6 +58,7 @@ public class Ludo implements IGame
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_SPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_BACKSPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ESCAPE);
+        Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ENTER);
     }
     
     @Override

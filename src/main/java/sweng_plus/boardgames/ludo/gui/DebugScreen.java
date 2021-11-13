@@ -2,15 +2,13 @@ package sweng_plus.boardgames.ludo.gui;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
+import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
-import sweng_plus.framework.userinterface.gui.widget.ColoredWidget;
-import sweng_plus.framework.userinterface.gui.widget.Dimensions;
-import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.TextureWidget;
+import sweng_plus.framework.userinterface.gui.widget.*;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -64,6 +62,8 @@ public class DebugScreen extends Screen
         {
             e.printStackTrace();
         }
+        
+        widgets.add(new InputWidget(this, new Dimensions(600,80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
     }
     
     @Override
@@ -188,6 +188,7 @@ public class DebugScreen extends Screen
     @Override
     public void charTyped(char character)
     {
+        super.charTyped(character);
         System.out.println("charTyped '" + character + "'");
     }
 }
