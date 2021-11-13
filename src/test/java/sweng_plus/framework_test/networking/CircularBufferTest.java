@@ -7,6 +7,9 @@ import sweng_plus.framework.networking.util.CircularBuffer;
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class CircularBufferTest
 {
@@ -217,6 +220,28 @@ public class CircularBufferTest
         
         Assertions.assertDoesNotThrow(buffer::startReading);
         Assertions.assertEquals("abc", buffer.readString(StandardCharsets.UTF_16));
+        Assertions.assertDoesNotThrow(buffer::endReading);
+    }
+    
+    @Test
+    void testWriteReadList()
+    {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("abc");
+        list.add("def");
+        list.add("abdecf");
+        
+        BiConsumer<CircularBuffer, String> encoder = (buf, s) -> buf.writeString(s, StandardCharsets.UTF_8);
+        Function<CircularBuffer, String> decoder = (buf) -> buf.readString(StandardCharsets.UTF_8);
+        
+        CircularBuffer buffer = new CircularBuffer(1024);
+        
+        Assertions.assertDoesNotThrow(buffer::startWriting);
+        Assertions.assertDoesNotThrow(() -> buffer.writeList(list, encoder));
+        Assertions.assertDoesNotThrow(buffer::endWriting);
+        
+        Assertions.assertDoesNotThrow(buffer::startReading);
+        Assertions.assertEquals(list, buffer.readList(decoder));
         Assertions.assertDoesNotThrow(buffer::endReading);
     }
 }

@@ -3,6 +3,10 @@ package sweng_plus.framework.networking.util;
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.nio.charset.Charset;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class CircularBuffer
 {
@@ -76,6 +80,15 @@ public class CircularBuffer
         }
     }
     
+    public <T> void writeList(List<T> list, BiConsumer<CircularBuffer, T> encoder)
+    {
+        writeShort((short) list.size());
+        for(T t : list)
+        {
+            encoder.accept(this, t);
+        }
+    }
+    
     public byte readByte()
     {
         byte read = buffer[numReads % capacity];
@@ -108,17 +121,29 @@ public class CircularBuffer
     
     public String readString(Charset charset)
     {
-        int length = readShort();
+        short length = readShort();
         return new String(readBytes(length), charset);
     }
     
-    public byte[] readBytes(int numBytes)
+    public byte[] readBytes(short numBytes)
     {
         byte[] read = new byte[numBytes];
         
         for(int i = 0; i < numBytes; i++)
         {
             read[i] = readByte();
+        }
+        return read;
+    }
+    
+    public <T> List<T> readList(Function<CircularBuffer, T> decoder)
+    {
+        short length = readShort();
+        
+        List<T> read = new LinkedList<>();
+        for(int i = 0; i < length; i++)
+        {
+            read.add(decoder.apply(this));
         }
         return read;
     }
