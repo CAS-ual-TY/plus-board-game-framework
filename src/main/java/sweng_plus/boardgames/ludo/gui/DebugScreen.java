@@ -2,7 +2,6 @@ package sweng_plus.boardgames.ludo.gui;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -16,11 +15,9 @@ import java.util.concurrent.TimeUnit;
 
 public class DebugScreen extends Screen
 {
-    private double fps;
     private long millisFPS = System.currentTimeMillis();
     private LinkedList<Double> fpsAverage = new LinkedList<>();
     
-    private double tps;
     private long millisTPS = System.currentTimeMillis();
     private LinkedList<Double> tpsAverage = new LinkedList<>();
     
@@ -49,19 +46,6 @@ public class DebugScreen extends Screen
         for(AnchorPoint anchor : AnchorPoint.values())
             widgets.add(new ColoredWidget(this, new Dimensions(100, 100, anchor),
                     Color4f.BLACK, Color4f.RED));
-        
-        try
-        {
-            widgets.add(new FunctionalButtonWidget(this, new Dimensions(150, 50, AnchorPoint.TL, 40, 250),
-                    TextureHelper.createTexture("src/test/resources/textures/button_test_active.png"),
-                    TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png"),
-                    ((mouseX, mouseY, mods) -> System.out.println("Button clicked!"))
-            ));
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
         
         widgets.add(new InputWidget(this, new Dimensions(600,80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
     }
@@ -118,9 +102,8 @@ public class DebugScreen extends Screen
     
     private void calculateFPS()
     {
-        fps = TimeUnit.SECONDS.toMillis(1) / (double) (System.currentTimeMillis() - millisFPS);
+        fpsAverage.add(TimeUnit.SECONDS.toMillis(1) / (double) (System.currentTimeMillis() - millisFPS));
         millisFPS = System.currentTimeMillis();
-        fpsAverage.add(fps);
         
         while(fpsAverage.size() > 50)
         {
@@ -130,9 +113,8 @@ public class DebugScreen extends Screen
     
     private void calculateTPS()
     {
-        tps = TimeUnit.SECONDS.toMillis(1) / (double) (System.currentTimeMillis() - millisTPS);
+        tpsAverage.add(TimeUnit.SECONDS.toMillis(1) / (double) (System.currentTimeMillis() - millisTPS));
         millisTPS = System.currentTimeMillis();
-        tpsAverage.add(tps);
         
         while(tpsAverage.size() > 50)
         {
@@ -188,7 +170,8 @@ public class DebugScreen extends Screen
     @Override
     public void charTyped(char character)
     {
-        super.charTyped(character);
         System.out.println("charTyped '" + character + "'");
+    
+        super.charTyped(character);
     }
 }
