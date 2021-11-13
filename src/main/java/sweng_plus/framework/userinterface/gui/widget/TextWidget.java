@@ -26,8 +26,8 @@ public class TextWidget extends Widget
     
     public TextWidget adjustSizeToText()
     {
-        dimensions.w = renderer.getTextWidth(text);
-        dimensions.h = renderer.getTextHeight(text);
+        dimensions.w = renderer.getTextWidth(getText());
+        dimensions.h = renderer.getTextHeight(getText());
         
         return this;
     }
@@ -38,6 +38,11 @@ public class TextWidget extends Widget
         super.render(deltaTick, mouseX, mouseY);
         
         color.glColor4f();
-        renderer.renderCentered(dimensions.x + dimensions.w / 2, dimensions.y + dimensions.h / 2, text);
+        renderer.renderCentered(dimensions.x + dimensions.w / 2, dimensions.y + dimensions.h / 2, getText());
+    }
+    
+    public List<String> getText()
+    {
+        return text;
     }
 }
