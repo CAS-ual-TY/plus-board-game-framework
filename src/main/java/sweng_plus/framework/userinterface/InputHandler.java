@@ -2,6 +2,7 @@ package sweng_plus.framework.userinterface;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -86,12 +87,12 @@ public class InputHandler
     {
         for(TrackedKey trackedKey : keys)
         {
-            trackedKey.setUnchanged();
+            trackedKey.clear();
         }
         
         for(TrackedKey trackedKey : mouseButtons)
         {
-            trackedKey.setUnchanged();
+            trackedKey.clear();
         }
         
         chars.clear();
@@ -122,16 +123,17 @@ public class InputHandler
     
     protected void handleTrackedKeyCallback(TrackedKey trackedKey, int action, int mods)
     {
-        if(trackedKey != null && !trackedKey.getChanged())
+        if(action == GLFW_PRESS)
         {
-            if(action == GLFW_PRESS)
-            {
-                trackedKey.setPressed(true, mods);
-            }
-            else if(action == GLFW_RELEASE)
-            {
-                trackedKey.setPressed(false, mods);
-            }
+            trackedKey.setPressed(mods);
+        }
+        else if(action == GLFW_REPEAT)
+        {
+            trackedKey.setRepeated(mods);
+        }
+        else if(action == GLFW_RELEASE)
+        {
+            trackedKey.setReleased(mods);
         }
     }
     
@@ -149,32 +151,15 @@ public class InputHandler
     {
         for(TrackedKey trackedKey : mouseButtons)
         {
-            if(trackedKey.getChanged())
-            {
-                if(trackedKey.getPressed())
-                {
-                    listener.mouseButtonPressed(getMouseX(), getMouseY(), trackedKey.getKey(), trackedKey.getMods());
-                }
-                else
-                {
-                    listener.mouseButtonReleased(getMouseX(), getMouseY(), trackedKey.getKey(), trackedKey.getMods());
-                }
-            }
+            trackedKey.getPressed((mods) -> listener.mouseButtonPressed(getMouseX(), getMouseY(), trackedKey.getKey(), mods));
+            trackedKey.getReleased((mods) -> listener.mouseButtonReleased(getMouseX(), getMouseY(), trackedKey.getKey(), mods));
         }
         
         for(TrackedKey trackedKey : keys)
         {
-            if(trackedKey.getChanged())
-            {
-                if(trackedKey.getPressed())
-                {
-                    listener.keyPressed(trackedKey.getKey(), trackedKey.getMods());
-                }
-                else
-                {
-                    listener.keyReleased(trackedKey.getKey(), trackedKey.getMods());
-                }
-            }
+            trackedKey.getPressed((mods) -> listener.keyPressed(trackedKey.getKey(), mods));
+            trackedKey.getRepeated((mods) -> listener.keyRepeated(trackedKey.getKey(), mods));
+            trackedKey.getReleased((mods) -> listener.keyReleased(trackedKey.getKey(), mods));
         }
         
         for(char c : chars)
@@ -211,17 +196,18 @@ public class InputHandler
     public static class TrackedKey
     {
         private final int key;
-        private boolean pressed;
-        
-        private boolean changed;
-        private int mods;
+        private List<Integer> newPressed;
+        private List<Integer> pressed;
+        private List<Integer> repeated;
+        private List<Integer> released;
         
         public TrackedKey(int key)
         {
             this.key = key;
-            pressed = false;
-            changed = false;
-            mods = 0;
+            newPressed = new LinkedList<Integer>();
+            pressed = new LinkedList<Integer>();
+            repeated = new LinkedList<Integer>();
+            released = new LinkedList<Integer>();
         }
         
         public int getKey()
@@ -229,35 +215,62 @@ public class InputHandler
             return key;
         }
         
-        public void setPressed(boolean pressed, int mods)
+        public void setPressed(Integer mods)
         {
-            this.pressed = pressed;
-            
-            changed = true;
-            this.mods = mods;
+            if(!released.contains(mods) && !pressed.contains(mods) && !newPressed.contains(mods))
+            {
+                newPressed.add(mods);
+            }
         }
         
-        /**
-         * True = Der Key State (= pressed) wurde gerade gewechselt. Wird wieder False nach dem nächsten Render Tick.
-         */
-        public boolean getChanged()
+        public void setRepeated(Integer mods)
         {
-            return changed;
+            if((pressed.contains(mods) || newPressed.contains(mods)) && !repeated.contains(mods))
+            {
+                repeated.add(mods);
+            }
         }
         
-        public void setUnchanged()
+        public void setReleased(Integer mods)
         {
-            changed = false;
+            if((pressed.contains(mods) || newPressed.contains(mods)) && !released.contains(mods))
+            {
+                pressed.remove(mods);
+                newPressed.remove(mods);
+                released.add(mods);
+            }
         }
         
-        public boolean getPressed()
+        public void getPressed(Consumer<Integer> consumer)
         {
-            return pressed;
+            for(int mods : newPressed)
+            {
+                consumer.accept(mods);
+            }
         }
         
-        public int getMods()
+        public void getRepeated(Consumer<Integer> consumer)
         {
-            return mods;
+            for(int mods : repeated)
+            {
+                consumer.accept(mods);
+            }
+        }
+        
+        public void getReleased(Consumer<Integer> consumer)
+        {
+            for(int mods : released)
+            {
+                consumer.accept(mods);
+            }
+        }
+        
+        public void clear()
+        {
+            pressed.addAll(newPressed);
+            newPressed.clear();
+            repeated.clear();
+            released.clear();
         }
     }
 }

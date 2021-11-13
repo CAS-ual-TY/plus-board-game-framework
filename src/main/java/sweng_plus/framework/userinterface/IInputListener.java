@@ -8,9 +8,9 @@ public interface IInputListener
     
     void keyPressed(int key, int mods);
     
-    void keyReleased(int key, int mods);
-    
     void keyRepeated(int key, int mods);
+    
+    void keyReleased(int key, int mods);
     
     void charTyped(char character);
 }

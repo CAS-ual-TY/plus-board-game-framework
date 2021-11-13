@@ -34,20 +34,20 @@ public interface INestedInputListener extends IInputListener
     }
     
     @Override
-    default void keyReleased(int key, int mods)
-    {
-        for(IInputListener listener : getListeners())
-        {
-            listener.keyReleased(key, mods);
-        }
-    }
-    
-    @Override
     default void keyRepeated(int key, int mods)
     {
         for(IInputListener listener : getListeners())
         {
             listener.keyRepeated(key, mods);
+        }
+    }
+    
+    @Override
+    default void keyReleased(int key, int mods)
+    {
+        for(IInputListener listener : getListeners())
+        {
+            listener.keyReleased(key, mods);
         }
     }
     

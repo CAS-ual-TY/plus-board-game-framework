@@ -51,13 +51,13 @@ public class Widget implements IWidget
     }
     
     @Override
-    public void keyReleased(int key, int mods)
+    public void keyRepeated(int key, int mods)
     {
     
     }
     
     @Override
-    public void keyRepeated(int key, int mods)
+    public void keyReleased(int key, int mods)
     {
     
     }

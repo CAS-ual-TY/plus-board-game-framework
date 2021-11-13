@@ -102,10 +102,11 @@ public class Engine implements Runnable
                 screen.init(window.getScreenW(), window.getScreenH());
             }
             
-            inputHandler.inputListener(screen);
-            
             if(currentMillis >= millisPerTick)
             {
+                inputHandler.inputListener(screen);
+                inputHandler.postUpdate();
+                
                 game.update();
                 screen.update(inputHandler.getMouseX(), inputHandler.getMouseY());
                 
@@ -121,8 +122,6 @@ public class Engine implements Runnable
             screen.render(deltaTick, inputHandler.getMouseX(), inputHandler.getMouseY());
             
             glPopMatrix();
-            
-            inputHandler.postUpdate();
             
             // --------- LOOP ---------
             

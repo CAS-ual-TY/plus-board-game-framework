@@ -61,15 +61,15 @@ public class Screen implements IWidgetParent
     }
     
     @Override
-    public void keyReleased(int key, int mods)
-    {
-        IWidgetParent.super.keyReleased(key, mods);
-    }
-    
-    @Override
     public void keyRepeated(int key, int mods)
     {
         IWidgetParent.super.keyRepeated(key, mods);
+    }
+    
+    @Override
+    public void keyReleased(int key, int mods)
+    {
+        IWidgetParent.super.keyReleased(key, mods);
     }
     
     @Override
