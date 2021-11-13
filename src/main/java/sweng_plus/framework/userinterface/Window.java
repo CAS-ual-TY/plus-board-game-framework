@@ -194,6 +194,11 @@ public class Window
         return glfwWindowShouldClose(windowHandle);
     }
     
+    public void close() // synchronized?
+    {
+        glfwSetWindowShouldClose(windowHandle, true);
+    }
+    
     protected InputHandler createInputHandler()
     {
         return new InputHandler(this);

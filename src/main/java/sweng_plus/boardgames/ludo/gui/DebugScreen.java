@@ -29,7 +29,7 @@ public class DebugScreen extends Screen
     public DebugScreen(IScreenHolder screenHolder)
     {
         super(screenHolder);
-    
+        
         try
         {
             widgets.add(new TextureWidget(this, new Dimensions(2048, 2048, AnchorPoint.M),
@@ -47,7 +47,7 @@ public class DebugScreen extends Screen
         {
             e.printStackTrace();
         }
-    
+        
         for(AnchorPoint anchor : AnchorPoint.values())
             widgets.add(new ColoredWidget(this, new Dimensions(100, 100, anchor),
                     Color4f.BLACK, Color4f.RED));
@@ -171,7 +171,7 @@ public class DebugScreen extends Screen
         
         super.keyPressed(key, mods);
         
-        if(key == GLFW.GLFW_KEY_SPACE)
+        if(key == GLFW.GLFW_KEY_ESCAPE)
         {
             screenHolder.setScreen(new OptionsScreen(this));
         }

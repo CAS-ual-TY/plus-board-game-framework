@@ -2,6 +2,7 @@ package sweng_plus.boardgames.ludo.gui;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
+import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
@@ -52,7 +53,7 @@ public class OptionsScreen extends WrappedScreen
                 @Override
                 protected void clicked(int mouseX, int mouseY, int mods)
                 {
-                
+                    Engine.instance().close();
                 }
             });
         }
@@ -60,10 +61,10 @@ public class OptionsScreen extends WrappedScreen
         {
             e.printStackTrace();
         }
-    
+        
         widgets.add(new TextWidget(this, topButton.clone(), Ludo.instance().fontRenderer32, Arrays.asList("Top Button")));
         widgets.add(new TextWidget(this, middleButton.clone(), Ludo.instance().fontRenderer32, Arrays.asList("Middle Button")));
-        widgets.add(new TextWidget(this, bottomButton.clone(), Ludo.instance().fontRenderer32, Arrays.asList("Bottom Button")));
+        widgets.add(new TextWidget(this, bottomButton.clone(), Ludo.instance().fontRenderer32, Arrays.asList("Exit")));
     }
     
     @Override
@@ -71,7 +72,7 @@ public class OptionsScreen extends WrappedScreen
     {
         super.keyPressed(key, mods);
         
-        if(key == GLFW.GLFW_KEY_SPACE)
+        if(key == GLFW.GLFW_KEY_ESCAPE)
         {
             returnToSubScreen();
         }

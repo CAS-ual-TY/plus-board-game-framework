@@ -170,4 +170,9 @@ public class Engine implements Runnable
     {
         return window.shouldClose();
     }
+    
+    public void close()
+    {
+        window.close();
+    }
 }

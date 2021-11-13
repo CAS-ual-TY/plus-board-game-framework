@@ -49,12 +49,6 @@ public class InputHandler
             {
                 handleTrackedKeyCallback(trackedKey, action, mods);
             }
-            
-            if(action == GLFW_PRESS && key == GLFW_KEY_ESCAPE)
-            {
-                // Fenster schliessen bei ESC TODO irgendwann entfernen
-                glfwSetWindowShouldClose(window, true);
-            }
         });
         
         // Callback für Maus; wird bei jedem drücken oder loslassen gecallt
