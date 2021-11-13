@@ -17,14 +17,19 @@ public class TextWidget extends Widget
         this.renderer = renderer;
         this.text = text;
         this.color = color;
-        
-        this.dimensions.w = renderer.getTextWidth(text);
-        this.dimensions.h = renderer.getTextHeight(text);
     }
     
     public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, List<String> text)
     {
         this(parent, dimensions, renderer, text, Color4f.NEUTRAL);
+    }
+    
+    public TextWidget adjustSizeToText()
+    {
+        dimensions.w = renderer.getTextWidth(text);
+        dimensions.h = renderer.getTextHeight(text);
+        
+        return this;
     }
     
     @Override
