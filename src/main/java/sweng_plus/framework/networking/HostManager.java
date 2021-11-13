@@ -116,7 +116,7 @@ public class HostManager implements Runnable, IHostManager, IConnectionInteracto
     }
     
     @Override
-    public <M> void sendPacketToClient(IClientManager client, M m) // Main Thread
+    public <M> void sendPacketToClient(IClient client, M m) // Main Thread
     {
     
     }
