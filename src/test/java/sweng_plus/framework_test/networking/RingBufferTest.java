@@ -2,7 +2,7 @@ package sweng_plus.framework_test.networking;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import sweng_plus.framework.networking.util.RingBuffer;
+import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
@@ -12,7 +12,7 @@ public class RingBufferTest
 {
     @Test
     void testBufferAccess() {
-        RingBuffer buffer = new RingBuffer(1024);
+        CircularBuffer buffer = new CircularBuffer(1024);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.write((byte) 'c'));
         Assertions.assertDoesNotThrow(buffer::endWriting);
@@ -24,7 +24,7 @@ public class RingBufferTest
     
     @Test
     void testBufferCyclicAccess() {
-        RingBuffer buffer = new RingBuffer(3);
+        CircularBuffer buffer = new CircularBuffer(3);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.write((byte) 'a'));
         Assertions.assertDoesNotThrow(() -> buffer.write((byte) 'b'));
@@ -50,13 +50,13 @@ public class RingBufferTest
     
     @Test
     void testBufferInvalidRead() {
-        RingBuffer buffer = new RingBuffer(3);
+        CircularBuffer buffer = new CircularBuffer(3);
         Assertions.assertThrows(BufferUnderflowException.class, buffer::startReading);
     }
     
     @Test
     void testBufferInvalidWrite() {
-        RingBuffer buffer = new RingBuffer(3);
+        CircularBuffer buffer = new CircularBuffer(3);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         buffer.write((byte) 'a');
         buffer.write((byte) 'b');
@@ -67,7 +67,7 @@ public class RingBufferTest
     
     @Test
     void testWriteInteger() {
-        RingBuffer buffer = new RingBuffer(1024);
+        CircularBuffer buffer = new CircularBuffer(1024);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.writeInt(0x01020304));
         Assertions.assertDoesNotThrow(buffer::endWriting);
@@ -82,7 +82,7 @@ public class RingBufferTest
     
     @Test
     void testReadInteger() {
-        RingBuffer buffer = new RingBuffer(1024);
+        CircularBuffer buffer = new CircularBuffer(1024);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.writeInt(0x01020304));
         Assertions.assertDoesNotThrow(buffer::endWriting);
@@ -94,7 +94,7 @@ public class RingBufferTest
     
     @Test
     void testWriteLong() {
-        RingBuffer buffer = new RingBuffer(1024);
+        CircularBuffer buffer = new CircularBuffer(1024);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.writeLong(0x0102030405060708L));
         Assertions.assertDoesNotThrow(buffer::endWriting);
@@ -113,7 +113,7 @@ public class RingBufferTest
     
     @Test
     void testReadLong() {
-        RingBuffer buffer = new RingBuffer(1024);
+        CircularBuffer buffer = new CircularBuffer(1024);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.writeLong(0x0102030405060708L));
         Assertions.assertDoesNotThrow(buffer::endWriting);
@@ -125,7 +125,7 @@ public class RingBufferTest
     
     @Test
     void testWriteCharacter() {
-        RingBuffer buffer = new RingBuffer(1024);
+        CircularBuffer buffer = new CircularBuffer(1024);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.writeChar('a', StandardCharsets.UTF_8));
         Assertions.assertDoesNotThrow(() -> buffer.writeChar('b', StandardCharsets.UTF_8));
@@ -149,7 +149,7 @@ public class RingBufferTest
     
     @Test
     void testReadCharacter() {
-        RingBuffer buffer = new RingBuffer(1024);
+        CircularBuffer buffer = new CircularBuffer(1024);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.writeChar('a', StandardCharsets.UTF_8));
         Assertions.assertDoesNotThrow(() -> buffer.writeChar('b', StandardCharsets.UTF_8));
@@ -167,7 +167,7 @@ public class RingBufferTest
     
     @Test
     void testWriteString() {
-        RingBuffer buffer = new RingBuffer(16);
+        CircularBuffer buffer = new CircularBuffer(16);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.writeString("abc", StandardCharsets.UTF_8));
         Assertions.assertDoesNotThrow(buffer::endWriting);
@@ -182,7 +182,7 @@ public class RingBufferTest
     
     @Test
     void testReadString() {
-        RingBuffer buffer = new RingBuffer(16);
+        CircularBuffer buffer = new CircularBuffer(16);
         Assertions.assertDoesNotThrow(buffer::startWriting);
         Assertions.assertDoesNotThrow(() -> buffer.writeString("abc", StandardCharsets.UTF_8));
         Assertions.assertDoesNotThrow(buffer::endWriting);
