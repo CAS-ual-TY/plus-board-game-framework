@@ -238,4 +238,85 @@ public class CircularBufferTests
         Assertions.assertEquals(list, buffer.readList(decoder));
         Assertions.assertDoesNotThrow(buffer::endReading);
     }
+    
+    @Test
+    void testReadIntegrity()
+    {
+        CircularBuffer buffer = new CircularBuffer(4);
+        
+        buffer.startWriting();
+        buffer.writeByte((byte) 0);
+        buffer.writeByte((byte) 1);
+        buffer.writeByte((byte) 2);
+        buffer.writeByte((byte) 3);
+        buffer.endWriting();
+        
+        buffer.startReading();
+        Assertions.assertEquals((byte) 0, buffer.readByte());
+        Assertions.assertEquals((byte) 1, buffer.readByte());
+        buffer.endReading();
+        
+        Assertions.assertEquals(2, buffer.getSize());
+        
+        buffer.startReading();
+        Assertions.assertEquals((byte) 2, buffer.readByte());
+        Assertions.assertEquals((byte) 3, buffer.readByte());
+        Assertions.assertEquals((byte) 0, buffer.readByte());
+        Assertions.assertThrows(BufferUnderflowException.class, () -> buffer.endReading());
+        
+        Assertions.assertEquals(buffer.getSize(), 0);
+        
+        buffer.startWriting();
+        buffer.writeByte((byte) 4);
+        buffer.writeByte((byte) 5);
+        buffer.endWriting();
+        
+        buffer.startReading();
+        Assertions.assertEquals((byte) 4, buffer.readByte());
+        Assertions.assertEquals((byte) 5, buffer.readByte());
+        Assertions.assertDoesNotThrow(() -> buffer.endReading());
+    }
+    
+    @Test
+    void testWriteIntegrity()
+    {
+        CircularBuffer buffer = new CircularBuffer(4);
+        
+        buffer.startWriting();
+        buffer.writeByte((byte) 0);
+        buffer.writeByte((byte) 1);
+        buffer.writeByte((byte) 2);
+        buffer.writeByte((byte) 3);
+        buffer.endWriting();
+        
+        buffer.startReading();
+        Assertions.assertEquals((byte) 0, buffer.readByte());
+        Assertions.assertEquals((byte) 1, buffer.readByte());
+        buffer.endReading();
+        
+        buffer.startWriting();
+        buffer.writeByte((byte) 4);
+        buffer.writeByte((byte) 5);
+        buffer.writeByte((byte) 6);
+        Assertions.assertThrows(BufferOverflowException.class, () -> buffer.endWriting());
+        
+        Assertions.assertEquals(2, buffer.getSize());
+        
+        buffer.startReading();
+        Assertions.assertEquals((byte) 2, buffer.readByte());
+        Assertions.assertEquals((byte) 3, buffer.readByte());
+        Assertions.assertDoesNotThrow(() -> buffer.endReading());
+        
+        Assertions.assertEquals(buffer.getSize(), 0);
+        
+        buffer.startWriting();
+        buffer.writeByte((byte) 4);
+        buffer.writeByte((byte) 5);
+        buffer.endWriting();
+        
+        buffer.startReading();
+        Assertions.assertEquals((byte) 4, buffer.readByte());
+        Assertions.assertEquals((byte) 5, buffer.readByte());
+        Assertions.assertDoesNotThrow(() -> buffer.endReading());
+    }
 }

@@ -178,10 +178,16 @@ public class CircularBuffer
         if(size > capacity)
         {
             System.arraycopy(bufferCopy, 0, buffer, 0, capacity);
-            writeIndex = tempIndex;
+            
             size -= (writeIndex < tempIndex ? writeIndex + capacity : writeIndex) - tempIndex;
             
+            writeIndex = tempIndex;
+            
             throw new BufferOverflowException();
+        }
+        else
+        {
+            System.arraycopy(buffer, 0, bufferCopy, 0, capacity);
         }
     }
     
