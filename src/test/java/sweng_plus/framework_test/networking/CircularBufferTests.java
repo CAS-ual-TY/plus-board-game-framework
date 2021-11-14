@@ -75,6 +75,33 @@ public class CircularBufferTests
     }
     
     @Test
+    void testWriteShort()
+    {
+        CircularBuffer buffer = new CircularBuffer(1024);
+        Assertions.assertDoesNotThrow(buffer::startWriting);
+        Assertions.assertDoesNotThrow(() -> buffer.writeShort((short)0x0102));
+        Assertions.assertDoesNotThrow(buffer::endWriting);
+        
+        Assertions.assertDoesNotThrow(buffer::startReading);
+        Assertions.assertEquals(1, buffer.readByte());
+        Assertions.assertEquals(2, buffer.readByte());
+        Assertions.assertDoesNotThrow(buffer::endReading);
+    }
+    
+    @Test
+    void testReadShort()
+    {
+        CircularBuffer buffer = new CircularBuffer(1024);
+        Assertions.assertDoesNotThrow(buffer::startWriting);
+        Assertions.assertDoesNotThrow(() -> buffer.writeShort((short) 0x01F2));
+        Assertions.assertDoesNotThrow(buffer::endWriting);
+        
+        Assertions.assertDoesNotThrow(buffer::startReading);
+        Assertions.assertEquals(0x01F2, buffer.readShort());
+        Assertions.assertDoesNotThrow(buffer::endReading);
+    }
+    
+    @Test
     void testWriteInteger()
     {
         CircularBuffer buffer = new CircularBuffer(1024);
