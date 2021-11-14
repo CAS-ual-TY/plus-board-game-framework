@@ -56,22 +56,22 @@ public class CircularBuffer
         size++;
     }
     
-    public void writeShort(short i)
+    public void writeShort(short s)
     {
-        writeByte((byte) ((i >> 0x08) & 0xFF));
-        writeByte((byte) (i & 0xFF));
+        writeByte((byte) ((s >> Byte.BYTES * 8) & 0xFF));
+        writeByte((byte) (s & 0xFF));
     }
     
     public void writeInt(int i)
     {
-        writeShort((short) ((i >> 0x10) & 0xFFFF));
+        writeShort((short) ((i >> Short.BYTES * 8) & 0xFFFF));
         writeShort((short) (i & 0xFFFF));
     }
     
-    public void writeLong(long i)
+    public void writeLong(long l)
     {
-        writeInt((int) ((i >> 0x20)));
-        writeInt((int) (i));
+        writeInt((int) ((l >> Integer.BYTES * 8)));
+        writeInt((int) (l));
     }
     
     public void writeChar(char c, Charset charset)
@@ -113,19 +113,19 @@ public class CircularBuffer
     
     public short readShort()
     {
-        return (short) ((readByte() << 0x08) |
+        return (short) ((readByte() << Byte.BYTES * 8) |
                 (readByte()));
     }
     
     public int readInt()
     {
-        return (readShort() << 0x10) |
+        return (readShort() << Short.BYTES * 8) |
                 (readShort());
     }
     
     public long readLong()
     {
-        return ((long) readInt() << 0x20) |
+        return ((long) readInt() << Integer.BYTES * 8) |
                 (readInt());
     }
     
@@ -161,6 +161,52 @@ public class CircularBuffer
             read.add(decoder.apply(this));
         }
         return read;
+    }
+    
+    public void setByte(int index, byte b)
+    {
+        buffer[index % capacity] = b;
+    }
+    
+    public void setShort(int index, short s)
+    {
+        setByte(index, (byte) ((s >> Byte.BYTES * 8) & 0xFF));
+        setByte(index + Byte.BYTES, (byte) (s & 0xFF));
+    }
+    
+    public void setInt(int index, int i)
+    {
+        setShort(index, (short) ((i >> Short.BYTES * 8) & 0xFFFF));
+        setShort(index + Short.BYTES, (short) (i & 0xFFFF));
+    }
+    
+    public void setLong(int index, long l)
+    {
+        setInt(index, (int) ((l >> Integer.BYTES * 8)));
+        setInt(index + Integer.BYTES, (int) (l));
+    }
+    
+    public byte getByte(int index)
+    {
+        return buffer[index % capacity];
+    }
+    
+    public short getShort(int index)
+    {
+        return (short) ((getByte(index) << Byte.BYTES * 8) |
+                (getByte(index + Byte.BYTES)));
+    }
+    
+    public int getInt(int index)
+    {
+        return (getShort(index) << Short.BYTES * 8) |
+                (getShort(index + Short.BYTES));
+    }
+    
+    public long getLong(int index)
+    {
+        return ((long) getInt(index) << Integer.BYTES * 8) |
+                (getInt(index + Integer.BYTES));
     }
     
     public void startWriting()
