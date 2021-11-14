@@ -283,7 +283,7 @@ public class CircularBufferTests
         Assertions.assertEquals((byte) 1, buffer.readByte());
         buffer.endReading();
         
-        Assertions.assertEquals(2, buffer.getSize());
+        Assertions.assertEquals(2, buffer.size());
         
         buffer.startReading();
         Assertions.assertEquals((byte) 2, buffer.readByte());
@@ -291,7 +291,7 @@ public class CircularBufferTests
         Assertions.assertEquals((byte) 0, buffer.readByte());
         Assertions.assertThrows(BufferUnderflowException.class, () -> buffer.endReading());
         
-        Assertions.assertEquals(buffer.getSize(), 0);
+        Assertions.assertEquals(buffer.size(), 0);
         
         buffer.startWriting();
         buffer.writeByte((byte) 4);
@@ -327,14 +327,14 @@ public class CircularBufferTests
         buffer.writeByte((byte) 6);
         Assertions.assertThrows(BufferOverflowException.class, () -> buffer.endWriting());
         
-        Assertions.assertEquals(2, buffer.getSize());
+        Assertions.assertEquals(2, buffer.size());
         
         buffer.startReading();
         Assertions.assertEquals((byte) 2, buffer.readByte());
         Assertions.assertEquals((byte) 3, buffer.readByte());
         Assertions.assertDoesNotThrow(() -> buffer.endReading());
         
-        Assertions.assertEquals(buffer.getSize(), 0);
+        Assertions.assertEquals(buffer.size(), 0);
         
         buffer.startWriting();
         buffer.writeByte((byte) 4);
