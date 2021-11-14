@@ -1,6 +1,8 @@
 package sweng_plus.framework.networking;
 
-import java.nio.ByteBuffer;
+import sweng_plus.framework.networking.util.CircularBuffer;
+
+import java.nio.charset.StandardCharsets;
 
 public class TestMessage
 {
@@ -16,32 +18,19 @@ public class TestMessage
     public static class Handler implements IMessageHandler<TestMessage>
     {
         @Override
-        public TestMessage receiveBytes(ByteBuffer buf)
+        public TestMessage receiveBytes(CircularBuffer buf)
         {
-            StringBuilder s = new StringBuilder();
+            //String message = buf.readString(StandardCharsets.UTF_8);
+            long timestamp = buf.readLong();
             
-            char c;
-            while((c = buf.getChar()) != 0)
-            {
-                s.append(c);
-            }
-            
-            long timestamp = buf.getLong();
-            
-            return new TestMessage(s.toString(), timestamp);
+            return new TestMessage("", timestamp);
         }
         
         @Override
-        public void sendBytes(ByteBuffer buf, TestMessage msg)
+        public void sendBytes(CircularBuffer buf, TestMessage msg)
         {
-            for(char c : msg.message.toCharArray())
-            {
-                buf.putChar(c);
-            }
-            
-            buf.putChar((char) 0);
-            
-            buf.putLong(msg.timestamp);
+            //buf.writeString(msg.message, StandardCharsets.UTF_8);
+            buf.writeLong(msg.timestamp);
         }
         
         @Override

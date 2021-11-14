@@ -128,14 +128,14 @@ public class CircularBuffer
     
     public short readShort()
     {
-        return (short) ((readByte() << Byte.BYTES * 8) |
-                (readByte()));
+        return (short) ((readByte() << Byte.BYTES * 8) & 0xFF00 |
+                readByte() & 0x00FF);
     }
     
     public int readInt()
     {
-        return (readShort() << Short.BYTES * 8) |
-                (readShort());
+        return (readShort() << Short.BYTES * 8) & 0xFFFF0000 |
+                readShort() & 0x0000FFFF;
     }
     
     public long readLong()

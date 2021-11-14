@@ -1,6 +1,6 @@
 package sweng_plus.framework.networking;
 
-import java.nio.ByteBuffer;
+import sweng_plus.framework.networking.util.CircularBuffer;
 
 @SuppressWarnings("unchecked")
 public class MessageRegistry
@@ -49,20 +49,27 @@ public class MessageRegistry
         throw new IllegalArgumentException("Message not registered");
     }
     
-    public <M> void encodeMessage(ByteBuffer writeBuffer, M message)
+    public <M> void encodeMessage(CircularBuffer writeBuffer, M message)
     {
-        int oldPos = writeBuffer.position();
+        writeBuffer.startWriting();
         
+        int oldPos = writeBuffer.getWriteIndex();
+        short oldSize = (short) writeBuffer.size();
+        writeBuffer.writeShort((short)0);
+    
         byte messageID = getIDForMessage(message);
+        writeBuffer.writeByte(messageID);
+    
         IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
-        writeBuffer.put(messageID);
-        writeBuffer.putInt(0);
         encodeMessage(writeBuffer, message, handler);
-        int newPos = writeBuffer.position();
-        writeBuffer.putInt(oldPos, newPos - oldPos);
+    
+        writeBuffer.endWriting();
+    
+        short newSize = (short) writeBuffer.size();
+        writeBuffer.setShort(oldPos, (short) (newSize - oldSize));
     }
     
-    public <M> void encodeMessage(ByteBuffer writeBuffer, M message, IMessageHandler<M> handler)
+    public <M> void encodeMessage(CircularBuffer writeBuffer, M message, IMessageHandler<M> handler)
     {
         handler.sendBytes(writeBuffer, message);
     }
@@ -72,25 +79,30 @@ public class MessageRegistry
      * @param <M>
      * @return Eine {@link Runnable}, welche beim Ausführen {@link IMessageHandler#handleMessage(M)} ausführt
      */
-    public <M> Runnable decodeMessage(ByteBuffer readBuffer)
+    public <M> Runnable decodeMessage(CircularBuffer readBuffer)
     {
-        int size = readBuffer.getInt();
-        byte messageID = readBuffer.get();
+        readBuffer.startReading();
+        
+        short size = readBuffer.readShort();
+        byte messageID = readBuffer.readByte();
+        
         IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
         M msg = decodeMessage(readBuffer, handler);
-        
+    
+        readBuffer.endReading();
+    
         return () -> handler.handleMessage(msg);
     }
     
-    public <M> M decodeMessage(ByteBuffer readBuffer, IMessageHandler<M> handler)
+    public <M> M decodeMessage(CircularBuffer readBuffer, IMessageHandler<M> handler)
     {
         return handler.receiveBytes(readBuffer);
     }
     
-    public <M> void decodeMessage(ByteBuffer readBuffer, MessageInfoConsumer<M> consumer)
+    public <M> void decodeMessage(CircularBuffer readBuffer, MessageInfoConsumer<M> consumer)
     {
-        int size = readBuffer.getInt();
-        byte messageID = readBuffer.get();
+        short size = readBuffer.readShort();
+        byte messageID = readBuffer.readByte();
         IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
         M msg = decodeMessage(readBuffer, handler);
         consumer.accept(handler, msg);
