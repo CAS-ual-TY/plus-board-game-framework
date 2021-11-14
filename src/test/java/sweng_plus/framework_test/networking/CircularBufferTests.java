@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class CircularBufferTest
+public class CircularBufferTests
 {
     @Test
     void testBufferAccess()
