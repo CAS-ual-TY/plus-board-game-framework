@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
+import sweng_plus.framework.userinterface.input.InputHandler;
 
 import java.nio.IntBuffer;
 

@@ -1,5 +1,6 @@
-package sweng_plus.framework.networking;
+package sweng_plus.framework_test.networking;
 
+import sweng_plus.framework.networking.IMessageHandler;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.nio.charset.StandardCharsets;

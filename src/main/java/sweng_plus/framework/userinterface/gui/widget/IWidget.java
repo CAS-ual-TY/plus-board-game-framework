@@ -1,6 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
-import sweng_plus.framework.userinterface.IInputListener;
+import sweng_plus.framework.userinterface.input.IInputListener;
 
 public interface IWidget extends IInputListener
 {

@@ -1,6 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
-import sweng_plus.framework.userinterface.gui.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 
 import java.util.Objects;
 

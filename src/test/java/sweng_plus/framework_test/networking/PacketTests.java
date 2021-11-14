@@ -3,10 +3,7 @@ package sweng_plus.framework_test.networking;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sweng_plus.framework.networking.MessageRegistry;
-import sweng_plus.framework.networking.TestMessage;
 import sweng_plus.framework.networking.util.CircularBuffer;
-
-import java.math.BigInteger;
 
 public class PacketTests
 {

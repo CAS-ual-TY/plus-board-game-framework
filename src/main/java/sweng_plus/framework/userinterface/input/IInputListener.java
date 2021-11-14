@@ -1,4 +1,4 @@
-package sweng_plus.framework.userinterface;
+package sweng_plus.framework.userinterface.input;
 
 public interface IInputListener
 {

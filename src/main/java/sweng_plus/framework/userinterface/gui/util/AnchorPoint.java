@@ -1,4 +1,4 @@
-package sweng_plus.framework.userinterface.gui;
+package sweng_plus.framework.userinterface.gui.util;
 
 /**
  * {@link #TL},

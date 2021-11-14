@@ -3,7 +3,7 @@ package sweng_plus.boardgames.ludo.gui;
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.boardgame.Engine;
-import sweng_plus.framework.userinterface.gui.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.util.Texture;

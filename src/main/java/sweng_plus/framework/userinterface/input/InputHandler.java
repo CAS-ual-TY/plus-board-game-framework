@@ -1,4 +1,6 @@
-package sweng_plus.framework.userinterface;
+package sweng_plus.framework.userinterface.input;
+
+import sweng_plus.framework.userinterface.Window;
 
 import java.util.LinkedList;
 import java.util.List;
