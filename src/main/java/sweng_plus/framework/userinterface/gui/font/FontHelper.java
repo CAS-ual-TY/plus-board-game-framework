@@ -60,9 +60,14 @@ public class FontHelper
      */
     public static String getAvailableChars(char lastChar)
     {
+        return getAvailableChars((char)1, lastChar);
+    }
+    
+    public static String getAvailableChars(char firstChar, char lastChar)
+    {
         StringBuilder result = new StringBuilder();
         
-        for(char c = 0; c <= lastChar; c++)
+        for(char c = firstChar; c <= lastChar; c++)
         {
             result.append(c);
         }

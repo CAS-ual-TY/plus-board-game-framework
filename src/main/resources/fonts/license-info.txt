@@ -1,3 +1,7 @@
 ChicagoFLF:
 https://fontlibrary.org/en/font/chicagoflf
 Public Domain
+
+Noto Sans:
+https://fonts.google.com/noto
+Open Font License
