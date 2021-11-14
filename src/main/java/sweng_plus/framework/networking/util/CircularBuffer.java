@@ -13,23 +13,25 @@ public class CircularBuffer
     private static final int DEFAULT_SIZE = 1024;
     
     private final byte[] buffer;
+    private final byte[] bufferCopy;
     private final int capacity;
     
     private int writeIndex;
     private int readIndex;
     
     private int size;
-    private int tempCounter;
+    private int tempIndex;
     
-    public CircularBuffer(int size)
+    public CircularBuffer(int capacity)
     {
-        capacity = (size > 0) ? size : DEFAULT_SIZE;
-        buffer = new byte[size];
+        this.capacity = (capacity > 0) ? capacity : DEFAULT_SIZE;
+        buffer = new byte[capacity];
+        bufferCopy = new byte[capacity];
         
         writeIndex = 0;
         readIndex = 0;
         
-        size = 0;
+        tempIndex = 0;
     }
     
     public CircularBuffer()
@@ -50,7 +52,7 @@ public class CircularBuffer
     public void writeByte(byte b)
     {
         buffer[writeIndex] = b;
-        writeIndex = ++writeIndex % capacity;
+        writeIndex = (writeIndex + 1) % capacity;
         size++;
     }
     
@@ -104,7 +106,7 @@ public class CircularBuffer
     public byte readByte()
     {
         byte read = buffer[readIndex];
-        readIndex = ++readIndex % capacity;
+        readIndex = (readIndex + 1) % capacity;
         size--;
         return read;
     }
@@ -163,26 +165,44 @@ public class CircularBuffer
     
     public void startWriting()
     {
-        tempCounter = size;
+        tempIndex = writeIndex;
     }
     
-    public void endWriting()
+    /**
+     * Checkt, ob über den Lesekopf geschrieben wurde
+     *
+     * @throws BufferOverflowException wenn über den Lesekopf geschrieben wurde und setzt den State auf den State zurück, der beim startWriting call gegeben war
+     */
+    public void endWriting() throws BufferOverflowException
     {
         if(size > capacity)
         {
+            System.arraycopy(bufferCopy, 0, buffer, 0, capacity);
+            writeIndex = tempIndex;
+            size -= (writeIndex < tempIndex ? writeIndex + capacity : writeIndex) - tempIndex;
+            
             throw new BufferOverflowException();
         }
     }
     
     public void startReading()
     {
-        tempCounter = size;
+        tempIndex = readIndex;
     }
     
-    public void endReading()
+    /**
+     * Checkt, ob über den Schreibkopf gelesen wurde
+     *
+     * @throws BufferUnderflowException wenn über den Schreibkopf gelesen wurde und leert daraufhin den Buffer komplett
+     */
+    public void endReading() throws BufferUnderflowException
     {
         if(size < 0)
         {
+            writeIndex = 0;
+            readIndex = writeIndex;
+            size = 0;
+            
             throw new BufferUnderflowException();
         }
     }
