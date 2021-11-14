@@ -44,9 +44,24 @@ public class CircularBuffer
         return capacity;
     }
     
-    public int getSize()
+    public int getWriteIndex()
+    {
+        return writeIndex;
+    }
+    
+    public int getReadIndex()
+    {
+        return readIndex;
+    }
+    
+    public int size()
     {
         return size;
+    }
+    
+    public boolean isEmpty()
+    {
+        return size() == 0;
     }
     
     public void writeByte(byte b)
