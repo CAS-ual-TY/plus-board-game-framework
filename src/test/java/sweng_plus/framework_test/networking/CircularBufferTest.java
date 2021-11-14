@@ -57,13 +57,7 @@ public class CircularBufferTest
     void testBufferInvalidRead()
     {
         CircularBuffer buffer = new CircularBuffer(3);
-        
-        Assertions.assertDoesNotThrow(buffer::startWriting);
-        Assertions.assertDoesNotThrow(() -> buffer.writeByte((byte) 'a'));
-        Assertions.assertDoesNotThrow(buffer::endWriting);
-        
         Assertions.assertDoesNotThrow(buffer::startReading);
-        Assertions.assertEquals('a', buffer.readByte());
         Assertions.assertDoesNotThrow(buffer::readByte);
         Assertions.assertThrows(BufferUnderflowException.class, buffer::endReading);
     }
@@ -76,8 +70,8 @@ public class CircularBufferTest
         buffer.writeByte((byte) 'a');
         buffer.writeByte((byte) 'b');
         buffer.writeByte((byte) 'c');
-        Assertions.assertDoesNotThrow(buffer::endWriting);
-        Assertions.assertThrows(BufferOverflowException.class, buffer::startWriting);
+        buffer.writeByte((byte) 'd');
+        Assertions.assertThrows(BufferOverflowException.class, buffer::endWriting);
     }
     
     @Test

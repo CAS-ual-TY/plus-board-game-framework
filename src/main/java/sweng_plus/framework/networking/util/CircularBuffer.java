@@ -14,21 +14,22 @@ public class CircularBuffer
     
     private final byte[] buffer;
     private final int capacity;
-    private int numReads;
-    private int numWrites;
     
-    private int startNumReads;
-    private int startNumWrites;
+    private int writeIndex;
+    private int readIndex;
+    
+    private int size;
+    private int tempCounter;
     
     public CircularBuffer(int size)
     {
         capacity = (size > 0) ? size : DEFAULT_SIZE;
         buffer = new byte[size];
-        numReads = 0;
-        startNumReads = 0;
         
-        numWrites = 0;
-        startNumWrites = 0;
+        writeIndex = 0;
+        readIndex = 0;
+        
+        size = 0;
     }
     
     public CircularBuffer()
@@ -36,10 +37,21 @@ public class CircularBuffer
         this(DEFAULT_SIZE);
     }
     
+    public int getCapacity()
+    {
+        return capacity;
+    }
+    
+    public int getSize()
+    {
+        return size;
+    }
+    
     public void writeByte(byte b)
     {
-        buffer[numWrites % capacity] = b;
-        numWrites++;
+        buffer[writeIndex] = b;
+        writeIndex = ++writeIndex % capacity;
+        size++;
     }
     
     public void writeShort(short i)
@@ -91,8 +103,9 @@ public class CircularBuffer
     
     public byte readByte()
     {
-        byte read = buffer[numReads % capacity];
-        numReads++;
+        byte read = buffer[readIndex];
+        readIndex = ++readIndex % capacity;
+        size--;
         return read;
     }
     
@@ -150,43 +163,27 @@ public class CircularBuffer
     
     public void startWriting()
     {
-        startNumWrites = numWrites;
-        if(numWrites < numReads || (numWrites - numReads) >= capacity)
-        {
-            throw new BufferOverflowException();
-        }
+        tempCounter = size;
     }
     
     public void endWriting()
     {
-        if(numWrites - startNumWrites > capacity || (numWrites - numReads) > capacity)
+        if(size > capacity)
         {
             throw new BufferOverflowException();
-        }
-        else
-        {
-            int reduceCountersBy = Math.floorDiv(numReads, capacity) * capacity;
-            numWrites -= reduceCountersBy;
-            numReads -= reduceCountersBy;
         }
     }
     
     public void startReading()
     {
-        startNumReads = numReads;
+        tempCounter = size;
     }
     
     public void endReading()
     {
-        if(numReads > numWrites)
+        if(size < 0)
         {
             throw new BufferUnderflowException();
-        }
-        else
-        {
-            int reduceCountersBy = Math.floorDiv(numReads, capacity) * capacity;
-            numWrites -= reduceCountersBy;
-            numReads -= reduceCountersBy;
         }
     }
 }
