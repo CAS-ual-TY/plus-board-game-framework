@@ -85,8 +85,8 @@ public class CircularBuffer
     
     public void writeLong(long l)
     {
-        writeInt((int) (l >> Integer.BYTES * 8));
-        writeInt((int) l);
+        writeInt((int) ((l >> Integer.BYTES * 8) & 0xFFFFFFFF));
+        writeInt((int) (l & 0xFFFFFFFF));
     }
     
     public void writeChar(char c, Charset charset)
@@ -128,20 +128,20 @@ public class CircularBuffer
     
     public short readShort()
     {
-        return (short) ((readByte() << Byte.BYTES * 8) & 0xFF00 |
-                readByte() & 0x00FF);
+        return (short) (((readByte() << Byte.BYTES * 8) & 0xFF00) |
+                (readByte() & 0x00FF));
     }
     
     public int readInt()
     {
-        return (readShort() << Short.BYTES * 8) & 0xFFFF0000 |
-                readShort() & 0x0000FFFF;
+        return ((readShort() << Short.BYTES * 8) & 0xFFFF0000) |
+                (readShort() & 0x0000FFFF);
     }
     
     public long readLong()
     {
-        return ((long) readInt() << Integer.BYTES * 8) & 0xFFFFFFFF00000000L |
-                readInt() & 0x00000000FFFFFFFFL;
+        return (((long) readInt() << Integer.BYTES * 8) & 0xFFFFFFFF00000000L) |
+                (readInt() & 0x00000000FFFFFFFFL);
     }
     
     public char readChar(Charset charset)
@@ -197,8 +197,8 @@ public class CircularBuffer
     
     public void setLong(int index, long l)
     {
-        setInt(index, (int) ((l >> Integer.BYTES * 8)));
-        setInt(index + Integer.BYTES, (int) (l));
+        setInt(index, (int) ((l >> Integer.BYTES * 8) & 0xFFFFFFFF));
+        setInt(index + Integer.BYTES, (int) (l & 0xFFFFFFFF));
     }
     
     public byte getByte(int index)
@@ -208,20 +208,40 @@ public class CircularBuffer
     
     public short getShort(int index)
     {
-        return (short) ((getByte(index) << Byte.BYTES * 8) |
-                (getByte(index + Byte.BYTES)));
+        return (short) (((getByte(index) << Byte.BYTES * 8) & 0xFF00) |
+                (getByte(index + Byte.BYTES) & 0x00FF));
     }
     
     public int getInt(int index)
     {
-        return (getShort(index) << Short.BYTES * 8) |
-                (getShort(index + Short.BYTES));
+        return ((getShort(index) << Short.BYTES * 8) & 0xFFFF0000) |
+                (getShort(index + Short.BYTES) & 0x0000FFFF);
     }
     
     public long getLong(int index)
     {
-        return ((long) getInt(index) << Integer.BYTES * 8) |
-                (getInt(index + Integer.BYTES));
+        return (((long) getInt(index) << Integer.BYTES * 8) & 0xFFFFFFFF00000000L) |
+                (getInt(index + Integer.BYTES) & 0x00000000FFFFFFFFL);
+    }
+    
+    public byte peekByte()
+    {
+        return getByte(readIndex);
+    }
+    
+    public short peekShort()
+    {
+        return getShort(readIndex);
+    }
+    
+    public int peekInt()
+    {
+        return getInt(readIndex);
+    }
+    
+    public long peekLong()
+    {
+        return getLong(readIndex);
     }
     
     public void startWriting()
