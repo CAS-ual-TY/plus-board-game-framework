@@ -20,16 +20,16 @@ public class TestMessage
         @Override
         public TestMessage receiveBytes(CircularBuffer buf)
         {
-            //String message = buf.readString(StandardCharsets.UTF_8);
+            String message = buf.readString(StandardCharsets.UTF_8);
             long timestamp = buf.readLong();
             
-            return new TestMessage("", timestamp);
+            return new TestMessage(message, timestamp);
         }
         
         @Override
         public void sendBytes(CircularBuffer buf, TestMessage msg)
         {
-            //buf.writeString(msg.message, StandardCharsets.UTF_8);
+            buf.writeString(msg.message, StandardCharsets.UTF_8);
             buf.writeLong(msg.timestamp);
         }
         

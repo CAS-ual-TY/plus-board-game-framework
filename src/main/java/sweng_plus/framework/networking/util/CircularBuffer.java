@@ -85,8 +85,8 @@ public class CircularBuffer
     
     public void writeLong(long l)
     {
-        writeInt((int) ((l >> Integer.BYTES * 8)));
-        writeInt((int) (l));
+        writeInt((int) (l >> Integer.BYTES * 8));
+        writeInt((int) l);
     }
     
     public void writeChar(char c, Charset charset)
@@ -140,8 +140,8 @@ public class CircularBuffer
     
     public long readLong()
     {
-        return ((long) readInt() << Integer.BYTES * 8) |
-                (readInt());
+        return ((long) readInt() << Integer.BYTES * 8) & 0xFFFFFFFF00000000L |
+                readInt() & 0x00000000FFFFFFFFL;
     }
     
     public char readChar(Charset charset)

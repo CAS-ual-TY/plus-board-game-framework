@@ -14,27 +14,7 @@ public class PacketTests
     void testEncodingDecoding()
     {
         CircularBuffer buffer = new CircularBuffer(1024*4);
-        //TestMessage msg = new TestMessage("Hello World!", new BigInteger("10111110100011110100011011000001101011111", 2).longValue());
         TestMessage msg = new TestMessage("Hello World!", System.currentTimeMillis());
-        MessageRegistry r = new MessageRegistry(2);
-        r.registerMessage((byte) 0, new TestMessage.Handler(), TestMessage.class);
-        r.encodeMessage(buffer, msg);
-        
-        r.<TestMessage>decodeMessage(buffer, (handler, msg2) ->
-        {
-            Assertions.assertTrue(buffer.isEmpty());
-            //System.out.println("\"" + msg.message + "\" vs. \"" + msg2.message + "\"");
-            System.out.println("\"" + Long.toBinaryString(msg.timestamp) + "\" vs. \"" + Long.toBinaryString(msg2.timestamp) + "\"");
-            //Assertions.assertEquals(msg.message, msg2.message);
-            Assertions.assertEquals(Long.toBinaryString(msg.timestamp), Long.toBinaryString(msg2.timestamp));
-            handler.handleMessage(msg2);
-        });
-    }
-    
-    void testEncodingDecoding2()
-    {
-        CircularBuffer buffer = new CircularBuffer();
-        TestMessage msg = new TestMessage("", System.currentTimeMillis());
         MessageRegistry r = new MessageRegistry(2);
         r.registerMessage((byte) 0, new TestMessage.Handler(), TestMessage.class);
         r.encodeMessage(buffer, msg);
