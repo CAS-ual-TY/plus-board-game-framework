@@ -1,6 +1,9 @@
 package sweng_plus.framework.boardgame;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
+import sweng_plus.framework.userinterface.input.IInputListener;
+
+import java.util.List;
 
 public interface IGame extends IScreenHolder
 {
@@ -17,6 +20,8 @@ public interface IGame extends IScreenHolder
     void update();
     
     void render(float deltaTick);
+    
+    List<IInputListener> getInputListeners();
     
     default int getTicksPerSecond()
     {

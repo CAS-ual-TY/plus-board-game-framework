@@ -104,7 +104,8 @@ public class Engine implements Runnable
             
             if(currentMillis >= millisPerTick)
             {
-                inputHandler.inputListener(screen);
+                inputHandler.inputListener(game.getScreen());
+                game.getInputListeners().stream().forEach(inputHandler::inputListener);
                 inputHandler.postUpdate();
                 
                 game.update();
