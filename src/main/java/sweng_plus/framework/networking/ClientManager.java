@@ -38,6 +38,18 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
     }
     
     @Override
+    public void socketClosed() // Connection Thread
+    {
+    
+    }
+    
+    @Override
+    public void socketClosedWithException(Exception e) // Connection Thread
+    {
+    
+    }
+    
+    @Override
     public void close() // Main Thread
     {
         // close = true setzen

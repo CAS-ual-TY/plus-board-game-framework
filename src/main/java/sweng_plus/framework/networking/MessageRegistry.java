@@ -49,6 +49,11 @@ public class MessageRegistry
         throw new IllegalArgumentException("Message not registered");
     }
     
+    public <M> IMessageHandler<M> getHandlerForMessage(M message)
+    {
+        return (IMessageHandler<M>) handlers[getIDForMessage(message)];
+    }
+    
     public <M> void encodeMessage(CircularBuffer writeBuffer, M message)
     {
         writeBuffer.startWriting();
@@ -106,6 +111,11 @@ public class MessageRegistry
         IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
         M msg = decodeMessage(readBuffer, handler);
         consumer.accept(handler, msg);
+    }
+    
+    public <M> void runMessage(M message)
+    {
+    
     }
     
     public interface MessageInfoConsumer<M>

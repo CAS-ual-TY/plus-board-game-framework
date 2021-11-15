@@ -7,7 +7,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
-public class ConnectionInteractor implements IConnectionInteractor, Runnable, Closeable
+public abstract class ConnectionInteractor implements IConnectionInteractor, Runnable, Closeable
 {
     public MessageRegistry registry;
     
@@ -116,6 +116,12 @@ public class ConnectionInteractor implements IConnectionInteractor, Runnable, Cl
     {
         return registry;
     }
+    
+    @Override
+    public abstract void socketClosed();
+    
+    @Override
+    public abstract void socketClosedWithException(Exception e);
     
     @Override
     public boolean shouldClose()

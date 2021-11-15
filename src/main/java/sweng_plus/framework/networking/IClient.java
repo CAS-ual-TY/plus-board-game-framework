@@ -2,7 +2,9 @@ package sweng_plus.framework.networking;
 
 public interface IClient
 {
-    String getName();
+    String getIP();
     
     NetworkRole getRole();
+    
+    ClientStatus getStatus();
 }

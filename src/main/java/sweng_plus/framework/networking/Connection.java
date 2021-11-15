@@ -9,17 +9,17 @@ import java.util.function.Supplier;
 
 public class Connection implements Runnable
 {
-    public Supplier<Socket> socket;
+    public Supplier<Socket> socketSuppler;
     public IConnectionInteractor connectionInteractor;
     
-    public CircularBuffer buffer;
+    public CircularBuffer readBuffer;
     
-    public Connection(Supplier<Socket> socket, IConnectionInteractor connectionInteractor)
+    public Connection(Supplier<Socket> socketSuppler, IConnectionInteractor connectionInteractor)
     {
-        this.socket = socket;
+        this.socketSuppler = socketSuppler;
         this.connectionInteractor = connectionInteractor;
         
-        buffer = new CircularBuffer();
+        readBuffer = new CircularBuffer();
     }
     
     @Override
@@ -27,7 +27,7 @@ public class Connection implements Runnable
     {
         // kann entweder Client -> Server socket sein (einfach der Socket)
         // oder ein serverSocket.accept() call
-        Socket socket = this.socket.get();
+        Socket socket = socketSuppler.get();
         
         try
         {
@@ -35,18 +35,19 @@ public class Connection implements Runnable
             
             while(!connectionInteractor.shouldClose())
             {
-                buffer.writeBytes(in.readAllBytes()); // TODO blockiert das wirklich?
+                readBuffer.writeBytes(in.readAllBytes()); // TODO blockiert das wirklich?
                 
-                while(buffer.size() > Short.BYTES && buffer.size() >= buffer.peekShort())
+                while(readBuffer.size() > Short.BYTES && readBuffer.size() >= readBuffer.peekShort())
                 {
-                    connectionInteractor.receivedMessage(connectionInteractor.getMessageRegistry().decodeMessage(buffer));
+                    connectionInteractor.receivedMessage(connectionInteractor.getMessageRegistry().decodeMessage(readBuffer));
                 }
             }
+            
+            connectionInteractor.socketClosed();
         }
         catch(IOException e)
         {
-            // TODO callback an IConnectionInteractor ?
-            e.printStackTrace();
+            connectionInteractor.socketClosedWithException(e);
         }
     }
 }

@@ -6,5 +6,9 @@ public interface IConnectionInteractor
     
     MessageRegistry getMessageRegistry(); // Connection Thread
     
+    void socketClosed(); // Connection Thread
+    
+    void socketClosedWithException(Exception e); // Connection Thread
+    
     boolean shouldClose(); // Connection Thread
 }
