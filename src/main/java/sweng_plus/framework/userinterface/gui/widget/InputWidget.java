@@ -23,15 +23,15 @@ public class InputWidget extends Widget
     public void render(float deltaTick, int mouseX, int mouseY)
     {
         super.render(deltaTick, mouseX, mouseY);
-    
+        
         //Quad Rendern als Hintergrund:
         int x1 = dimensions.x;
         int x2 = dimensions.x + dimensions.w;
         int y1 = dimensions.y;
         int y2 = dimensions.y + dimensions.h;
-    
+        
         Color4f.BLACK.glColor4f();
-    
+        
         glBegin(GL_QUADS);
         glVertex3f(x1, y1, 0); // Oben Links
         glVertex3f(x1, y2, 0); // Unten Links
@@ -51,9 +51,9 @@ public class InputWidget extends Widget
     @Override
     public void keyPressed(int key, int mods)
     {
-        if (key == GLFW.GLFW_KEY_BACKSPACE)
-            builder.delete(builder.length()-1,builder.length());
-        if (key == GLFW.GLFW_KEY_ENTER)
+        if(key == GLFW.GLFW_KEY_BACKSPACE)
+            builder.delete(builder.length() - 1, builder.length());
+        if(key == GLFW.GLFW_KEY_ENTER)
             builder.setLength(0);
     }
     

@@ -1,6 +1,7 @@
 package sweng_plus.framework.userinterface;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class WindowScale
@@ -142,7 +143,7 @@ public class WindowScale
         {
             ArrayList<SingleScale> baseScales = new ArrayList<>(this.baseScales.size());
             baseScales.addAll(this.baseScales);
-            baseScales.sort((s1, s2) -> Integer.compare(s1.w, s2.w));
+            baseScales.sort(Comparator.comparingInt(s -> s.w));
             
             return new WindowScale(aspectRatio, defaultScale, baseScales, buildThresholdList(baseScales));
         }

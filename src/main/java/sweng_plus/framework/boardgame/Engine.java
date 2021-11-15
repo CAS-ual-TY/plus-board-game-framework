@@ -1,9 +1,9 @@
 package sweng_plus.framework.boardgame;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import sweng_plus.framework.userinterface.input.InputHandler;
 import sweng_plus.framework.userinterface.Window;
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.input.InputHandler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -105,7 +105,7 @@ public class Engine implements Runnable
             if(currentMillis >= millisPerTick)
             {
                 inputHandler.inputListener(game.getScreen());
-                game.getInputListeners().stream().forEach(inputHandler::inputListener);
+                game.getInputListeners().forEach(inputHandler::inputListener);
                 inputHandler.postUpdate();
                 
                 game.update();

@@ -206,10 +206,10 @@ public class InputHandler
         public TrackedKey(int key)
         {
             this.key = key;
-            newPressed = new LinkedList<Integer>();
-            pressed = new LinkedList<Integer>();
-            repeated = new LinkedList<Integer>();
-            released = new LinkedList<Integer>();
+            newPressed = new LinkedList<>();
+            pressed = new LinkedList<>();
+            repeated = new LinkedList<>();
+            released = new LinkedList<>();
         }
         
         public int getKey()

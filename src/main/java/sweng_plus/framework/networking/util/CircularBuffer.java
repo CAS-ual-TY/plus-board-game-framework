@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+@SuppressWarnings("PointlessBitwiseExpression")
 public class CircularBuffer
 {
     private static final int DEFAULT_SIZE = 1024;

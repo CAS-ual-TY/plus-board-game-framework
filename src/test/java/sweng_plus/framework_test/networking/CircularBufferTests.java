@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+@SuppressWarnings("Convert2MethodRef")
 public class CircularBufferTests
 {
     @Test
@@ -79,12 +80,12 @@ public class CircularBufferTests
     {
         CircularBuffer buffer = new CircularBuffer(1024);
         Assertions.assertDoesNotThrow(buffer::startWriting);
-        Assertions.assertDoesNotThrow(() -> buffer.writeShort((short)0xF1F2));
+        Assertions.assertDoesNotThrow(() -> buffer.writeShort((short) 0xF1F2));
         Assertions.assertDoesNotThrow(buffer::endWriting);
         
         Assertions.assertDoesNotThrow(buffer::startReading);
-        Assertions.assertEquals((byte)0xF1, buffer.readByte());
-        Assertions.assertEquals((byte)0xF2, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF1, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF2, buffer.readByte());
         Assertions.assertDoesNotThrow(buffer::endReading);
     }
     
@@ -97,7 +98,7 @@ public class CircularBufferTests
         Assertions.assertDoesNotThrow(buffer::endWriting);
         
         Assertions.assertDoesNotThrow(buffer::startReading);
-        Assertions.assertEquals((short)0xF1F2, buffer.readShort());
+        Assertions.assertEquals((short) 0xF1F2, buffer.readShort());
         Assertions.assertDoesNotThrow(buffer::endReading);
     }
     
@@ -110,10 +111,10 @@ public class CircularBufferTests
         Assertions.assertDoesNotThrow(buffer::endWriting);
         
         Assertions.assertDoesNotThrow(buffer::startReading);
-        Assertions.assertEquals((byte)0xF1, buffer.readByte());
-        Assertions.assertEquals((byte)0xF2, buffer.readByte());
-        Assertions.assertEquals((byte)0xF3, buffer.readByte());
-        Assertions.assertEquals((byte)0xF4, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF1, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF2, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF3, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF4, buffer.readByte());
         Assertions.assertDoesNotThrow(buffer::endReading);
     }
     
@@ -139,14 +140,14 @@ public class CircularBufferTests
         Assertions.assertDoesNotThrow(buffer::endWriting);
         
         Assertions.assertDoesNotThrow(buffer::startReading);
-        Assertions.assertEquals((byte)0xF1, buffer.readByte());
-        Assertions.assertEquals((byte)0xF2, buffer.readByte());
-        Assertions.assertEquals((byte)0xF3, buffer.readByte());
-        Assertions.assertEquals((byte)0xF4, buffer.readByte());
-        Assertions.assertEquals((byte)0xF5, buffer.readByte());
-        Assertions.assertEquals((byte)0xF6, buffer.readByte());
-        Assertions.assertEquals((byte)0xF7, buffer.readByte());
-        Assertions.assertEquals((byte)0xF8, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF1, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF2, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF3, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF4, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF5, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF6, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF7, buffer.readByte());
+        Assertions.assertEquals((byte) 0xF8, buffer.readByte());
         Assertions.assertDoesNotThrow(buffer::endReading);
     }
     

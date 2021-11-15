@@ -6,6 +6,7 @@ import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("Convert2MethodRef")
 public class FontRenderer
 {
     private final FontInfo fontInfo;
@@ -112,7 +113,7 @@ public class FontRenderer
     
     public List<String> splitStringToWidth(int w, String text)
     {
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         
         String[] words = text.split(" ");
         

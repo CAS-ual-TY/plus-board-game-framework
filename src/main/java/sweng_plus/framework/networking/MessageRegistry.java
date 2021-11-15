@@ -55,16 +55,16 @@ public class MessageRegistry
         
         int oldPos = writeBuffer.getWriteIndex();
         short oldSize = (short) writeBuffer.size();
-        writeBuffer.writeShort((short)0);
-    
+        writeBuffer.writeShort((short) 0);
+        
         byte messageID = getIDForMessage(message);
         writeBuffer.writeByte(messageID);
-    
+        
         IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
         encodeMessage(writeBuffer, message, handler);
-    
+        
         writeBuffer.endWriting();
-    
+        
         short newSize = (short) writeBuffer.size();
         writeBuffer.setShort(oldPos, (short) (newSize - oldSize));
     }
@@ -88,9 +88,9 @@ public class MessageRegistry
         
         IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
         M msg = decodeMessage(readBuffer, handler);
-    
+        
         readBuffer.endReading();
-    
+        
         return () -> handler.handleMessage(msg);
     }
     

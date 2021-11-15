@@ -60,7 +60,7 @@ public class FontHelper
      */
     public static String getAvailableChars(char lastChar)
     {
-        return getAvailableChars((char)1, lastChar);
+        return getAvailableChars((char) 1, lastChar);
     }
     
     public static String getAvailableChars(char firstChar, char lastChar)

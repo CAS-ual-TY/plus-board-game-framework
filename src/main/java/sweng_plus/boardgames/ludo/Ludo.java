@@ -79,7 +79,7 @@ public class Ludo implements IGame
     @Override
     public List<IInputListener> getInputListeners()
     {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
     
     @Override

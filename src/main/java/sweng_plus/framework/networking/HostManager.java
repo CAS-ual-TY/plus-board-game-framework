@@ -31,10 +31,10 @@ public class HostManager implements Runnable, IHostManager, IConnectionInteracto
         close = false;
         
         mainLock = new ReentrantReadWriteLock();
-        runnablesForMainThread = new ArrayList<Runnable>(32);
+        runnablesForMainThread = new ArrayList<>(32);
         
         connectionsLock = new ReentrantReadWriteLock();
-        runnablesFromConnectionThreads = new ArrayList<Runnable>(32);
+        runnablesFromConnectionThreads = new ArrayList<>(32);
     }
     
     @Override

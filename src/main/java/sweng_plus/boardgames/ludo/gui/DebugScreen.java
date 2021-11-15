@@ -2,12 +2,15 @@ package sweng_plus.boardgames.ludo.gui;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
-import sweng_plus.framework.userinterface.gui.widget.*;
+import sweng_plus.framework.userinterface.gui.widget.ColoredWidget;
+import sweng_plus.framework.userinterface.gui.widget.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.InputWidget;
+import sweng_plus.framework.userinterface.gui.widget.TextureWidget;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -47,7 +50,7 @@ public class DebugScreen extends Screen
             widgets.add(new ColoredWidget(this, new Dimensions(100, 100, anchor),
                     Color4f.BLACK, Color4f.RED));
         
-        widgets.add(new InputWidget(this, new Dimensions(600,80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
+        widgets.add(new InputWidget(this, new Dimensions(600, 80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
     }
     
     @Override
@@ -171,7 +174,7 @@ public class DebugScreen extends Screen
     public void charTyped(char character)
     {
         System.out.println("charTyped '" + character + "'");
-    
+        
         super.charTyped(character);
     }
 }

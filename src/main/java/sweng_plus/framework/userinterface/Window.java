@@ -149,10 +149,7 @@ public class Window
         GL.createCapabilities();
         
         //glfwSetFramebufferSizeCallback() // Für Fenster Skalierungen
-        glfwSetFramebufferSizeCallback(windowHandle, (window, windowW, windowH) ->
-        {
-            windowResized(windowW, windowH);
-        });
+        glfwSetFramebufferSizeCallback(windowHandle, (window, windowW, windowH) -> windowResized(windowW, windowH));
     }
     
     private void windowResized(int windowW, int windowH)

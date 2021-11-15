@@ -10,7 +10,7 @@ public class PacketTests
     @Test
     void testEncodingDecoding()
     {
-        CircularBuffer buffer = new CircularBuffer(1024*4);
+        CircularBuffer buffer = new CircularBuffer(1024 * 4);
         TestMessage msg = new TestMessage("Hello World!", System.currentTimeMillis());
         MessageRegistry r = new MessageRegistry(2);
         r.registerMessage((byte) 0, new TestMessage.Handler(), TestMessage.class);
