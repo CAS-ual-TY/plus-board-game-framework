@@ -5,7 +5,7 @@ import sweng_plus.framework.userinterface.gui.util.Texture;
 
 public class TextureWidget extends Widget
 {
-    public Texture texture;
+    protected Texture texture;
     
     public TextureWidget(IWidgetParent parent, Dimensions dimensions, Texture texture)
     {

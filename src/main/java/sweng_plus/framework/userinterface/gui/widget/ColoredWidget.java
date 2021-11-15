@@ -6,8 +6,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ColoredWidget extends Widget
 {
-    public Color4f baseColor;
-    public Color4f hoverColor;
+    protected Color4f baseColor;
+    protected Color4f hoverColor;
     
     public ColoredWidget(IWidgetParent parent, Dimensions dimensions, Color4f baseColor, Color4f hoverColor)
     {

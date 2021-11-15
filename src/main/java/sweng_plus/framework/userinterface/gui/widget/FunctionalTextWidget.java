@@ -8,28 +8,28 @@ import java.util.function.Supplier;
 
 public class FunctionalTextWidget extends Widget
 {
-    protected FontRenderer renderer;
+    protected FontRenderer fontRenderer;
     protected Supplier<List<String>> text;
     protected Color4f color;
     
-    public FunctionalTextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, Supplier<List<String>> text, Color4f color)
+    public FunctionalTextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer fontRenderer, Supplier<List<String>> text, Color4f color)
     {
         super(parent, dimensions);
-        this.renderer = renderer;
+        this.fontRenderer = fontRenderer;
         this.text = text;
         this.color = color;
     }
     
-    public FunctionalTextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, Supplier<List<String>> text)
+    public FunctionalTextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer fontRenderer, Supplier<List<String>> text)
     {
-        this(parent, dimensions, renderer, null, Color4f.NEUTRAL);
+        this(parent, dimensions, fontRenderer, null, Color4f.NEUTRAL);
         this.text = text;
     }
     
     public FunctionalTextWidget adjustSizeToText()
     {
-        dimensions.w = renderer.getTextWidth(getText());
-        dimensions.h = renderer.getTextHeight(getText());
+        dimensions.w = fontRenderer.getTextWidth(getText());
+        dimensions.h = fontRenderer.getTextHeight(getText());
         
         return this;
     }
@@ -40,7 +40,7 @@ public class FunctionalTextWidget extends Widget
         super.render(deltaTick, mouseX, mouseY);
         
         color.glColor4f();
-        renderer.renderCentered(dimensions.x + dimensions.w / 2, dimensions.y + dimensions.h / 2, getText());
+        fontRenderer.renderCentered(dimensions.x + dimensions.w / 2, dimensions.y + dimensions.h / 2, getText());
     }
     
     public List<String> getText()
