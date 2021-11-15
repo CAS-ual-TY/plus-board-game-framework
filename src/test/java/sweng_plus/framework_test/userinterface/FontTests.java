@@ -74,7 +74,9 @@ public class FontTests
     public void testTextSplitting()
     {
         for(String s : fontRenderer.splitStringToWidth(200, "Das ist ein RIEEEEESEN Test! Noch einer! NOOOOOOOOOOOOOOOOOCH einer! Heh!"))
+        {
             System.out.println(s);
+        }
         
         System.out.println("--------");
     }

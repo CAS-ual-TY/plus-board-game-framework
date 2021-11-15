@@ -17,6 +17,7 @@ import java.util.List;
 
 public class OptionsScreen extends WrappedScreen
 {
+    @SuppressWarnings("ThisEscapedInObjectConstruction")
     public OptionsScreen(Screen subScreen)
     {
         super(subScreen);

@@ -22,7 +22,8 @@ public class Engine implements Runnable
     public Engine(IGame game)
     {
         this.game = game;
-        
+    
+        //noinspection ThisEscapedInObjectConstruction
         instance = this;
     }
     
@@ -91,7 +92,9 @@ public class Engine implements Runnable
             if(window.getWasResized() || game.getScreen() != screen)
             {
                 if(game.getScreen() != screen)
+                {
                     screen = game.getScreen();
+                }
                 
                 glViewport(0, 0, window.getWindowW(), window.getWindowH());
                 glMatrixMode(GL_PROJECTION);
@@ -145,7 +148,9 @@ public class Engine implements Runnable
         // GLFW initialisieren, das meiste von GLFW funktioniert sonst nicht
         // Returnt false wenns nicht geklappt hat
         if(!glfwInit())
+        {
             throw new IllegalStateException("Unable to initialize GLFW");
+        }
     }
     
     protected void cleanupGLFW()

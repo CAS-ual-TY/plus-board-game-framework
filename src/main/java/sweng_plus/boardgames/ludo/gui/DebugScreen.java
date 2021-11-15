@@ -24,6 +24,7 @@ public class DebugScreen extends Screen
     private long millisTPS = System.currentTimeMillis();
     private LinkedList<Double> tpsAverage = new LinkedList<>();
     
+    @SuppressWarnings("ThisEscapedInObjectConstruction")
     public DebugScreen(IScreenHolder screenHolder)
     {
         super(screenHolder);
@@ -47,8 +48,10 @@ public class DebugScreen extends Screen
         }
         
         for(AnchorPoint anchor : AnchorPoint.values())
+        {
             widgets.add(new ColoredWidget(this, new Dimensions(100, 100, anchor),
                     Color4f.BLACK, Color4f.RED));
+        }
         
         widgets.add(new InputWidget(this, new Dimensions(600, 80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
     }

@@ -77,16 +77,17 @@ public enum AnchorPoint
     private int floatMultToIntShift(int integer, float factor)
     {
         if(factor == 0.0F)
-            // integer * 0.0F = 0
+        {   // integer * 0.0F = 0
             return 0;
-        
+        }
         else if(factor == 0.5F)
-            // integer * 0.5F = integer / 2 = integer >> 1 (= 1x rechts shift)
+        {   // integer * 0.5F = integer / 2 = integer >> 1 (= 1x rechts shift)
             return integer >> 1;
-        
+        }
         else if(factor == 1.0F)
-            // integer * 1.0F = integer
+        {   // integer * 1.0F = integer
             return integer;
+        }
         
         throw new IllegalArgumentException("factor must be 0.0F, 0.5F or 1.0F");
     }

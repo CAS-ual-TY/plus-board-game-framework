@@ -114,7 +114,9 @@ public class Window
         glfwSetWindowSizeLimits(windowHandle, 640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
         
         if(windowHandle == MemoryUtil.NULL)
+        {
             throw new RuntimeException("Failed to create the GLFW window");
+        }
         
         // Wir setzen das Fenster hier in die Mitte
         // Beispiel, wie wir uns Daten von GLFW holen

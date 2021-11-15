@@ -65,7 +65,7 @@
   <inspection_tool class="FeatureEnvy" enabled="true" level="INFORMATION" enabled_by_default="true">
     <option name="ignoreTestCases" value="false" />
   </inspection_tool>
-  <inspection_tool class="FieldCanBeLocal" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+  <inspection_tool class="FieldCanBeLocal" enabled="true" level="INFORMATION" enabled_by_default="true" />
   <inspection_tool class="FieldMayBeFinal" enabled="false" level="WARNING" enabled_by_default="false" />
   <inspection_tool class="FillPermitsList" enabled="false" level="INFORMATION" enabled_by_default="false" />
   <inspection_tool class="FinalMethodInFinalClass" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
@@ -171,7 +171,7 @@
   <inspection_tool class="RedundantExplicitClose" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
   <inspection_tool class="RedundantLabeledSwitchRuleCodeBlock" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
   <inspection_tool class="RedundantLambdaParameterType" enabled="false" level="INFORMATION" enabled_by_default="false" />
-  <inspection_tool class="RedundantMethodOverride" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+  <inspection_tool class="RedundantMethodOverride" enabled="true" level="INFORMATION" enabled_by_default="true" />
   <inspection_tool class="ReturnSeparatedFromComputation" enabled="false" level="INFORMATION" enabled_by_default="false" />
   <inspection_tool class="SimplifiableBooleanExpression" enabled="true" level="INFORMATION" enabled_by_default="true" />
   <inspection_tool class="SimplifiableConditionalExpression" enabled="true" level="INFORMATION" enabled_by_default="true" />
@@ -188,7 +188,7 @@
   <inspection_tool class="SwitchStatementsWithoutDefault" enabled="true" level="WEAK WARNING" enabled_by_default="true">
     <option name="m_ignoreFullyCoveredEnums" value="true" />
   </inspection_tool>
-  <inspection_tool class="SystemOutErr" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+  <inspection_tool class="SystemOutErr" enabled="true" level="INFORMATION" enabled_by_default="true" />
   <inspection_tool class="ThisEscapedInConstructor" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
   <inspection_tool class="ThreadDumpStack" enabled="true" level="INFORMATION" enabled_by_default="true" />
   <inspection_tool class="ThrowablePrintStackTrace" enabled="true" level="INFORMATION" enabled_by_default="true" />
@@ -246,4 +246,16 @@
     <option name="ignoreClassesWithOnlyMain" value="true" />
   </inspection_tool>
   <inspection_tool class="VarargParameter" enabled="false" level="INFORMATION" enabled_by_default="false" />
+  <inspection_tool class="unused" enabled="true" level="INFORMATION" enabled_by_default="true">
+    <option name="LOCAL_VARIABLE" value="true" />
+    <option name="FIELD" value="true" />
+    <option name="METHOD" value="true" />
+    <option name="CLASS" value="true" />
+    <option name="PARAMETER" value="true" />
+    <option name="REPORT_PARAMETER_FOR_PUBLIC_METHODS" value="true" />
+    <option name="ADD_MAINS_TO_ENTRIES" value="true" />
+    <option name="ADD_APPLET_TO_ENTRIES" value="true" />
+    <option name="ADD_SERVLET_TO_ENTRIES" value="true" />
+    <option name="ADD_NONJAVA_TO_ENTRIES" value="true" />
+  </inspection_tool>
 </profile>

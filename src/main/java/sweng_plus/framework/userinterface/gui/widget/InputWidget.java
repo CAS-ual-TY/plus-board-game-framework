@@ -8,15 +8,15 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class InputWidget extends Widget
 {
-    protected StringBuilder builder;
-    protected FontRenderer renderer;
+    protected StringBuilder stringBuilder;
+    protected FontRenderer fontRenderer;
     
-    public InputWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer)
+    public InputWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer fontRenderer)
     {
         super(parent, dimensions);
-        this.renderer = renderer;
+        this.fontRenderer = fontRenderer;
         
-        builder = new StringBuilder();
+        stringBuilder = new StringBuilder();
     }
     
     @Override
@@ -39,27 +39,31 @@ public class InputWidget extends Widget
         glVertex3f(x2, y1, 0); // Oben Rechts
         glEnd();
         
-        int margin = (dimensions.h - renderer.getHeight()) / 2;
+        int margin = (dimensions.h - fontRenderer.getHeight()) / 2;
         int x = dimensions.x + margin; //Höhe wegen gleichem Abstand
         int y = dimensions.y + margin;
         
         Color4f.NEUTRAL.glColor4f();
         
-        renderer.render(x, y, builder.toString());
+        fontRenderer.render(x, y, stringBuilder.toString());
     }
     
     @Override
     public void keyPressed(int key, int mods)
     {
         if(key == GLFW.GLFW_KEY_BACKSPACE)
-            builder.delete(builder.length() - 1, builder.length());
+        {
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
+        }
         if(key == GLFW.GLFW_KEY_ENTER)
-            builder.setLength(0);
+        {
+            stringBuilder.setLength(0);
+        }
     }
     
     @Override
     public void charTyped(char character)
     {
-        builder.append(character);
+        stringBuilder.append(character);
     }
 }

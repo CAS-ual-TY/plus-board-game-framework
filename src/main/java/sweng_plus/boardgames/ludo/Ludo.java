@@ -30,6 +30,7 @@ public class Ludo implements IGame
     
     public Ludo()
     {
+        //noinspection ThisEscapedInObjectConstruction
         instance = this;
     }
     

@@ -72,7 +72,9 @@ public class InputHandler
             char character = (char) charCode;
             
             if(!chars.contains(character))
+            {
                 chars.add(character);
+            }
         });
         
         
