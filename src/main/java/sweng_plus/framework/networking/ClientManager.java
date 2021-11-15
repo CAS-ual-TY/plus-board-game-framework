@@ -1,43 +1,34 @@
 package sweng_plus.framework.networking;
 
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.function.Consumer;
 
-public class HostManager extends ConnectionInteractor implements IHostManager
+public class ClientManager extends ConnectionInteractor implements IClientManager
 {
-    private ServerSocket socket;
+    public Socket socket;
     
-    public HostManager(MessageRegistry registry, int port) throws IOException
+    public Thread thread;
+    
+    public ClientManager(MessageRegistry registry, String ip, int port) throws IOException
     {
         super(registry);
-        socket = new ServerSocket(port);
+        socket = new Socket(ip, port);
     }
     
     @Override
     public void run() // Network Manager Thread
     {
-        // TODO start thread
+        thread = new Thread(new Connection(() -> socket, this));
+        thread.start();
         
         super.run();
     }
     
     @Override
-    public <M> void sendPacketToClient(IClient client, M m) // Main Thread
-    {
-    
-    }
-    
-    @Override
-    public <M> void sendPacketToAllClients(M m) // Main Thread
-    {
-    
-    }
-    
-    @Override
     public <M> void sendPacketToServer(M m) // Main Thread
     {
-    
+        //socket.getOutputStream().
     }
     
     @Override
@@ -58,12 +49,12 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         
         while(true)
         {
-            //try
-            //{
-            // TODO Allen Threads joinen
-            break;
-            //}
-            //catch(InterruptedException ignored) {}
+            try
+            {
+                thread.join();
+                break;
+            }
+            catch(InterruptedException ignored) {}
         }
         
         // socket schließen
