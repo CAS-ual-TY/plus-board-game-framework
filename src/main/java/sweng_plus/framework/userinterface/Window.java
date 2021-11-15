@@ -108,6 +108,7 @@ public class Window
         // Auflösung des Hauptmonitors
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         
+        //noinspection ConstantConditions
         int monitorW = vidmode.width();
         int monitorH = vidmode.height();
         

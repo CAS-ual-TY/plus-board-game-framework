@@ -22,7 +22,7 @@ public class Engine implements Runnable
     public Engine(IGame game)
     {
         this.game = game;
-    
+        
         //noinspection ThisEscapedInObjectConstruction
         instance = this;
     }
@@ -157,6 +157,7 @@ public class Engine implements Runnable
     {
         // GLFW terminieren, Fehler callback free'n
         glfwTerminate();
+        //noinspection ConstantConditions
         glfwSetErrorCallback(null).free();
     }
     
