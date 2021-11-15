@@ -48,13 +48,24 @@ public class InputWidget extends Widget
         fontRenderer.render(x, y, stringBuilder.toString());
     }
     
+    public boolean tryDelete()
+    {
+        if(stringBuilder.isEmpty())
+        {
+            return false;
+        }
+        stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
+        return true;
+    }
+    
     @Override
     public void keyPressed(int key, int mods)
     {
         if(key == GLFW.GLFW_KEY_BACKSPACE)
         {
-            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
+            tryDelete();
         }
+        //TODO
         if(key == GLFW.GLFW_KEY_ENTER)
         {
             stringBuilder.setLength(0);
