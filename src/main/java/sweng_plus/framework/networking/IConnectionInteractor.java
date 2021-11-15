@@ -4,7 +4,7 @@ public interface IConnectionInteractor
 {
     void receivedMessage(Runnable message); // Connection Thread
     
-    MessageRegistry getMessageRegistry();
+    MessageRegistry getMessageRegistry(); // Connection Thread
     
-    boolean shouldClose();
+    boolean shouldClose(); // Connection Thread
 }

@@ -1,7 +1,6 @@
 package sweng_plus.framework.networking;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
