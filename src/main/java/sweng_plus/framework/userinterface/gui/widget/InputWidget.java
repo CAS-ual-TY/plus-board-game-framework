@@ -73,6 +73,15 @@ public class InputWidget extends Widget
     }
     
     @Override
+    public void keyRepeated(int key, int mods)
+    {
+        if(key == GLFW.GLFW_KEY_BACKSPACE)
+        {
+            tryDelete();
+        }
+    }
+    
+    @Override
     public void charTyped(char character)
     {
         stringBuilder.append(character);
