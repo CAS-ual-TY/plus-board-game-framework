@@ -1,5 +1,8 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IClientManager;
+import sweng_plus.framework.networking.interfaces.IHostManager;
+
 import java.io.IOException;
 
 public class NetworkManager

@@ -1,4 +1,4 @@
-package sweng_plus.framework.networking;
+package sweng_plus.framework.networking.util;
 
 public enum NetworkRole
 {

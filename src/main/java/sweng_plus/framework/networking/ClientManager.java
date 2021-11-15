@@ -1,5 +1,7 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IClientManager;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.function.Consumer;

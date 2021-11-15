@@ -1,5 +1,6 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IConnectionInteractor;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.io.IOException;

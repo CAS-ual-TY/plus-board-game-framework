@@ -1,5 +1,7 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IConnectionInteractor;
+
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;

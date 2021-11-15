@@ -1,4 +1,6 @@
-package sweng_plus.framework.networking;
+package sweng_plus.framework.networking.interfaces;
+
+import sweng_plus.framework.networking.MessageRegistry;
 
 public interface IConnectionInteractor
 {

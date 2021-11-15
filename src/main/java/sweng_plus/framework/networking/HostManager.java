@@ -1,5 +1,10 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IClient;
+import sweng_plus.framework.networking.interfaces.IHostManager;
+import sweng_plus.framework.networking.util.ClientStatus;
+import sweng_plus.framework.networking.util.NetworkRole;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

@@ -1,5 +1,9 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IClient;
+import sweng_plus.framework.networking.util.ClientStatus;
+import sweng_plus.framework.networking.util.NetworkRole;
+
 public class Client implements IClient
 {
     public String ip;
