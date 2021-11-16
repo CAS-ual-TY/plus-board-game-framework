@@ -6,6 +6,19 @@ import java.util.LinkedList;
 
 public class WindowScale
 {
+    /**
+     * 3840  x  2160  :  0.50 3/6<br>
+     * ----- 3520  x  1980 -----<br>
+     * 3200  x  1800  :  0.60 3/5<br>
+     * ----- 2880  x  1620 -----<br>
+     * 2560  x  1440  :  0.75 3/4<br>
+     * ----- 2240  x  1260 -----<br>
+     * 1920  x  1080  :  1.00 1.0<br>
+     * ----- 1600  x  0900 -----<br>
+     * 1280  x  0720  :  1.50 3/2<br>
+     * ----- 0960  x  0540 -----<br>
+     * 0640  x  0360  :  3.00 3/1<br>
+     */
     public static final WindowScale DEFAULT_WINDOW_SCALE_16_9 = newWindowScale(1920, 1080, 16, 9)
             .add(640, 360)
             .add(1280, 720)
