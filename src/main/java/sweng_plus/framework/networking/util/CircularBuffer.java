@@ -1,5 +1,8 @@
 package sweng_plus.framework.networking.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.nio.charset.Charset;
@@ -243,6 +246,19 @@ public class CircularBuffer
     public long peekLong()
     {
         return getLong(readIndex);
+    }
+    
+    public void writeToOutputStream(OutputStream out) throws IOException
+    {
+        while(size() > 0)
+        {
+            out.write(readByte());
+        }
+    }
+    
+    public void readFrominputStream(InputStream in) throws IOException
+    {
+        writeBytes(in.readNBytes(in.available()));
     }
     
     public void startWriting()

@@ -2,6 +2,7 @@ package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IHostManager;
+import sweng_plus.framework.networking.util.CircularBuffer;
 import sweng_plus.framework.networking.util.ClientStatus;
 import sweng_plus.framework.networking.util.NetworkRole;
 
@@ -30,8 +31,10 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     protected ReentrantReadWriteLock threadClientMapLock;
     public HashMap<Thread, Client> threadClientMap;
     
-    protected ReentrantReadWriteLock clientThreadMapLock;
-    public HashMap<Client, Thread> clientThreadMap;
+    protected ReentrantReadWriteLock clientConnectionMapLock;
+    public HashMap<IClient, Connection> clientConnectionMap;
+    
+    public CircularBuffer writeBuffer;
     
     public HostManager(MessageRegistry registry, int port) throws IOException
     {
@@ -48,16 +51,23 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         threadClientMapLock = new ReentrantReadWriteLock();
         threadClientMap = new HashMap<>();
         
-        clientThreadMapLock = new ReentrantReadWriteLock();
-        clientThreadMap = new HashMap<>();
+        clientConnectionMapLock = new ReentrantReadWriteLock();
+        clientConnectionMap = new HashMap<>();
+        
+        writeBuffer = new CircularBuffer();
     }
     
     @Override
     public void run() // Network Manager Thread
     {
-        // TODO start thread
+        listenToNewConnection();
         
         super.run();
+    }
+    
+    public void listenToNewConnection()
+    {
+        new Thread(new Connection(this::acceptNewConnection, this)).start();
     }
     
     @Override
@@ -84,7 +94,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     }
     
     @Override
-    public <M> void sendPacketToClient(IClient client, M m) // Main Thread
+    public <M> void sendPacketToClient(IClient client, M m) throws IOException // Main Thread
     {
         if(client.getRole() == NetworkRole.HOST)
         {
@@ -92,12 +102,28 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         }
         else
         {
-            // TODO
+            Connection connection;
+            
+            Lock lock = clientConnectionMapLock.readLock();
+            
+            try
+            {
+                lock.lock();
+                connection = clientConnectionMap.get(client);
+            }
+            finally
+            {
+                lock.unlock();
+            }
+            
+            getMessageRegistry().encodeMessage(writeBuffer, m);
+            
+            writeBuffer.writeToOutputStream(connection.out);
         }
     }
     
     @Override
-    public <M> void sendPacketToAllClients(M m) // Main Thread
+    public <M> void sendPacketToAllClients(M m) throws IOException // Main Thread
     {
         Lock lock = clientsListLock.readLock();
         
@@ -130,7 +156,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         super.runPackets(consumer);
     }
     
-    public Socket acceptNewConnection() // Connection Thread
+    public Socket acceptNewConnection(Connection connection) // Connection Thread
     {
         while(!shouldClose())
         {
@@ -139,6 +165,9 @@ public class HostManager extends ConnectionInteractor implements IHostManager
                 // Blockt
                 // Wirft SocketTimeoutException falls nicht erfolgreich
                 Socket socket = serverSocket.accept();
+                
+                // Connection reingekommen => Auf neue Connection hören
+                listenToNewConnection();
                 
                 Client client;
                 String ip = socket.getRemoteSocketAddress().toString();
@@ -160,11 +189,11 @@ public class HostManager extends ConnectionInteractor implements IHostManager
                     lock.unlock();
                 }
                 
-                lock = clientThreadMapLock.writeLock();
+                lock = clientConnectionMapLock.writeLock();
                 try
                 {
                     lock.lock();
-                    clientThreadMap.put(client, Thread.currentThread());
+                    clientConnectionMap.put(client, connection);
                 }
                 finally
                 {
@@ -182,14 +211,14 @@ public class HostManager extends ConnectionInteractor implements IHostManager
                     lock.unlock();
                 }
                 
-                // Auf neue Connection hören
-                new Thread(new Connection(this::acceptNewConnection, this)).start();
-                
                 return socket;
             }
             catch(SocketTimeoutException ignored) {}
             catch(IOException e)
             {
+                // Connection ist fehlgeschlagen => Auf neue Connection hören
+                listenToNewConnection();
+                
                 e.printStackTrace();
                 return null;
             }
@@ -215,11 +244,11 @@ public class HostManager extends ConnectionInteractor implements IHostManager
             lock.unlock();
         }
         
-        lock = clientThreadMapLock.writeLock();
+        lock = clientConnectionMapLock.writeLock();
         try
         {
             lock.lock();
-            clientThreadMap.remove(client);
+            clientConnectionMap.remove(client);
         }
         finally
         {
@@ -246,14 +275,17 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         // auf den connection thread warten
         // dieser sollte terminieren, sobald shouldClose == true ist
         
-        while(true)
+        for(Thread t : threadClientMap.keySet())
         {
-            //try
-            //{
-            // TODO Allen Threads joinen
-            break;
-            //}
-            //catch(InterruptedException ignored) {}
+            while(true)
+            {
+                try
+                {
+                    t.join();
+                    break;
+                }
+                catch(InterruptedException ignored) {}
+            }
         }
         
         // socket schließen

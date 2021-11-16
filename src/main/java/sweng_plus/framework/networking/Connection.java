@@ -5,17 +5,22 @@ import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.util.function.Supplier;
 
 public class Connection implements Runnable
 {
-    public Supplier<Socket> socketSuppler;
+    public SocketSupplier socketSuppler;
     public IConnectionInteractor connectionInteractor;
     
     public CircularBuffer readBuffer;
     
-    public Connection(Supplier<Socket> socketSuppler, IConnectionInteractor connectionInteractor)
+    // kann entweder Client -> Server socket sein (einfach der Socket)
+    // oder ein serverSocket.accept() call
+    public Socket socket;
+    public OutputStream out;
+    
+    public Connection(SocketSupplier socketSuppler, IConnectionInteractor connectionInteractor)
     {
         this.socketSuppler = socketSuppler;
         this.connectionInteractor = connectionInteractor;
@@ -26,9 +31,15 @@ public class Connection implements Runnable
     @Override
     public void run() // Connection Thread
     {
-        // kann entweder Client -> Server socket sein (einfach der Socket)
-        // oder ein serverSocket.accept() call
-        Socket socket = socketSuppler.get();
+        try
+        {
+            socket = socketSuppler.makeOrGetSocket(this);
+            out = socket.getOutputStream();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
         
         try
         {
@@ -50,5 +61,10 @@ public class Connection implements Runnable
         {
             connectionInteractor.socketClosedWithException(e);
         }
+    }
+    
+    public interface SocketSupplier
+    {
+        Socket makeOrGetSocket(Connection connection) throws IOException;
     }
 }

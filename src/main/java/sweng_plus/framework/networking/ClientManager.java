@@ -1,8 +1,10 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IClientManager;
+import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.function.Consumer;
 
@@ -10,27 +12,33 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
 {
     public Socket socket;
     
+    public OutputStream out;
+    public CircularBuffer writeBuffer;
+    
     public Thread thread;
     
     public ClientManager(MessageRegistry registry, String ip, int port) throws IOException
     {
         super(registry);
         socket = new Socket(ip, port);
+        out = socket.getOutputStream();
+        writeBuffer = new CircularBuffer();
     }
     
     @Override
     public void run() // Network Manager Thread
     {
-        thread = new Thread(new Connection(() -> socket, this));
+        thread = new Thread(new Connection((connection) -> socket, this));
         thread.start();
         
         super.run();
     }
     
     @Override
-    public <M> void sendPacketToServer(M m) // Main Thread
+    public <M> void sendPacketToServer(M m) throws IOException // Main Thread
     {
-        //socket.getOutputStream().
+        getMessageRegistry().encodeMessage(writeBuffer, m);
+        writeBuffer.writeToOutputStream(out);
     }
     
     @Override
