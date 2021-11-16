@@ -5,11 +5,11 @@ import java.util.List;
 
 public interface IHostManager extends IClientManager
 {
-    <M> void sendPacketToClient(IClient client, M m) throws IOException; // Main Thread
+    <M> void sendMessageToClient(IClient client, M message) throws IOException; // Main Thread
     
-    <M> void sendPacketToAllClients(M m) throws IOException; // Main Thread
+    <M> void sendMessageToAllClients(M message) throws IOException; // Main Thread
     
-    List<? extends IClient> getAllClients(); // Not Thread-Safe
+    List<? extends IClient> getAllClients(); // Main Thread
     
-    IClient getHostClient();
+    IClient getHostClient(); // Main Thread
 }

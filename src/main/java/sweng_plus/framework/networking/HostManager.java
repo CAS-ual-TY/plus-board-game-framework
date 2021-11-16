@@ -65,13 +65,13 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         super.run();
     }
     
-    public void listenToNewConnection()
+    public void listenToNewConnection() // NetworkManager Thread or Connection Thread
     {
         new Thread(new Connection(this::acceptNewConnection, this)).start();
     }
     
     @Override
-    public List<? extends IClient> getAllClients()
+    public List<? extends IClient> getAllClients() // Main Thread
     {
         Lock lock = clientsListLock.readLock();
         
@@ -88,17 +88,17 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     }
     
     @Override
-    public IClient getHostClient()
+    public IClient getHostClient() // Main Thread
     {
         return hostClient;
     }
     
     @Override
-    public <M> void sendPacketToClient(IClient client, M m) throws IOException // Main Thread
+    public <M> void sendMessageToClient(IClient client, M message) throws IOException // Main Thread
     {
         if(client.getRole() == NetworkRole.HOST)
         {
-            getMessageRegistry().getHandlerForMessage(m).handleMessage(m);
+            getMessageRegistry().getHandlerForMessage(message).handleMessage(message);
         }
         else
         {
@@ -116,14 +116,14 @@ public class HostManager extends ConnectionInteractor implements IHostManager
                 lock.unlock();
             }
             
-            getMessageRegistry().encodeMessage(writeBuffer, m);
+            getMessageRegistry().encodeMessage(writeBuffer, message);
             
             writeBuffer.writeToOutputStream(connection.out);
         }
     }
     
     @Override
-    public <M> void sendPacketToAllClients(M m) throws IOException // Main Thread
+    public <M> void sendMessageToAllClients(M message) throws IOException // Main Thread
     {
         Lock lock = clientsListLock.readLock();
         
@@ -133,7 +133,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
             
             for(Client c : clientsList)
             {
-                sendPacketToClient(c, m);
+                sendMessageToClient(c, message);
             }
         }
         finally
@@ -143,15 +143,15 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     }
     
     @Override
-    public <M> void sendPacketToServer(M m) // Main Thread
+    public <M> void sendMessageToServer(M message) // Main Thread
     {
         // Wird vom Client der auch Host ist gecallt
         // Deshalb kanns auch direkt ausgeführt werden
-        getMessageRegistry().getHandlerForMessage(m).handleMessage(m);
+        getMessageRegistry().getHandlerForMessage(message).handleMessage(message);
     }
     
     @Override
-    public void runPackets(Consumer<Runnable> consumer) // Main Thread
+    public void runMessages(Consumer<Runnable> consumer) // Main Thread
     {
         super.runPackets(consumer);
     }
@@ -230,7 +230,8 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     @Override
     public void socketClosed() // Connection Thread
     {
-        // TODO
+        // TODO callback zur Engine?
+        
         Client client;
         
         Lock lock = threadClientMapLock.writeLock();
@@ -261,7 +262,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     @Override
     public void socketClosedWithException(Exception e) // Connection Thread
     {
-        // TODO
+        e.printStackTrace();
         socketClosed();
     }
     

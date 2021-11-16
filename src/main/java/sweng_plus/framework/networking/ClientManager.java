@@ -35,14 +35,14 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
     }
     
     @Override
-    public <M> void sendPacketToServer(M m) throws IOException // Main Thread
+    public <M> void sendMessageToServer(M message) throws IOException // Main Thread
     {
-        getMessageRegistry().encodeMessage(writeBuffer, m);
+        getMessageRegistry().encodeMessage(writeBuffer, message);
         writeBuffer.writeToOutputStream(out);
     }
     
     @Override
-    public void runPackets(Consumer<Runnable> consumer) // Main Thread
+    public void runMessages(Consumer<Runnable> consumer) // Main Thread
     {
         super.runPackets(consumer);
     }
@@ -50,13 +50,14 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
     @Override
     public void socketClosed() // Connection Thread
     {
-    
+        // TODO callback zur Engine?
     }
     
     @Override
     public void socketClosedWithException(Exception e) // Connection Thread
     {
-    
+        e.printStackTrace();
+        socketClosed();
     }
     
     @Override

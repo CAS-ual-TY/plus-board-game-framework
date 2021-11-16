@@ -6,9 +6,9 @@ import java.util.function.Consumer;
 
 public interface IClientManager extends Closeable
 {
-    <M> void sendPacketToServer(M m) throws IOException; // Main Thread
+    <M> void sendMessageToServer(M message) throws IOException; // Main Thread
     
-    void runPackets(Consumer<Runnable> consumer); // Main Thread
+    void runMessages(Consumer<Runnable> consumer); // Main Thread
     
     @Override
     void close(); // Main Thread
