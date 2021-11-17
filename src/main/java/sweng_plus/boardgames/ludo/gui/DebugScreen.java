@@ -90,7 +90,7 @@ public class DebugScreen extends Screen
         Ludo.instance().fontRenderer32.render(110, Ludo.instance().fontRenderer32.getHeight(), "TPS: " + String.valueOf(Math.round(tpsAverage.stream().mapToDouble(d -> d).average().orElse(0) * 10) / 10D));
         
         Color4f.NEUTRAL.glColor4f();
-        final String abc = "abcdefghijklmnopqrstuvpxyz";
+        final String abc = "abcdefghijklmnopqrstuvwxyz";
         final String ABC = abc.toUpperCase();
         int x = 110;
         int y = 110;
