@@ -6,7 +6,7 @@ import sweng_plus.framework.userinterface.gui.util.Color4f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class InputWidget extends Widget
+public class InputWidget extends SelectableWidget
 {
     protected StringBuilder stringBuilder;
     protected FontRenderer fontRenderer;
@@ -50,7 +50,7 @@ public class InputWidget extends Widget
     
     public boolean tryDelete()
     {
-        if(stringBuilder.isEmpty())
+        if(!isSelected || stringBuilder.isEmpty())
         {
             return false;
         }
@@ -84,6 +84,9 @@ public class InputWidget extends Widget
     @Override
     public void charTyped(char character)
     {
-        stringBuilder.append(character);
+        if(isSelected)
+        {
+            stringBuilder.append(character);
+        }
     }
 }
