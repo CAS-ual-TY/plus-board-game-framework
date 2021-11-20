@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Engine implements Runnable
 {
+    public static final float FULL_DELTA_TICK = 0.0F;
     protected static Engine instance;
     
     protected final IGame game;

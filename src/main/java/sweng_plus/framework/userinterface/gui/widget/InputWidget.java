@@ -22,7 +22,7 @@ public class InputWidget extends Widget
     @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        super.render(deltaTick, mouseX, mouseY);
+        updateMouseOver(deltaTick, mouseX, mouseY);
         
         //Quad Rendern als Hintergrund:
         int x1 = dimensions.x;

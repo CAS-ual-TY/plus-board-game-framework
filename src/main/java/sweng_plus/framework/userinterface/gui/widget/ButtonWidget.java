@@ -1,6 +1,7 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
+import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 
@@ -19,20 +20,16 @@ public abstract class ButtonWidget extends Widget
     @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        super.render(deltaTick, mouseX, mouseY);
-        
         Color4f.NEUTRAL.glColor4f();
         
-        Texture texture = isMouseOver ? active : inactive;
+        Texture texture = updateMouseOver(deltaTick, mouseX, mouseY) ? active : inactive;
         texture.renderCornered(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
     }
     
     @Override
     public void mouseButtonPressed(int mouseX, int mouseY, int mouseButton, int mods)
     {
-        super.mouseButtonPressed(mouseX, mouseY, mouseButton, mods);
-        
-        if(dimensions.isMouseOver(mouseX, mouseY) && mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT)
+        if(updateMouseOver(Engine.FULL_DELTA_TICK, mouseX, mouseY) && mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT)
         {
             clicked(mouseX, mouseY, mods);
         }

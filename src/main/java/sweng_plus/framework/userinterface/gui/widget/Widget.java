@@ -14,6 +14,12 @@ public class Widget implements IWidget
         this.dimensions = dimensions;
     }
     
+    public boolean updateMouseOver(float deltaTick, int mouseX, int mouseY)
+    {
+        return isMouseOver = dimensions.isMouseOver(mouseX, mouseY);
+    }
+    
+    
     @Override
     public void init(int parentX, int parentY, int parentW, int parentH)
     {
@@ -23,7 +29,7 @@ public class Widget implements IWidget
     @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        isMouseOver = dimensions.isMouseOver(mouseX, mouseY);
+    
     }
     
     @Override

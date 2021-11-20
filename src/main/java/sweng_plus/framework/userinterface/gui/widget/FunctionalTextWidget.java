@@ -37,7 +37,7 @@ public class FunctionalTextWidget extends Widget
     @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        super.render(deltaTick, mouseX, mouseY);
+        updateMouseOver(deltaTick, mouseX, mouseY);
         
         color.glColor4f();
         fontRenderer.renderCentered(dimensions.x + dimensions.w / 2, dimensions.y + dimensions.h / 2, getText());

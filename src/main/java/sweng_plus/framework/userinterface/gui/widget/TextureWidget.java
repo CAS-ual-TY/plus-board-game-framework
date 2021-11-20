@@ -16,7 +16,7 @@ public class TextureWidget extends Widget
     @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        super.render(deltaTick, mouseX, mouseY);
+        updateMouseOver(deltaTick, mouseX, mouseY);
         
         Color4f.NEUTRAL.glColor4f();
         texture.render(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
