@@ -8,13 +8,10 @@ import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
 import sweng_plus.framework.userinterface.gui.font.FontInfo;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
-import sweng_plus.framework.userinterface.input.IInputListener;
 
 import java.awt.*;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
 
 public class Ludo implements IGame
 {
@@ -75,12 +72,6 @@ public class Ludo implements IGame
     public void render(float deltaTick)
     {
     
-    }
-    
-    @Override
-    public List<IInputListener> getInputListeners()
-    {
-        return Collections.emptyList();
     }
     
     @Override
