@@ -80,11 +80,6 @@ public class MessageRegistry
         handler.sendBytes(writeBuffer, message);
     }
     
-    /**
-     * @param readBuffer
-     * @param <M>
-     * @return Eine {@link Runnable}, welche beim Ausführen {@link IMessageHandler#handleMessage(M)} ausführt
-     */
     public <M> Runnable decodeMessage(CircularBuffer readBuffer)
     {
         readBuffer.startReading();
