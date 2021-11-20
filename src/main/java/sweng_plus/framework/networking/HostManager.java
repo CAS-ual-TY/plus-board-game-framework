@@ -2,6 +2,7 @@ package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IHostManager;
+import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 import sweng_plus.framework.networking.util.ClientStatus;
 import sweng_plus.framework.networking.util.NetworkRole;
@@ -36,7 +37,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     
     public CircularBuffer writeBuffer;
     
-    public HostManager(MessageRegistry registry, int port) throws IOException
+    public HostManager(IMessageRegistry registry, int port) throws IOException
     {
         super(registry);
         serverSocket = new ServerSocket(port);

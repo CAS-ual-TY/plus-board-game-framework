@@ -1,6 +1,7 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IConnectionInteractor;
+import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.function.Consumer;
 
 public abstract class ConnectionInteractor implements IConnectionInteractor, Runnable, Closeable
 {
-    public MessageRegistry registry;
+    public IMessageRegistry registry;
     
     protected ReentrantReadWriteLock closeLock;
     protected boolean close;
@@ -22,7 +23,7 @@ public abstract class ConnectionInteractor implements IConnectionInteractor, Run
     protected ReentrantReadWriteLock connectionThreadMessagesLock;
     protected List<Runnable> connectionThreadMessages;
     
-    public ConnectionInteractor(MessageRegistry registry)
+    public ConnectionInteractor(IMessageRegistry registry)
     {
         this.registry = registry;
         
@@ -114,7 +115,7 @@ public abstract class ConnectionInteractor implements IConnectionInteractor, Run
     }
     
     @Override
-    public MessageRegistry getMessageRegistry()
+    public IMessageRegistry getMessageRegistry()
     {
         return registry;
     }

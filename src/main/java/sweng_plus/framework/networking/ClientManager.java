@@ -1,6 +1,7 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IClientManager;
+import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
     
     public Thread thread;
     
-    public ClientManager(MessageRegistry registry, String ip, int port) throws IOException
+    public ClientManager(IMessageRegistry registry, String ip, int port) throws IOException
     {
         super(registry);
         socket = new Socket(ip, port);
