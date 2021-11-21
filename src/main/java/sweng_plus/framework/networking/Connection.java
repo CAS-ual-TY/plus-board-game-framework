@@ -53,7 +53,7 @@ public class Connection<C extends IClient> implements Runnable
                 while(readBuffer.size() > Short.BYTES && readBuffer.size() >= readBuffer.peekShort())
                 {
                     connectionInteractor.getMessageRegistry().decodeMessage(readBuffer, (msg, handler) ->
-                        connectionInteractor.receivedMessage((client) -> handler.handleMessage(client, msg))
+                            connectionInteractor.receivedMessage((client) -> handler.handleMessage(client, msg))
                     );
                 }
             }
