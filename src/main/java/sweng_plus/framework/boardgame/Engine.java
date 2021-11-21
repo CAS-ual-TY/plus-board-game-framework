@@ -46,20 +46,28 @@ public class Engine implements Runnable
     @Override
     public void run()
     {
+        pre();
+        loop();
+        post();
+    }
+    
+    protected void pre()
+    {
         initGLFW();
         game.preInit();
-        
+    
         createWindow();
         window.init();
         game.init();
-        
+    
         inputHandler = window.getInputHandler();
         inputHandler.setup();
         initOpenGL();
         game.postInit();
-        
-        loop();
-        
+    }
+    
+    protected void post()
+    {
         game.cleanup();
         inputHandler.free();
         window.destroy();

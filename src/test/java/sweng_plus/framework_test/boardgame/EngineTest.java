@@ -10,27 +10,22 @@ public class EngineTest extends Engine
         super(game);
     }
     
+    @Override
     public void pre()
     {
-        initGLFW();
-        game.preInit();
-        
-        createWindow();
-        window.init();
-        game.init();
-        
-        inputHandler = window.getInputHandler();
-        inputHandler.setup();
-        initOpenGL();
-        game.postInit();
+        super.pre();
     }
     
+    @Override
     public void post()
     {
-        game.cleanup();
-        inputHandler.free();
-        window.destroy();
-        cleanupGLFW();
+        super.post();
+    }
+    
+    @Override
+    public void loop()
+    {
+        super.loop();
     }
     
     @Override
