@@ -2,6 +2,7 @@ package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.util.ClientStatus;
+import sweng_plus.framework.networking.util.IClientFactory;
 import sweng_plus.framework.networking.util.NetworkRole;
 
 public class Client implements IClient
@@ -45,5 +46,10 @@ public class Client implements IClient
     public void changeStatus(ClientStatus status)
     {
         this.status = status;
+    }
+    
+    public static IClientFactory<Client> createFactory()
+    {
+        return Client::new;
     }
 }
