@@ -1,9 +1,11 @@
 package sweng_plus.framework_test.networking;
 
+import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IMessageHandler;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public class TestMessage
 {
@@ -35,7 +37,7 @@ public class TestMessage
         }
         
         @Override
-        public void handleMessage(TestMessage msg)
+        public void handleMessage(Optional<IClient> clientOptional, TestMessage msg)
         {
             System.out.println(msg.timestamp + ": " + msg.message);
         }

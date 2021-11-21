@@ -5,7 +5,6 @@ import sweng_plus.framework.networking.interfaces.IHostManager;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 import sweng_plus.framework.networking.util.ClientStatus;
-import sweng_plus.framework.networking.util.NetworkRole;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,6 +13,7 @@ import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -97,9 +97,9 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     @Override
     public <M> void sendMessageToClient(IClient client, M message) throws IOException // Main Thread
     {
-        if(client.getRole() == NetworkRole.HOST)
+        if(client == getHostClient())
         {
-            getMessageRegistry().getHandlerForMessage(message).handleMessage(message);
+            getMessageRegistry().getHandlerForMessage(message).handleMessage(Optional.of(getHostClient()), message);
         }
         else
         {
@@ -148,7 +148,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     {
         // Wird vom Client der auch Host ist gecallt
         // Deshalb kanns auch direkt ausgeführt werden
-        getMessageRegistry().getHandlerForMessage(message).handleMessage(message);
+        getMessageRegistry().getHandlerForMessage(message).handleMessage(Optional.of(getHostClient()), message);
     }
     
     @Override
@@ -300,5 +300,11 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         {
             throw new RuntimeException(e);
         }
+    }
+    
+    @Override
+    protected Optional<IClient> getClientForConnThread(Thread thread)
+    {
+        return Optional.of(threadClientMap.get(thread));
     }
 }

@@ -51,7 +51,10 @@ public class Connection implements Runnable
                 
                 while(readBuffer.size() > Short.BYTES && readBuffer.size() >= readBuffer.peekShort())
                 {
-                    connectionInteractor.receivedMessage(connectionInteractor.getMessageRegistry().decodeMessage(readBuffer));
+                    connectionInteractor.getMessageRegistry().decodeMessage(readBuffer, (msg, handler) ->
+                    {
+                        connectionInteractor.receivedMessage((client) -> handler.handleMessage(client, msg));
+                    });
                 }
             }
             

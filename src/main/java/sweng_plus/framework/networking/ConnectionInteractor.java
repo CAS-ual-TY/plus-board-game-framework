@@ -1,11 +1,13 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IConnectionInteractor;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
@@ -99,14 +101,16 @@ public abstract class ConnectionInteractor implements IConnectionInteractor, Run
     }
     
     @Override
-    public void receivedMessage(Runnable message)
+    public void receivedMessage(Consumer<Optional<IClient>> message)
     {
+        Optional<IClient> client = getClientForConnThread(Thread.currentThread());
+        
         Lock lock = connectionThreadMessagesLock.writeLock();
         
         try
         {
             lock.lock();
-            connectionThreadMessages.add(message);
+            connectionThreadMessages.add(() -> message.accept(client));
         }
         finally
         {
@@ -125,6 +129,8 @@ public abstract class ConnectionInteractor implements IConnectionInteractor, Run
     
     @Override
     public abstract void socketClosedWithException(Exception e);
+    
+    protected abstract Optional<IClient> getClientForConnThread(Thread thread);
     
     @Override
     public boolean shouldClose()

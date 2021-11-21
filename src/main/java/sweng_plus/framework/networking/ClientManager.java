@@ -1,5 +1,6 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IClientManager;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
@@ -7,6 +8,7 @@ import sweng_plus.framework.networking.util.CircularBuffer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ClientManager extends ConnectionInteractor implements IClientManager
@@ -91,5 +93,11 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
         {
             throw new RuntimeException(e);
         }
+    }
+    
+    @Override
+    protected Optional<IClient> getClientForConnThread(Thread thread)
+    {
+        return Optional.empty();
     }
 }

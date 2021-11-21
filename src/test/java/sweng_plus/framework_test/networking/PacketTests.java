@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import sweng_plus.framework.networking.MessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
+import java.util.Optional;
+
 public class PacketTests
 {
     @Test
@@ -16,12 +18,12 @@ public class PacketTests
         r.registerMessage((byte) 0, new TestMessage.Handler(), TestMessage.class);
         r.encodeMessage(buffer, msg);
         
-        r.<TestMessage>decodeMessage(buffer, (handler, msg2) ->
+        r.<TestMessage>decodeMessage(buffer, (msg2, handler) ->
         {
             Assertions.assertTrue(buffer.isEmpty());
             Assertions.assertEquals(msg.message, msg2.message);
             Assertions.assertEquals(Long.toBinaryString(msg.timestamp), Long.toBinaryString(msg2.timestamp));
-            handler.handleMessage(msg2);
+            handler.handleMessage(Optional.empty(), msg2);
         });
     }
 }

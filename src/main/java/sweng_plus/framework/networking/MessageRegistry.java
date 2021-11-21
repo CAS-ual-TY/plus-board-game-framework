@@ -4,6 +4,8 @@ import sweng_plus.framework.networking.interfaces.IMessageHandler;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
+import java.util.function.BiConsumer;
+
 @SuppressWarnings("unchecked")
 public class MessageRegistry implements IMessageRegistry
 {
@@ -59,7 +61,7 @@ public class MessageRegistry implements IMessageRegistry
     }
     
     @Override
-    public <M> void encodeMessage(CircularBuffer writeBuffer, M message)
+    public <M> void encodeMessage(CircularBuffer writeBuffer, M message, BiConsumer<M, IMessageHandler<M>> messageHandlerConsumer)
     {
         writeBuffer.startWriting();
         
@@ -71,21 +73,18 @@ public class MessageRegistry implements IMessageRegistry
         writeBuffer.writeByte(messageID);
         
         IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
-        encodeMessage(writeBuffer, message, handler);
+        handler.sendBytes(writeBuffer, message);
         
         writeBuffer.endWriting();
         
         short newSize = (short) writeBuffer.size();
         writeBuffer.setShort(oldPos, (short) (newSize - oldSize));
-    }
-    
-    public <M> void encodeMessage(CircularBuffer writeBuffer, M message, IMessageHandler<M> handler)
-    {
-        handler.sendBytes(writeBuffer, message);
+        
+        messageHandlerConsumer.accept(message, handler);
     }
     
     @Override
-    public <M> Runnable decodeMessage(CircularBuffer readBuffer)
+    public <M> M decodeMessage(CircularBuffer readBuffer, BiConsumer<M, IMessageHandler<M>> messageHandlerConsumer)
     {
         readBuffer.startReading();
         
@@ -93,34 +92,12 @@ public class MessageRegistry implements IMessageRegistry
         byte messageID = readBuffer.readByte();
         
         IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
-        M msg = decodeMessage(readBuffer, handler);
+        M msg = handler.receiveBytes(readBuffer);
         
         readBuffer.endReading();
         
-        return () -> handler.handleMessage(msg);
-    }
-    
-    public <M> M decodeMessage(CircularBuffer readBuffer, IMessageHandler<M> handler)
-    {
-        return handler.receiveBytes(readBuffer);
-    }
-    
-    public <M> void decodeMessage(CircularBuffer readBuffer, MessageInfoConsumer<M> consumer)
-    {
-        short size = readBuffer.readShort();
-        byte messageID = readBuffer.readByte();
-        IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
-        M msg = decodeMessage(readBuffer, handler);
-        consumer.accept(handler, msg);
-    }
-    
-    public <M> void runMessage(M message)
-    {
-    
-    }
-    
-    public interface MessageInfoConsumer<M>
-    {
-        void accept(IMessageHandler<M> handler, M msg);
+        messageHandlerConsumer.accept(msg, handler);
+        
+        return msg;
     }
 }
