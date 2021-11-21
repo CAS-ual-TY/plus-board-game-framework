@@ -3,6 +3,7 @@ package sweng_plus.framework_test.networking;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sweng_plus.framework.networking.MessageRegistry;
+import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ public class PacketTests
     {
         CircularBuffer buffer = new CircularBuffer(1024 * 4);
         TestMessage msg = new TestMessage("Hello World!", System.currentTimeMillis());
-        MessageRegistry r = new MessageRegistry(2);
+        MessageRegistry<IClient> r = new MessageRegistry(2);
         r.registerMessage((byte) 0, new TestMessage.Handler(), TestMessage.class);
         r.encodeMessage(buffer, msg);
         

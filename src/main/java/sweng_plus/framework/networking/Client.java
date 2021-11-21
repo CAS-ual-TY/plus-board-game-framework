@@ -41,14 +41,9 @@ public class Client implements IClient
     }
     
     // TODO Thread-Safe machen
-    public Client changeStatus(ClientStatus status)
+    @Override
+    public void changeStatus(ClientStatus status)
     {
         this.status = status;
-        return this;
-    }
-    
-    public static Client makeHost()
-    {
-        return new Client("host", NetworkRole.HOST, ClientStatus.CONNECTED);
     }
 }

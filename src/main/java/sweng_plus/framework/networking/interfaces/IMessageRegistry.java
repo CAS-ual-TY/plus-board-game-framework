@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
 /**
  * Used as a client-server protocol.
  */
-public interface IMessageRegistry
+public interface IMessageRegistry<C extends IClient>
 {
     /**
      * Registers a new message to the protocol.
@@ -20,7 +20,7 @@ public interface IMessageRegistry
      * @return The {@link IMessageRegistry} itself.
      * @throws IllegalArgumentException In case the given ID is already in use.
      */
-    <M> MessageRegistry registerMessage(byte id, IMessageHandler<M> handler, Class<M> messageClass) throws IllegalArgumentException;
+    <M> MessageRegistry<C> registerMessage(byte id, IMessageHandler<M, C> handler, Class<M> messageClass) throws IllegalArgumentException;
     
     /**
      * Encode a message and write it to the given {@link CircularBuffer}.
@@ -29,9 +29,9 @@ public interface IMessageRegistry
      * @param message                The message to encode.
      * @param <M>                    The type of the message.
      * @param messageHandlerConsumer A way to access the involved {@link IMessageHandler} without having to
-     *                               call the potentially costly {@link #getHandlerForMessage(M)}
+     *                               call the potentially costly {@link #getHandlerForMessage(M)}.
      */
-    <M> void encodeMessage(CircularBuffer writeBuffer, M message, BiConsumer<M, IMessageHandler<M>> messageHandlerConsumer);
+    <M> void encodeMessage(CircularBuffer writeBuffer, M message, BiConsumer<M, IMessageHandler<M, C>> messageHandlerConsumer);
     
     /**
      * Simplified version of {@link #encodeMessage(CircularBuffer, Object, BiConsumer)}.
@@ -47,10 +47,10 @@ public interface IMessageRegistry
      * @param readBuffer             The {@link CircularBuffer} to read from.
      * @param <M>                    The type of the message.
      * @param messageHandlerConsumer A way to access the involved {@link IMessageHandler} without having to
-     *                               call the potentially costly {@link #getHandlerForMessage(M)}
+     *                               call the potentially costly {@link #getHandlerForMessage(M)}.
      * @return The message.
      */
-    <M> M decodeMessage(CircularBuffer readBuffer, BiConsumer<M, IMessageHandler<M>> messageHandlerConsumer);
+    <M> M decodeMessage(CircularBuffer readBuffer, BiConsumer<M, IMessageHandler<M, C>> messageHandlerConsumer);
     
     /**
      * Simplified version of {@link #decodeMessage(CircularBuffer, BiConsumer)}.
@@ -67,5 +67,5 @@ public interface IMessageRegistry
      * @param <M>     The type of the message.
      * @return The {@link IMessageHandler} to be used for the given message.
      */
-    <M> IMessageHandler<M> getHandlerForMessage(M message);
+    <M> IMessageHandler<M, C> getHandlerForMessage(M message);
 }

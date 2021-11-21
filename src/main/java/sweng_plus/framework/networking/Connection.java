@@ -1,5 +1,6 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IConnectionInteractor;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
@@ -8,10 +9,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Connection implements Runnable
+public class Connection<C extends IClient> implements Runnable
 {
-    public SocketSupplier socketSuppler;
-    public IConnectionInteractor connectionInteractor;
+    public SocketSupplier<C> socketSuppler;
+    public IConnectionInteractor<C> connectionInteractor;
     
     public CircularBuffer readBuffer;
     
@@ -20,7 +21,7 @@ public class Connection implements Runnable
     public Socket socket;
     public OutputStream out;
     
-    public Connection(SocketSupplier socketSuppler, IConnectionInteractor connectionInteractor)
+    public Connection(SocketSupplier<C> socketSuppler, IConnectionInteractor<C> connectionInteractor)
     {
         this.socketSuppler = socketSuppler;
         this.connectionInteractor = connectionInteractor;
@@ -52,9 +53,8 @@ public class Connection implements Runnable
                 while(readBuffer.size() > Short.BYTES && readBuffer.size() >= readBuffer.peekShort())
                 {
                     connectionInteractor.getMessageRegistry().decodeMessage(readBuffer, (msg, handler) ->
-                    {
-                        connectionInteractor.receivedMessage((client) -> handler.handleMessage(client, msg));
-                    });
+                        connectionInteractor.receivedMessage((client) -> handler.handleMessage(client, msg))
+                    );
                 }
             }
             
@@ -66,8 +66,8 @@ public class Connection implements Runnable
         }
     }
     
-    public interface SocketSupplier
+    public interface SocketSupplier<C extends IClient>
     {
-        Socket makeOrGetSocket(Connection connection) throws IOException;
+        Socket makeOrGetSocket(Connection<C> connection) throws IOException;
     }
 }

@@ -5,6 +5,7 @@ import sweng_plus.framework.networking.interfaces.IHostManager;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 import sweng_plus.framework.networking.util.ClientStatus;
+import sweng_plus.framework.networking.util.IClientFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -19,31 +20,35 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
-public class HostManager extends ConnectionInteractor implements IHostManager
+public class HostManager<C extends IClient> extends ConnectionInteractor<C> implements IHostManager<C>
 {
+    public IClientFactory<C> clientFactory;
+    
     public ServerSocket serverSocket;
     
-    public Client hostClient;
+    public C hostClient;
     
     protected ReentrantReadWriteLock clientsListLock;
     // Enthält alle Clients, auch die, die disconnected sind oder gekickt wurden
-    public LinkedList<Client> clientsList;
+    public LinkedList<C> clientsList;
     
     protected ReentrantReadWriteLock threadClientMapLock;
-    public HashMap<Thread, Client> threadClientMap;
+    public HashMap<Thread, C> threadClientMap;
     
     protected ReentrantReadWriteLock clientConnectionMapLock;
-    public HashMap<IClient, Connection> clientConnectionMap;
+    public HashMap<C, Connection<C>> clientConnectionMap;
     
     public CircularBuffer writeBuffer;
     
-    public HostManager(IMessageRegistry registry, int port) throws IOException
+    public HostManager(IMessageRegistry<C> registry, IClientFactory<C> clientFactory, int port) throws IOException
     {
         super(registry);
+        this.clientFactory = clientFactory;
+        
         serverSocket = new ServerSocket(port);
         serverSocket.setSoTimeout((int) TimeUnit.MILLISECONDS.toMillis(100));
         
-        hostClient = Client.makeHost();
+        hostClient = clientFactory.makeHost();
         
         clientsListLock = new ReentrantReadWriteLock();
         clientsList = new LinkedList<>();
@@ -68,11 +73,11 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     
     public void listenToNewConnection() // NetworkManager Thread or Connection Thread
     {
-        new Thread(new Connection(this::acceptNewConnection, this)).start();
+        new Thread(new Connection<>(this::acceptNewConnection, this)).start();
     }
     
     @Override
-    public List<? extends IClient> getAllClients() // Main Thread
+    public List<C> getAllClients() // Main Thread
     {
         Lock lock = clientsListLock.readLock();
         
@@ -89,13 +94,13 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     }
     
     @Override
-    public IClient getHostClient() // Main Thread
+    public C getHostClient() // Main Thread
     {
         return hostClient;
     }
     
     @Override
-    public <M> void sendMessageToClient(IClient client, M message) throws IOException // Main Thread
+    public <M> void sendMessageToClient(C client, M message) throws IOException // Main Thread
     {
         if(client == getHostClient())
         {
@@ -103,7 +108,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         }
         else
         {
-            Connection connection;
+            Connection<C> connection;
             
             Lock lock = clientConnectionMapLock.readLock();
             
@@ -132,7 +137,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         {
             lock.lock();
             
-            for(Client c : clientsList)
+            for(C c : clientsList)
             {
                 sendMessageToClient(c, message);
             }
@@ -157,7 +162,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
         super.runPackets(consumer);
     }
     
-    public Socket acceptNewConnection(Connection connection) // Connection Thread
+    public Socket acceptNewConnection(Connection<C> connection) // Connection Thread
     {
         while(!shouldClose())
         {
@@ -170,7 +175,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
                 // Connection reingekommen => Auf neue Connection hören
                 listenToNewConnection();
                 
-                Client client;
+                C client;
                 String ip = socket.getRemoteSocketAddress().toString();
                 
                 Lock lock = clientsListLock.writeLock();
@@ -178,7 +183,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
                 {
                     lock.lock();
                     
-                    client = clientsList.stream().filter(c -> c.getIP().equals(ip)).findFirst().orElse(new Client(ip));
+                    client = clientsList.stream().filter(c -> c.getIP().equals(ip)).findFirst().orElse(clientFactory.makeClient(ip));
                     
                     if(!clientsList.contains(client))
                     {
@@ -233,7 +238,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     {
         // TODO callback zur Engine?
         
-        Client client;
+        C client;
         
         Lock lock = threadClientMapLock.writeLock();
         try
@@ -303,7 +308,7 @@ public class HostManager extends ConnectionInteractor implements IHostManager
     }
     
     @Override
-    protected Optional<IClient> getClientForConnThread(Thread thread)
+    protected Optional<C> getClientForConnThread(Thread thread)
     {
         return Optional.of(threadClientMap.get(thread));
     }

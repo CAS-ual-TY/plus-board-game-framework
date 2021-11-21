@@ -3,11 +3,11 @@ package sweng_plus.framework.networking.interfaces;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public interface IConnectionInteractor
+public interface IConnectionInteractor<C extends IClient>
 {
-    void receivedMessage(Consumer<Optional<IClient>> message); // Connection Thread
+    void receivedMessage(Consumer<Optional<C>> message); // Connection Thread
     
-    IMessageRegistry getMessageRegistry(); // Connection Thread
+    IMessageRegistry<C> getMessageRegistry(); // Connection Thread
     
     void socketClosed(); // Connection Thread
     

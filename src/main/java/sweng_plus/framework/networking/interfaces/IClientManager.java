@@ -6,7 +6,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-public interface IClientManager extends Closeable
+public interface IClientManager<C extends IClient> extends Closeable
 {
     /**
      * Sends a message to the server. The message must be registered in the used {@link MessageRegistry} (= protocol).

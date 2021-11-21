@@ -12,9 +12,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
-public abstract class ConnectionInteractor implements IConnectionInteractor, Runnable, Closeable
+public abstract class ConnectionInteractor<C extends IClient> implements IConnectionInteractor<C>, Runnable, Closeable
 {
-    public IMessageRegistry registry;
+    public IMessageRegistry<C> registry;
     
     protected ReentrantReadWriteLock closeLock;
     protected boolean close;
@@ -25,7 +25,7 @@ public abstract class ConnectionInteractor implements IConnectionInteractor, Run
     protected ReentrantReadWriteLock connectionThreadMessagesLock;
     protected List<Runnable> connectionThreadMessages;
     
-    public ConnectionInteractor(IMessageRegistry registry)
+    public ConnectionInteractor(IMessageRegistry<C> registry)
     {
         this.registry = registry;
         
@@ -101,9 +101,9 @@ public abstract class ConnectionInteractor implements IConnectionInteractor, Run
     }
     
     @Override
-    public void receivedMessage(Consumer<Optional<IClient>> message)
+    public void receivedMessage(Consumer<Optional<C>> message)
     {
-        Optional<IClient> client = getClientForConnThread(Thread.currentThread());
+        Optional<C> client = getClientForConnThread(Thread.currentThread());
         
         Lock lock = connectionThreadMessagesLock.writeLock();
         
@@ -119,7 +119,7 @@ public abstract class ConnectionInteractor implements IConnectionInteractor, Run
     }
     
     @Override
-    public IMessageRegistry getMessageRegistry()
+    public IMessageRegistry<C> getMessageRegistry()
     {
         return registry;
     }
@@ -130,7 +130,7 @@ public abstract class ConnectionInteractor implements IConnectionInteractor, Run
     @Override
     public abstract void socketClosedWithException(Exception e);
     
-    protected abstract Optional<IClient> getClientForConnThread(Thread thread);
+    protected abstract Optional<C> getClientForConnThread(Thread thread);
     
     @Override
     public boolean shouldClose()

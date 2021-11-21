@@ -1,5 +1,6 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IMessageHandler;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
@@ -7,9 +8,9 @@ import sweng_plus.framework.networking.util.CircularBuffer;
 import java.util.function.BiConsumer;
 
 @SuppressWarnings("unchecked")
-public class MessageRegistry implements IMessageRegistry
+public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
 {
-    private final IMessageHandler<?>[] handlers;
+    private final IMessageHandler<?, C>[] handlers;
     private final Class<?>[] messageClasses; //TODO HashMap stattdessen vllt?
     
     public MessageRegistry(int messages)
@@ -19,12 +20,12 @@ public class MessageRegistry implements IMessageRegistry
             throw new IllegalArgumentException("Max 128 message types allowed");
         }
         
-        handlers = new IMessageHandler<?>[messages];
+        handlers = new IMessageHandler[messages];
         messageClasses = new Class<?>[messages];
     }
     
     @Override
-    public <M> MessageRegistry registerMessage(byte id, IMessageHandler<M> handler, Class<M> messageClass)
+    public <M> MessageRegistry<C> registerMessage(byte id, IMessageHandler<M, C> handler, Class<M> messageClass)
     {
         if(id < 0 || id >= handlers.length || handlers[id] != null)
         {
@@ -55,13 +56,13 @@ public class MessageRegistry implements IMessageRegistry
     }
     
     @Override
-    public <M> IMessageHandler<M> getHandlerForMessage(M message)
+    public <M> IMessageHandler<M, C> getHandlerForMessage(M message)
     {
-        return (IMessageHandler<M>) handlers[getIDForMessage(message)];
+        return (IMessageHandler<M, C>) handlers[getIDForMessage(message)];
     }
     
     @Override
-    public <M> void encodeMessage(CircularBuffer writeBuffer, M message, BiConsumer<M, IMessageHandler<M>> messageHandlerConsumer)
+    public <M> void encodeMessage(CircularBuffer writeBuffer, M message, BiConsumer<M, IMessageHandler<M, C>> messageHandlerConsumer)
     {
         writeBuffer.startWriting();
         
@@ -72,7 +73,7 @@ public class MessageRegistry implements IMessageRegistry
         byte messageID = getIDForMessage(message);
         writeBuffer.writeByte(messageID);
         
-        IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
+        IMessageHandler<M, C> handler = (IMessageHandler<M, C>) handlers[messageID];
         handler.sendBytes(writeBuffer, message);
         
         writeBuffer.endWriting();
@@ -84,14 +85,14 @@ public class MessageRegistry implements IMessageRegistry
     }
     
     @Override
-    public <M> M decodeMessage(CircularBuffer readBuffer, BiConsumer<M, IMessageHandler<M>> messageHandlerConsumer)
+    public <M> M decodeMessage(CircularBuffer readBuffer, BiConsumer<M, IMessageHandler<M, C>> messageHandlerConsumer)
     {
         readBuffer.startReading();
         
         short size = readBuffer.readShort();
         byte messageID = readBuffer.readByte();
         
-        IMessageHandler<M> handler = (IMessageHandler<M>) handlers[messageID];
+        IMessageHandler<M, C> handler = (IMessageHandler<M, C>) handlers[messageID];
         M msg = handler.receiveBytes(readBuffer);
         
         readBuffer.endReading();

@@ -5,7 +5,7 @@ import sweng_plus.framework.networking.MessageRegistry;
 import java.io.IOException;
 import java.util.List;
 
-public interface IHostManager extends IClientManager
+public interface IHostManager<C extends IClient> extends IClientManager<C>
 {
     /**
      * Sends a message to the given {@link IClient} object. The message must be registered
@@ -16,7 +16,7 @@ public interface IHostManager extends IClientManager
      * @param <M>     The type of the message.
      * @throws IOException
      */
-    <M> void sendMessageToClient(IClient client, M message) throws IOException; // Main Thread
+    <M> void sendMessageToClient(C client, M message) throws IOException; // Main Thread
     
     /**
      * Sends a message to all {@link IClient} objects which are currently connected to the server.
@@ -32,7 +32,7 @@ public interface IHostManager extends IClientManager
      * @return all clients represented as {@link IClient} objects which have ever connected to this server.
      * @see IClient#getStatus()
      */
-    List<? extends IClient> getAllClients(); // Main Thread
+    List<C> getAllClients(); // Main Thread
     
     /**
      * @return The {@link IClient} object representing the host.

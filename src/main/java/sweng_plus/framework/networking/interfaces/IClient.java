@@ -10,4 +10,6 @@ public interface IClient
     NetworkRole getRole();
     
     ClientStatus getStatus();
+    
+    void changeStatus(ClientStatus status);
 }

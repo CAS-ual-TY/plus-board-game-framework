@@ -18,7 +18,7 @@ public class TestMessage
         this.timestamp = timestamp;
     }
     
-    public static class Handler implements IMessageHandler<TestMessage>
+    public static class Handler implements IMessageHandler<TestMessage, IClient>
     {
         @Override
         public TestMessage receiveBytes(CircularBuffer buf)

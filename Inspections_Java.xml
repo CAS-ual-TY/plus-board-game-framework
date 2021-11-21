@@ -151,6 +151,7 @@
   </inspection_tool>
   <inspection_tool class="OptionalContainsCollection" enabled="true" level="INFORMATION" enabled_by_default="true" />
   <inspection_tool class="OptionalIsPresent" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+  <inspection_tool class="OptionalUsedAsFieldOrParameterType" enabled="false" level="WARNING" enabled_by_default="false" />
   <inspection_tool class="PackageVisibleField" enabled="true" level="WARNING" enabled_by_default="true" />
   <inspection_tool class="PackageVisibleInnerClass" enabled="true" level="WARNING" enabled_by_default="true">
     <option name="ignoreEnums" value="false" />

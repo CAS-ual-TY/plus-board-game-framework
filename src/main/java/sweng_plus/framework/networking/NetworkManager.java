@@ -4,6 +4,7 @@ import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IClientManager;
 import sweng_plus.framework.networking.interfaces.IHostManager;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
+import sweng_plus.framework.networking.util.IClientFactory;
 
 import java.io.IOException;
 
@@ -22,15 +23,17 @@ public class NetworkManager
      * <p>In the case of this server sending messages to the host client or vice versa, the messages are not encoded
      * but simply run immediately.</p>
      *
-     * @param registry The {@link MessageRegistry}, basically a representation of the used protocol which must be
-     *                 the same on both client and server.
-     * @param port     The port to host on.
+     * @param registry      The {@link MessageRegistry}, basically a representation of the used protocol which must be
+     *                      the same on both client and server.
+     * @param clientFactory A factory creating instances of {@link IClient}.
+     * @param port          The port to host on.
+     * @param <C>           The type extending {@link IClient} used for representing clients.
      * @return An {@link IHostManager} object for interacting with clients.
      * @throws IOException
      */
-    public static IHostManager host(IMessageRegistry registry, int port) throws IOException
+    public static <C extends IClient> IHostManager<C> host(IMessageRegistry<C> registry, IClientFactory<C> clientFactory, int port) throws IOException
     {
-        HostManager hostManager = new HostManager(registry, port);
+        HostManager<C> hostManager = new HostManager<>(registry, clientFactory, port);
         Thread thread = new Thread(hostManager);
         thread.start();
         return hostManager;
@@ -43,12 +46,13 @@ public class NetworkManager
      *                 the same on both client and server.
      * @param ip       The IP to connect to.
      * @param port     The port to connect to.
+     * @param <C>      The type extending {@link IClient} used for representing clients.
      * @return An {@link IClientManager} object for interacting with the server.
      * @throws IOException
      */
-    public static IClientManager connect(IMessageRegistry registry, String ip, int port) throws IOException
+    public static <C extends IClient> IClientManager<C> connect(IMessageRegistry<C> registry, String ip, int port) throws IOException
     {
-        ClientManager clientManager = new ClientManager(registry, ip, port);
+        ClientManager<C> clientManager = new ClientManager<>(registry, ip, port);
         Thread thread = new Thread(clientManager);
         thread.start();
         return clientManager;

@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class ClientManager extends ConnectionInteractor implements IClientManager
+public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager<C>
 {
     public Socket socket;
     
@@ -20,7 +20,7 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
     
     public Thread thread;
     
-    public ClientManager(IMessageRegistry registry, String ip, int port) throws IOException
+    public ClientManager(IMessageRegistry<C> registry, String ip, int port) throws IOException
     {
         super(registry);
         socket = new Socket(ip, port);
@@ -31,7 +31,7 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
     @Override
     public void run() // Network Manager Thread
     {
-        thread = new Thread(new Connection((connection) -> socket, this));
+        thread = new Thread(new Connection<>((connection) -> socket, this));
         thread.start();
         
         super.run();
@@ -96,7 +96,7 @@ public class ClientManager extends ConnectionInteractor implements IClientManage
     }
     
     @Override
-    protected Optional<IClient> getClientForConnThread(Thread thread)
+    protected Optional<C> getClientForConnThread(Thread thread)
     {
         return Optional.empty();
     }
