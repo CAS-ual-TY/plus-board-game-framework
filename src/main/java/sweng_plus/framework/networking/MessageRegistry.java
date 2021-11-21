@@ -1,10 +1,11 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IMessageHandler;
+import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
 @SuppressWarnings("unchecked")
-public class MessageRegistry
+public class MessageRegistry implements IMessageRegistry
 {
     private final IMessageHandler<?>[] handlers;
     private final Class<?>[] messageClasses; //TODO HashMap stattdessen vllt?
@@ -20,6 +21,7 @@ public class MessageRegistry
         messageClasses = new Class<?>[messages];
     }
     
+    @Override
     public <M> MessageRegistry registerMessage(byte id, IMessageHandler<M> handler, Class<M> messageClass)
     {
         if(id < 0 || id >= handlers.length || handlers[id] != null)
@@ -50,11 +52,13 @@ public class MessageRegistry
         throw new IllegalArgumentException("Message not registered");
     }
     
+    @Override
     public <M> IMessageHandler<M> getHandlerForMessage(M message)
     {
         return (IMessageHandler<M>) handlers[getIDForMessage(message)];
     }
     
+    @Override
     public <M> void encodeMessage(CircularBuffer writeBuffer, M message)
     {
         writeBuffer.startWriting();
@@ -80,6 +84,7 @@ public class MessageRegistry
         handler.sendBytes(writeBuffer, message);
     }
     
+    @Override
     public <M> Runnable decodeMessage(CircularBuffer readBuffer)
     {
         readBuffer.startReading();

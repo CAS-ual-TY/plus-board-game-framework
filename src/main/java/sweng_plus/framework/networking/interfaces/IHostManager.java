@@ -13,7 +13,7 @@ public interface IHostManager extends IClientManager
      *
      * @param client  The {@link IClient} object to send a message to.
      * @param message The message to be sent to the given client.
-     * @param <M>     The class of the message.
+     * @param <M>     The type of the message.
      * @throws IOException
      */
     <M> void sendMessageToClient(IClient client, M message) throws IOException; // Main Thread
@@ -22,7 +22,7 @@ public interface IHostManager extends IClientManager
      * Sends a message to all {@link IClient} objects which are currently connected to the server.
      *
      * @param message The message to be sent to all clients.
-     * @param <M>     The class of the message.
+     * @param <M>     The type of the message.
      * @throws IOException
      * @see #getAllClients()
      */
