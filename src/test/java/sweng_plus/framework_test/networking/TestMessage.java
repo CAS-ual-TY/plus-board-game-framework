@@ -21,7 +21,7 @@ public class TestMessage
     public static class Handler implements IMessageHandler<TestMessage, IClient>
     {
         @Override
-        public TestMessage receiveBytes(CircularBuffer buf)
+        public TestMessage decodeMessage(CircularBuffer buf)
         {
             String message = buf.readString(StandardCharsets.UTF_8);
             long timestamp = buf.readLong();
@@ -30,7 +30,7 @@ public class TestMessage
         }
         
         @Override
-        public void sendBytes(CircularBuffer buf, TestMessage msg)
+        public void encodeMessage(CircularBuffer buf, TestMessage msg)
         {
             buf.writeString(msg.message, StandardCharsets.UTF_8);
             buf.writeLong(msg.timestamp);

@@ -74,7 +74,7 @@ public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
         writeBuffer.writeByte(messageID);
         
         IMessageHandler<M, C> handler = (IMessageHandler<M, C>) handlers[messageID];
-        handler.sendBytes(writeBuffer, message);
+        handler.encodeMessage(writeBuffer, message);
         
         writeBuffer.endWriting();
         
@@ -93,7 +93,7 @@ public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
         byte messageID = readBuffer.readByte();
         
         IMessageHandler<M, C> handler = (IMessageHandler<M, C>) handlers[messageID];
-        M msg = handler.receiveBytes(readBuffer);
+        M msg = handler.decodeMessage(readBuffer);
         
         readBuffer.endReading();
         

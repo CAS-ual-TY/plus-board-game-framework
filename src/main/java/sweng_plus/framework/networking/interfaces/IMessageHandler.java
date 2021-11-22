@@ -6,9 +6,9 @@ import java.util.Optional;
 
 public interface IMessageHandler<M, C extends IClient>
 {
-    M receiveBytes(CircularBuffer buf);
+    M decodeMessage(CircularBuffer buf);
     
-    void sendBytes(CircularBuffer buf, M msg);
+    void encodeMessage(CircularBuffer buf, M msg);
     
     void handleMessage(Optional<C> clientOptional, M msg);
 }
