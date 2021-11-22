@@ -40,8 +40,11 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public <M> void sendMessageToServer(M message) throws IOException // Main Thread
     {
-        getMessageRegistry().encodeMessage(writeBuffer, message);
-        writeBuffer.writeToOutputStream(out);
+        if(!socket.isClosed())
+        {
+            getMessageRegistry().encodeMessage(writeBuffer, message);
+            writeBuffer.writeToOutputStream(out);
+        }
     }
     
     @Override
@@ -51,16 +54,16 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
-    public void socketClosed() // Connection Thread
+    public void connectionSocketClosed() // Connection Thread
     {
         // TODO callback zur Engine?
     }
     
     @Override
-    public void socketClosedWithException(Exception e) // Connection Thread
+    public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
         e.printStackTrace();
-        socketClosed();
+        connectionSocketClosed();
     }
     
     @Override

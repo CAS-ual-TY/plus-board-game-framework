@@ -10,12 +10,12 @@ import sweng_plus.framework.networking.util.IClientFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
@@ -46,7 +46,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         this.clientFactory = clientFactory;
         
         serverSocket = new ServerSocket(port);
-        serverSocket.setSoTimeout((int) TimeUnit.MILLISECONDS.toMillis(100));
+        serverSocket.setSoTimeout(100);
         
         hostClient = clientFactory.makeHost();
         
@@ -122,9 +122,11 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                 lock.unlock();
             }
             
-            getMessageRegistry().encodeMessage(writeBuffer, message);
-            
-            writeBuffer.writeToOutputStream(connection.out);
+            if(!connection.socket.isClosed())
+            {
+                getMessageRegistry().encodeMessage(writeBuffer, message);
+                writeBuffer.writeToOutputStream(connection.out);
+            }
         }
     }
     
@@ -224,6 +226,15 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                 return socket;
             }
             catch(SocketTimeoutException ignored) {}
+            catch(SocketException e)
+            {
+                if(!e.getMessage().equals("Socket closed"))
+                {
+                    e.printStackTrace();
+                }
+                
+                return null;
+            }
             catch(IOException e)
             {
                 // Connection ist fehlgeschlagen => Auf neue Connection hören
@@ -292,17 +303,28 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         // auf den connection thread warten
         // dieser sollte terminieren, sobald shouldClose == true ist
         
-        for(Thread t : threadClientMap.keySet())
+        Lock lock = threadClientMapLock.readLock();
+        
+        try
         {
-            while(true)
+            lock.lock();
+            
+            for(Thread t : threadClientMap.keySet())
             {
-                try
+                while(true)
                 {
-                    t.join();
-                    break;
+                    try
+                    {
+                        t.join();
+                        break;
+                    }
+                    catch(InterruptedException ignored) {}
                 }
-                catch(InterruptedException ignored) {}
             }
+        }
+        finally
+        {
+            lock.unlock();
         }
         
         // socket schließen
@@ -321,5 +343,11 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     protected Optional<C> getClientForConnThread(Thread thread)
     {
         return Optional.of(threadClientMap.get(thread));
+    }
+    
+    @Override
+    public boolean shouldClose()
+    {
+        return serverSocket.isClosed() || super.shouldClose();
     }
 }

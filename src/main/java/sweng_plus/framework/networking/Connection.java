@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class Connection<C extends IClient> implements Runnable
 {
@@ -35,6 +36,13 @@ public class Connection<C extends IClient> implements Runnable
         try
         {
             socket = socketSuppler.makeOrGetSocket(this);
+            
+            if(socket == null)
+            {
+                return;
+            }
+            
+            socket.setSoTimeout(100);
             out = socket.getOutputStream();
         }
         catch(IOException e)
@@ -46,16 +54,20 @@ public class Connection<C extends IClient> implements Runnable
         {
             InputStream in = socket.getInputStream();
             
-            while(!connectionInteractor.shouldClose())
+            while(!connectionInteractor.shouldClose() && !socket.isClosed())
             {
-                readBuffer.readFrominputStream(in);
-                
+                try
                 {
-                    connectionInteractor.getMessageRegistry().decodeMessage(readBuffer, (msg, handler) ->
-                            connectionInteractor.receivedMessage((client) -> handler.handleMessage(client, msg))
-                    );
+                    readBuffer.readFrominputStream(in);
+                    
                     while(connectionInteractor.getMessageRegistry().canDecodeMessage(readBuffer))
+                    {
+                        connectionInteractor.getMessageRegistry().decodeMessage(readBuffer, (msg, handler) ->
+                                connectionInteractor.receivedMessage((client) -> handler.handleMessage(client, msg))
+                        );
+                    }
                 }
+                catch(SocketTimeoutException ignored) {}
             }
             
             connectionInteractor.connectionSocketClosed();
