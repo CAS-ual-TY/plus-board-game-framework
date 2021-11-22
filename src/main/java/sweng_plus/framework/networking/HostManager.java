@@ -238,9 +238,15 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    public void socketClosed() // Connection Thread
+    public void connectionSocketClosed() // Connection Thread
     {
         // TODO callback zur Engine?
+        
+        // no need to do all this cleanup as it's done anyways since the server is closed
+        if(shouldClose())
+        {
+            return;
+        }
         
         C client;
         
@@ -270,10 +276,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    public void socketClosedWithException(Exception e) // Connection Thread
+    public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
         e.printStackTrace();
-        socketClosed();
+        connectionSocketClosed();
     }
     
     @Override

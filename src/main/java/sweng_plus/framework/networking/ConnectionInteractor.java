@@ -136,10 +136,10 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     }
     
     @Override
-    public abstract void socketClosed();
+    public abstract void connectionSocketClosed();
     
     @Override
-    public abstract void socketClosedWithException(Exception e);
+    public abstract void connectionSocketClosedWithException(Exception e);
     
     protected abstract Optional<C> getClientForConnThread(Thread thread);
     

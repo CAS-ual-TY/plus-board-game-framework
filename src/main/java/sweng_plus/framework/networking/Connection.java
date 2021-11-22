@@ -58,11 +58,11 @@ public class Connection<C extends IClient> implements Runnable
                 }
             }
             
-            connectionInteractor.socketClosed();
+            connectionInteractor.connectionSocketClosed();
         }
         catch(IOException e)
         {
-            connectionInteractor.socketClosedWithException(e);
+            connectionInteractor.connectionSocketClosedWithException(e);
         }
     }
     

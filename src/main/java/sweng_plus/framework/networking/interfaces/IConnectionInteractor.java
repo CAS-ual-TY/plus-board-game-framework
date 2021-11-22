@@ -9,9 +9,9 @@ public interface IConnectionInteractor<C extends IClient>
     
     IMessageRegistry<C> getMessageRegistry(); // Connection Thread
     
-    void socketClosed(); // Connection Thread
+    void connectionSocketClosed(); // Connection Thread
     
-    void socketClosedWithException(Exception e); // Connection Thread
+    void connectionSocketClosedWithException(Exception e); // Connection Thread
     
     boolean shouldClose(); // Connection Thread
 }
