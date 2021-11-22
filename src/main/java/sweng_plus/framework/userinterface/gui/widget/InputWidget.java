@@ -58,6 +58,16 @@ public class InputWidget extends SelectableWidget
         return true;
     }
     
+    public String getText()
+    {
+        return stringBuilder.toString();
+    }
+    
+    public void clearText()
+    {
+        stringBuilder.setLength(0);
+    }
+    
     @Override
     public void keyPressed(int key, int mods)
     {
