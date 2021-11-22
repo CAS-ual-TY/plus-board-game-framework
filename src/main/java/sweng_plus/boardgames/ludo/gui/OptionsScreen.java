@@ -13,7 +13,6 @@ import sweng_plus.framework.userinterface.gui.widget.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 
 import java.io.IOException;
-import java.util.List;
 
 public class OptionsScreen extends WrappedScreen
 {
@@ -43,9 +42,9 @@ public class OptionsScreen extends WrappedScreen
             e.printStackTrace();
         }
         
-        widgets.add(new TextWidget(this, topButton.clone(), Ludo.instance().fontRenderer32, List.of("Top Button")));
-        widgets.add(new TextWidget(this, middleButton.clone(), Ludo.instance().fontRenderer32, List.of("Middle Button")));
-        widgets.add(new TextWidget(this, bottomButton.clone(), Ludo.instance().fontRenderer32, List.of("Exit")));
+        widgets.add(new TextWidget(this, topButton.clone(), Ludo.instance().fontRenderer32, "Top Button"));
+        widgets.add(new TextWidget(this, middleButton.clone(), Ludo.instance().fontRenderer32, "Middle Button"));
+        widgets.add(new TextWidget(this, bottomButton.clone(), Ludo.instance().fontRenderer32, "Exit"));
     }
     
     @Override

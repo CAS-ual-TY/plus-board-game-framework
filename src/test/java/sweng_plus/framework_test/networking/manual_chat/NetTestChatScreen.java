@@ -13,7 +13,6 @@ import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,10 +42,10 @@ public class NetTestChatScreen extends StackedScreen
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
             widgets.add(new TexturedButtonWidget(this, leaveDimensions, this::leave, buttonActive, buttonInactive));
-            widgets.add(new TextWidget(this, leaveDimensions, chatFontRenderer, Arrays.asList("Leave")));
+            widgets.add(new TextWidget(this, leaveDimensions, chatFontRenderer, "Leave"));
             
             widgets.add(new TexturedButtonWidget(this, sendDimensions, this::sendMessage, buttonActive, buttonInactive));
-            widgets.add(new TextWidget(this, sendDimensions, chatFontRenderer, Arrays.asList(">")));
+            widgets.add(new TextWidget(this, sendDimensions, chatFontRenderer, ">"));
         }
         catch(IOException e)
         {

@@ -16,4 +16,14 @@ public class TextWidget extends FunctionalTextWidget
     {
         this(parent, dimensions, renderer, text, Color4f.NEUTRAL);
     }
+    
+    public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, String text, Color4f color)
+    {
+        this(parent, dimensions, renderer, List.of(text), color);
+    }
+    
+    public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, String text)
+    {
+        this(parent, dimensions, renderer, List.of(text));
+    }
 }
