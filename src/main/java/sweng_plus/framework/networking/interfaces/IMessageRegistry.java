@@ -70,4 +70,13 @@ public interface IMessageRegistry<C extends IClient>
      * @return The {@link IMessageHandler} to be used for the given message.
      */
     <M> IMessageHandler<M, C> getHandlerForMessage(M message);
+    
+    /**
+     * Checks a given {@link CircularBuffer} if it contains bytes which can be read and decoded into a message.
+     * Its state is not changed by this process.
+     *
+     * @param buffer The {@link CircularBuffer} to check.
+     * @return True if the given {@link CircularBuffer} contains bytes which can be read and decoded into a message.
+     */
+    boolean canDecodeMessage(CircularBuffer buffer);
 }

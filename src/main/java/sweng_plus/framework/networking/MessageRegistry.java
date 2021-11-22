@@ -105,4 +105,10 @@ public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
         
         return message;
     }
+    
+    @Override
+    public boolean canDecodeMessage(CircularBuffer buffer)
+    {
+        return buffer.size() > Short.BYTES && buffer.size() >= buffer.peekShort();
+    }
 }
