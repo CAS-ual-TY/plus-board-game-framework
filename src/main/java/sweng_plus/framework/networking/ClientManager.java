@@ -47,7 +47,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void runMessages(Consumer<Runnable> consumer) // Main Thread
     {
-        super.runPackets(consumer);
+        super.runMessages(consumer);
     }
     
     @Override

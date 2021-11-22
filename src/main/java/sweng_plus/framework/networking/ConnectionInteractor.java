@@ -90,14 +90,25 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
         }
     }
     
-    public void runPackets(Consumer<Runnable> consumer)
+    public void runMessages(Consumer<Runnable> consumer)
     {
-        for(Runnable r : mainThreadMessages)
-        {
-            consumer.accept(r);
-        }
+        Lock lock = mainThreadMessagesLock.writeLock();
         
-        mainThreadMessages.clear();
+        try
+        {
+            lock.lock();
+            
+            for(Runnable r : mainThreadMessages)
+            {
+                consumer.accept(r);
+            }
+            
+            mainThreadMessages.clear();
+        }
+        finally
+        {
+            lock.unlock();
+        }
     }
     
     @Override

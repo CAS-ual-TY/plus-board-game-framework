@@ -159,7 +159,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     @Override
     public void runMessages(Consumer<Runnable> consumer) // Main Thread
     {
-        super.runPackets(consumer);
+        super.runMessages(consumer);
     }
     
     public Socket acceptNewConnection(Connection<C> connection) // Connection Thread
