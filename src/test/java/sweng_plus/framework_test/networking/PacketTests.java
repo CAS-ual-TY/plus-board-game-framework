@@ -16,7 +16,8 @@ public class PacketTests
         CircularBuffer buffer = new CircularBuffer(1024 * 4);
         TestMessage msg = new TestMessage("Hello World!", System.currentTimeMillis());
         MessageRegistry<IClient> r = new MessageRegistry(2);
-        r.registerMessage((byte) 0, new TestMessage.Handler(), TestMessage.class);
+        r.registerMessage((byte) 0, TestMessage.Handler::encodeMessage, TestMessage.Handler::decodeMessage,
+                TestMessage.Handler::handleMessage, TestMessage.class);
         r.encodeMessage(buffer, msg);
         
         r.<TestMessage>decodeMessage(buffer, (msg2, handler) ->

@@ -14,13 +14,15 @@ public interface IMessageRegistry<C extends IClient>
      * Registers a new message to the protocol.
      *
      * @param id           The ID of the message. Must be unique, no other message may use the same ID.
+     * @param encoder      The {@link IMessageEncoder} of the message.
+     * @param decoder      The {@link IMessageDecoder} of the message.
      * @param handler      The {@link IMessageHandler} of the message.
      * @param messageClass The class of the message.
      * @param <M>          The type of the message.
      * @return The {@link IMessageRegistry} itself.
      * @throws IllegalArgumentException In case the given ID is already in use.
      */
-    <M> MessageRegistry<C> registerMessage(byte id, IMessageHandler<M, C> handler, Class<M> messageClass) throws IllegalArgumentException;
+    <M> MessageRegistry<C> registerMessage(byte id, IMessageEncoder<M> encoder, IMessageDecoder<M> decoder, IMessageHandler<M, C> handler, Class<M> messageClass) throws IllegalArgumentException;
     
     /**
      * Encode a message and write it to the given {@link CircularBuffer}.
