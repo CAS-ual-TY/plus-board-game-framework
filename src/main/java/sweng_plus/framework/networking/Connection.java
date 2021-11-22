@@ -48,7 +48,7 @@ public class Connection<C extends IClient> implements Runnable
             
             while(!connectionInteractor.shouldClose())
             {
-                readBuffer.writeBytes(in.readAllBytes()); // TODO blockiert das wirklich?
+                readBuffer.readFrominputStream(in);
                 
                 while(readBuffer.size() > Short.BYTES && readBuffer.size() >= readBuffer.peekShort())
                 {

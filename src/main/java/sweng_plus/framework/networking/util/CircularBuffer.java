@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -250,10 +251,17 @@ public class CircularBuffer
     
     public void writeToOutputStream(OutputStream out) throws IOException
     {
-        while(size() > 0)
+        if(readIndex <= writeIndex)
         {
-            out.write(readByte());
+            out.write(Arrays.copyOfRange(buffer, readIndex, writeIndex));
         }
+        else //if(readIndex > writeIndex)
+        {
+            out.write(Arrays.copyOfRange(buffer, readIndex, capacity));
+            out.write(Arrays.copyOfRange(buffer, 0, writeIndex));
+        }
+        
+        clear();
     }
     
     public void readFrominputStream(InputStream in) throws IOException
@@ -303,11 +311,16 @@ public class CircularBuffer
     {
         if(size < 0)
         {
-            writeIndex = 0;
-            readIndex = writeIndex;
-            size = 0;
+            clear();
             
             throw new BufferUnderflowException();
         }
+    }
+    
+    public void clear()
+    {
+        writeIndex = 0;
+        readIndex = writeIndex;
+        size = 0;
     }
 }
