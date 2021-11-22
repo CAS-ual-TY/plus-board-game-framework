@@ -90,7 +90,6 @@ public class Engine implements Runnable
         Screen screen = null;
         
         // Render Schleife wiederholen, bis das Fenster geschlossen wird
-        // Oder bis ESC gedrückt wird TODO entfernen (ist auch als TODO markiert)
         while(!isBeingClosed())
         {
             window.preUpdate();
