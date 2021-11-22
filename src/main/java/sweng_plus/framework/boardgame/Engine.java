@@ -53,25 +53,27 @@ public class Engine implements Runnable
     
     protected void pre()
     {
-        initGLFW();
         game.preInit();
-    
+        
+        initGLFW();
         createWindow();
         window.init();
-        game.init();
-    
         inputHandler = window.getInputHandler();
         inputHandler.setup();
         initOpenGL();
-        game.postInit();
+        
+        game.init();
     }
     
     protected void post()
     {
         game.cleanup();
+        
         inputHandler.free();
         window.destroy();
         cleanupGLFW();
+        
+        game.postCleanup();
     }
     
     protected void loop()

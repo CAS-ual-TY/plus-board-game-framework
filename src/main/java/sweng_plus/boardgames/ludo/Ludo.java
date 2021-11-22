@@ -43,7 +43,7 @@ public class Ludo implements IGame
     }
     
     @Override
-    public void postInit()
+    public void init()
     {
         String chars = FontHelper.getAvailableChars((char) 0xFF);
         Font fontChicagoFLF = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"));
