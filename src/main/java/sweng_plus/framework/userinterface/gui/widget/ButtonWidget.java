@@ -2,28 +2,12 @@ package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.framework.boardgame.Engine;
-import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.util.Texture;
 
 public abstract class ButtonWidget extends Widget
 {
-    protected Texture active;
-    protected Texture inactive;
-    
-    public ButtonWidget(IWidgetParent parent, Dimensions dimensions, Texture active, Texture inactive)
+    public ButtonWidget(IWidgetParent parent, Dimensions dimensions)
     {
         super(parent, dimensions);
-        this.active = active;
-        this.inactive = inactive;
-    }
-    
-    @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
-    {
-        Color4f.NEUTRAL.glColor4f();
-        
-        Texture texture = updateMouseOver(deltaTick, mouseX, mouseY) ? active : inactive;
-        texture.renderCornered(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
     }
     
     @Override

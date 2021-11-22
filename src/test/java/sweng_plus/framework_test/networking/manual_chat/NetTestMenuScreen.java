@@ -1,5 +1,6 @@
 package sweng_plus.framework_test.networking.manual_chat;
 
+import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.NetworkManager;
@@ -9,7 +10,6 @@ import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
-import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 
 import java.io.IOException;
@@ -30,13 +30,13 @@ public class NetTestMenuScreen extends Screen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new FunctionalButtonWidget(this, topButton, buttonActive, buttonInactive, this::host));
+            widgets.add(new TexturedButtonWidget(this, topButton, this::host, buttonActive, buttonInactive));
             widgets.add(new TextWidget(this, topButton, NetTestGame.instance().fontRenderer48, Arrays.asList("Host")));
             
-            widgets.add(new FunctionalButtonWidget(this, middleButton, buttonActive, buttonInactive, this::connect));
+            widgets.add(new TexturedButtonWidget(this, middleButton, this::connect, buttonActive, buttonInactive));
             widgets.add(new TextWidget(this, middleButton, NetTestGame.instance().fontRenderer48, Arrays.asList("Connect")));
             
-            widgets.add(new FunctionalButtonWidget(this, bottomButton, buttonActive, buttonInactive, this::exit));
+            widgets.add(new TexturedButtonWidget(this, bottomButton, this::exit, buttonActive, buttonInactive));
             widgets.add(new TextWidget(this, bottomButton, NetTestGame.instance().fontRenderer48, Arrays.asList("Exit")));
         }
         catch(IOException e)

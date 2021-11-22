@@ -1,12 +1,16 @@
 package sweng_plus.framework_test.networking.manual_chat;
 
+import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.StackedScreen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
-import sweng_plus.framework.userinterface.gui.widget.*;
+import sweng_plus.framework.userinterface.gui.widget.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.FunctionalTextWidget;
+import sweng_plus.framework.userinterface.gui.widget.InputWidget;
+import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,10 +42,10 @@ public class NetTestChatScreen extends StackedScreen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new FunctionalButtonWidget(this, leaveDimensions, buttonActive, buttonInactive, this::leave));
+            widgets.add(new TexturedButtonWidget(this, leaveDimensions, this::leave, buttonActive, buttonInactive));
             widgets.add(new TextWidget(this, leaveDimensions, chatFontRenderer, Arrays.asList("Leave")));
             
-            widgets.add(new FunctionalButtonWidget(this, sendDimensions, buttonActive, buttonInactive, this::sendMessage));
+            widgets.add(new TexturedButtonWidget(this, sendDimensions, this::sendMessage, buttonActive, buttonInactive));
             widgets.add(new TextWidget(this, sendDimensions, chatFontRenderer, Arrays.asList(">")));
         }
         catch(IOException e)

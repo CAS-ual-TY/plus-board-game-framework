@@ -1,14 +1,12 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
-import sweng_plus.framework.userinterface.gui.util.Texture;
-
 public class FunctionalButtonWidget extends ButtonWidget
 {
     protected ButtonAction buttonAction;
     
-    public FunctionalButtonWidget(IWidgetParent parent, Dimensions dimensions, Texture active, Texture inactive, ButtonAction buttonAction)
+    public FunctionalButtonWidget(IWidgetParent parent, Dimensions dimensions, ButtonAction buttonAction)
     {
-        super(parent, dimensions, active, inactive);
+        super(parent, dimensions);
         this.buttonAction = buttonAction;
     }
     

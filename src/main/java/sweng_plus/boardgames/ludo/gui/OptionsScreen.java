@@ -2,13 +2,13 @@ package sweng_plus.boardgames.ludo.gui;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
+import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 import sweng_plus.framework.userinterface.gui.util.TextureHelper;
-import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 
@@ -31,32 +31,12 @@ public class OptionsScreen extends WrappedScreen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new ButtonWidget(this, topButton, buttonActive, buttonInactive)
-            {
-                @Override
-                protected void clicked(int mouseX, int mouseY, int mods)
-                {
-                
-                }
-            });
+            widgets.add(new TexturedButtonWidget(this, topButton, (mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
             
-            widgets.add(new ButtonWidget(this, middleButton, buttonActive, buttonInactive)
-            {
-                @Override
-                protected void clicked(int mouseX, int mouseY, int mods)
-                {
-                
-                }
-            });
+            widgets.add(new TexturedButtonWidget(this, middleButton, (mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
             
-            widgets.add(new ButtonWidget(this, bottomButton, buttonActive, buttonInactive)
-            {
-                @Override
-                protected void clicked(int mouseX, int mouseY, int mods)
-                {
-                    Engine.instance().close();
-                }
-            });
+            widgets.add(new TexturedButtonWidget(this, bottomButton, (mouseX, mouseY, mods) -> Engine.instance().close(), buttonActive, buttonInactive));
+            
         }
         catch(IOException e)
         {
