@@ -104,7 +104,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     {
         if(client == getHostClient())
         {
-            getMessageRegistry().getHandlerForMessage(message).handleMessage(Optional.of(getHostClient()), message);
+            getMessageRegistry().getHandlerForMessage(message).handleMessage(Optional.empty(), message);
         }
         else
         {
@@ -188,6 +188,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                     if(!clientsList.contains(client))
                     {
                         clientsList.add(client);
+                    }
+                    else
+                    {
+                        client.changeStatus(ClientStatus.CONNECTED);
                     }
                 }
                 finally
