@@ -50,9 +50,14 @@ public class Dimensions implements Cloneable
         this(w, h, anchor, 0, 0);
     }
     
+    public Dimensions(AnchorPoint anchor, int offX, int offY)
+    {
+        this(0, 0, anchor, offX, offY);
+    }
+    
     public Dimensions(AnchorPoint anchor)
     {
-        this(0, 0, anchor, 0, 0);
+        this(anchor, 0, 0);
     }
     
     public Dimensions(int x, int y, int w, int h)
