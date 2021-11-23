@@ -1,4 +1,4 @@
-package sweng_plus.framework.userinterface.gui.util;
+package sweng_plus.framework.userinterface.gui.texture;
 
 import org.lwjgl.BufferUtils;
 

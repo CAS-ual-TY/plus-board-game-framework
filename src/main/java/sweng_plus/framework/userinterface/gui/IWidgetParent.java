@@ -1,6 +1,7 @@
-package sweng_plus.framework.userinterface.gui.widget;
+package sweng_plus.framework.userinterface.gui;
 
-import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.widget.base.INestedWidget;
+import sweng_plus.framework.userinterface.gui.widget.base.IWidget;
 import sweng_plus.framework.userinterface.input.IInputListener;
 import sweng_plus.framework.userinterface.input.INestedInputListener;
 

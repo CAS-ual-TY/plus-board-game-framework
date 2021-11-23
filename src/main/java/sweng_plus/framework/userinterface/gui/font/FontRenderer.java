@@ -1,7 +1,7 @@
 package sweng_plus.framework.userinterface.gui.font;
 
-import sweng_plus.framework.userinterface.gui.util.Texture;
-import sweng_plus.framework.userinterface.gui.util.TextureHelper;
+import sweng_plus.framework.userinterface.gui.texture.Texture;
+import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 
 import java.util.LinkedList;
 import java.util.List;

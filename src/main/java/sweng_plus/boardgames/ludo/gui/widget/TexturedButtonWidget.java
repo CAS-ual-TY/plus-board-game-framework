@@ -2,8 +2,8 @@ package sweng_plus.boardgames.ludo.gui.widget;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.util.Texture;
-import sweng_plus.framework.userinterface.gui.widget.Dimensions;
+import sweng_plus.framework.userinterface.gui.texture.Texture;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 
 public class TexturedButtonWidget extends FunctionalButtonWidget

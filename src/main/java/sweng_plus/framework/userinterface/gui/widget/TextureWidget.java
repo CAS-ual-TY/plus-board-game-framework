@@ -2,7 +2,9 @@ package sweng_plus.framework.userinterface.gui.widget;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.util.Texture;
+import sweng_plus.framework.userinterface.gui.texture.Texture;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 public class TextureWidget extends Widget
 {

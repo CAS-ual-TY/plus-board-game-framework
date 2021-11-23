@@ -7,9 +7,9 @@ import sweng_plus.framework.networking.NetworkManager;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
-import sweng_plus.framework.userinterface.gui.util.Texture;
-import sweng_plus.framework.userinterface.gui.util.TextureHelper;
-import sweng_plus.framework.userinterface.gui.widget.Dimensions;
+import sweng_plus.framework.userinterface.gui.texture.Texture;
+import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 
 import java.io.IOException;

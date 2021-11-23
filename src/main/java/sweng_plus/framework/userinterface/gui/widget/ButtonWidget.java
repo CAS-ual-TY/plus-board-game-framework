@@ -3,6 +3,8 @@ package sweng_plus.framework.userinterface.gui.widget;
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 public abstract class ButtonWidget extends Widget
 {

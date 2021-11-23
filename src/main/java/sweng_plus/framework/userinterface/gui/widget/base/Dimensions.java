@@ -1,4 +1,4 @@
-package sweng_plus.framework.userinterface.gui.widget;
+package sweng_plus.framework.userinterface.gui.widget.base;
 
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 

@@ -1,6 +1,7 @@
-package sweng_plus.framework.userinterface.gui.widget;
+package sweng_plus.framework.userinterface.gui.widget.base;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
+import sweng_plus.framework.userinterface.gui.IWidgetParent;
 
 public class Widget implements IWidget
 {
