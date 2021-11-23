@@ -12,8 +12,8 @@ public interface IWidget extends IInputListener, IRenderable
      * is changed (with this widget being a part of the new {@link Screen}) or when the window is resized.
      * Primarily this should be used to update widget dimensions (position, maybe also the size) based on these events.
      *
-     * @param parent The {@link IWidgetParent} to give access to its screen coordinates and size
+     * @param parent The {@link INestedWidget} to give access to its screen coordinates and size
      *               (for proper aligning with anchor points etc.).
      */
-    void initWidget(IWidgetParent parent);
+    void initWidget(INestedWidget parent);
 }

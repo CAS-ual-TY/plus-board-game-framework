@@ -22,7 +22,7 @@ public class Widget implements IWidget
     }
     
     @Override
-    public void initWidget(IWidgetParent parent)
+    public void initWidget(INestedWidget parent)
     {
         dimensions.init(parent.getParentX(), parent.getParentY(), parent.getParentW(), parent.getParentH());
     }

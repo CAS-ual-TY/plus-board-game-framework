@@ -1,12 +1,12 @@
 package sweng_plus.framework.userinterface.gui;
 
 import sweng_plus.framework.userinterface.gui.widget.IWidget;
-import sweng_plus.framework.userinterface.gui.widget.IWidgetParent;
+import sweng_plus.framework.userinterface.gui.widget.INestedWidget;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Screen implements IWidgetParent
+public class Screen implements INestedWidget
 {
     public final IScreenHolder screenHolder;
     
@@ -29,17 +29,17 @@ public class Screen implements IWidgetParent
     @Override
     public void update(int mouseX, int mouseY)
     {
-        IWidgetParent.super.update(mouseX, mouseY);
+        INestedWidget.super.update(mouseX, mouseY);
     }
     
     @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        IWidgetParent.super.render(deltaTick, mouseX, mouseY);
+        INestedWidget.super.render(deltaTick, mouseX, mouseY);
     }
     
     @Override
-    public void initWidgetParent(IWidgetParent parent)
+    public void initWidgetParent(INestedWidget parent)
     {
     
     }
@@ -50,43 +50,43 @@ public class Screen implements IWidgetParent
         this.screenW = screenW;
         this.screenH = screenH;
         
-        IWidgetParent.super.initWidget(this);
+        INestedWidget.super.initWidget(this);
     }
     
     @Override
     public void mouseButtonPressed(int mouseX, int mouseY, int mouseButton, int mods)
     {
-        IWidgetParent.super.mouseButtonPressed(mouseX, mouseY, mouseButton, mods);
+        INestedWidget.super.mouseButtonPressed(mouseX, mouseY, mouseButton, mods);
     }
     
     @Override
     public void mouseButtonReleased(int mouseX, int mouseY, int mouseButton, int mods)
     {
-        IWidgetParent.super.mouseButtonReleased(mouseX, mouseY, mouseButton, mods);
+        INestedWidget.super.mouseButtonReleased(mouseX, mouseY, mouseButton, mods);
     }
     
     @Override
     public void keyPressed(int key, int mods)
     {
-        IWidgetParent.super.keyPressed(key, mods);
+        INestedWidget.super.keyPressed(key, mods);
     }
     
     @Override
     public void keyRepeated(int key, int mods)
     {
-        IWidgetParent.super.keyRepeated(key, mods);
+        INestedWidget.super.keyRepeated(key, mods);
     }
     
     @Override
     public void keyReleased(int key, int mods)
     {
-        IWidgetParent.super.keyReleased(key, mods);
+        INestedWidget.super.keyReleased(key, mods);
     }
     
     @Override
     public void charTyped(char character)
     {
-        IWidgetParent.super.charTyped(character);
+        INestedWidget.super.charTyped(character);
     }
     
     @Override
