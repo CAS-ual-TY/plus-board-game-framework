@@ -45,7 +45,7 @@ public class Screen implements IWidgetParent
     }
     
     /** Wird immer gecallt, wenn das Window resized wird, oder der Screen zum ersten mal wieder aktiv ist */
-    public void init(int screenW, int screenH)
+    public void initScreen(int screenW, int screenH)
     {
         this.screenW = screenW;
         this.screenH = screenH;

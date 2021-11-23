@@ -19,10 +19,10 @@ public class StackedScreen extends Screen
     }
     
     @Override
-    public void init(int screenW, int screenH)
+    public void initScreen(int screenW, int screenH)
     {
-        subScreen.init(screenW, screenH);
-        super.init(screenW, screenH);
+        subScreen.initScreen(screenW, screenH);
+        super.initScreen(screenW, screenH);
     }
     
     @Override

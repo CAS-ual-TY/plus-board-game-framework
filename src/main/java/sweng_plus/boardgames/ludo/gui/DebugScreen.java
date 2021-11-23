@@ -129,11 +129,11 @@ public class DebugScreen extends Screen
     }
     
     @Override
-    public void init(int screenW, int screenH)
+    public void initScreen(int screenW, int screenH)
     {
         System.out.println("init " + screenW + " " + screenH);
         
-        super.init(screenW, screenH);
+        super.initScreen(screenW, screenH);
     }
     
     @Override
