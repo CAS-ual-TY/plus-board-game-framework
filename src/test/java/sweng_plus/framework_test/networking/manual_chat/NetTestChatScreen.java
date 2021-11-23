@@ -70,7 +70,7 @@ public class NetTestChatScreen extends StackedScreen
     {
         chatMessages.addAll(chatFontRenderer.splitStringToWidth(CHAT_WIDTH, sender + ": " + message));
         textWidget.adjustSizeToText();
-        textWidget.init(this);
+        textWidget.initWidget(this);
     }
     
     public List<String> getChat()

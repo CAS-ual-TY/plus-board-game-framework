@@ -21,15 +21,15 @@ public class ParentWidget extends Widget implements IWidgetParent
     }
     
     @Override
-    public void update(int mouseX, int mouseY)
+    public void updateWidget(int mouseX, int mouseY)
     {
-        IWidgetParent.super.update(mouseX, mouseY);
+        IWidgetParent.super.updateWidget(mouseX, mouseY);
     }
     
     @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
+    public void renderWidget(float deltaTick, int mouseX, int mouseY)
     {
-        IWidgetParent.super.render(deltaTick, mouseX, mouseY);
+        IWidgetParent.super.renderWidget(deltaTick, mouseX, mouseY);
     }
     
     @Override

@@ -18,7 +18,7 @@ public class ColoredWidget extends Widget
     }
     
     @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
+    public void renderWidget(float deltaTick, int mouseX, int mouseY)
     {
         Color4f color = updateMouseOver(deltaTick, mouseX, mouseY) ? hoverColor : baseColor;
         

@@ -22,19 +22,19 @@ public class Widget implements IWidget
     }
     
     @Override
-    public void init(IWidgetParent parent)
+    public void initWidget(IWidgetParent parent)
     {
         dimensions.init(parent.getParentX(), parent.getParentY(), parent.getParentW(), parent.getParentH());
     }
     
     @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
+    public void renderWidget(float deltaTick, int mouseX, int mouseY)
     {
     
     }
     
     @Override
-    public void update(int mouseX, int mouseY)
+    public void updateWidget(int mouseX, int mouseY)
     {
     
     }

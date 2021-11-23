@@ -1,5 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
+import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.input.IInputListener;
 import sweng_plus.framework.userinterface.input.INestedInputListener;
@@ -44,30 +45,30 @@ public interface IWidgetParent extends IWidget, INestedInputListener
     // Same doc as IWidget#update
     
     /**
-     * Calls {@link IWidget#update(int, int)} for all {@link IWidget}s
+     * Calls {@link IWidget#updateWidget(int, int)} for all {@link IWidget}s
      * returned by {@link #getWidgets()}.
      */
     @Override
-    default void update(int mouseX, int mouseY)
+    default void updateWidget(int mouseX, int mouseY)
     {
         for(IWidget w : getWidgets())
         {
-            w.update(mouseX, mouseY);
+            w.updateWidget(mouseX, mouseY);
         }
     }
     
     // Same doc as IWidget#render
     
     /**
-     * Calls {@link IWidget#render(float, int, int)} for all {@link IWidget}s
+     * Calls {@link IWidget#renderWidget(float, int, int)} for all {@link IWidget}s
      * returned by {@link #getWidgets()}.
      */
     @Override
-    default void render(float deltaTick, int mouseX, int mouseY)
+    default void renderWidget(float deltaTick, int mouseX, int mouseY)
     {
         for(IWidget w : getWidgets())
         {
-            w.render(deltaTick, mouseX, mouseY);
+            w.renderWidget(deltaTick, mouseX, mouseY);
         }
     }
     

@@ -34,7 +34,7 @@ public class DebugScreen extends Screen
                     TextureHelper.createTexture("src/test/resources/textures/test_raster.png"))
             {
                 @Override
-                public void render(float deltaTick, int mouseX, int mouseY)
+                public void renderWidget(float deltaTick, int mouseX, int mouseY)
                 {
                     Color4f.HALF_VISIBLE.glColor4f();
                     texture.render(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
@@ -56,15 +56,15 @@ public class DebugScreen extends Screen
     }
     
     @Override
-    public void update(int mouseX, int mouseY)
+    public void updateWidget(int mouseX, int mouseY)
     {
         calculateTPS();
     }
     
     @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
+    public void renderWidget(float deltaTick, int mouseX, int mouseY)
     {
-        super.render(deltaTick, mouseX, mouseY);
+        super.renderWidget(deltaTick, mouseX, mouseY);
         
         calculateFPS();
         

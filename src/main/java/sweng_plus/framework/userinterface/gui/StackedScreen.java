@@ -26,9 +26,9 @@ public class StackedScreen extends Screen
     }
     
     @Override
-    public void update(int mouseX, int mouseY)
+    public void updateWidget(int mouseX, int mouseY)
     {
-        subScreen.update(mouseX, mouseY);
-        super.update(mouseX, mouseY);
+        subScreen.updateWidget(mouseX, mouseY);
+        super.updateWidget(mouseX, mouseY);
     }
 }

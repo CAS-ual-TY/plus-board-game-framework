@@ -16,15 +16,15 @@ public class WrappedScreen extends StackedScreen
     }
     
     @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
+    public void renderWidget(float deltaTick, int mouseX, int mouseY)
     {
         renderBackground(deltaTick);
-        super.render(deltaTick, mouseX, mouseY);
+        super.renderWidget(deltaTick, mouseX, mouseY);
     }
     
     public void renderBackground(float deltaTick)
     {
-        subScreen.render(deltaTick, -1, -1);
+        subScreen.renderWidget(deltaTick, -1, -1);
         
         Color4f.BACKGROUND.glColor4f();
         glBegin(GL_QUADS);

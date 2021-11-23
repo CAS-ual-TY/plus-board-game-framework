@@ -20,7 +20,7 @@ public class TexturedButtonWidget extends FunctionalButtonWidget
     }
     
     @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
+    public void renderWidget(float deltaTick, int mouseX, int mouseY)
     {
         Color4f.NEUTRAL.glColor4f();
         
