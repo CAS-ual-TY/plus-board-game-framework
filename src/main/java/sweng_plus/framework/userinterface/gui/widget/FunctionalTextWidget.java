@@ -3,6 +3,8 @@ package sweng_plus.framework.userinterface.gui.widget;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.util.List;
 import java.util.function.Supplier;
