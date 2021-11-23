@@ -6,7 +6,7 @@ import sweng_plus.framework.userinterface.input.INestedInputListener;
 
 import java.util.List;
 
-public interface IWidgetParent extends INestedInputListener
+public interface IWidgetParent extends IWidget, INestedInputListener
 {
     int getParentX();
     
@@ -20,14 +20,7 @@ public interface IWidgetParent extends INestedInputListener
     
     List<IWidget> getWidgets();
     
-    default void render(float deltaTick, int mouseX, int mouseY)
-    {
-        for(IWidget w : getWidgets())
-        {
-            w.render(deltaTick, mouseX, mouseY);
-        }
-    }
-    
+    @Override
     default void update(int mouseX, int mouseY)
     {
         for(IWidget w : getWidgets())
@@ -36,11 +29,21 @@ public interface IWidgetParent extends INestedInputListener
         }
     }
     
+    @Override
+    default void render(float deltaTick, int mouseX, int mouseY)
+    {
+        for(IWidget w : getWidgets())
+        {
+            w.render(deltaTick, mouseX, mouseY);
+        }
+    }
+    
+    @Override
     default void init()
     {
         for(IWidget w : getWidgets())
         {
-            w.init(getParentX(), getParentY(), getParentW(), getParentH());
+            w.init();
         }
     }
     

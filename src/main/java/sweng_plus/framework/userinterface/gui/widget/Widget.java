@@ -19,11 +19,16 @@ public class Widget implements IWidget
         return isMouseOver = dimensions.isMouseOver(mouseX, mouseY);
     }
     
+    @Override
+    public IWidgetParent getParent()
+    {
+        return parent;
+    }
     
     @Override
-    public void init(int parentX, int parentY, int parentW, int parentH)
+    public void init()
     {
-        dimensions.init(parentX, parentY, parentW, parentH);
+        dimensions.init(parent.getParentX(), parent.getParentY(), parent.getParentW(), parent.getParentH());
     }
     
     @Override
