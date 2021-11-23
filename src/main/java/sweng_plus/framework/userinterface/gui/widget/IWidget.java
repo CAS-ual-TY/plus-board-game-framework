@@ -15,5 +15,5 @@ public interface IWidget extends IInputListener, IRenderable
      * @param parent The {@link INestedWidget} to give access to its screen coordinates and size
      *               (for proper aligning with anchor points etc.).
      */
-    void initWidget(INestedWidget parent);
+    void initWidget(IWidgetParent parent);
 }

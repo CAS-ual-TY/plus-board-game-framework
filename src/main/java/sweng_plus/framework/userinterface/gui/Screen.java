@@ -1,12 +1,14 @@
 package sweng_plus.framework.userinterface.gui;
 
 import sweng_plus.framework.userinterface.gui.widget.IWidget;
-import sweng_plus.framework.userinterface.gui.widget.INestedWidget;
+import sweng_plus.framework.userinterface.gui.widget.IWidgetParent;
+import sweng_plus.framework.userinterface.input.IInputListener;
+import sweng_plus.framework.userinterface.input.INestedInputListener;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Screen implements INestedWidget
+public class Screen implements IWidgetParent, INestedRenderable, INestedInputListener
 {
     public final IScreenHolder screenHolder;
     
@@ -26,67 +28,61 @@ public class Screen implements INestedWidget
         return screenHolder;
     }
     
-    @Override
-    public void update(int mouseX, int mouseY)
-    {
-        INestedWidget.super.update(mouseX, mouseY);
-    }
-    
-    @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
-    {
-        INestedWidget.super.render(deltaTick, mouseX, mouseY);
-    }
-    
-    @Override
-    public void initWidgetParent(INestedWidget parent)
-    {
-    
-    }
-    
     /** Wird immer gecallt, wenn das Window resized wird, oder der Screen zum ersten mal wieder aktiv ist */
     public void initScreen(int screenW, int screenH)
     {
         this.screenW = screenW;
         this.screenH = screenH;
         
-        INestedWidget.super.initWidget(this);
+        initSubWidgets(this);
+    }
+    
+    @Override
+    public void update(int mouseX, int mouseY)
+    {
+        INestedRenderable.super.update(mouseX, mouseY);
+    }
+    
+    @Override
+    public void render(float deltaTick, int mouseX, int mouseY)
+    {
+        INestedRenderable.super.render(deltaTick, mouseX, mouseY);
     }
     
     @Override
     public void mouseButtonPressed(int mouseX, int mouseY, int mouseButton, int mods)
     {
-        INestedWidget.super.mouseButtonPressed(mouseX, mouseY, mouseButton, mods);
+        INestedInputListener.super.mouseButtonPressed(mouseX, mouseY, mouseButton, mods);
     }
     
     @Override
     public void mouseButtonReleased(int mouseX, int mouseY, int mouseButton, int mods)
     {
-        INestedWidget.super.mouseButtonReleased(mouseX, mouseY, mouseButton, mods);
+        INestedInputListener.super.mouseButtonReleased(mouseX, mouseY, mouseButton, mods);
     }
     
     @Override
     public void keyPressed(int key, int mods)
     {
-        INestedWidget.super.keyPressed(key, mods);
+        INestedInputListener.super.keyPressed(key, mods);
     }
     
     @Override
     public void keyRepeated(int key, int mods)
     {
-        INestedWidget.super.keyRepeated(key, mods);
+        INestedInputListener.super.keyRepeated(key, mods);
     }
     
     @Override
     public void keyReleased(int key, int mods)
     {
-        INestedWidget.super.keyReleased(key, mods);
+        INestedInputListener.super.keyReleased(key, mods);
     }
     
     @Override
     public void charTyped(char character)
     {
-        INestedWidget.super.charTyped(character);
+        INestedInputListener.super.charTyped(character);
     }
     
     @Override
@@ -117,5 +113,17 @@ public class Screen implements INestedWidget
     public List<IWidget> getWidgets()
     {
         return widgets;
+    }
+    
+    @Override
+    public List<? extends IRenderable> getRenderables()
+    {
+        return getWidgets();
+    }
+    
+    @Override
+    public List<? extends IInputListener> getListeners()
+    {
+        return getWidgets();
     }
 }

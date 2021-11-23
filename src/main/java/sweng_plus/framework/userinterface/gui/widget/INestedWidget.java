@@ -9,13 +9,8 @@ import sweng_plus.framework.userinterface.input.INestedInputListener;
 
 import java.util.List;
 
-public interface INestedWidget extends IWidget, INestedRenderable, INestedInputListener
+public interface INestedWidget extends IWidget, IWidgetParent, INestedRenderable, INestedInputListener
 {
-    /**
-     * @return All sub-{@link IInputListener}s of this {@link INestedInputListener}.
-     */
-    List<IWidget> getWidgets();
-    
     // Same doc as IWidget#initWidget
     
     /**
@@ -23,46 +18,24 @@ public interface INestedWidget extends IWidget, INestedRenderable, INestedInputL
      * is changed (with this widget being a part of the new {@link Screen}) or when the window is resized.
      * Primarily this should be used to update widget dimensions (position, maybe also the size) based on these events.</p>
      *
-     * <p>This method is called by {@link #initWidget(INestedWidget)} which then
-     * calls {@link IWidget#initWidget(INestedWidget)} for all sub-widgets returned by {@link #getWidgets()}</p>
+     * <p>This method is called by {@link #initWidget(IWidgetParent)} which then
+     * calls {@link IWidget#initWidget(IWidgetParent)} for all sub-widgets returned by {@link #getWidgets()}</p>
      *
      * @param parent The {@link INestedWidget} to give access to its screen coordinates and size
      *               (for proper aligning with anchor points etc.).
      */
-    void initWidgetParent(INestedWidget parent);
+    void initNestedWidget(IWidgetParent parent);
     
     /**
-     * Used by sub-widgets returned by {@link #getWidgets()} to calculate their {@link Screen} position.
-     *
-     * @return X-coordinate of this {@link INestedWidget}'s {@link Screen} position.
+     * First calls {@link #initNestedWidget(IWidgetParent)} to initialize this {@link INestedWidget}.
+     * Then calls {@link IWidget#initWidget(IWidgetParent)} for all {@link IWidget}s
+     * returned by {@link #getWidgets()}.
      */
-    int getParentX();
-    
-    /**
-     * Used by sub-widgets returned by {@link #getWidgets()} to calculate their {@link Screen} position.
-     *
-     * @return Y-coordinate of this {@link INestedWidget}'s {@link Screen} position.
-     */
-    int getParentY();
-    
-    /**
-     * Used by sub-widgets returned by {@link #getWidgets()} to calculate their {@link Screen} position.
-     *
-     * @return Width of this {@link INestedWidget} in {@link Screen}-coordinates.
-     */
-    int getParentW();
-    
-    /**
-     * Used by sub-widgets returned by {@link #getWidgets()} to calculate their {@link Screen} position.
-     *
-     * @return Height of this {@link INestedWidget} in {@link Screen}-coordinates.
-     */
-    int getParentH();
-    
     @Override
-    default List<? extends IRenderable> getRenderables()
+    default void initWidget(IWidgetParent parent)
     {
-        return getWidgets();
+        initNestedWidget(parent);
+        initSubWidgets(parent);
     }
     
     /**
@@ -89,29 +62,6 @@ public interface INestedWidget extends IWidget, INestedRenderable, INestedInputL
         {
             w.render(deltaTick, mouseX, mouseY);
         }
-    }
-    
-    /**
-     * First calls {@link #initWidgetParent(INestedWidget)} to initialize this {@link INestedWidget}.
-     * <p>
-     * Then calls {@link IWidget#initWidget(INestedWidget)} for all {@link IWidget}s
-     * returned by {@link #getWidgets()}.
-     */
-    @Override
-    default void initWidget(INestedWidget parent)
-    {
-        initWidgetParent(parent);
-        
-        for(IWidget w : getWidgets())
-        {
-            w.initWidget(this);
-        }
-    }
-    
-    @Override
-    default List<? extends IInputListener> getListeners()
-    {
-        return getWidgets();
     }
     
     /**
@@ -172,5 +122,17 @@ public interface INestedWidget extends IWidget, INestedRenderable, INestedInputL
     default void charTyped(char character)
     {
         INestedInputListener.super.charTyped(character);
+    }
+    
+    @Override
+    default List<? extends IInputListener> getListeners()
+    {
+        return getWidgets();
+    }
+    
+    @Override
+    default List<? extends IRenderable> getRenderables()
+    {
+        return getWidgets();
     }
 }

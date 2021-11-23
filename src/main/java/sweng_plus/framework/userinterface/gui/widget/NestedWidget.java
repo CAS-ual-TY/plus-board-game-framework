@@ -21,9 +21,15 @@ public class NestedWidget extends Widget implements INestedWidget
     }
     
     @Override
-    public void initWidgetParent(INestedWidget parent)
+    public void initNestedWidget(IWidgetParent parent)
     {
         dimensions.init(parent.getParentX(), parent.getParentY(), parent.getParentW(), parent.getParentH());
+    }
+    
+    @Override
+    public List<IWidget> getWidgets()
+    {
+        return widgets;
     }
     
     @Override
@@ -48,11 +54,5 @@ public class NestedWidget extends Widget implements INestedWidget
     public int getParentH()
     {
         return dimensions.h;
-    }
-    
-    @Override
-    public List<IWidget> getWidgets()
-    {
-        return widgets;
     }
 }
