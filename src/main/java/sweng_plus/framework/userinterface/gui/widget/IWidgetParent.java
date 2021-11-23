@@ -60,30 +60,30 @@ public interface IWidgetParent extends IWidget, INestedInputListener
     // Same doc as IWidget#update
     
     /**
-     * Calls {@link IWidget#updateWidget(int, int)} for all {@link IWidget}s
+     * Calls {@link IWidget#update(int, int)} for all {@link IWidget}s
      * returned by {@link #getWidgets()}.
      */
     @Override
-    default void updateWidget(int mouseX, int mouseY)
+    default void update(int mouseX, int mouseY)
     {
         for(IWidget w : getWidgets())
         {
-            w.updateWidget(mouseX, mouseY);
+            w.update(mouseX, mouseY);
         }
     }
     
     // Same doc as IWidget#render
     
     /**
-     * Calls {@link IWidget#renderWidget(float, int, int)} for all {@link IWidget}s
+     * Calls {@link IWidget#render(float, int, int)} for all {@link IWidget}s
      * returned by {@link #getWidgets()}.
      */
     @Override
-    default void renderWidget(float deltaTick, int mouseX, int mouseY)
+    default void render(float deltaTick, int mouseX, int mouseY)
     {
         for(IWidget w : getWidgets())
         {
-            w.renderWidget(deltaTick, mouseX, mouseY);
+            w.render(deltaTick, mouseX, mouseY);
         }
     }
     

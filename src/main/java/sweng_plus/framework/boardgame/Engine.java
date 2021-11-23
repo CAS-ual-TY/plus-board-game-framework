@@ -122,7 +122,7 @@ public class Engine implements Runnable
                 inputHandler.postUpdate();
                 
                 game.update();
-                screen.updateWidget(inputHandler.getMouseX(), inputHandler.getMouseY());
+                screen.update(inputHandler.getMouseX(), inputHandler.getMouseY());
                 
                 currentMillis %= millisPerTick;
             }
@@ -133,7 +133,7 @@ public class Engine implements Runnable
             
             // vielleicht zu HZ von Monitor limitieren? s. GLFWVidMode
             game.render(deltaTick);
-            screen.renderWidget(deltaTick, inputHandler.getMouseX(), inputHandler.getMouseY());
+            screen.render(deltaTick, inputHandler.getMouseX(), inputHandler.getMouseY());
             
             glPopMatrix();
             

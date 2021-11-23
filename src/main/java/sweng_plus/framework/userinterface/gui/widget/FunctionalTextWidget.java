@@ -36,7 +36,7 @@ public class FunctionalTextWidget extends Widget
     }
     
     @Override
-    public void renderWidget(float deltaTick, int mouseX, int mouseY)
+    public void render(float deltaTick, int mouseX, int mouseY)
     {
         updateMouseOver(deltaTick, mouseX, mouseY);
         

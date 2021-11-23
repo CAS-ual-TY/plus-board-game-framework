@@ -17,7 +17,7 @@ public interface IWidget extends IInputListener
      * @param mouseY The Y screen coordinate of the mouse position. It holds that:
      *               0 <= mouseY < {@link Window#getScreenH()}
      */
-    void updateWidget(int mouseX, int mouseY);
+    void update(int mouseX, int mouseY);
     
     // Same doc as IGame#render, mouseX/Y: IInputListener#mousePressed
     
@@ -29,7 +29,7 @@ public interface IWidget extends IInputListener
      * @param mouseY The Y screen coordinate of the mouse position. It holds that:
      *               0 <= mouseY < {@link Window#getScreenH()}
      */
-    void renderWidget(float deltaTick, int mouseX, int mouseY);
+    void render(float deltaTick, int mouseX, int mouseY);
     
     /**
      * Called every time the active {@link Screen} ({@link IGame#getScreen()}/{@link IGame#setScreen(Screen)})

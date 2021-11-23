@@ -28,13 +28,13 @@ public class Widget implements IWidget
     }
     
     @Override
-    public void renderWidget(float deltaTick, int mouseX, int mouseY)
+    public void render(float deltaTick, int mouseX, int mouseY)
     {
     
     }
     
     @Override
-    public void updateWidget(int mouseX, int mouseY)
+    public void update(int mouseX, int mouseY)
     {
     
     }
