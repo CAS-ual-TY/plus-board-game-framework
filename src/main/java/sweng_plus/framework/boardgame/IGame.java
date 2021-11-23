@@ -37,13 +37,15 @@ public interface IGame extends IScreenHolder
      */
     String getWindowTitle();
     
-    // Same doc as IWidget#update
+    // Same doc as IRenderable#update
+    
     /**
      * Called every game tick with stable interval. The amount of ticks is set by overriding {@link #getTicksPerSecond()}.
      */
     void update();
     
-    // Same doc as IWidget#render
+    // Same doc as IRenderable#render
+    
     /**
      * Called every frame. Can be called multiple times in between game ticks.
      *
