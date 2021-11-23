@@ -125,7 +125,7 @@ public interface INestedWidget extends IWidget, IWidgetParent, INestedRenderable
     }
     
     @Override
-    default List<? extends IInputListener> getListeners()
+    default List<? extends IInputListener> getInputListeners()
     {
         return getWidgets();
     }

@@ -122,7 +122,7 @@ public class Screen implements IWidgetParent, INestedRenderable, INestedInputLis
     }
     
     @Override
-    public List<? extends IInputListener> getListeners()
+    public List<? extends IInputListener> getInputListeners()
     {
         return getWidgets();
     }
