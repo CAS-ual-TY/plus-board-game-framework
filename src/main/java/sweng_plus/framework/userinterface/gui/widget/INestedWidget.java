@@ -45,10 +45,7 @@ public interface INestedWidget extends IWidget, IWidgetParent, INestedRenderable
     @Override
     default void update(int mouseX, int mouseY)
     {
-        for(IWidget w : getWidgets())
-        {
-            w.update(mouseX, mouseY);
-        }
+        INestedRenderable.super.update(mouseX, mouseY);
     }
     
     /**
@@ -58,10 +55,7 @@ public interface INestedWidget extends IWidget, IWidgetParent, INestedRenderable
     @Override
     default void render(float deltaTick, int mouseX, int mouseY)
     {
-        for(IWidget w : getWidgets())
-        {
-            w.render(deltaTick, mouseX, mouseY);
-        }
+        INestedRenderable.super.render(deltaTick, mouseX, mouseY);
     }
     
     /**
