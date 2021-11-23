@@ -10,6 +10,26 @@ import java.util.List;
 public interface IWidgetParent extends IWidget, INestedInputListener
 {
     /**
+     * @return All sub-{@link IInputListener}s of this {@link INestedInputListener}.
+     */
+    List<IWidget> getWidgets();
+    
+    // Same doc as IWidget#initWidget
+    
+    /**
+     * <p>Called every time the active {@link Screen} ({@link IGame#getScreen()}/{@link IGame#setScreen(Screen)})
+     * is changed (with this widget being a part of the new {@link Screen}) or when the window is resized.
+     * Primarily this should be used to update widget dimensions (position, maybe also the size) based on these events.</p>
+     *
+     * <p>This method is called by {@link #initWidget(IWidgetParent)} which then
+     * calls {@link IWidget#initWidget(IWidgetParent)} for all sub-widgets returned by {@link #getWidgets()}</p>
+     *
+     * @param parent The {@link IWidgetParent} to give access to its screen coordinates and size
+     *               (for proper aligning with anchor points etc.).
+     */
+    void initWidgetParent(IWidgetParent parent);
+    
+    /**
      * Used by sub-widgets returned by {@link #getWidgets()} to calculate their {@link Screen} position.
      *
      * @return X-coordinate of this {@link IWidgetParent}'s {@link Screen} position.
@@ -36,11 +56,6 @@ public interface IWidgetParent extends IWidget, INestedInputListener
      * @return Height of this {@link IWidgetParent} in {@link Screen}-coordinates.
      */
     int getParentH();
-    
-    /**
-     * @return All sub-{@link IInputListener}s of this {@link INestedInputListener}.
-     */
-    List<IWidget> getWidgets();
     
     // Same doc as IWidget#update
     
@@ -73,18 +88,19 @@ public interface IWidgetParent extends IWidget, INestedInputListener
     }
     
     /**
-     * <p>Calls {@link IWidget#init(IWidgetParent)} for all {@link IWidget}s
-     * returned by {@link #getWidgets()}.</p>
-     *
-     * <p>This method should be overridden and update this {@link IWidgetParent}'s position and size and only then
-     * call {@link IWidget#init(IWidgetParent)} of all sub-widgets returned by {@link #getWidgets()}</p>
+     * First calls {@link #initWidgetParent(IWidgetParent)} to initialize this {@link IWidgetParent}.
+     * <p>
+     * Then calls {@link IWidget#initWidget(IWidgetParent)} for all {@link IWidget}s
+     * returned by {@link #getWidgets()}.
      */
     @Override
-    default void init(IWidgetParent parent)
+    default void initWidget(IWidgetParent parent)
     {
+        initWidgetParent(parent);
+        
         for(IWidget w : getWidgets())
         {
-            w.init(this);
+            w.initWidget(this);
         }
     }
     

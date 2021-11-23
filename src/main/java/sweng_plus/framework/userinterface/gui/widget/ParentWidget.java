@@ -21,51 +21,9 @@ public class ParentWidget extends Widget implements IWidgetParent
     }
     
     @Override
-    public void updateWidget(int mouseX, int mouseY)
+    public void initWidgetParent(IWidgetParent parent)
     {
-        IWidgetParent.super.updateWidget(mouseX, mouseY);
-    }
-    
-    @Override
-    public void renderWidget(float deltaTick, int mouseX, int mouseY)
-    {
-        IWidgetParent.super.renderWidget(deltaTick, mouseX, mouseY);
-    }
-    
-    @Override
-    public void mouseButtonPressed(int mouseX, int mouseY, int mouseButton, int mods)
-    {
-        IWidgetParent.super.mouseButtonPressed(mouseX, mouseY, mouseButton, mods);
-    }
-    
-    @Override
-    public void mouseButtonReleased(int mouseX, int mouseY, int mouseButton, int mods)
-    {
-        IWidgetParent.super.mouseButtonReleased(mouseX, mouseY, mouseButton, mods);
-    }
-    
-    @Override
-    public void keyPressed(int key, int mods)
-    {
-        IWidgetParent.super.keyPressed(key, mods);
-    }
-    
-    @Override
-    public void keyRepeated(int key, int mods)
-    {
-        IWidgetParent.super.keyRepeated(key, mods);
-    }
-    
-    @Override
-    public void keyReleased(int key, int mods)
-    {
-        IWidgetParent.super.keyReleased(key, mods);
-    }
-    
-    @Override
-    public void charTyped(char character)
-    {
-        IWidgetParent.super.charTyped(character);
+        dimensions.init(parent.getParentX(), parent.getParentY(), parent.getParentW(), parent.getParentH());
     }
     
     @Override

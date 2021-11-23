@@ -38,6 +38,12 @@ public class Screen implements IWidgetParent
         IWidgetParent.super.renderWidget(deltaTick, mouseX, mouseY);
     }
     
+    @Override
+    public void initWidgetParent(IWidgetParent parent)
+    {
+    
+    }
+    
     /** Wird immer gecallt, wenn das Window resized wird, oder der Screen zum ersten mal wieder aktiv ist */
     public void initScreen(int screenW, int screenH)
     {
