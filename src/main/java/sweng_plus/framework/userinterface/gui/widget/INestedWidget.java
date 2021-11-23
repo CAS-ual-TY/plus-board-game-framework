@@ -1,13 +1,15 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import sweng_plus.framework.boardgame.IGame;
+import sweng_plus.framework.userinterface.gui.INestedRenderable;
+import sweng_plus.framework.userinterface.gui.IRenderable;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.input.IInputListener;
 import sweng_plus.framework.userinterface.input.INestedInputListener;
 
 import java.util.List;
 
-public interface INestedWidget extends IWidget, INestedInputListener
+public interface INestedWidget extends IWidget, INestedRenderable, INestedInputListener
 {
     /**
      * @return All sub-{@link IInputListener}s of this {@link INestedInputListener}.
@@ -57,7 +59,11 @@ public interface INestedWidget extends IWidget, INestedInputListener
      */
     int getParentH();
     
-    // Same doc as IWidget#update
+    @Override
+    default List<? extends IRenderable> getRenderables()
+    {
+        return getWidgets();
+    }
     
     /**
      * Calls {@link IWidget#update(int, int)} for all {@link IWidget}s
@@ -71,8 +77,6 @@ public interface INestedWidget extends IWidget, INestedInputListener
             w.update(mouseX, mouseY);
         }
     }
-    
-    // Same doc as IWidget#render
     
     /**
      * Calls {@link IWidget#render(float, int, int)} for all {@link IWidget}s
