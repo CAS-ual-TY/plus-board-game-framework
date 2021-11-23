@@ -7,12 +7,6 @@ import sweng_plus.framework.userinterface.input.IInputListener;
 
 public interface IWidget extends IInputListener
 {
-    /**
-     * @return The parent ({@link IWidgetParent}) of this widget or null if this is the root of all widgets
-     * (which typically means that this is the active {@link Screen} retrurned by {@link IGame#getScreen()}).
-     */
-    IWidgetParent getParent();
-    
     // Same doc as IGame#update, mouseX/Y: IInputListener#mousePressed
     
     /**
@@ -41,6 +35,9 @@ public interface IWidget extends IInputListener
      * Called every time the active {@link Screen} ({@link IGame#getScreen()}/{@link IGame#setScreen(Screen)})
      * is changed (with this widget being a part of the new {@link Screen}) or when the window is resized.
      * Primarily this should be used to update widget dimensions (position, maybe also the size) based on these events.
+     *
+     * @param parent The {@link IWidgetParent} to give access to its screen coordinates and size
+     *               (for proper aligning with anchor points etc.).
      */
-    void init();
+    void init(IWidgetParent parent);
 }

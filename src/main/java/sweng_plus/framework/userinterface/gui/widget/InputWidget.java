@@ -1,6 +1,7 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 
@@ -11,9 +12,9 @@ public class InputWidget extends SelectableWidget
     protected StringBuilder stringBuilder;
     protected FontRenderer fontRenderer;
     
-    public InputWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer fontRenderer)
+    public InputWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer fontRenderer)
     {
-        super(parent, dimensions);
+        super(screenHolder, dimensions);
         this.fontRenderer = fontRenderer;
         
         stringBuilder = new StringBuilder();

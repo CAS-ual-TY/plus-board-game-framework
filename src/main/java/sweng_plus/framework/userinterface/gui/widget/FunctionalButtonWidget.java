@@ -1,12 +1,14 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
+
 public class FunctionalButtonWidget extends ButtonWidget
 {
     protected ButtonAction buttonAction;
     
-    public FunctionalButtonWidget(IWidgetParent parent, Dimensions dimensions, ButtonAction buttonAction)
+    public FunctionalButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, ButtonAction buttonAction)
     {
-        super(parent, dimensions);
+        super(screenHolder, dimensions);
         this.buttonAction = buttonAction;
     }
     

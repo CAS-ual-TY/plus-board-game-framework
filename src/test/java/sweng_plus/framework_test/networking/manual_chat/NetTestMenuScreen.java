@@ -29,14 +29,14 @@ public class NetTestMenuScreen extends Screen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new TexturedButtonWidget(this, topButton, this::host, buttonActive, buttonInactive));
-            widgets.add(new TextWidget(this, topButton, NetTestGame.instance().fontRenderer48, "Host"));
+            widgets.add(new TexturedButtonWidget(screenHolder, topButton, this::host, buttonActive, buttonInactive));
+            widgets.add(new TextWidget(screenHolder, topButton, NetTestGame.instance().fontRenderer48, "Host"));
             
-            widgets.add(new TexturedButtonWidget(this, middleButton, this::connect, buttonActive, buttonInactive));
-            widgets.add(new TextWidget(this, middleButton, NetTestGame.instance().fontRenderer48, "Connect"));
+            widgets.add(new TexturedButtonWidget(screenHolder, middleButton, this::connect, buttonActive, buttonInactive));
+            widgets.add(new TextWidget(screenHolder, middleButton, NetTestGame.instance().fontRenderer48, "Connect"));
             
-            widgets.add(new TexturedButtonWidget(this, bottomButton, this::exit, buttonActive, buttonInactive));
-            widgets.add(new TextWidget(this, bottomButton, NetTestGame.instance().fontRenderer48, "Exit"));
+            widgets.add(new TexturedButtonWidget(screenHolder, bottomButton, this::exit, buttonActive, buttonInactive));
+            widgets.add(new TextWidget(screenHolder, bottomButton, NetTestGame.instance().fontRenderer48, "Exit"));
         }
         catch(IOException e)
         {

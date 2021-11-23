@@ -1,10 +1,10 @@
 package sweng_plus.boardgames.ludo.gui.widget;
 
-import org.lwjgl.glfw.GLFW;
-import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.Texture;
-import sweng_plus.framework.userinterface.gui.widget.*;
+import sweng_plus.framework.userinterface.gui.widget.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 
 public class TexturedButtonWidget extends FunctionalButtonWidget
 {
@@ -12,9 +12,9 @@ public class TexturedButtonWidget extends FunctionalButtonWidget
     protected Texture active;
     protected Texture inactive;
     
-    public TexturedButtonWidget(IWidgetParent parent, Dimensions dimensions, ButtonAction buttonAction, Texture active, Texture inactive)
+    public TexturedButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, ButtonAction buttonAction, Texture active, Texture inactive)
     {
-        super(parent, dimensions, buttonAction);
+        super(screenHolder, dimensions, buttonAction);
         this.active = active;
         this.inactive = inactive;
     }

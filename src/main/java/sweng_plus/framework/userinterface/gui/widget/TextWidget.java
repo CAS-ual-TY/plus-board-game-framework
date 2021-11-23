@@ -1,5 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 
@@ -7,23 +8,23 @@ import java.util.List;
 
 public class TextWidget extends FunctionalTextWidget
 {
-    public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, List<String> text, Color4f color)
+    public TextWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer renderer, List<String> text, Color4f color)
     {
-        super(parent, dimensions, renderer, () -> text, color);
+        super(screenHolder, dimensions, renderer, () -> text, color);
     }
     
-    public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, List<String> text)
+    public TextWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer renderer, List<String> text)
     {
-        this(parent, dimensions, renderer, text, Color4f.NEUTRAL);
+        this(screenHolder, dimensions, renderer, text, Color4f.NEUTRAL);
     }
     
-    public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, String text, Color4f color)
+    public TextWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer renderer, String text, Color4f color)
     {
-        this(parent, dimensions, renderer, List.of(text), color);
+        this(screenHolder, dimensions, renderer, List.of(text), color);
     }
     
-    public TextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer renderer, String text)
+    public TextWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer renderer, String text)
     {
-        this(parent, dimensions, renderer, List.of(text));
+        this(screenHolder, dimensions, renderer, List.of(text));
     }
 }

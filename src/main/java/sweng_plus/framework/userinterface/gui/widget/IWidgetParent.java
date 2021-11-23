@@ -72,15 +72,18 @@ public interface IWidgetParent extends IWidget, INestedInputListener
     }
     
     /**
-     * Calls {@link IWidget#init()} for all {@link IWidget}s
-     * returned by {@link #getWidgets()}.
+     * <p>Calls {@link IWidget#init(IWidgetParent)} for all {@link IWidget}s
+     * returned by {@link #getWidgets()}.</p>
+     *
+     * <p>This method should be overridden and update this {@link IWidgetParent}'s position and size and only then
+     * call {@link IWidget#init(IWidgetParent)} of all sub-widgets returned by {@link #getWidgets()}</p>
      */
     @Override
-    default void init()
+    default void init(IWidgetParent parent)
     {
         for(IWidget w : getWidgets())
         {
-            w.init();
+            w.init(this);
         }
     }
     

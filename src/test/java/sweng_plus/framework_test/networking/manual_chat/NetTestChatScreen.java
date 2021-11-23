@@ -41,11 +41,11 @@ public class NetTestChatScreen extends StackedScreen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new TexturedButtonWidget(this, leaveDimensions, this::leave, buttonActive, buttonInactive));
-            widgets.add(new TextWidget(this, leaveDimensions, chatFontRenderer, "Leave"));
+            widgets.add(new TexturedButtonWidget(screenHolder, leaveDimensions, this::leave, buttonActive, buttonInactive));
+            widgets.add(new TextWidget(screenHolder, leaveDimensions, chatFontRenderer, "Leave"));
             
-            widgets.add(new TexturedButtonWidget(this, sendDimensions, this::sendMessage, buttonActive, buttonInactive));
-            widgets.add(new TextWidget(this, sendDimensions, chatFontRenderer, ">"));
+            widgets.add(new TexturedButtonWidget(screenHolder, sendDimensions, this::sendMessage, buttonActive, buttonInactive));
+            widgets.add(new TextWidget(screenHolder, sendDimensions, chatFontRenderer, ">"));
         }
         catch(IOException e)
         {
@@ -54,10 +54,10 @@ public class NetTestChatScreen extends StackedScreen
         
         chatMessages = new LinkedList<>();
         
-        textWidget = new FunctionalTextWidget(this, new Dimensions(AnchorPoint.BR, 0, -100), chatFontRenderer, this::getChat);
+        textWidget = new FunctionalTextWidget(screenHolder, new Dimensions(AnchorPoint.BR, 0, -100), chatFontRenderer, this::getChat);
         widgets.add(textWidget);
         
-        widgets.add(inputWidget = new InputWidget(this, new Dimensions(CHAT_WIDTH - 100, 100, AnchorPoint.BR, -100, 0), chatFontRenderer));
+        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(CHAT_WIDTH - 100, 100, AnchorPoint.BR, -100, 0), chatFontRenderer));
     }
     
     private void leave(int mouseX, int mouseY, int mods)
@@ -70,7 +70,7 @@ public class NetTestChatScreen extends StackedScreen
     {
         chatMessages.addAll(chatFontRenderer.splitStringToWidth(CHAT_WIDTH, sender + ": " + message));
         textWidget.adjustSizeToText();
-        textWidget.init();
+        textWidget.init(this);
     }
     
     public List<String> getChat()

@@ -1,5 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 
@@ -12,17 +13,17 @@ public class FunctionalTextWidget extends Widget
     protected Supplier<List<String>> text;
     protected Color4f color;
     
-    public FunctionalTextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer fontRenderer, Supplier<List<String>> text, Color4f color)
+    public FunctionalTextWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer fontRenderer, Supplier<List<String>> text, Color4f color)
     {
-        super(parent, dimensions);
+        super(screenHolder, dimensions);
         this.fontRenderer = fontRenderer;
         this.text = text;
         this.color = color;
     }
     
-    public FunctionalTextWidget(IWidgetParent parent, Dimensions dimensions, FontRenderer fontRenderer, Supplier<List<String>> text)
+    public FunctionalTextWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer fontRenderer, Supplier<List<String>> text)
     {
-        this(parent, dimensions, fontRenderer, null, Color4f.NEUTRAL);
+        this(screenHolder, dimensions, fontRenderer, null, Color4f.NEUTRAL);
         this.text = text;
     }
     

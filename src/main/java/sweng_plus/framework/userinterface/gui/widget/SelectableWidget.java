@@ -2,14 +2,15 @@ package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 
 public class SelectableWidget extends Widget
 {
     protected boolean isSelected;
     
-    public SelectableWidget(IWidgetParent parent, Dimensions dimensions)
+    public SelectableWidget(IScreenHolder screenHolder, Dimensions dimensions)
     {
-        super(parent, dimensions);
+        super(screenHolder, dimensions);
         isSelected = false;
     }
     

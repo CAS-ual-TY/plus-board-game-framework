@@ -27,12 +27,6 @@ public class Screen implements IWidgetParent
     }
     
     @Override
-    public IWidgetParent getParent()
-    {
-        return null;
-    }
-    
-    @Override
     public void update(int mouseX, int mouseY)
     {
         IWidgetParent.super.update(mouseX, mouseY);
@@ -50,7 +44,7 @@ public class Screen implements IWidgetParent
         this.screenW = screenW;
         this.screenH = screenH;
         
-        IWidgetParent.super.init();
+        IWidgetParent.super.init(this);
     }
     
     @Override

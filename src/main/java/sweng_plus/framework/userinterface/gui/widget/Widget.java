@@ -1,16 +1,18 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
+
 public class Widget implements IWidget
 {
-    public final IWidgetParent parent;
+    public final IScreenHolder screenHolder;
     
     protected Dimensions dimensions;
     
     public boolean isMouseOver;
     
-    public Widget(IWidgetParent parent, Dimensions dimensions)
+    public Widget(IScreenHolder screenHolder, Dimensions dimensions)
     {
-        this.parent = parent;
+        this.screenHolder = screenHolder;
         this.dimensions = dimensions;
     }
     
@@ -20,13 +22,7 @@ public class Widget implements IWidget
     }
     
     @Override
-    public IWidgetParent getParent()
-    {
-        return parent;
-    }
-    
-    @Override
-    public void init()
+    public void init(IWidgetParent parent)
     {
         dimensions.init(parent.getParentX(), parent.getParentY(), parent.getParentW(), parent.getParentH());
     }

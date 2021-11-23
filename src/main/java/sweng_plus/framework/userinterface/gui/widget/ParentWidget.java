@@ -1,5 +1,7 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,15 +9,15 @@ public class ParentWidget extends Widget implements IWidgetParent
 {
     protected List<IWidget> widgets;
     
-    public ParentWidget(IWidgetParent parent, Dimensions dimensions, List<IWidget> widgets)
+    public ParentWidget(IScreenHolder screenHolder, Dimensions dimensions, List<IWidget> widgets)
     {
-        super(parent, dimensions);
+        super(screenHolder, dimensions);
         this.widgets = widgets;
     }
     
-    public ParentWidget(IWidgetParent parent, Dimensions dimensions, IWidget... widgets)
+    public ParentWidget(IScreenHolder screenHolder, Dimensions dimensions, IWidget... widgets)
     {
-        this(parent, dimensions, Arrays.asList(widgets));
+        this(screenHolder, dimensions, Arrays.asList(widgets));
     }
     
     @Override

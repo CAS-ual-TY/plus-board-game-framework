@@ -24,14 +24,13 @@ public class DebugScreen extends Screen
     private long millisTPS = System.currentTimeMillis();
     private LinkedList<Double> tpsAverage = new LinkedList<>();
     
-    @SuppressWarnings("ThisEscapedInObjectConstruction")
     public DebugScreen(IScreenHolder screenHolder)
     {
         super(screenHolder);
         
         try
         {
-            widgets.add(new TextureWidget(this, new Dimensions(2048, 2048, AnchorPoint.M),
+            widgets.add(new TextureWidget(screenHolder, new Dimensions(2048, 2048, AnchorPoint.M),
                     TextureHelper.createTexture("src/test/resources/textures/test_raster.png"))
             {
                 @Override
@@ -49,11 +48,11 @@ public class DebugScreen extends Screen
         
         for(AnchorPoint anchor : AnchorPoint.values())
         {
-            widgets.add(new ColoredWidget(this, new Dimensions(100, 100, anchor),
+            widgets.add(new ColoredWidget(screenHolder, new Dimensions(100, 100, anchor),
                     Color4f.BLACK, Color4f.RED));
         }
         
-        widgets.add(new InputWidget(this, new Dimensions(600, 80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
+        widgets.add(new InputWidget(screenHolder, new Dimensions(600, 80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
     }
     
     @Override

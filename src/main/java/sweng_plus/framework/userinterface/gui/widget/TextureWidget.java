@@ -1,5 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.util.Texture;
 
@@ -7,9 +8,9 @@ public class TextureWidget extends Widget
 {
     protected Texture texture;
     
-    public TextureWidget(IWidgetParent parent, Dimensions dimensions, Texture texture)
+    public TextureWidget(IScreenHolder screenHolder, Dimensions dimensions, Texture texture)
     {
-        super(parent, dimensions);
+        super(screenHolder, dimensions);
         this.texture = texture;
     }
     

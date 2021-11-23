@@ -2,12 +2,13 @@ package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 
 public abstract class ButtonWidget extends Widget
 {
-    public ButtonWidget(IWidgetParent parent, Dimensions dimensions)
+    public ButtonWidget(IScreenHolder screenHolder, Dimensions dimensions)
     {
-        super(parent, dimensions);
+        super(screenHolder, dimensions);
     }
     
     @Override

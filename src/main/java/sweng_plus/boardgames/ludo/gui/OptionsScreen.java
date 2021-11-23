@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class OptionsScreen extends WrappedScreen
 {
-    @SuppressWarnings("ThisEscapedInObjectConstruction")
     public OptionsScreen(Screen subScreen)
     {
         super(subScreen);
@@ -30,11 +29,11 @@ public class OptionsScreen extends WrappedScreen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new TexturedButtonWidget(this, topButton, (mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
+            widgets.add(new TexturedButtonWidget(screenHolder, topButton, (mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
             
-            widgets.add(new TexturedButtonWidget(this, middleButton, (mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
+            widgets.add(new TexturedButtonWidget(screenHolder, middleButton, (mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
             
-            widgets.add(new TexturedButtonWidget(this, bottomButton, (mouseX, mouseY, mods) -> Engine.instance().close(), buttonActive, buttonInactive));
+            widgets.add(new TexturedButtonWidget(screenHolder, bottomButton, (mouseX, mouseY, mods) -> Engine.instance().close(), buttonActive, buttonInactive));
             
         }
         catch(IOException e)
@@ -42,9 +41,9 @@ public class OptionsScreen extends WrappedScreen
             e.printStackTrace();
         }
         
-        widgets.add(new TextWidget(this, topButton.clone(), Ludo.instance().fontRenderer32, "Top Button"));
-        widgets.add(new TextWidget(this, middleButton.clone(), Ludo.instance().fontRenderer32, "Middle Button"));
-        widgets.add(new TextWidget(this, bottomButton.clone(), Ludo.instance().fontRenderer32, "Exit"));
+        widgets.add(new TextWidget(screenHolder, topButton.clone(), Ludo.instance().fontRenderer32, "Top Button"));
+        widgets.add(new TextWidget(screenHolder, middleButton.clone(), Ludo.instance().fontRenderer32, "Middle Button"));
+        widgets.add(new TextWidget(screenHolder, bottomButton.clone(), Ludo.instance().fontRenderer32, "Exit"));
     }
     
     @Override

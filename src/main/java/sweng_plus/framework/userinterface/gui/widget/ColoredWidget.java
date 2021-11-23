@@ -1,5 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -9,9 +10,9 @@ public class ColoredWidget extends Widget
     protected Color4f baseColor;
     protected Color4f hoverColor;
     
-    public ColoredWidget(IWidgetParent parent, Dimensions dimensions, Color4f baseColor, Color4f hoverColor)
+    public ColoredWidget(IScreenHolder screenHolder, Dimensions dimensions, Color4f baseColor, Color4f hoverColor)
     {
-        super(parent, dimensions);
+        super(screenHolder, dimensions);
         this.baseColor = baseColor;
         this.hoverColor = hoverColor;
     }
