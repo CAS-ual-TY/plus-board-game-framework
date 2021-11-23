@@ -1,7 +1,5 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
-import sweng_plus.framework.userinterface.gui.IScreenHolder;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,15 +19,15 @@ public class ParentWidget extends Widget implements IWidgetParent
     }
     
     @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
-    {
-        IWidgetParent.super.render(deltaTick, mouseX, mouseY);
-    }
-    
-    @Override
     public void update(int mouseX, int mouseY)
     {
         IWidgetParent.super.update(mouseX, mouseY);
+    }
+    
+    @Override
+    public void render(float deltaTick, int mouseX, int mouseY)
+    {
+        IWidgetParent.super.render(deltaTick, mouseX, mouseY);
     }
     
     @Override
@@ -90,12 +88,6 @@ public class ParentWidget extends Widget implements IWidgetParent
     public int getParentH()
     {
         return dimensions.h;
-    }
-    
-    @Override
-    public IScreenHolder getScreenHolder()
-    {
-        return parent.getScreenHolder();
     }
     
     @Override

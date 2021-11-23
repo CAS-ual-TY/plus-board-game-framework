@@ -21,6 +21,11 @@ public class Screen implements IWidgetParent
         widgets = new LinkedList<>();
     }
     
+    public IScreenHolder getScreenHolder()
+    {
+        return screenHolder;
+    }
+    
     @Override
     public IWidgetParent getParent()
     {
@@ -106,12 +111,6 @@ public class Screen implements IWidgetParent
     public int getParentH()
     {
         return screenH;
-    }
-    
-    @Override
-    public IScreenHolder getScreenHolder()
-    {
-        return screenHolder;
     }
     
     @Override
