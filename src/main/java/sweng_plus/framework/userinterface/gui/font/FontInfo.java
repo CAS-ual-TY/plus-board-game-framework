@@ -116,22 +116,13 @@ public class FontInfo
         image = img;
     }
     
-    public static class CharInfo
+    public record CharInfo(int charX, int charW)
     {
-        private final int charX;
-        private final int charW;
-        
-        public CharInfo(int charX, int charW)
-        {
-            this.charX = charX;
-            this.charW = charW;
-        }
-        
         public int getCharX()
         {
             return charX;
         }
-        
+    
         public int getCharW()
         {
             return charW;

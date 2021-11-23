@@ -70,6 +70,7 @@ public interface IGame extends IScreenHolder
     /**
      * @return The amount of times {@link #update()} is called per second (game tick interval).
      */
+    @SuppressWarnings("SameReturnValue")
     default int getTicksPerSecond()
     {
         return 20;

@@ -77,6 +77,7 @@ public class Dimensions implements Cloneable
                 && mouseY >= y && mouseY < y + h;
     }
     
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public Dimensions clone()
     {

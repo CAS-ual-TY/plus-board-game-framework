@@ -102,7 +102,7 @@ public class DebugScreen extends Screen
         Ludo.instance().fontRenderer24.render(x, y += Ludo.instance().fontRenderer32.getHeight(), "24: " + ABC);
         Ludo.instance().fontRenderer24.render(x, y += Ludo.instance().fontRenderer24.getHeight(), "24: " + abc);
         Ludo.instance().fontRenderer16.render(x, y += Ludo.instance().fontRenderer24.getHeight(), "16: " + ABC);
-        Ludo.instance().fontRenderer16.render(x, y += Ludo.instance().fontRenderer16.getHeight(), "16: " + abc);
+        Ludo.instance().fontRenderer16.render(x, y + Ludo.instance().fontRenderer16.getHeight(), "16: " + abc);
     }
     
     private void calculateFPS()
