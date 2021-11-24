@@ -15,6 +15,8 @@ public class Color4f
     public static final Color4f GREEN = new Color4f(0F, 1F, 0F, 1F);
     public static final Color4f BLUE = new Color4f(0F, 0F, 1F, 1F);
     
+    public static final Color4f YELLOW = new Color4f(1F, 1F, 0F, 1F);
+    
     public final float r;
     public final float g;
     public final float b;
