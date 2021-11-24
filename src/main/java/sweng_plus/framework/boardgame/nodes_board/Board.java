@@ -102,7 +102,6 @@ public class Board
     
     public void moveFigure(NodeFigure figure, INode target)
     {
-        
         if(!(fieldFigures.contains(figure) || nodes.contains(target)))
         {   // Figure not on board
             return;
