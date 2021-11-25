@@ -6,18 +6,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class Board
+public class NodeBoard
 {
     protected final List<INode> nodes;
     protected final List<NodeFigure> fieldFigures;
     
-    public Board(List<INode> nodes, List<NodeFigure> fieldFigures)
+    public NodeBoard(List<INode> nodes, List<NodeFigure> fieldFigures)
     {
         this.nodes = nodes;
         this.fieldFigures = fieldFigures;
     }
     
-    public Board()
+    public NodeBoard()
     {
         this(new LinkedList<>(), new LinkedList<>());
     }
