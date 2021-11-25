@@ -8,13 +8,18 @@ import java.util.function.Predicate;
 
 public class Board
 {
-    private final List<INode> nodes;
-    private final List<NodeFigure> fieldFigures;
+    protected final List<INode> nodes;
+    protected final List<NodeFigure> fieldFigures;
     
     public Board(List<INode> nodes, List<NodeFigure> fieldFigures)
     {
         this.nodes = nodes;
         this.fieldFigures = fieldFigures;
+    }
+    
+    public Board()
+    {
+        this(new LinkedList<>(), new LinkedList<>());
     }
     
     public List<INode> getNodes()
@@ -25,6 +30,16 @@ public class Board
     public List<NodeFigure> getNodeFigures()
     {
         return fieldFigures;
+    }
+    
+    protected void addNode(INode node)
+    {
+        nodes.add(node);
+    }
+    
+    protected void addAllNodes(List<? extends INode> nodes)
+    {
+        this.nodes.addAll(nodes);
     }
     
     public List<INode> getForwardNodes(INode start, int distance, Predicate<INode> predicate)
