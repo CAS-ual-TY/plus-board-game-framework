@@ -24,4 +24,19 @@ public class NodeWidget extends Widget
         forwardNodes = new ArrayList<>(node.getForwardNodes().size());
         backwardNodes = new ArrayList<>(node.getBackwardNodes().size());
     }
+    
+    public INode getNode()
+    {
+        return node;
+    }
+    
+    public void addForwardNode(NodeWidget node)
+    {
+        forwardNodes.add(node);
+    }
+    
+    public void addBackwardNode(NodeWidget node)
+    {
+        backwardNodes.add(node);
+    }
 }
