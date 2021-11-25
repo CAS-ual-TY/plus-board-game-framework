@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LudoGamelogic extends NodeBoard
+public class LudoBoard extends NodeBoard
 {
     public static final int HOUSES_PER_CORNER = 4;
     public static final int NEUTRAL_NODES_PER_CORNER = 8;
@@ -20,7 +20,7 @@ public class LudoGamelogic extends NodeBoard
     private List<LudoNode>[] home;
     private List<Node>[] fullCorner;
     
-    public LudoGamelogic(TeamColor[] teams)
+    public LudoBoard(TeamColor[] teams)
     {
         super(new LinkedList<>(), new LinkedList<>());
         this.teams = teams;
