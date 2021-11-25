@@ -13,6 +13,9 @@ public class LudoBoard extends NodeBoard
     public static final int HOUSES_PER_CORNER = 4;
     public static final int NEUTRAL_NODES_PER_CORNER = 8;
     
+    // +2 because of: 1x Start, 1x Home Entrance
+    public static final int TOTAL_NODES_PER_CORNER = HOUSES_PER_CORNER + 2 + HOUSES_PER_CORNER + NEUTRAL_NODES_PER_CORNER;
+    
     private TeamColor[] teams;
     private List<LudoNode>[] outside;
     private LudoNode[] start;
@@ -65,7 +68,7 @@ public class LudoBoard extends NodeBoard
         LudoNode start;
         LudoNode homeEntrance;
         ArrayList<LudoNode> home = new ArrayList<>(HOUSES_PER_CORNER);
-        ArrayList<Node> allNodes = new ArrayList<>(outside.size() + 2 + home.size() + NEUTRAL_NODES_PER_CORNER);
+        ArrayList<Node> allNodes = new ArrayList<>(TOTAL_NODES_PER_CORNER);
         
         Node last = null;
         LudoNode current = null;
@@ -109,6 +112,11 @@ public class LudoBoard extends NodeBoard
         }
         
         consumer.forBoardCorner(outside, start, homeEntrance, home, last, allNodes);
+    }
+    
+    public int getTeamsAmount()
+    {
+        return teams.length;
     }
     
     public TeamColor[] getTeams()
