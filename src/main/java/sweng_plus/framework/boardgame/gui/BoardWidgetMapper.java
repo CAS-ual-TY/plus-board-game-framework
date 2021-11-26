@@ -3,6 +3,7 @@ package sweng_plus.framework.boardgame.gui;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.NodeBoard;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
+import sweng_plus.framework.userinterface.gui.widget.base.IWidget;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,9 +14,14 @@ public class BoardWidgetMapper
 {
     public static HashMap<INode, NodeWidget> mapBoardToWidgets(NodeBoard board, Function<INode, NodeWidget> widgetFactory)
     {
-        HashMap<INode, NodeWidget> map = new HashMap<>(board.getNodes().size());
+        return mapListToWidgets(board.getNodes(), widgetFactory);
+    }
+    
+    public static HashMap<INode, NodeWidget> mapListToWidgets(List<INode> nodes, Function<INode, NodeWidget> widgetFactory)
+    {
+        HashMap<INode, NodeWidget> map = new HashMap<>(nodes.size());
         
-        for(INode node : board.getNodes())
+        for(INode node : nodes)
         {
             map.put(node, widgetFactory.apply(node));
         }
