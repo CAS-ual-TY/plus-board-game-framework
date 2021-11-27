@@ -29,4 +29,12 @@ public class TeamColor
     {
         return color;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "TeamColor{" +
+                "name='" + name +
+                '}';
+    }
 }

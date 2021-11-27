@@ -3,6 +3,7 @@ package sweng_plus.boardgames.ludo.gamelogic;
 import sweng_plus.framework.boardgame.nodes_board.NodeBoard;
 import sweng_plus.framework.boardgame.nodes_board.Node;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
+import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -21,7 +22,7 @@ public class LudoBoard extends NodeBoard
     private LudoNode[] start;
     private LudoNode[] homeEntrance;
     private List<LudoNode>[] home;
-    private List<Node>[] fullCorner;
+    private List<LudoNode>[] fullCorner;
     
     public LudoBoard(TeamColor[] teams)
     {
@@ -29,6 +30,19 @@ public class LudoBoard extends NodeBoard
         this.teams = teams;
         
         setupBoard();
+    }
+    
+    public int getTeamIndex(TeamColor team)
+    {
+        for(int i = 0; i < teams.length; ++i)
+        {
+            if(team == teams[i])
+            {
+                return i;
+            }
+        }
+        
+        return -1;
     }
     
     @SuppressWarnings("unchecked")
@@ -39,8 +53,8 @@ public class LudoBoard extends NodeBoard
         homeEntrance = new LudoNode[teams.length];
         home = new List[teams.length];
         fullCorner = new List[teams.length];
-        
-        Node[] last = new Node[teams.length];
+    
+        LudoNode[] last = new LudoNode[teams.length];
         
         for(int i = 0; i < teams.length; i++)
         {
@@ -58,8 +72,10 @@ public class LudoBoard extends NodeBoard
         
         for(int i = 0; i < teams.length; i++)
         {
-            last[i].addForwardNode(homeEntrance[(i + 1) % teams.length]);
+            INode.linkNodes(last[i], homeEntrance[(i + 1) % teams.length]);
         }
+        
+        System.out.println("LudoBoard: Amount of Nodes: " + getNodes().size());
     }
     
     private static void createBoardCorner(TeamColor team, BoardCornerConsumer consumer)
@@ -68,30 +84,30 @@ public class LudoBoard extends NodeBoard
         LudoNode start;
         LudoNode homeEntrance;
         ArrayList<LudoNode> home = new ArrayList<>(HOUSES_PER_CORNER);
-        ArrayList<Node> allNodes = new ArrayList<>(TOTAL_NODES_PER_CORNER);
-        
-        Node last = null;
+        ArrayList<LudoNode> allNodes = new ArrayList<>(TOTAL_NODES_PER_CORNER);
+    
+        LudoNode last = null;
         LudoNode current = null;
-        Node previous = null;
+        LudoNode previous = null;
         
-        start = new LudoNode(team, LudoNodeType.START);
+        start = new LudoNode(team, LudoNodeType.START, 0);
         
         for(int i = 0; i < HOUSES_PER_CORNER; i++)
         {
-            outside.add(current = new LudoNode(team, LudoNodeType.OUTSIDE));
-            current.addForwardNode(start);
+            outside.add(current = new LudoNode(team, LudoNodeType.OUTSIDE, i));
+            INode.linkNodes(current, start);
         }
         
-        homeEntrance = new LudoNode(team, LudoNodeType.HOME_ENTRANCE);
-        homeEntrance.addForwardNode(start);
+        homeEntrance = new LudoNode(team, LudoNodeType.HOME_ENTRANCE, 0);
+        INode.linkNodes(homeEntrance, start);
         
         for(int i = 0; i < HOUSES_PER_CORNER; i++)
         {
-            home.add(current = new LudoNode(team, LudoNodeType.HOME));
+            home.add(current = new LudoNode(team, LudoNodeType.HOME, i));
             
             if(previous != null)
             {
-                previous.addForwardNode(current);
+                INode.linkNodes(previous, current);
             }
             previous = current;
         }
@@ -104,9 +120,9 @@ public class LudoBoard extends NodeBoard
         previous = start;
         for(int i = 0; i < NEUTRAL_NODES_PER_CORNER; i++)
         {
-            allNodes.add(last = new Node());
+            allNodes.add(last = new LudoNode(team, LudoNodeType.NEUTRAL, i));
             
-            previous.addForwardNode(last);
+            INode.linkNodes(previous, last);
             
             previous = last;
         }
@@ -144,13 +160,13 @@ public class LudoBoard extends NodeBoard
         return home[team];
     }
     
-    public List<Node> getFullCornerNodes(int team)
+    public List<LudoNode> getFullCornerNodes(int team)
     {
         return fullCorner[team];
     }
     
     public interface BoardCornerConsumer
     {
-        void forBoardCorner(List<LudoNode> outside, LudoNode start, LudoNode homeEntrance, List<LudoNode> home, Node last, List<Node> allNodes);
+        void forBoardCorner(List<LudoNode> outside, LudoNode start, LudoNode homeEntrance, List<LudoNode> home, LudoNode last, List<LudoNode> allNodes);
     }
 }

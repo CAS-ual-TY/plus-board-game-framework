@@ -49,8 +49,38 @@ public class Color4f
         this(r, g, b, 1.0F);
     }
     
-    public void glColor4f()
+    public void glColor3fAlpha(float a)
     {
         GL11.glColor4f(r, g, b, a);
+    }
+    
+    public void glColor4f()
+    {
+        glColor3fAlpha(a);
+    }
+    
+    public void glColor3fStrength(float s)
+    {
+        GL11.glColor4f(r*s + (1F - s), g*s + (1F - s), b*s + (1F - s), a);
+    }
+    
+    public void glColor4fApply(java.util.function.DoubleUnaryOperator function)
+    {
+        GL11.glColor4f(
+                (float) function.applyAsDouble(r),
+                (float) function.applyAsDouble(g),
+                (float) function.applyAsDouble(b),
+                a);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Color4f{" +
+                "r=" + r +
+                ", g=" + g +
+                ", b=" + b +
+                ", a=" + a +
+                '}';
     }
 }

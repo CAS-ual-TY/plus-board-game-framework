@@ -28,7 +28,6 @@ public class Node implements INode
     public void addForwardNode(INode forwardNode)
     {
         forwardNodes.add(forwardNode);
-        forwardNode.addBackwardNode(this);
     }
     
     @Override
@@ -41,7 +40,6 @@ public class Node implements INode
     public void addBackwardNode(INode backwardNode)
     {
         backwardNodes.add(backwardNode);
-        backwardNode.addBackwardNode(this);
     }
     
     @Override

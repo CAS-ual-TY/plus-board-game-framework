@@ -83,4 +83,10 @@ public interface INode
                     .collect(Collectors.toList());
         }
     }
+    
+    static void linkNodes(INode from, INode to)
+    {
+        from.addForwardNode(to);
+        to.addBackwardNode(from);
+    }
 }

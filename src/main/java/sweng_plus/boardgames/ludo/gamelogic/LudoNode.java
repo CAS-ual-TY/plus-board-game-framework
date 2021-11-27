@@ -7,14 +7,32 @@ public class LudoNode extends TeamNode
 {
     private final LudoNodeType nodeType;
     
-    public LudoNode(TeamColor color, LudoNodeType nodeType)
+    protected final int index;
+    
+    public LudoNode(TeamColor color, LudoNodeType nodeType, int index)
     {
         super(color);
         this.nodeType = nodeType;
+        this.index = index;
     }
     
     public LudoNodeType getNodeType()
     {
         return nodeType;
+    }
+    
+    public int getIndex()
+    {
+        return index;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "LudoNode{" +
+                ", color=" + color +
+                "nodeType=" + nodeType +
+                ", index=" + index +
+                '}';
     }
 }
