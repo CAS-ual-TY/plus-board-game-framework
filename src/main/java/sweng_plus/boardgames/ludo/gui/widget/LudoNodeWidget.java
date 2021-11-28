@@ -4,7 +4,6 @@ import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
-import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
@@ -20,7 +19,7 @@ public class LudoNodeWidget extends NodeWidget
     {
         super(screenHolder, dimensions, node);
         this.texture = texture;
-    
+        
         team = node.getColor();
         type = node.getNodeType();
     }

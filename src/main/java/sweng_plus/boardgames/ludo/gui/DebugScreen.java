@@ -4,13 +4,13 @@ import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.widget.ColoredWidget;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextureWidget;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.io.IOException;
 import java.util.LinkedList;

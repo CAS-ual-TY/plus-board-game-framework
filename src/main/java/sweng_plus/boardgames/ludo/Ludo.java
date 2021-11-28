@@ -2,6 +2,8 @@ package sweng_plus.boardgames.ludo;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.gui.DebugScreen;
+import sweng_plus.boardgames.ludo.gui.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -11,6 +13,7 @@ import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class Ludo implements IGame
@@ -54,12 +57,22 @@ public class Ludo implements IGame
         fontRenderer24 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(24F), StandardCharsets.UTF_8.name(), chars));
         fontRenderer16 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(16F), StandardCharsets.UTF_8.name(), chars));
         
-        screen = new DebugScreen(this);
-        
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_SPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_BACKSPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ESCAPE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ENTER);
+    
+        try
+        {
+            LudoTextures.load();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    
+        screen = new MenuScreen(this);
+    
     }
     
     @Override
