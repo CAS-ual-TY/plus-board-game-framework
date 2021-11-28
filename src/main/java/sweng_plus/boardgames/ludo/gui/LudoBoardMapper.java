@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class LudoBoardMapper
 {
-    public static final int NODE_WIDTH = 80;
+    public static final int NODE_WIDTH = 72;
     public static final double SQRT2 = Math.sqrt(2);
     public static final double HALF_SQRT3 = Math.sqrt(3) * 0.5D;
     
@@ -73,15 +73,17 @@ public class LudoBoardMapper
     
     public static PositionFunction createMapFunction(final int teams, int houses, int neutrals)
     {
-        Function[] functions = new Function[teams];
+        Vector2i[] functions = new Vector2i[teams];
         Vector2i[][] offsets = new Vector2i[teams][3];
         
         Vector2i[] corners = new Vector2i[teams];
         
+        int outsideDistance = 3;
+        
         final int defaultWidth = NODE_WIDTH;
         int defaultHalfWidth = defaultWidth / 2;
         
-        if(teams == 3)
+        if(teams == 2)
         {
             int height = halfSqrt3(defaultWidth);
             int halfHeight = height / 2;
@@ -90,39 +92,33 @@ public class LudoBoardMapper
             corners[1] = new Vector2i(defaultWidth - defaultHalfWidth, -halfHeight); // Top Right
             corners[2] = new Vector2i(0, height - halfHeight); // Bottom
             
-            functions[0] = (i) -> new Vector2i(0, -i * defaultWidth); // Top
-            
-            functions[1] = (i) ->
-            {
-                int distance = i * defaultWidth;
-                return new Vector2i(halfSqrt3(distance), distance - distance / 2);
-            }; // Bottom Right
-            
-            functions[2] = (i) ->
-            {
-                int distance = i * defaultWidth;
-                return new Vector2i(-halfSqrt3(distance), distance - distance / 2);
-            }; // Bottom Left
+            functions[0] = new Vector2i(0, -defaultWidth); // Top
+            functions[1] = new Vector2i(halfSqrt3(defaultWidth), defaultWidth - defaultHalfWidth); // Bottom Right
+            functions[2] = new Vector2i(-halfSqrt3(defaultWidth), defaultWidth - defaultHalfWidth); // Bottom Left
         }
-        else if(teams == 4)
-        {
-            corners[0] = new Vector2i(-defaultHalfWidth, -defaultHalfWidth); // Top Left
-            corners[1] = new Vector2i(defaultWidth - defaultHalfWidth, -defaultHalfWidth); // Top Right
-            corners[2] = new Vector2i(defaultWidth - defaultHalfWidth, defaultWidth - defaultHalfWidth); // Bottom Right
-            corners[3] = new Vector2i(-defaultHalfWidth, defaultWidth - defaultHalfWidth); // Bottom Left
-            
-            functions[0] = (i) -> new Vector2i(0, -i * defaultWidth); // Top
-            functions[1] = (i) -> new Vector2i(i * defaultWidth, 0); // Right
-            functions[2] = (i) -> new Vector2i(0, i * defaultWidth); // Bottom
-            functions[3] = (i) -> new Vector2i(-i * defaultWidth, 0); // Left
-        }
+        if(teams <= 4)
+            ;
+        else if(teams <= 6)
+            outsideDistance -= 1;
+        else
+            outsideDistance -= 2;
         
-        Vector2i halfW = new Vector2i(-defaultHalfWidth, -defaultHalfWidth);
+        double angle = -2D * Math.PI / teams;
+        double radius = 0.5D * defaultWidth / Math.sin(Math.PI / teams);
+        
+        for(int team = 0; team < teams; ++team)
+        {
+            double functionAngle = team * angle;
+            double cornerAngle = functionAngle - 0.5D * angle;
+            corners[team] = new Vector2d(-Math.sin(cornerAngle), -Math.cos(cornerAngle)).normalize()
+                    .mul(radius).get(RoundingMode.HALF_UP, new Vector2i());
+            functions[team] = new Vector2d(-Math.sin(functionAngle), -Math.cos(functionAngle)).normalize()
+                    .mul(defaultWidth).get(RoundingMode.HALF_UP, new Vector2i());
+        }
         
         for(Vector2i corner : corners)
         {
-            corner.add(halfW);
-            corner.add(corner);
+            corner.add(-defaultHalfWidth, -defaultHalfWidth).mul(2);
         }
         
         for(int team = 0; team < teams; ++team)
@@ -134,6 +130,7 @@ public class LudoBoardMapper
             offsets[team][2] = new Vector2i(corners[next]);
         }
         
+        final int finalOutsideDistance = outsideDistance;
         return (node, team) ->
         {
             int row;
@@ -142,22 +139,19 @@ public class LudoBoardMapper
             switch(node.getNodeType())
             {
                 case OUTSIDE:
-                case START:
-                    row = 2;
-                    i = 4;
                     if(node.getNodeType() == LudoNodeType.OUTSIDE)
                     {
-                        Vector2i offset = new Vector2i(offsets[team][row]);
-                        Function function = functions[team];
-                        
-                        i -= node.getIndex() / 2;
-                        offset = offset.add(functions[team].map(i));
-                        
-                        i = node.getIndex() == 0 || node.getIndex() == 3 ? 3 : 4;
-                        offset = offset.add(functions[(team + 1) % teams].map(i));
+                        Vector2i offset = new Vector2i(offsets[team][2]);
+                        offset.add(new Vector2i(functions[team]).mul(finalOutsideDistance + node.getIndex() / 2));
+                        offset.add(new Vector2i(functions[(team + 1) % teams])
+                                .mul(finalOutsideDistance + (node.getIndex() == 0 || node.getIndex() == 3 ? 0 : 1)));
                         
                         return offset;
                     }
+                
+                case START:
+                    row = 2;
+                    i = 4;
                     break;
                 
                 case HOME_ENTRANCE:
@@ -186,9 +180,9 @@ public class LudoBoardMapper
             }
             
             Vector2i offset = new Vector2i(offsets[team][row]);
-            Function function = functions[team];
+            Vector2i function = new Vector2i(functions[team]);
             
-            return offset.add(function.map(i));
+            return offset.add(function.mul(i));
         };
     }
     
@@ -205,10 +199,5 @@ public class LudoBoardMapper
     public interface PositionFunction
     {
         Vector2i map(LudoNode node, int team);
-    }
-    
-    public interface Function
-    {
-        Vector2i map(int i);
     }
 }
