@@ -10,12 +10,17 @@ public class Color4f
     
     public static final Color4f WHITE = NEUTRAL;
     public static final Color4f BLACK = new Color4f(0F, 0F, 0F, 1F);
+    public static final Color4f GREY = new Color4f(0.5F, 0.5F, 0.5F, 1F);
+    public static final Color4f LIGHT_GREY = new Color4f(0.33F, 0.33F, 0.33F, 1F);
+    public static final Color4f DARK_GREY = new Color4f(0.66F, 0.66F, 0.66F, 1F);
     
     public static final Color4f RED = new Color4f(1F, 0F, 0F, 1F);
     public static final Color4f GREEN = new Color4f(0F, 1F, 0F, 1F);
     public static final Color4f BLUE = new Color4f(0F, 0F, 1F, 1F);
     
     public static final Color4f YELLOW = new Color4f(1F, 1F, 0F, 1F);
+    public static final Color4f PURPLE = new Color4f(1F, 0F, 1F, 1F);
+    public static final Color4f CYAN = new Color4f(0F, 1F, 1F, 1F);
     
     public final float r;
     public final float g;
@@ -61,7 +66,7 @@ public class Color4f
     
     public void glColor3fStrength(float s)
     {
-        GL11.glColor4f(r*s + (1F - s), g*s + (1F - s), b*s + (1F - s), a);
+        GL11.glColor4f(r * s + (1F - s), g * s + (1F - s), b * s + (1F - s), a);
     }
     
     public void glColor4fApply(java.util.function.DoubleUnaryOperator function)

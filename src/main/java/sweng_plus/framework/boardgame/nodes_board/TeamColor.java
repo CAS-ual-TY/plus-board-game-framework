@@ -6,10 +6,13 @@ public class TeamColor
 {
     public static final TeamColor WHITE = new TeamColor("White", Color4f.WHITE);
     public static final TeamColor BLACK = new TeamColor("Black", Color4f.BLACK);
+    public static final TeamColor GREY = new TeamColor("Grey", Color4f.GREY);
     public static final TeamColor RED = new TeamColor("Red", Color4f.RED);
     public static final TeamColor BLUE = new TeamColor("Blue", Color4f.BLUE);
-    public static final TeamColor YELLOW = new TeamColor("Yellow", Color4f.YELLOW);
     public static final TeamColor GREEN = new TeamColor("Green", Color4f.GREEN);
+    public static final TeamColor YELLOW = new TeamColor("Yellow", Color4f.YELLOW);
+    public static final TeamColor PURPLE = new TeamColor("Purple", Color4f.PURPLE);
+    public static final TeamColor CYAN = new TeamColor("Cyan", Color4f.CYAN);
     
     protected String name;
     protected Color4f color;
