@@ -17,9 +17,8 @@ public class BoardGameDebugScreen extends Screen
         super(screenHolder);
         
         Texture t = TextureHelper.createTexture("src/main/resources/textures/node.png");
-    
-        LudoBoard b = new LudoBoard(new TeamColor[] {TeamColor.RED, TeamColor.BLUE, TeamColor.YELLOW, TeamColor.GREEN});
-        //LudoBoard b = new LudoBoard(new TeamColor[] {TeamColor.RED, TeamColor.BLUE, TeamColor.GREEN});
+        
+        LudoBoard b = new LudoBoard(TeamColor.TEAMS_6);
         widgets.addAll(LudoBoardMapper.mapLudoBoard(this, b, t).values());
     }
 }
