@@ -29,11 +29,11 @@ public class OptionsScreen extends WrappedScreen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new TexturedButtonWidget(screenHolder, topButton, (mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
+            widgets.add(new TexturedButtonWidget(screenHolder, topButton, (button, mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
             
-            widgets.add(new TexturedButtonWidget(screenHolder, middleButton, (mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
+            widgets.add(new TexturedButtonWidget(screenHolder, middleButton, (button, mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
             
-            widgets.add(new TexturedButtonWidget(screenHolder, bottomButton, (mouseX, mouseY, mods) -> Engine.instance().close(), buttonActive, buttonInactive));
+            widgets.add(new TexturedButtonWidget(screenHolder, bottomButton, (button, mouseX, mouseY, mods) -> Engine.instance().close(), buttonActive, buttonInactive));
             
         }
         catch(IOException e)

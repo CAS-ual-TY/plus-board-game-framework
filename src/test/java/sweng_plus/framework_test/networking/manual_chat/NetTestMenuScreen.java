@@ -9,9 +9,11 @@ import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
+import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class NetTestMenuScreen extends Screen
@@ -44,7 +46,7 @@ public class NetTestMenuScreen extends Screen
         }
     }
     
-    private void host(int mouseX, int mouseY, int mods)
+    private void host(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
         try
         {
@@ -58,7 +60,7 @@ public class NetTestMenuScreen extends Screen
         }
     }
     
-    private void connect(int mouseX, int mouseY, int mods)
+    private void connect(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
         try
         {
@@ -71,7 +73,7 @@ public class NetTestMenuScreen extends Screen
         }
     }
     
-    private void exit(int mouseX, int mouseY, int mods)
+    private void exit(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
         Engine.instance().close();
     }

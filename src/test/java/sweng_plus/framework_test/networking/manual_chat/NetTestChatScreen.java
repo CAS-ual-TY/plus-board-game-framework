@@ -7,6 +7,7 @@ import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
+import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalTextWidget;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
@@ -60,7 +61,7 @@ public class NetTestChatScreen extends StackedScreen
         widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(CHAT_WIDTH - 100, 100, AnchorPoint.BR, -100, 0), chatFontRenderer));
     }
     
-    private void leave(int mouseX, int mouseY, int mods)
+    private void leave(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
         NetTestGame.instance().clientManager.close();
         returnToSubScreen();
@@ -78,7 +79,7 @@ public class NetTestChatScreen extends StackedScreen
         return chatMessages;
     }
     
-    public void sendMessage(int mouseX, int mouseY, int mods)
+    public void sendMessage(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
         try
         {
