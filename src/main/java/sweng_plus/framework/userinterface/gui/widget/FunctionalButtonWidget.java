@@ -16,11 +16,11 @@ public class FunctionalButtonWidget extends ButtonWidget
     @Override
     protected void clicked(int mouseX, int mouseY, int mods)
     {
-        buttonAction.clicked(mouseX, mouseY, mods);
+        buttonAction.clicked(this, mouseX, mouseY, mods);
     }
     
     public interface ButtonAction
     {
-        void clicked(int mouseX, int mouseY, int mods);
+        void clicked(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods);
     }
 }
