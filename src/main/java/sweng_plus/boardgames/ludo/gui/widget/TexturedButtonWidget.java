@@ -8,11 +8,24 @@ import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 
 public class TexturedButtonWidget extends FunctionalButtonWidget
 {
-    protected ButtonAction buttonAction;
     protected Texture active;
     protected Texture inactive;
     
     public TexturedButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, ButtonAction buttonAction, Texture active, Texture inactive)
+    {
+        super(screenHolder, dimensions, buttonAction);
+        this.active = active;
+        this.inactive = inactive;
+    }
+    
+    public TexturedButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, SimpleButtonAction buttonAction, Texture active, Texture inactive)
+    {
+        super(screenHolder, dimensions, buttonAction);
+        this.active = active;
+        this.inactive = inactive;
+    }
+    
+    public TexturedButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, SimplerButtonAction buttonAction, Texture active, Texture inactive)
     {
         super(screenHolder, dimensions, buttonAction);
         this.active = active;
