@@ -1,5 +1,7 @@
 package sweng_plus.boardgames.ludo.gui;
 
+import org.joml.RoundingMode;
+import org.joml.Vector2d;
 import org.joml.Vector2i;
 import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
@@ -12,7 +14,6 @@ import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class LudoBoardMapper
@@ -28,7 +29,7 @@ public class LudoBoardMapper
         
         HashMap<INode, LudoNodeWidget> fullMap = new HashMap<>();
         
-        MapFunction function = createMapFunction(teams,
+        PositionFunction function = createMapFunction(teams,
                 LudoBoard.HOUSES_PER_CORNER, LudoBoard.NEUTRAL_NODES_PER_CORNER);
         
         java.util.function.Function<INode, LudoNodeWidget> widgetFactory = (node) ->
@@ -54,8 +55,6 @@ public class LudoBoardMapper
             maps[team] = (HashMap<INode, LudoNodeWidget>)
                     BoardWidgetMapper.mapListToWidgets(board.getFullCornerNodes(team), widgetFactory);
             fullMap.putAll(maps[team]);
-            
-            System.out.println("Mapper: Mapping team: " + team);
         }
         
         LudoNodeWidget homeEntrance;
@@ -72,7 +71,7 @@ public class LudoBoardMapper
         return fullMap;
     }
     
-    public static MapFunction createMapFunction(final int teams, int houses, int neutrals)
+    public static PositionFunction createMapFunction(final int teams, int houses, int neutrals)
     {
         Function[] functions = new Function[teams];
         Vector2i[][] offsets = new Vector2i[teams][3];
@@ -96,14 +95,12 @@ public class LudoBoardMapper
             functions[1] = (i) ->
             {
                 int distance = i * defaultWidth;
-                //return new Coordinates(distance - distance / 2, halfSqrt3(distance));
                 return new Vector2i(halfSqrt3(distance), distance - distance / 2);
             }; // Bottom Right
             
             functions[2] = (i) ->
             {
                 int distance = i * defaultWidth;
-                //return new Coordinates(- distance / 2, halfSqrt3(distance));
                 return new Vector2i(-halfSqrt3(distance), distance - distance / 2);
             }; // Bottom Left
         }
@@ -122,10 +119,10 @@ public class LudoBoardMapper
         
         Vector2i halfW = new Vector2i(-defaultHalfWidth, -defaultHalfWidth);
         
-        for(int i = 0; i < corners.length; ++i)
+        for(Vector2i corner : corners)
         {
-            corners[i].add(halfW);
-            corners[i].add(corners[i]);
+            corner.add(halfW);
+            corner.add(corner);
         }
         
         for(int team = 0; team < teams; ++team)
@@ -136,8 +133,6 @@ public class LudoBoardMapper
             offsets[team][1] = new Vector2i(corners[team]).add(corners[next]).div(2);
             offsets[team][2] = new Vector2i(corners[next]);
         }
-        
-        Arrays.asList(offsets[0]).forEach(c -> System.out.println("  Coord: " + c));
         
         return (node, team) ->
         {
@@ -207,7 +202,7 @@ public class LudoBoardMapper
         return (int) Math.round(HALF_SQRT3 * x);
     }
     
-    public interface MapFunction
+    public interface PositionFunction
     {
         Vector2i map(LudoNode node, int team);
     }

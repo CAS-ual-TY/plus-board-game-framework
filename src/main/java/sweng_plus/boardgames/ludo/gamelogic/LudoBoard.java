@@ -1,7 +1,6 @@
 package sweng_plus.boardgames.ludo.gamelogic;
 
 import sweng_plus.framework.boardgame.nodes_board.NodeBoard;
-import sweng_plus.framework.boardgame.nodes_board.Node;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
@@ -53,7 +52,7 @@ public class LudoBoard extends NodeBoard
         homeEntrance = new LudoNode[teams.length];
         home = new List[teams.length];
         fullCorner = new List[teams.length];
-    
+        
         LudoNode[] last = new LudoNode[teams.length];
         
         for(int i = 0; i < teams.length; i++)
@@ -74,8 +73,6 @@ public class LudoBoard extends NodeBoard
         {
             INode.linkNodes(last[i], homeEntrance[(i + 1) % teams.length]);
         }
-        
-        System.out.println("LudoBoard: Amount of Nodes: " + getNodes().size());
     }
     
     private static void createBoardCorner(TeamColor team, BoardCornerConsumer consumer)
@@ -85,7 +82,7 @@ public class LudoBoard extends NodeBoard
         LudoNode homeEntrance;
         ArrayList<LudoNode> home = new ArrayList<>(HOUSES_PER_CORNER);
         ArrayList<LudoNode> allNodes = new ArrayList<>(TOTAL_NODES_PER_CORNER);
-    
+        
         LudoNode last = null;
         LudoNode current = null;
         LudoNode previous = null;

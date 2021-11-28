@@ -3,7 +3,6 @@ package sweng_plus.framework.boardgame.gui;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.NodeBoard;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
-import sweng_plus.framework.userinterface.gui.widget.base.IWidget;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,14 +30,11 @@ public class BoardWidgetMapper
         
         for(NodeWidget node : map.values())
         {
-            System.out.println("Doing for: " + node);
             linkNodeWidgets(node, map, nodesLinked);
         }
         
         if(nodesLinked.size() != map.values().size())
         {
-            System.out.println(nodesLinked.size());
-            nodesLinked.stream().map(n -> n.getNode()).forEach(System.out::println);
             throw new IllegalStateException("Something went wrong!"); //TODO different exception?
         }
         
