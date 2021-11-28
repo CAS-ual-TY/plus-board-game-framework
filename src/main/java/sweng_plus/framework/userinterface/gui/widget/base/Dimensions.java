@@ -109,4 +109,19 @@ public class Dimensions implements Cloneable
     {
         return Objects.hash(x, y, w, h, offX, offY, headAnchor, innerAnchor);
     }
+    
+    @Override
+    public String toString()
+    {
+        return "Dimensions{" +
+                "x=" + x +
+                ", y=" + y +
+                ", w=" + w +
+                ", h=" + h +
+                ", offX=" + offX +
+                ", offY=" + offY +
+                ", headAnchor=" + headAnchor +
+                ", innerAnchor=" + innerAnchor +
+                '}';
+    }
 }
