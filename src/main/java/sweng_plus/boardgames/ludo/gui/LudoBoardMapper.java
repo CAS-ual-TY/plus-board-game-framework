@@ -6,7 +6,6 @@ import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.gui.BoardWidgetMapper;
-import sweng_plus.framework.boardgame.nodes_board.Node;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
@@ -15,7 +14,6 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class LudoBoardMapper
 {
@@ -126,17 +124,17 @@ public class LudoBoardMapper
         
         for(int i = 0; i < corners.length; ++i)
         {
-            corners[i] = corners[i].add(halfW);
-            corners[i] = corners[i].add(corners[i]);
+            corners[i].add(halfW);
+            corners[i].add(corners[i]);
         }
         
         for(int team = 0; team < teams; ++team)
         {
             int next = (team + 1) % teams;
             
-            offsets[team][0] = corners[team];
-            offsets[team][1] = corners[team].add(corners[next]).div(2);
-            offsets[team][2] = corners[next];
+            offsets[team][0] = new Vector2i(corners[team]);
+            offsets[team][1] = new Vector2i(corners[team]).add(corners[next]).div(2);
+            offsets[team][2] = new Vector2i(corners[next]);
         }
         
         Arrays.asList(offsets[0]).forEach(c -> System.out.println("  Coord: " + c));
@@ -154,7 +152,7 @@ public class LudoBoardMapper
                     i = 4;
                     if(node.getNodeType() == LudoNodeType.OUTSIDE)
                     {
-                        Vector2i offset = offsets[team][row];
+                        Vector2i offset = new Vector2i(offsets[team][row]);
                         Function function = functions[team];
                         
                         i -= node.getIndex() / 2;
@@ -192,7 +190,7 @@ public class LudoBoardMapper
                     break;
             }
             
-            Vector2i offset = offsets[team][row];
+            Vector2i offset = new Vector2i(offsets[team][row]);
             Function function = functions[team];
             
             return offset.add(function.map(i));
@@ -217,10 +215,5 @@ public class LudoBoardMapper
     public interface Function
     {
         Vector2i map(int i);
-    }
-    
-    public interface BoardCornerWidgetConsumer
-    {
-        void forBoardCorner(List<LudoNode> outside, LudoNode start, LudoNode homeEntrance, List<LudoNode> home, Node last, List<Node> allNodes);
     }
 }
