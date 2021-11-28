@@ -1,5 +1,6 @@
 package sweng_plus.boardgames.ludo.gui;
 
+import org.joml.Vector2i;
 import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;
@@ -15,7 +16,6 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class LudoBoardMapper
 {
@@ -38,7 +38,7 @@ public class LudoBoardMapper
             if(node instanceof LudoNode ludoNode)
             {
                 int team = board.getTeamIndex(ludoNode.getColor());
-                Coordinates coords = function.map(ludoNode, team);
+                Vector2i coords = function.map(ludoNode, team);
                 
                 return new LudoNodeWidget(screen.getScreenHolder(),
                         new Dimensions(NODE_WIDTH, NODE_WIDTH, AnchorPoint.M, coords.x(), coords.y()), ludoNode, texture);
@@ -50,7 +50,7 @@ public class LudoBoardMapper
         };
         
         HashMap<INode, LudoNodeWidget>[] maps = new HashMap[board.getTeamsAmount()];
-    
+        
         for(int team = 0; team < teams; ++team)
         {
             maps[team] = (HashMap<INode, LudoNodeWidget>)
@@ -77,52 +77,52 @@ public class LudoBoardMapper
     public static MapFunction createMapFunction(final int teams, int houses, int neutrals)
     {
         Function[] functions = new Function[teams];
-        Coordinates[][] offsets = new Coordinates[teams][3];
-    
-        Coordinates[] corners = new Coordinates[teams];
-    
+        Vector2i[][] offsets = new Vector2i[teams][3];
+        
+        Vector2i[] corners = new Vector2i[teams];
+        
         final int defaultWidth = NODE_WIDTH;
         int defaultHalfWidth = defaultWidth / 2;
-    
+        
         if(teams == 3)
         {
             int height = halfSqrt3(defaultWidth);
             int halfHeight = height / 2;
-    
-            corners[0] = new Coordinates(-defaultHalfWidth, -halfHeight); // Top Left
-            corners[1] = new Coordinates(defaultWidth - defaultHalfWidth, -halfHeight); // Top Right
-            corners[2] = new Coordinates(0, height - halfHeight); // Bottom
-    
-            functions[0] = (i) -> new Coordinates(0, -i * defaultWidth); // Top
-    
+            
+            corners[0] = new Vector2i(-defaultHalfWidth, -halfHeight); // Top Left
+            corners[1] = new Vector2i(defaultWidth - defaultHalfWidth, -halfHeight); // Top Right
+            corners[2] = new Vector2i(0, height - halfHeight); // Bottom
+            
+            functions[0] = (i) -> new Vector2i(0, -i * defaultWidth); // Top
+            
             functions[1] = (i) ->
             {
                 int distance = i * defaultWidth;
                 //return new Coordinates(distance - distance / 2, halfSqrt3(distance));
-                return new Coordinates(halfSqrt3(distance), distance - distance / 2);
+                return new Vector2i(halfSqrt3(distance), distance - distance / 2);
             }; // Bottom Right
-    
+            
             functions[2] = (i) ->
             {
                 int distance = i * defaultWidth;
                 //return new Coordinates(- distance / 2, halfSqrt3(distance));
-                return new Coordinates(-halfSqrt3(distance), distance - distance / 2);
+                return new Vector2i(-halfSqrt3(distance), distance - distance / 2);
             }; // Bottom Left
         }
         else if(teams == 4)
         {
-            corners[0] = new Coordinates(-defaultHalfWidth, -defaultHalfWidth); // Top Left
-            corners[1] = new Coordinates(defaultWidth-defaultHalfWidth, -defaultHalfWidth); // Top Right
-            corners[2] = new Coordinates(defaultWidth-defaultHalfWidth, defaultWidth-defaultHalfWidth); // Bottom Right
-            corners[3] = new Coordinates(-defaultHalfWidth, defaultWidth-defaultHalfWidth); // Bottom Left
-    
-            functions[0] = (i) -> new Coordinates(0, - i * defaultWidth); // Top
-            functions[1] = (i) -> new Coordinates(i * defaultWidth, 0); // Right
-            functions[2] = (i) -> new Coordinates(0, i * defaultWidth); // Bottom
-            functions[3] = (i) -> new Coordinates(- i * defaultWidth, 0); // Left
+            corners[0] = new Vector2i(-defaultHalfWidth, -defaultHalfWidth); // Top Left
+            corners[1] = new Vector2i(defaultWidth - defaultHalfWidth, -defaultHalfWidth); // Top Right
+            corners[2] = new Vector2i(defaultWidth - defaultHalfWidth, defaultWidth - defaultHalfWidth); // Bottom Right
+            corners[3] = new Vector2i(-defaultHalfWidth, defaultWidth - defaultHalfWidth); // Bottom Left
+            
+            functions[0] = (i) -> new Vector2i(0, -i * defaultWidth); // Top
+            functions[1] = (i) -> new Vector2i(i * defaultWidth, 0); // Right
+            functions[2] = (i) -> new Vector2i(0, i * defaultWidth); // Bottom
+            functions[3] = (i) -> new Vector2i(-i * defaultWidth, 0); // Left
         }
         
-        Coordinates halfW = new Coordinates(-defaultHalfWidth, -defaultHalfWidth);
+        Vector2i halfW = new Vector2i(-defaultHalfWidth, -defaultHalfWidth);
         
         for(int i = 0; i < corners.length; ++i)
         {
@@ -133,12 +133,12 @@ public class LudoBoardMapper
         for(int team = 0; team < teams; ++team)
         {
             int next = (team + 1) % teams;
-    
+            
             offsets[team][0] = corners[team];
-            offsets[team][1] = corners[team].between(corners[next]);
+            offsets[team][1] = corners[team].add(corners[next]).div(2);
             offsets[team][2] = corners[next];
         }
-    
+        
         Arrays.asList(offsets[0]).forEach(c -> System.out.println("  Coord: " + c));
         
         return (node, team) ->
@@ -154,7 +154,7 @@ public class LudoBoardMapper
                     i = 4;
                     if(node.getNodeType() == LudoNodeType.OUTSIDE)
                     {
-                        Coordinates offset = offsets[team][row];
+                        Vector2i offset = offsets[team][row];
                         Function function = functions[team];
                         
                         i -= node.getIndex() / 2;
@@ -166,17 +166,17 @@ public class LudoBoardMapper
                         return offset;
                     }
                     break;
-                    
+                
                 case HOME_ENTRANCE:
                     row = 1;
                     i = 4;
                     break;
-                    
+                
                 case HOME:
                     row = 1;
                     i = 3 - node.getIndex();
                     break;
-                    
+                
                 default: //Neutral
                     if(node.getIndex() < 4)
                     {
@@ -192,7 +192,7 @@ public class LudoBoardMapper
                     break;
             }
             
-            Coordinates offset = offsets[team][row];
+            Vector2i offset = offsets[team][row];
             Function function = functions[team];
             
             return offset.add(function.map(i));
@@ -211,38 +211,16 @@ public class LudoBoardMapper
     
     public interface MapFunction
     {
-        Coordinates map(LudoNode node, int team);
+        Vector2i map(LudoNode node, int team);
     }
     
     public interface Function
     {
-        Coordinates map(int i);
+        Vector2i map(int i);
     }
     
     public interface BoardCornerWidgetConsumer
     {
         void forBoardCorner(List<LudoNode> outside, LudoNode start, LudoNode homeEntrance, List<LudoNode> home, Node last, List<Node> allNodes);
-    }
-    
-    public record Coordinates(int x, int y)
-    {
-        public Coordinates between(Coordinates coords)
-        {
-            return new Coordinates((x() + coords.x()) / 2, (y() + coords.y()) / 2);
-        }
-    
-        public Coordinates add(Coordinates coords)
-        {
-            return new Coordinates(x() + coords.x(), y() + coords.y());
-        }
-    
-        @Override
-        public String toString()
-        {
-            return "Coordinates{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    '}';
-        }
     }
 }
