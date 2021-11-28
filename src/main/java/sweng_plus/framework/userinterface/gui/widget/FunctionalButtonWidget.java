@@ -18,6 +18,11 @@ public class FunctionalButtonWidget extends ButtonWidget
         this(screenHolder, dimensions, (buttonWidget, mouseX, mouseY, mods) -> buttonAction.clicked(buttonWidget));
     }
     
+    public FunctionalButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, SimplerButtonAction buttonAction)
+    {
+        this(screenHolder, dimensions, (buttonWidget, mouseX, mouseY, mods) -> buttonAction.clicked());
+    }
+    
     @Override
     protected void clicked(int mouseX, int mouseY, int mods)
     {
@@ -32,5 +37,10 @@ public class FunctionalButtonWidget extends ButtonWidget
     public interface SimpleButtonAction
     {
         void clicked(ButtonWidget buttonWidget);
+    }
+    
+    public interface SimplerButtonAction
+    {
+        void clicked();
     }
 }
