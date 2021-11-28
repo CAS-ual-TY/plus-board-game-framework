@@ -75,4 +75,9 @@ public class Widget implements IWidget
     {
     
     }
+    
+    public Dimensions getDimensions()
+    {
+        return dimensions;
+    }
 }
