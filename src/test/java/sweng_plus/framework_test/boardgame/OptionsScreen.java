@@ -1,4 +1,4 @@
-package sweng_plus.boardgames.ludo.gui;
+package sweng_plus.framework_test.boardgame;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
