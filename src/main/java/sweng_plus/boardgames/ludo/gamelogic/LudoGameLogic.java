@@ -6,6 +6,7 @@ import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class LudoGameLogic
@@ -44,7 +45,6 @@ public class LudoGameLogic
     {
         currentTurnPhase = LudoTurnPhase.ROLL;
         
-        // TODO auszuwählende Figuren bestimmen (bewegbar mit roll-ergebnis)
         // TODO next phase
     }
     
@@ -61,8 +61,8 @@ public class LudoGameLogic
         // TODO auszuwählende Figuren bestimmen (bewegbar mit roll-ergebnis)
         
         currentTurnPhase = LudoTurnPhase.SELECT_FIGURE;
-        
-        List<NodeFigure> movableFigures = getMovableFigures(latestRoll);
+    
+        Map<NodeFigure, List<INode>> movableFigures = getMovableFigures(latestRoll);
         // TODO send clients selected Figure and roll result
         if(isServer)
         {
@@ -98,21 +98,6 @@ public class LudoGameLogic
         return latestRoll = dice.roll();
     }
     
-    public NodeFigure selectFigure()
-    {
-        
-        List<NodeFigure> movableFigures = getMovableFigures(latestRoll);
-        // no figures are movable
-        if(movableFigures.isEmpty())
-        {
-            nextTeam();
-            return null;
-        }
-        
-        // wait for User Input
-        return movableFigures.get(0);
-    }
-    
     public LudoNode selectNode(NodeFigure figure)
     {
         // TODO add correct Predicate
@@ -127,22 +112,17 @@ public class LudoGameLogic
         ludoBoard.moveFigure(figure, selectedNode);
     }
     
-    private List<NodeFigure> getMovableFigures(int roll)
+    private Map<NodeFigure, List<INode>> getMovableFigures(int roll)
     {
+        Predicate<INode> pred = (x) -> true;
         // TODO add correct Predicate
         Map<NodeFigure, List<INode>> movableFigures = new HashMap<>(4);
-        NodeFigure[] teamFigures = ludoBoard.getTeamFigures(teams[currentTeamIndex]);
-        List<List<INode>> possibleFields = new ArrayList<>(4);
         
-        for(NodeFigure teamFigure : teamFigures)
+        for(NodeFigure teamFigure : ludoBoard.getTeamFigures(teams[currentTeamIndex]))
         {
-            possibleFields.add(ludoBoard.getForwardNodes(teamFigure, roll, (x) -> true));
+            movableFigures.put(teamFigure, ludoBoard.getForwardNodes(teamFigure, roll, pred));
         }
-        
-        
-        return Arrays.stream(teamFigures).
-                filter(figure -> ludoBoard.getForwardNodes(figure, roll, (x) -> true).size() > 0)
-                .collect(Collectors.toList());
+        return movableFigures;
     }
     
     private void nextTeam()
