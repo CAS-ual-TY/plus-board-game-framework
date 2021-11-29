@@ -1,6 +1,7 @@
 package sweng_plus.framework.boardgame.nodes_board;
 
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
+import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeFigure;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.function.Predicate;
 public class NodeBoard
 {
     protected final List<INode> nodes;
-    protected final List<NodeFigure> fieldFigures;
+    protected final List<INodeFigure> fieldFigures;
     
-    public NodeBoard(List<INode> nodes, List<NodeFigure> fieldFigures)
+    public NodeBoard(List<INode> nodes, List<INodeFigure> fieldFigures)
     {
         this.nodes = nodes;
         this.fieldFigures = fieldFigures;
@@ -27,9 +28,19 @@ public class NodeBoard
         return nodes;
     }
     
-    public List<NodeFigure> getNodeFigures()
+    public List<INodeFigure> getNodeFigures()
     {
         return fieldFigures;
+    }
+    
+    protected void addNodeFigure(INodeFigure figure)
+    {
+        fieldFigures.add(figure);
+    }
+    
+    protected void addAllNodeFigures(List<? extends INodeFigure> figure)
+    {
+        fieldFigures.addAll(figure);
     }
     
     protected void addNode(INode node)

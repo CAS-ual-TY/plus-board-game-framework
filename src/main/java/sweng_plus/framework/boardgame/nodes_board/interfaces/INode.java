@@ -62,6 +62,8 @@ public interface INode
     
     void removeNodeFigure(NodeFigure fieldFigure);
     
+    default boolean isOccupied() {return getNodeFigures().size() > 0;}
+    
     static List<INode> getDistantNodes(int distance, Predicate<INode> predicate, INode currentNode, BiFunction<INode, Predicate<INode>, List<INode>> function)
     {
         if(distance < 1)
