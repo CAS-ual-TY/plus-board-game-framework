@@ -35,7 +35,7 @@ public class LudoNodeWidget extends NodeWidget
             team.getColor().glColor3fStrength(0.1F);
         
         texture.render(
-                dimensions.x + (dimensions.w + texture.getWidth()) / 2,
-                dimensions.y + (dimensions.h + texture.getHeight()) / 2);
+                dimensions.x + (dimensions.w - texture.getWidth()) / 2,
+                dimensions.y + (dimensions.h - texture.getHeight()) / 2);
     }
 }

@@ -118,7 +118,7 @@ public class LudoBoardMapper
         
         for(Vector2i corner : corners)
         {
-            corner.add(-defaultHalfWidth, -defaultHalfWidth).mul(2);
+            corner.mul(2);
         }
         
         for(int team = 0; team < teams; ++team)
