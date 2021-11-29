@@ -5,7 +5,6 @@ import org.joml.Vector2d;
 import org.joml.Vector2i;
 import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
-import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.gui.BoardWidgetMapper;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
@@ -78,42 +77,50 @@ public class LudoBoardMapper
         
         Vector2i[] corners = new Vector2i[teams];
         
-        int outsideDistance = 3;
+        int outsideDistance;
         
         final int defaultWidth = NODE_WIDTH;
         int defaultHalfWidth = defaultWidth / 2;
         
         if(teams == 2)
         {
-            int height = halfSqrt3(defaultWidth);
-            int halfHeight = height / 2;
+            outsideDistance = 3;
             
-            corners[0] = new Vector2i(-defaultHalfWidth, -halfHeight); // Top Left
-            corners[1] = new Vector2i(defaultWidth - defaultHalfWidth, -halfHeight); // Top Right
-            corners[2] = new Vector2i(0, height - halfHeight); // Bottom
+            corners[0] = new Vector2d(-1, 1).normalize().mul(defaultHalfWidth)
+                    .get(RoundingMode.HALF_UP, new Vector2i()); // Left
+            corners[1] = new Vector2i(corners[0]).mul(-1); // Right
             
-            functions[0] = new Vector2i(0, -defaultWidth); // Top
-            functions[1] = new Vector2i(halfSqrt3(defaultWidth), defaultWidth - defaultHalfWidth); // Bottom Right
-            functions[2] = new Vector2i(-halfSqrt3(defaultWidth), defaultWidth - defaultHalfWidth); // Bottom Left
+            functions[0] = new Vector2d(-1, -1).normalize().mul(defaultWidth)
+                    .get(RoundingMode.HALF_UP, new Vector2i()); // Top
+            functions[1] = new Vector2i(functions[0]).mul(-1); // Bottom
         }
-        if(teams <= 4)
-            ;
-        else if(teams <= 6)
-            outsideDistance -= 1;
         else
-            outsideDistance -= 2;
-        
-        double angle = -2D * Math.PI / teams;
-        double radius = 0.5D * defaultWidth / Math.sin(Math.PI / teams);
-        
-        for(int team = 0; team < teams; ++team)
         {
-            double functionAngle = team * angle;
-            double cornerAngle = functionAngle - 0.5D * angle;
-            corners[team] = new Vector2d(-Math.sin(cornerAngle), -Math.cos(cornerAngle)).normalize()
-                    .mul(radius).get(RoundingMode.HALF_UP, new Vector2i());
-            functions[team] = new Vector2d(-Math.sin(functionAngle), -Math.cos(functionAngle)).normalize()
-                    .mul(defaultWidth).get(RoundingMode.HALF_UP, new Vector2i());
+            if(teams <= 4)
+            {
+                outsideDistance = 3;
+            }
+            else if(teams <= 6)
+            {
+                outsideDistance = 2;
+            }
+            else
+            {
+                outsideDistance = 1;
+            }
+            
+            double angle = -2D * Math.PI / teams;
+            double radius = 0.5D * defaultWidth / Math.sin(Math.PI / teams);
+            
+            for(int team = 0; team < teams; ++team)
+            {
+                double functionAngle = team * angle;
+                double cornerAngle = functionAngle - 0.5D * angle;
+                corners[team] = new Vector2d(-Math.sin(cornerAngle), -Math.cos(cornerAngle)).normalize()
+                        .mul(radius).get(RoundingMode.HALF_UP, new Vector2i());
+                functions[team] = new Vector2d(-Math.sin(functionAngle), -Math.cos(functionAngle)).normalize()
+                        .mul(defaultWidth).get(RoundingMode.HALF_UP, new Vector2i());
+            }
         }
         
         for(Vector2i corner : corners)
@@ -130,7 +137,11 @@ public class LudoBoardMapper
             offsets[team][2] = new Vector2i(corners[next]);
         }
         
-        final int finalOutsideDistance = outsideDistance;
+        return createMapFunction(teams, offsets, functions, outsideDistance);
+    }
+    
+    private static PositionFunction createMapFunction(int teams, Vector2i[][] offsets, Vector2i[] functions, int outsideDistance)
+    {
         return (node, team) ->
         {
             int row;
@@ -139,12 +150,23 @@ public class LudoBoardMapper
             switch(node.getNodeType())
             {
                 case OUTSIDE:
-                    if(node.getNodeType() == LudoNodeType.OUTSIDE)
+                    if(teams == 2)
                     {
                         Vector2i offset = new Vector2i(offsets[team][2]);
-                        offset.add(new Vector2i(functions[team]).mul(finalOutsideDistance + node.getIndex() / 2));
-                        offset.add(new Vector2i(functions[(team + 1) % teams])
-                                .mul(finalOutsideDistance + (node.getIndex() == 0 || node.getIndex() == 3 ? 0 : 1)));
+                        Vector2i y = new Vector2i(functions[team]);
+                        Vector2i x = new Vector2i(-y.y(), y.x());
+                        offset.add(y.mul(outsideDistance + node.getIndex() / 2));
+                        offset.add(x.mul(node.getIndex() == 0 || node.getIndex() == 3 ? 2 : 3));
+                        
+                        return offset;
+                    }
+                    else
+                    {
+                        Vector2i offset = new Vector2i(offsets[team][2]);
+                        Vector2i y = new Vector2i(functions[team]);
+                        Vector2i x = new Vector2i(functions[(team + 1) % teams]);
+                        offset.add(y.mul(outsideDistance + node.getIndex() / 2));
+                        offset.add(x.mul(outsideDistance + (node.getIndex() == 0 || node.getIndex() == 3 ? 0 : 1)));
                         
                         return offset;
                     }
@@ -161,7 +183,14 @@ public class LudoBoardMapper
                 
                 case HOME:
                     row = 1;
-                    i = 3 - node.getIndex();
+                    if(teams == 2 && node.getIndex() > 1)
+                    {
+                        i = 3 + node.getIndex();
+                    }
+                    else
+                    {
+                        i = 3 - node.getIndex();
+                    }
                     break;
                 
                 default: //Neutral
