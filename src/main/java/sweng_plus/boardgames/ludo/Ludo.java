@@ -1,7 +1,6 @@
 package sweng_plus.boardgames.ludo;
 
 import org.lwjgl.glfw.GLFW;
-import sweng_plus.boardgames.ludo.gui.DebugScreen;
 import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.framework.boardgame.Engine;
