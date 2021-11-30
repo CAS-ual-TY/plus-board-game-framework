@@ -61,9 +61,9 @@ public class LudoBoard extends NodeBoard
         for(int i = 0; i < ludoTeams.length; i++)
         {
             final int finalI = i;
-            createBoardCorner(ludoTeams[i], (cornerOutside, cornerStart, cornerHomeEntrance, cornerHome, cornerLast, allNodes) ->
+            createBoardCorner(teamColors[finalI], (cornerOutside, cornerStart, cornerHomeEntrance, cornerHome, cornerLast, allNodes, figures) ->
             {
-                ludoTeams[finalI] = new LudoTeam(teamColors[finalI], createFigures(teamColors[finalI], cornerOutside), cornerOutside, cornerStart, cornerHomeEntrance, cornerHome, cornerLast, allNodes);
+                ludoTeams[finalI] = new LudoTeam(teamColors[finalI], figures, cornerOutside, cornerStart, cornerHomeEntrance, cornerHome, cornerLast, allNodes);
                 addAllNodes(allNodes);
             });
         }
@@ -74,7 +74,7 @@ public class LudoBoard extends NodeBoard
         }
     }
     
-    private static void createBoardCorner(LudoTeam ludoTeam, BoardCornerConsumer consumer)
+    private static void createBoardCorner(TeamColor ludoTeam, BoardCornerConsumer consumer)
     {
         ArrayList<LudoNode> outside = new ArrayList<>(HOUSES_PER_CORNER);
         LudoNode start;
@@ -86,20 +86,20 @@ public class LudoBoard extends NodeBoard
         LudoNode current = null;
         LudoNode previous = null;
         
-        start = new LudoNode(ludoTeam.color(), LudoNodeType.START, 0);
+        start = new LudoNode(ludoTeam, LudoNodeType.START, 0);
         
-        for(int i = 0; i < ludoTeam.figures().length; i++)
+        for(int i = 0; i < HOUSES_PER_CORNER; i++)
         {
-            outside.add(current = new LudoNode(ludoTeam.color(), LudoNodeType.OUTSIDE, i));
+            outside.add(current = new LudoNode(ludoTeam, LudoNodeType.OUTSIDE, i));
             INode.linkNodes(current, start);
         }
         
-        homeEntrance = new LudoNode(ludoTeam.color(), LudoNodeType.HOME_ENTRANCE, 0);
+        homeEntrance = new LudoNode(ludoTeam, LudoNodeType.HOME_ENTRANCE, 0);
         INode.linkNodes(homeEntrance, start);
         
         for(int i = 0; i < HOUSES_PER_CORNER; i++)
         {
-            home.add(current = new LudoNode(ludoTeam.color(), LudoNodeType.HOME, i));
+            home.add(current = new LudoNode(ludoTeam, LudoNodeType.HOME, i));
             
             if(previous != null)
             {
@@ -107,6 +107,8 @@ public class LudoBoard extends NodeBoard
             }
             previous = current;
         }
+    
+        NodeFigure[] figures = createFigures(ludoTeam, outside);
         
         allNodes.addAll(outside);
         allNodes.add(start);
@@ -116,14 +118,14 @@ public class LudoBoard extends NodeBoard
         previous = start;
         for(int i = 0; i < NEUTRAL_NODES_PER_CORNER; i++)
         {
-            allNodes.add(last = new LudoNode(ludoTeam.color(), LudoNodeType.NEUTRAL, i));
+            allNodes.add(last = new LudoNode(ludoTeam, LudoNodeType.NEUTRAL, i));
             
             INode.linkNodes(previous, last);
             
             previous = last;
         }
         
-        consumer.forBoardCorner(outside, start, homeEntrance, home, last, allNodes);
+        consumer.forBoardCorner(outside, start, homeEntrance, home, last, allNodes, figures);
     }
     
     public int getTeamsAmount()
@@ -210,7 +212,7 @@ public class LudoBoard extends NodeBoard
     
     public interface BoardCornerConsumer
     {
-        void forBoardCorner(List<LudoNode> outside, LudoNode start, LudoNode homeEntrance, List<LudoNode> home, LudoNode last, List<LudoNode> allNodes);
+        void forBoardCorner(List<LudoNode> outside, LudoNode start, LudoNode homeEntrance, List<LudoNode> home, LudoNode last, List<LudoNode> allNodes, NodeFigure[] figures);
     }
     
     private record LudoTeam(TeamColor color, NodeFigure[] figures, List<LudoNode> outside, LudoNode start,
