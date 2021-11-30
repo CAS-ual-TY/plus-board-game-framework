@@ -8,6 +8,8 @@ import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
+import java.util.List;
+
 public class LudoNodeWidget extends NodeWidget
 {
     protected Texture texture;

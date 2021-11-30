@@ -30,6 +30,16 @@ public class NodeWidget extends Widget
         return node;
     }
     
+    public List<NodeWidget> getForwardNodes()
+    {
+        return forwardNodes;
+    }
+    
+    public List<NodeWidget> getBackwardNodes()
+    {
+        return backwardNodes;
+    }
+    
     public void addForwardNode(NodeWidget node)
     {
         forwardNodes.add(node);
