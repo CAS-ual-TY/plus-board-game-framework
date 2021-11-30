@@ -64,6 +64,8 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         clientConnectionMap = new HashMap<>();
         
         writeBuffer = new CircularBuffer();
+        
+        mainThreadMessages.add(() -> eventsListener.clientConnected(hostClient));
     }
     
     @Override
