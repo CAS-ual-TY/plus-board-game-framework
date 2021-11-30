@@ -129,7 +129,9 @@ public class LudoGameLogic
             no figure on field - max 3
             else 1 except 6 rolled
          */
-        if(!(latestRoll == 6 && numConsecutiveRolls < maxCurrentConsecutiveRolls()))
+        
+        // maximum numbers of consecutive rolls reached (standard MIN_CONSECUTIVE_ROLLS, if no movable figures - MAX_CONSECUTIVE_ROLLS rolls
+        if(!((latestRoll == 6) || (numConsecutiveRolls < maxCurrentConsecutiveRolls())))
         {
             nextTeam();
         }
