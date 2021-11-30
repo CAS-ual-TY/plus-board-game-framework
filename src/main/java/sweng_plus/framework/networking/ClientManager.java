@@ -1,6 +1,7 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IClient;
+import sweng_plus.framework.networking.interfaces.IClientEventsListener;
 import sweng_plus.framework.networking.interfaces.IClientManager;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
@@ -13,6 +14,8 @@ import java.util.function.Consumer;
 
 public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager<C>
 {
+    protected final IClientEventsListener eventsListener;
+    
     public Socket socket;
     
     public OutputStream out;
@@ -20,9 +23,10 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     
     public Thread thread;
     
-    public ClientManager(IMessageRegistry<C> registry, String ip, int port) throws IOException
+    public ClientManager(IMessageRegistry<C> registry, IClientEventsListener eventsListener, String ip, int port) throws IOException
     {
         super(registry);
+        this.eventsListener = eventsListener;
         socket = new Socket(ip, port);
         out = socket.getOutputStream();
         writeBuffer = new CircularBuffer();
@@ -56,14 +60,13 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void connectionSocketClosed() // Connection Thread
     {
-        // TODO callback zur Engine?
+        eventsListener.disconnected();
     }
     
     @Override
     public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
-        e.printStackTrace();
-        connectionSocketClosed();
+        eventsListener.disconnectedWithException(e);
     }
     
     @Override
