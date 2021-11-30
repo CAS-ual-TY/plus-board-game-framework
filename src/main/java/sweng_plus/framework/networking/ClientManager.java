@@ -60,13 +60,15 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void connectionSocketClosed() // Connection Thread
     {
-        eventsListener.disconnected();
+        mainThreadMessages.clear();
+        mainThreadMessages.add(eventsListener::disconnected);
     }
     
     @Override
     public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
-        eventsListener.disconnectedWithException(e);
+        mainThreadMessages.clear();
+        mainThreadMessages.add(() -> eventsListener.disconnectedWithException(e));
     }
     
     @Override

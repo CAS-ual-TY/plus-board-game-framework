@@ -226,7 +226,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                     lock.unlock();
                 }
                 
-                eventsListener.clientConnected(client);
+                mainThreadMessages.add(() -> eventsListener.clientConnected(client));
                 
                 return socket;
             }
@@ -288,13 +288,12 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         
         client.changeStatus(ClientStatus.DISCONNECTED);
         
-        eventsListener.clientDisconnected(client);
+        mainThreadMessages.add(() -> eventsListener.clientDisconnected(client));
     }
     
     @Override
     public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
-        e.printStackTrace();
         connectionSocketClosed();
     }
     
