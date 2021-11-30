@@ -8,7 +8,7 @@ public class LudoClient extends Client
 {
     public int teamIndex;
     
-    protected LudoClient(String ip, NetworkRole role, ClientStatus status)
+    public LudoClient(String ip, NetworkRole role, ClientStatus status)
     {
         super(ip, role, status);
         teamIndex = -1;
