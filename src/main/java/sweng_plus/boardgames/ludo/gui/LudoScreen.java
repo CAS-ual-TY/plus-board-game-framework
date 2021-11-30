@@ -22,4 +22,9 @@ public class LudoScreen extends Screen
         nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, board, LudoTextures.node);
         widgets.addAll(nodeWidgetMap.values());
     }
+    
+    public void requestDice()
+    {
+        screenHolder.setScreen(new DiceScreen(this));
+    }
 }
