@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 
 public class LudoGameLogic
 {
+    private static final int MAX_CONSECUTIVE_ROLLS = 3;
+    private static final int MIN_CONSECUTIVE_ROLLS = 1;
+    
     private TeamColor[] teams;
     private LudoBoard ludoBoard;
     private Dice<Integer> dice;
@@ -110,6 +113,37 @@ public class LudoGameLogic
     public void moveFigure(NodeFigure figure, LudoNode selectedNode)
     {
         ludoBoard.moveFigure(figure, selectedNode);
+    }
+    
+    public int maxCurrentConsecutiveRolls() {
+        TeamColor currentTeam = teams[currentTeamIndex];
+        
+        // All Figures are outside
+        if(ludoBoard.isHomeFull(currentTeam)) {
+            return MAX_CONSECUTIVE_ROLLS;
+        }
+    
+        // All Figures don't further impact the roll count
+        List<NodeFigure> remainingTeamFigures = Arrays.stream(ludoBoard.getTeamFigures(currentTeam)).filter((figure) -> ((LudoNode)figure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE).toList();
+    
+        for(NodeFigure figure : remainingTeamFigures)
+        {
+            // At least one figure out on the board
+            if(((LudoNode)figure.getCurrentNode()).getNodeType() != LudoNodeType.HOME) {
+                return MIN_CONSECUTIVE_ROLLS;
+            }
+        }
+        
+        List<LudoNode> homeNodes = ludoBoard.getHomeNodes(currentTeamIndex);
+        for(int i = (homeNodes.size() - remainingTeamFigures.size()); i < homeNodes.size(); i++)
+        {
+            // At least one figure in the house could move - not on last reachable node
+            if(!homeNodes.get(i).isOccupied()) {
+                return MIN_CONSECUTIVE_ROLLS;
+            }
+        }
+        return MAX_CONSECUTIVE_ROLLS;
+        
     }
     
     private Map<NodeFigure, List<INode>> getMovableFigures(int roll)
