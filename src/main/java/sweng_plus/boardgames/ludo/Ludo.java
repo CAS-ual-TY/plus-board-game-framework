@@ -90,7 +90,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         protocol.registerSimpleMessage(messageID++, StartGameMessage::handleMessage);
     }
     
-    public void connect(String ip, int port) throws IOException
+    public void connect(String playerName, String ip, int port) throws IOException
     {
         hostManager = null;
         names.clear();
@@ -99,7 +99,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         //TODO set screen
     }
     
-    public void host(int port) throws IOException
+    public void host(String playerName, int port) throws IOException
     {
         names.clear();
         hostManager = NetworkManager.host(protocol, this, LudoClient::new, port);

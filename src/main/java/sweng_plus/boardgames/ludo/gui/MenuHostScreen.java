@@ -1,7 +1,8 @@
-package sweng_plus.boardgames.ludo.gui.widget;
+package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gui.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
@@ -13,29 +14,38 @@ public class MenuHostScreen extends WrappedScreen
 {
     private String portInput;
     private InputWidget inputWidget;
+    private InputWidget inputWidgetName;
     
     public MenuHostScreen(Screen subScreen)
     {
         super(subScreen);
+    
+        Dimensions nameDims = new Dimensions(0, 0, AnchorPoint.M, 0, -160);
+        widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:"));
+    
+        Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -80);
+        inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48);
+        widgets.add(inputWidgetName);
         
-        Dimensions textDims = new Dimensions(0, 0, AnchorPoint.M, 0, -80);
-        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port eingeben:"));
+        Dimensions textDims = new Dimensions(0, 0, AnchorPoint.M, 0, 20);
+        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:"));
         
-        Dimensions inputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 0);
+        Dimensions inputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 100);
         inputWidget = new InputWidget(screenHolder, inputDims, Ludo.instance().fontRenderer48);
         widgets.add(inputWidget);
         
-        Dimensions cancelDims = new Dimensions(200, 50, AnchorPoint.M, -150, 150);
+        Dimensions cancelDims = new Dimensions(200, 50, AnchorPoint.M, -150, 200);
         widgets.add(new TexturedButtonWidget(screenHolder, cancelDims, this::cancel, LudoTextures.activeButton, LudoTextures.inactiveButton));
         widgets.add(new TextWidget(screenHolder, cancelDims, Ludo.instance().fontRenderer32, "Abbruch"));
         
-        Dimensions acceptDims = new Dimensions(200, 50, AnchorPoint.M, 150, 150);
+        Dimensions acceptDims = new Dimensions(200, 50, AnchorPoint.M, 150, 200);
         widgets.add(new TexturedButtonWidget(screenHolder, acceptDims, this::accept, LudoTextures.activeButton, LudoTextures.inactiveButton));
         widgets.add(new TextWidget(screenHolder, acceptDims, Ludo.instance().fontRenderer32, "Fertig"));
     }
     
     private void accept()
     {
+        Ludo.instance().names.add(inputWidgetName.getText());
         portInput = inputWidget.getText();
         //TODO
     }
