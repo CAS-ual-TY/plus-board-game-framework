@@ -2,9 +2,7 @@ package sweng_plus.boardgames.ludo;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
-import sweng_plus.boardgames.ludo.gamelogic.networking.LudoClient;
-import sweng_plus.boardgames.ludo.gamelogic.networking.SendNameMessage;
-import sweng_plus.boardgames.ludo.gamelogic.networking.SendNamesMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.framework.boardgame.Engine;
@@ -85,6 +83,8 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
+        
+        protocol.registerSimpleMessage(messageID++, StartGameMessage::handleMessage);
     }
     
     public void connect(String ip, int port) throws IOException
