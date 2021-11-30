@@ -3,6 +3,7 @@ package sweng_plus.boardgames.ludo.gamelogic;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gamelogic.networking.NewTurnMessage;
 import sweng_plus.boardgames.ludo.gamelogic.networking.RolledMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.StartGameMessage;
 import sweng_plus.framework.boardgame.nodes_board.Dice;
 import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
@@ -47,17 +48,36 @@ public class LudoGameLogic
         numConsecutiveRolls = 0;
     }
     
+    public LudoBoard getLudoBoard()
+    {
+        return ludoBoard;
+    }
+    
     public void startGame()
     {
         currentTeamIndex = new Random().nextInt(teams.length);
+        if(isServer)
+        {
+            try
+            {
+                Ludo.instance().getHostManager().sendMessageToAllClients(new StartGameMessage());
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        startPhaseRoll();
     }
     
     public void startPhaseRoll()
     {
+        currentTurnPhase = LudoTurnPhase.ROLL;
+        
         numConsecutiveRolls = 0;
         
-        if(isServer) {
-            currentTurnPhase = LudoTurnPhase.ROLL;
+        if(isServer)
+        {
             try
             {
                 Ludo.instance().getHostManager().sendMessageToAllClients(new NewTurnMessage(currentTeamIndex));
@@ -66,16 +86,14 @@ public class LudoGameLogic
             {
                 e.printStackTrace();
             }
-            // TODO Package new turn message
-            // TODO next phase
         }
-        
     }
     
     public void endPhaseRoll()
     {
         numConsecutiveRolls++;
-        if(isServer) {
+        if(isServer)
+        {
             // wird vom client aufgerufen
             // würfeln
             roll();
@@ -108,10 +126,9 @@ public class LudoGameLogic
             {
                 e.printStackTrace();
             }
-    
+            
             // TODO send clients selectable figures
             // Ludo.instance().getHostManager().sendMessageToAllClients(new );
-            
             
             
         }
@@ -135,13 +152,18 @@ public class LudoGameLogic
         {
             nextTeam();
         }
-
+        
         startPhaseRoll();
     }
     
     public int roll()
     {
         return latestRoll = dice.roll();
+    }
+    
+    public void setLatestRoll(int latestRoll)
+    {
+        this.latestRoll = latestRoll;
     }
     
     public void moveFigure(NodeFigure figure, LudoNode selectedNode)
@@ -188,7 +210,9 @@ public class LudoGameLogic
                 }
             }
             return MAX_CONSECUTIVE_ROLLS;
-        } else {
+        }
+        else
+        {
             switch(remainingTeamFigures.size())
             {
                 // Only one end-house node occupied
@@ -242,7 +266,7 @@ public class LudoGameLogic
         for(NodeFigure teamFigure : ludoBoard.getTeamFigures(teams[currentTeamIndex]))
         {
             List<INode> forwardNodes = ludoBoard.getForwardNodes(teamFigure, roll, createMovablePredicate((LudoFigure) teamFigure));
-            if(forwardNodes.size()>0)
+            if(forwardNodes.size() > 0)
             {
                 movableFigures.put(teamFigure, forwardNodes);
             }
@@ -255,7 +279,8 @@ public class LudoGameLogic
         currentTeamIndex = (currentTeamIndex + 1) % teams.length;
     }
     
-    private static Predicate<INode> createMovablePredicate(LudoFigure figure) {
+    private static Predicate<INode> createMovablePredicate(LudoFigure figure)
+    {
         return (node -> {
             if(!(node instanceof LudoNode ludoNode))
             {
