@@ -1,16 +1,10 @@
 package sweng_plus.framework.networking.interfaces;
 
-public interface IHostEventsListener<C extends IClient> extends IClientEventsListener
+public interface IHostEventsListener<C extends IClient>
 {
-    void clientConnected(C client);
+    void clientConnected(C client); // Not called from main thread
     
-    void clientDisconnected(C client);
-    
-    @Override
-    default void disconnectedWithException(Exception e)
-    {
-        disconnected();
-    }
+    void clientDisconnected(C client); // Not called from main thread
     
     static <C extends IClient> IHostEventsListener<C> emptyHostListener()
     {
@@ -25,12 +19,6 @@ public interface IHostEventsListener<C extends IClient> extends IClientEventsLis
             
             @Override
             public void clientDisconnected(C client)
-            {
-            
-            }
-            
-            @Override
-            public void disconnected()
             {
             
             }

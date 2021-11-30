@@ -2,9 +2,9 @@ package sweng_plus.framework.networking.interfaces;
 
 public interface IClientEventsListener
 {
-    void disconnected();
+    void disconnected(); // Not called from main thread
     
-    void disconnectedWithException(Exception e);
+    void disconnectedWithException(Exception e); // Not called from main thread
     
     static IClientEventsListener emptyClientListener()
     {

@@ -99,8 +99,6 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
         {
             throw new RuntimeException(e);
         }
-        
-        connectionSocketClosed();
     }
     
     @Override

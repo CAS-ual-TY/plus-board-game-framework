@@ -342,8 +342,6 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         {
             e.printStackTrace();
         }
-        
-        eventsListener.disconnected();
     }
     
     @Override
