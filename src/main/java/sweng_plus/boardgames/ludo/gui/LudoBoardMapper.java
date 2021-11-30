@@ -56,15 +56,15 @@ public class LudoBoardMapper
             fullMap.putAll(maps[team]);
         }
         
-        LudoNodeWidget homeEntrance;
-        
         for(int to = 0; to < teams; ++to)
         {
             int from = (to - 1 + teams) % teams;
             
-            homeEntrance = maps[to].get(board.getHomeEntranceNode(to));
+            LudoNodeWidget homeEntrance = maps[to].get(board.getHomeEntranceNode(to));
             homeEntrance.getNode().getBackwardNodes().stream()
-                    .map(n -> maps[from].get(n)).forEach(homeEntrance::addBackwardNode);
+                    .map(fullMap::get).forEach(homeEntrance::addBackwardNode);
+            homeEntrance.getNode().getBackwardNodes().stream()
+                    .map(fullMap::get).forEach(n -> n.addForwardNode(homeEntrance));
         }
         
         return fullMap;
