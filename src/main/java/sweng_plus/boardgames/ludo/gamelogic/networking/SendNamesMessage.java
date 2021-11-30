@@ -28,8 +28,8 @@ public record SendNamesMessage(List<String> names)
         
         public static void handleMessage(Optional<LudoClient> clientOptional, SendNamesMessage message)
         {
-            //TODO interact with interface instead of game logic directly
-            Ludo.instance().getGameLogic().endPhaseRoll();
+            Ludo.instance().names.clear();
+            Ludo.instance().names.addAll(message.names());
         }
     }
 }

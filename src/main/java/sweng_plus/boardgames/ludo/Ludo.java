@@ -43,6 +43,8 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     
     IMessageRegistry<LudoClient> protocol;
     
+    public String name;
+    
     public IClientManager<LudoClient> clientManager;
     public IHostManager<LudoClient> hostManager;
     
@@ -88,26 +90,37 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
         
-        protocol.registerSimpleMessage(messageID++, StartGameMessage::handleMessage);
+        protocol.registerSimpleMessage(messageID++, StartGameMessage::handleMessage, new StartGameMessage());
     }
     
     public void connect(String playerName, String ip, int port) throws IOException
     {
+        System.out.println("connect");
+        
+        name = playerName;
+        
         hostManager = null;
         names.clear();
         clientManager = NetworkManager.connect(protocol, this, ip, port);
         
         setScreen(new NameScreen(this));
+        
+        clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
     
     public void host(String playerName, int port) throws IOException
     {
+        System.out.println("host");
+        
+        name = playerName;
+        
         names.clear();
-        names.add(playerName);
         hostManager = NetworkManager.host(protocol, this, LudoClient::new, port);
         clientManager = hostManager;
         
         setScreen(new NameScreen(this));
+        
+        clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
     
     public boolean isHost()
@@ -130,7 +143,6 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     @Override
     public void clientConnected(LudoClient client)
     {
-    
     }
     
     @Override
@@ -194,11 +206,25 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     }
     
     @Override
+    public void cleanup()
+    {
+        if(clientManager != null)
+        {
+            clientManager.close();
+        }
+    }
+    
+    @Override
     public void update()
     {
         if(isHost() && names.size() >= 3) // TODO
         {
             startGame();
+        }
+        
+        if(clientManager != null)
+        {
+            clientManager.runMessages(Runnable::run);
         }
     }
     

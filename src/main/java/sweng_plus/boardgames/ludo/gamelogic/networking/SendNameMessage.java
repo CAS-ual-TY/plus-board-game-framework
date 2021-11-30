@@ -37,9 +37,14 @@ public record SendNameMessage(String name)
                     // TODO kick client
                     e.printStackTrace();
                 }
+                
+                Ludo.instance().names.add(message.name());
             });
             
-            Ludo.instance().names.add(message.name());
+            if(!Ludo.instance().isHost()) // already done on server
+            {
+                Ludo.instance().names.add(message.name());
+            }
         }
     }
 }
