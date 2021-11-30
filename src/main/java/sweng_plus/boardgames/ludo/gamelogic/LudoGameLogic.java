@@ -1,15 +1,20 @@
 package sweng_plus.boardgames.ludo.gamelogic;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gamelogic.networking.*;
+import sweng_plus.boardgames.ludo.gamelogic.networking.FigureSelectedMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.LudoClient;
+import sweng_plus.boardgames.ludo.gamelogic.networking.RolledMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.StartGameMessage;
 import sweng_plus.framework.boardgame.nodes_board.Dice;
 import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
-import sweng_plus.framework.networking.util.NetworkRole;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class LudoGameLogic
@@ -64,9 +69,9 @@ public class LudoGameLogic
             {
                 for(LudoClient client : Ludo.instance().getHostManager().getAllClients())
                 {
-                        Ludo.instance().getHostManager()
-                                .sendMessageToClient(client,
-                                        new StartGameMessage(client.getTeamIndex(), teams.length, currentTeamIndex));
+                    Ludo.instance().getHostManager()
+                            .sendMessageToClient(client,
+                                    new StartGameMessage(client.getTeamIndex(), teams.length, currentTeamIndex));
                 }
             }
             catch(IOException e)
@@ -83,14 +88,12 @@ public class LudoGameLogic
         numConsecutiveRolls++;
     }
     
-    public void endPhaseRoll() // called by turn client
+    public void tellClientsRoll()
     {
-        System.out.println("                Logic: endPhaseRoll");
-        
         // wird vom client aufgerufen
         // würfeln
         roll();
-    
+        
         if(isServer)
         {
             try
@@ -114,24 +117,28 @@ public class LudoGameLogic
         // send clients diceResult result
     }
     
+    public void tellClientsFigureSelected(int selectedFigure)
+    {
+        if(isServer)
+        {
+            try
+            {
+                Ludo.instance().getHostManager().sendMessageToAllClients(
+                        new FigureSelectedMessage(selectedFigure));
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     public void endPhaseSelectFigure(int selectedFigure)
     {
         System.out.println("                Logic: endPhaseSelectFigure");
+        
         if(selectedFigure >= 0)
         {
-            if(isServer)
-            {
-                try
-                {
-                    Ludo.instance().getHostManager().sendMessageToAllClientsExceptHost(
-                            new FigureSelectedMessage(selectedFigure));
-                }
-                catch(IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-    
             movableFigures.keySet().stream().filter(figure -> figure.getIndex() == selectedFigure).findFirst().ifPresent((figure) ->
             {
                 moveFigure(figure, (LudoNode) movableFigures.get(figure).get(0));
@@ -260,7 +267,7 @@ public class LudoGameLogic
             {
                 movableFigures.put((LudoFigure) teamFigure, forwardNodes);
             }
-            else if (latestRoll == 6 && ((LudoNode)teamFigure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
+            else if(latestRoll == 6 && ((LudoNode) teamFigure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
             {
                 movableFigures.put((LudoFigure) teamFigure, List.of(ludoBoard.getStartNode(currentTeamIndex)));
             }
@@ -283,18 +290,11 @@ public class LudoGameLogic
         return (node -> {
             if(!(node instanceof LudoNode ludoNode))
             {
-                return false;
+                return true;
             }
             if(ludoNode.getColor().equals(figure.getColor()))
             {
-                if(ludoNode.getNodeType() == LudoNodeType.OUTSIDE)
-                {
-                    return false;
-                }
-                else if(ludoNode.getNodeType() == LudoNodeType.HOME)
-                {
-                    return true;
-                }
+                return ludoNode.getNodeType() != LudoNodeType.START;
             }
             return true;
         });

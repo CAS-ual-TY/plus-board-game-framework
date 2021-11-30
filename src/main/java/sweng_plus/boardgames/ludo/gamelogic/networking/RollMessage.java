@@ -25,7 +25,7 @@ public class RollMessage
                 System.out.println(client.getTeamIndex() + " " + Ludo.instance().getGameLogic().currentTeamIndex);
                 
                 if(client.getTeamIndex() == Ludo.instance().getGameLogic().currentTeamIndex)
-                    Ludo.instance().getGameLogic().endPhaseRoll();
+                    Ludo.instance().getGameLogic().tellClientsRoll();
             });
         }
     }

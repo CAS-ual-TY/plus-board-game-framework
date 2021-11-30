@@ -24,6 +24,14 @@ public class LudoBoard extends NodeBoard
         super(new LinkedList<>(), new LinkedList<>());
         
         setupBoard(teamColors);
+        
+        for(LudoTeam team : ludoTeams)
+        {
+            for(NodeFigure f : team.figures)
+            {
+                addNodeFigure(f);
+            }
+        }
     }
     
     public int getTeamIndex(TeamColor team)
@@ -66,7 +74,8 @@ public class LudoBoard extends NodeBoard
                 ludoTeams[finalI] = new LudoTeam(teamColors[finalI], figures, cornerOutside, cornerStart, cornerHomeEntrance, cornerHome, cornerLast, allNodes);
                 addAllNodes(allNodes);
                 
-                if(ludoTeams.length == 2) {
+                if(ludoTeams.length == 2)
+                {
                     fix2PlayerHouse(cornerHome, cornerHomeEntrance);
                 }
             });
@@ -117,7 +126,7 @@ public class LudoBoard extends NodeBoard
             }
             previous = current;
         }
-    
+        
         INode.linkNodes(homeEntrance, home.get(0));
         
         NodeFigure[] figures = createFigures(ludoTeam, outside);
