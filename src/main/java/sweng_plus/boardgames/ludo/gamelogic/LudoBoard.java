@@ -65,6 +65,10 @@ public class LudoBoard extends NodeBoard
             {
                 ludoTeams[finalI] = new LudoTeam(teamColors[finalI], figures, cornerOutside, cornerStart, cornerHomeEntrance, cornerHome, cornerLast, allNodes);
                 addAllNodes(allNodes);
+                
+                if(ludoTeams.length == 2) {
+                    fix2PlayerHouse(cornerHome, cornerHomeEntrance);
+                }
             });
         }
         
@@ -72,6 +76,12 @@ public class LudoBoard extends NodeBoard
         {
             INode.linkNodes(ludoTeams[i].last(), ludoTeams[(i + 1) % ludoTeams.length].homeEntrance());
         }
+    }
+    
+    private static void fix2PlayerHouse(List<LudoNode> cornerHome, LudoNode cornerHomeEntrance)
+    {
+        INode.linkNodes(cornerHomeEntrance, cornerHome.get(2));
+        INode.unlinkNodes(cornerHome.get(1), cornerHome.get(2));
     }
     
     private static void createBoardCorner(TeamColor ludoTeam, BoardCornerConsumer consumer)
@@ -107,6 +117,8 @@ public class LudoBoard extends NodeBoard
             }
             previous = current;
         }
+    
+        INode.linkNodes(homeEntrance, home.get(0));
         
         NodeFigure[] figures = createFigures(ludoTeam, outside);
         

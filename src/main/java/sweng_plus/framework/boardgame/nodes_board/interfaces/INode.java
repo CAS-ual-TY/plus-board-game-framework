@@ -30,6 +30,8 @@ public interface INode
         forwardNodes.forEach(this::addForwardNode);
     }
     
+    void removeForwardNode(INode forwardNode);
+    
     List<INode> getBackwardNodes();
     
     void addBackwardNode(INode backwardNode);
@@ -38,6 +40,8 @@ public interface INode
     {
         backwardNodes.forEach(this::addBackwardNode);
     }
+    
+    void removeBackwardNode(INode backwardNode);
     
     default List<INode> getBackwardNodes(Predicate<INode> predicate)
     {
@@ -90,5 +94,11 @@ public interface INode
     {
         from.addForwardNode(to);
         to.addBackwardNode(from);
+    }
+    
+    static void unlinkNodes(INode from, INode to)
+    {
+        from.removeForwardNode(to);
+        to.removeBackwardNode(from);
     }
 }

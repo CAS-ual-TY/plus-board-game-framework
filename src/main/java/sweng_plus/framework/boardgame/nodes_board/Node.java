@@ -31,6 +31,12 @@ public class Node implements INode
     }
     
     @Override
+    public void removeForwardNode(INode forwardNode)
+    {
+        forwardNodes.remove(forwardNode);
+    }
+    
+    @Override
     public List<INode> getBackwardNodes()
     {
         return backwardNodes;
@@ -40,6 +46,12 @@ public class Node implements INode
     public void addBackwardNode(INode backwardNode)
     {
         backwardNodes.add(backwardNode);
+    }
+    
+    @Override
+    public void removeBackwardNode(INode backwardNode)
+    {
+        backwardNodes.remove(backwardNode);
     }
     
     @Override
