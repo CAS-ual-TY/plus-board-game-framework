@@ -6,6 +6,7 @@ import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.NetworkManager;
 import sweng_plus.framework.networking.interfaces.IClientEventsListener;
 import sweng_plus.framework.networking.interfaces.IHostEventsListener;
+import sweng_plus.framework.networking.util.NetworkRole;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
@@ -52,7 +53,32 @@ public class NetTestMenuScreen extends Screen
         try
         {
             NetTestGame.instance().hostManager = NetworkManager.host(NetTestGame.instance().protocol,
-                    IHostEventsListener.emptyHostListener(), Client.createFactory(), 100);
+                    new IHostEventsListener<Client>()
+                    {
+                        @Override
+                        public void clientConnected(Client client)
+                        {
+                            if(screenHolder.getScreen() instanceof NetTestChatScreen chatScreen)
+                            {
+                                chatScreen.addMessage("Server",
+                                        (client.getRole() == NetworkRole.HOST
+                                                ? "Host" : "Client") + " connected!",
+                                        System.currentTimeMillis());
+                            }
+                        }
+                        
+                        @Override
+                        public void clientDisconnected(Client client)
+                        {
+                            if(screenHolder.getScreen() instanceof NetTestChatScreen chatScreen)
+                            {
+                                chatScreen.addMessage("Server",
+                                        (client.getRole() == NetworkRole.HOST
+                                                ? "Host" : "Client") + " disconnected!",
+                                        System.currentTimeMillis());
+                            }
+                        }
+                    }, Client.createFactory(), 100);
             NetTestGame.instance().clientManager = NetTestGame.instance().hostManager;
             NetTestGame.instance().setScreen(new NetTestChatScreen(this));
         }
@@ -67,7 +93,21 @@ public class NetTestMenuScreen extends Screen
         try
         {
             NetTestGame.instance().clientManager = NetworkManager.connect(NetTestGame.instance().protocol,
-                    IClientEventsListener.emptyClientListener(), "localhost", 100);
+                    new IClientEventsListener()
+                    {
+                        @Override
+                        public void disconnected()
+                        {
+                            NetTestGame.instance().setScreen(NetTestMenuScreen.this);
+                        }
+                        
+                        @Override
+                        public void disconnectedWithException(Exception e)
+                        {
+                            e.printStackTrace();
+                            disconnected();
+                        }
+                    }, "localhost", 100);
             NetTestGame.instance().setScreen(new NetTestChatScreen(this));
         }
         catch(IOException e)
