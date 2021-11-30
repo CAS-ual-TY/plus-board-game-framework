@@ -14,16 +14,18 @@ import java.util.List;
 
 public class SelectFigureScreen extends WrappedScreen
 {
-    public SelectFigureScreen(LudoScreen subScreen, List<NodeFigure> list)
+    public SelectFigureScreen(LudoScreen subScreen)
     {
         super(subScreen);
         
-        subScreen.logic.movableFigures.keySet().stream().map((figure) -> figure.getCurrentNode()).map((node) -> subScreen.nodeWidgetMap.get(node))
-                .forEach((widget) -> widgets.add(new SelectableFigureWidget(subScreen.screenHolder, new Dimensions(AnchorPoint.M), this::select, widget)));
+        subScreen.logic.movableFigures.keySet().stream().map(NodeFigure::getCurrentNode).map(subScreen.nodeWidgetMap::get)
+                .forEach((widget) -> widgets.add(new SelectableFigureWidget(subScreen.screenHolder, this::select, widget)));
     }
     
     private void select(ButtonWidget button)
     {
+        returnToSubScreen();
+        
         try
         {
             Ludo.instance().getClientManager().sendMessageToServer(new FigureSelectMessage(((SelectableFigureWidget) button).ludoFigure.getIndex()));

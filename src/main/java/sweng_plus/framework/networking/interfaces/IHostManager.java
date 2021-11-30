@@ -49,6 +49,11 @@ public interface IHostManager<C extends IClient> extends IClientManager<C>
         }
     }
     
+    default <M> void sendMessageToAllClientsExceptHost(M message) throws IOException // Main Thread
+    {
+        sendMessageToAllClientsExcept(getHostClient(), message);
+    }
+    
     /**
      * @return all clients represented as {@link IClient} objects which have ever connected to this server.
      * @see IClient#getStatus()

@@ -92,10 +92,6 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
                 StartGameMessage.Handler::decodeMessage, StartGameMessage.Handler::handleMessage,
                 StartGameMessage.class);
         
-        protocol.registerMessage(messageID++, NewTurnMessage.Handler::encodeMessage,
-                NewTurnMessage.Handler::decodeMessage, NewTurnMessage.Handler::handleMessage,
-                NewTurnMessage.class);
-        
         protocol.registerMessage(messageID++, RollMessage.Handler::encodeMessage,
                 RollMessage.Handler::decodeMessage, RollMessage.Handler::handleMessage,
                 RollMessage.class);
@@ -165,7 +161,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
         
-        if(hostManager.getAllClients().size() >= 3)
+        if(hostManager.getAllClients().size() >= 6) //TODO START
         {
             startGame(true, hostManager.getAllClients().size());
         }
@@ -179,12 +175,18 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     
     public void startGame(boolean isServer, int teamCount)
     {
-        gameLogic = new LudoGameLogic(TeamColor.getTeams(teamCount), isHost());
-        setScreen(new LudoScreen(this, gameLogic));
+        if(gameLogic == null)
+        {
+            gameLogic = new LudoGameLogic(TeamColor.getTeams(teamCount), isHost());
+        }
         
         if(isServer)
         {
             gameLogic.startGame();
+        }
+        else
+        {
+            setScreen(new LudoScreen(this, gameLogic));
         }
     }
     

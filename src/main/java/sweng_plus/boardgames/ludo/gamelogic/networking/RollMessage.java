@@ -22,6 +22,8 @@ public class RollMessage
         {
             clientOptional.ifPresent(client ->
             {
+                System.out.println(client.getTeamIndex() + " " + Ludo.instance().getGameLogic().currentTeamIndex);
+                
                 if(client.getTeamIndex() == Ludo.instance().getGameLogic().currentTeamIndex)
                     Ludo.instance().getGameLogic().endPhaseRoll();
             });

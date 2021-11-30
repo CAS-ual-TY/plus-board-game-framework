@@ -24,6 +24,8 @@ public class DiceScreen extends WrappedScreen
     
     private void roll()
     {
+        returnToSubScreen();
+    
         try
         {
             Ludo.instance().getClientManager().sendMessageToServer(new RollMessage());
@@ -32,7 +34,5 @@ public class DiceScreen extends WrappedScreen
         {
             e.printStackTrace();
         }
-        
-        returnToSubScreen();
     }
 }

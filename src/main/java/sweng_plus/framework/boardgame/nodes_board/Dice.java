@@ -18,7 +18,7 @@ public class Dice<T> implements IDice<T>
     public Dice(T[] eyes)
     {
         this.eyes = eyes;
-        random = new Random();
+        random = new Random(27);
     }
     
     @Override
@@ -29,6 +29,6 @@ public class Dice<T> implements IDice<T>
     
     private int selectedIndex()
     {
-        return (int) Math.floor(random.nextInt(eyes.length));
+        return random.nextInt(eyes.length);
     }
 }

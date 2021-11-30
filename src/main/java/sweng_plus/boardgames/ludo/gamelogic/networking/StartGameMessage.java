@@ -6,7 +6,7 @@ import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.util.Optional;
 
-public record StartGameMessage(int playerID, int teamCount)
+public record StartGameMessage(int playerID, int teamCount, int startTeam)
 {
     public static class Handler
     {
@@ -14,17 +14,19 @@ public record StartGameMessage(int playerID, int teamCount)
         {
             buf.writeInt(message.playerID());
             buf.writeInt(message.teamCount());
+            buf.writeInt(message.startTeam());
         }
         
         public static StartGameMessage decodeMessage(CircularBuffer buf)
         {
-            return new StartGameMessage(buf.readInt(), buf.readInt());
+            return new StartGameMessage(buf.readInt(), buf.readInt(), buf.readInt());
         }
         
         public static void handleMessage(Optional<LudoClient> clientOptional, StartGameMessage message)
         {
             Ludo.instance().startGame(false, message.teamCount());
             ((LudoScreen)Ludo.instance().getScreen()).thisPlayerID = message.playerID();
+            ((LudoScreen)Ludo.instance().getScreen()).newTurn(message.startTeam());
         }
     }
 }
