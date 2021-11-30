@@ -1,10 +1,12 @@
 package sweng_plus.boardgames.ludo;
 
 import org.lwjgl.glfw.GLFW;
+import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
 import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
+import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
 import sweng_plus.framework.userinterface.gui.font.FontInfo;
@@ -27,6 +29,8 @@ public class Ludo implements IGame
     public FontRenderer fontRenderer24;
     public FontRenderer fontRenderer16;
     
+    public LudoGameLogic gameLogic;
+    
     public Ludo()
     {
         //noinspection ThisEscapedInObjectConstruction
@@ -36,6 +40,16 @@ public class Ludo implements IGame
     public static Ludo instance()
     {
         return instance;
+    }
+    
+    public LudoGameLogic getGameLogic()
+    {
+        return gameLogic;
+    }
+    
+    public void initGameLogic(TeamColor[] teams, boolean isServer)
+    {
+        gameLogic = new LudoGameLogic(teams, isServer);
     }
     
     @Override
@@ -60,7 +74,7 @@ public class Ludo implements IGame
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_BACKSPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ESCAPE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ENTER);
-    
+        
         try
         {
             LudoTextures.load();
@@ -69,9 +83,9 @@ public class Ludo implements IGame
         {
             e.printStackTrace();
         }
-    
+        
         screen = new MenuScreen(this);
-    
+        
     }
     
     @Override
