@@ -51,7 +51,8 @@ public class MenuHostScreen extends WrappedScreen
         //TODO
         try
         {
-            Ludo.instance().host(inputWidgetName.getText(), Integer.valueOf(portInput));
+            //Ludo.instance().host(inputWidgetName.getText(), Integer.valueOf(portInput));
+            Ludo.instance().host("Host", (int) 25555);
         }
         catch(IOException e)
         {

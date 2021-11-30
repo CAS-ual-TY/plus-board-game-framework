@@ -61,7 +61,8 @@ public class MenuConnectScreen extends WrappedScreen
         //TODO
         try
         {
-            Ludo.instance().connect(inputWidgetName.getText(), ipInput, Integer.valueOf(portInput));
+            //Ludo.instance().connect(inputWidgetName.getText(), ipInput, Integer.valueOf(portInput));
+            Ludo.instance().connect(inputWidgetName.getText(), "localhost", (int) 25555);
         }
         catch(IOException e)
         {
