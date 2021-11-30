@@ -107,7 +107,7 @@ public class LudoBoard extends NodeBoard
             }
             previous = current;
         }
-    
+        
         NodeFigure[] figures = createFigures(ludoTeam, outside);
         
         allNodes.addAll(outside);

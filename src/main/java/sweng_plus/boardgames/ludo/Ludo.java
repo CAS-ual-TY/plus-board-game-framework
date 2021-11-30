@@ -2,7 +2,10 @@ package sweng_plus.boardgames.ludo;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
-import sweng_plus.boardgames.ludo.gamelogic.networking.*;
+import sweng_plus.boardgames.ludo.gamelogic.networking.LudoClient;
+import sweng_plus.boardgames.ludo.gamelogic.networking.SendNameMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.SendNamesMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.StartGameMessage;
 import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.framework.boardgame.Engine;
@@ -105,6 +108,11 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         //TODO set screen
     }
     
+    public boolean isHost()
+    {
+        return hostManager != null;
+    }
+    
     @Override
     public void disconnected()
     {
@@ -131,12 +139,19 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     
     public void startGame()
     {
-    
+        if(isHost())
+        {
+            initGameLogic(names.size());
+        }
+        else
+        {
+        
+        }
     }
     
-    public void initGameLogic(TeamColor[] teams, boolean isServer)
+    public void initGameLogic(int teams)
     {
-        gameLogic = new LudoGameLogic(teams, isServer);
+        gameLogic = new LudoGameLogic(TeamColor.getTeams(teams), isHost());
     }
     
     @Override
@@ -174,13 +189,15 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         initProtocol();
         
         screen = new MenuScreen(this);
-        
     }
     
     @Override
     public void update()
     {
-    
+        if(isHost() && names.size() >= 3) // TODO
+        {
+            startGame();
+        }
     }
     
     @Override

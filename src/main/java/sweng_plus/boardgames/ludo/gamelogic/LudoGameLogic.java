@@ -7,7 +7,6 @@ import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class LudoGameLogic
 {
@@ -44,6 +43,11 @@ public class LudoGameLogic
         numConsecutiveRolls = 0;
     }
     
+    public void startGame()
+    {
+        currentTeamIndex = new Random().nextInt(teams.length);
+    }
+    
     public void startPhaseRoll()
     {
         currentTurnPhase = LudoTurnPhase.ROLL;
@@ -64,7 +68,7 @@ public class LudoGameLogic
         // TODO auszuwählende Figuren bestimmen (bewegbar mit roll-ergebnis)
         
         currentTurnPhase = LudoTurnPhase.SELECT_FIGURE;
-    
+        
         Map<NodeFigure, List<INode>> movableFigures = getMovableFigures(latestRoll);
         // TODO send clients selected Figure and roll result
         if(isServer)
@@ -115,21 +119,24 @@ public class LudoGameLogic
         ludoBoard.moveFigure(figure, selectedNode);
     }
     
-    public int maxCurrentConsecutiveRolls() {
+    public int maxCurrentConsecutiveRolls()
+    {
         TeamColor currentTeam = teams[currentTeamIndex];
         
         // All Figures are outside
-        if(ludoBoard.isHomeFull(currentTeam)) {
+        if(ludoBoard.isHomeFull(currentTeam))
+        {
             return MAX_CONSECUTIVE_ROLLS;
         }
-    
+        
         // All Figures don't further impact the roll count
-        List<NodeFigure> remainingTeamFigures = Arrays.stream(ludoBoard.getTeamFigures(currentTeam)).filter((figure) -> ((LudoNode)figure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE).toList();
-    
+        List<NodeFigure> remainingTeamFigures = Arrays.stream(ludoBoard.getTeamFigures(currentTeam)).filter((figure) -> ((LudoNode) figure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE).toList();
+        
         for(NodeFigure figure : remainingTeamFigures)
         {
             // At least one figure out on the board
-            if(((LudoNode)figure.getCurrentNode()).getNodeType() != LudoNodeType.HOME) {
+            if(((LudoNode) figure.getCurrentNode()).getNodeType() != LudoNodeType.HOME)
+            {
                 return MIN_CONSECUTIVE_ROLLS;
             }
         }
@@ -138,7 +145,8 @@ public class LudoGameLogic
         for(int i = (homeNodes.size() - remainingTeamFigures.size()); i < homeNodes.size(); i++)
         {
             // At least one figure in the house could move - not on last reachable node
-            if(!homeNodes.get(i).isOccupied()) {
+            if(!homeNodes.get(i).isOccupied())
+            {
                 return MIN_CONSECUTIVE_ROLLS;
             }
         }

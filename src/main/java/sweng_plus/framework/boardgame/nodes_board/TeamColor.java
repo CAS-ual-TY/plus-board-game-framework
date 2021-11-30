@@ -20,6 +20,16 @@ public class TeamColor
     public static final TeamColor[] TEAMS_5 = {RED, YELLOW, GREEN, BLUE, PURPLE};
     public static final TeamColor[] TEAMS_6 = {RED, YELLOW, GREEN, CYAN, BLUE, PURPLE};
     
+    public static TeamColor[] getTeams(int teamsAmount)
+    {
+        return teamsAmount == 2 ? TeamColor.TEAMS_2 :
+                teamsAmount == 3 ? TeamColor.TEAMS_3 :
+                        teamsAmount == 4 ? TeamColor.TEAMS_4 :
+                                teamsAmount == 5 ? TeamColor.TEAMS_5 :
+                                        teamsAmount == 6 ? TeamColor.TEAMS_6 :
+                                                TeamColor.TEAMS_4;
+    }
+    
     protected String name;
     protected Color4f color;
     
