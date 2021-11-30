@@ -4,16 +4,16 @@ import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.NetworkManager;
+import sweng_plus.framework.networking.interfaces.IClientEventsListener;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
-import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
+import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class NetTestMenuScreen extends Screen
@@ -64,7 +64,8 @@ public class NetTestMenuScreen extends Screen
     {
         try
         {
-            NetTestGame.instance().clientManager = NetworkManager.connect(NetTestGame.instance().protocol, "localhost", 100);
+            NetTestGame.instance().clientManager = NetworkManager.connect(NetTestGame.instance().protocol,
+                    IClientEventsListener.EMPTY, "localhost", 100);
             NetTestGame.instance().setScreen(new NetTestChatScreen(this));
         }
         catch(IOException e)

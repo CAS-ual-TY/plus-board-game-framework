@@ -1,9 +1,6 @@
 package sweng_plus.framework.networking;
 
-import sweng_plus.framework.networking.interfaces.IClient;
-import sweng_plus.framework.networking.interfaces.IClientManager;
-import sweng_plus.framework.networking.interfaces.IHostManager;
-import sweng_plus.framework.networking.interfaces.IMessageRegistry;
+import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.networking.util.IClientFactory;
 
 import java.io.IOException;
@@ -50,9 +47,11 @@ public class NetworkManager
      * @return An {@link IClientManager} object for interacting with the server.
      * @throws IOException
      */
-    public static <C extends IClient> IClientManager<C> connect(IMessageRegistry<C> registry, String ip, int port) throws IOException
+    public static <C extends IClient> IClientManager<C> connect(IMessageRegistry<C> registry,
+                                                                IClientEventsListener eventsListener,
+                                                                String ip, int port) throws IOException
     {
-        ClientManager<C> clientManager = new ClientManager<>(registry, ip, port);
+        ClientManager<C> clientManager = new ClientManager<>(registry, eventsListener, ip, port);
         Thread thread = new Thread(clientManager);
         thread.start();
         return clientManager;
