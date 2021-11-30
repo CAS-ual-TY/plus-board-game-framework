@@ -56,7 +56,7 @@ public class LudoBoard extends NodeBoard
     @SuppressWarnings("unchecked")
     private void setupBoard(TeamColor[] teamColors)
     {
-        LudoTeam[] ludoTeams = new LudoTeam[teamColors.length];
+        ludoTeams = new LudoTeam[teamColors.length];
         
         for(int i = 0; i < ludoTeams.length; i++)
         {
