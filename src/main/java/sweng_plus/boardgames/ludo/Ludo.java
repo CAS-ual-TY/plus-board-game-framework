@@ -8,6 +8,7 @@ import sweng_plus.boardgames.ludo.gamelogic.networking.SendNamesMessage;
 import sweng_plus.boardgames.ludo.gamelogic.networking.StartGameMessage;
 import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.MenuScreen;
+import sweng_plus.boardgames.ludo.gui.NameScreen;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
@@ -96,16 +97,17 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         names.clear();
         clientManager = NetworkManager.connect(protocol, this, ip, port);
         
-        //TODO set screen
+        setScreen(new NameScreen(this));
     }
     
     public void host(String playerName, int port) throws IOException
     {
         names.clear();
+        names.add(playerName);
         hostManager = NetworkManager.host(protocol, this, LudoClient::new, port);
         clientManager = hostManager;
         
-        //TODO set screen
+        setScreen(new NameScreen(this));
     }
     
     public boolean isHost()

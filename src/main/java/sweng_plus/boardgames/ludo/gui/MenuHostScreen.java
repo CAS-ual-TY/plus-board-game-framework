@@ -1,7 +1,6 @@
 package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
@@ -9,6 +8,8 @@ import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+
+import java.io.IOException;
 
 public class MenuHostScreen extends WrappedScreen
 {
@@ -19,10 +20,10 @@ public class MenuHostScreen extends WrappedScreen
     public MenuHostScreen(Screen subScreen)
     {
         super(subScreen);
-    
+        
         Dimensions nameDims = new Dimensions(0, 0, AnchorPoint.M, 0, -160);
         widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:"));
-    
+        
         Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -80);
         inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48);
         widgets.add(inputWidgetName);
@@ -48,6 +49,14 @@ public class MenuHostScreen extends WrappedScreen
         Ludo.instance().names.add(inputWidgetName.getText());
         portInput = inputWidget.getText();
         //TODO
+        try
+        {
+            Ludo.instance().host(inputWidgetName.getText(), Integer.valueOf(portInput));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     private void cancel()

@@ -9,6 +9,8 @@ import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
+import java.io.IOException;
+
 public class MenuConnectScreen extends WrappedScreen
 {
     private String portInput;
@@ -23,7 +25,7 @@ public class MenuConnectScreen extends WrappedScreen
         
         Dimensions nameDims = new Dimensions(0, 0, AnchorPoint.M, 0, -260);
         widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:"));
-    
+        
         Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -180);
         inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48);
         widgets.add(inputWidgetName);
@@ -57,6 +59,14 @@ public class MenuConnectScreen extends WrappedScreen
         portInput = inputWidgetPort.getText();
         ipInput = inputWidgetIP.getText();
         //TODO
+        try
+        {
+            Ludo.instance().connect(inputWidgetName.getText(), ipInput, Integer.valueOf(portInput));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     private void cancel()
