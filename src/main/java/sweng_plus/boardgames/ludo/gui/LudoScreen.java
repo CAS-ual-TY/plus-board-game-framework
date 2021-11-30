@@ -33,16 +33,33 @@ public class LudoScreen extends Screen
         screenHolder.setScreen(new DiceScreen(this));
     }
     
+    public void requestFigure() {} //TODO
+    
     public void newTurn(int turnTeam)
     {
         logic.setTurnTeam(turnTeam);
+        logic.startPhaseRoll();
         
-        
+        if(logic.currentTeamIndex == thisPlayerID)
+        {
+            requestDice();
+        }
     }
     
     public void diceResult(int dice)
     {
         logic.setLatestRoll(dice);
-        //TODO Animation
+        logic.startPhaseSelectFigure();
+        
+        if(logic.currentTeamIndex == thisPlayerID)
+        {
+            requestFigure();
+        }
+    }
+    
+    public void figureSelected(int figure)
+    {
+        logic.endPhaseSelectFigure(figure);
+        newTurn(logic.currentTeamIndex);
     }
 }

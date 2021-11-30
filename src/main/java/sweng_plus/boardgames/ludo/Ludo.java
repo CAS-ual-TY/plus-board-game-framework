@@ -87,14 +87,30 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
-    
+        
         protocol.registerMessage(messageID++, StartGameMessage.Handler::encodeMessage,
                 StartGameMessage.Handler::decodeMessage, StartGameMessage.Handler::handleMessage,
                 StartGameMessage.class);
-    
+        
         protocol.registerMessage(messageID++, NewTurnMessage.Handler::encodeMessage,
                 NewTurnMessage.Handler::decodeMessage, NewTurnMessage.Handler::handleMessage,
                 NewTurnMessage.class);
+        
+        protocol.registerMessage(messageID++, RollMessage.Handler::encodeMessage,
+                RollMessage.Handler::decodeMessage, RollMessage.Handler::handleMessage,
+                RollMessage.class);
+        
+        protocol.registerMessage(messageID++, RolledMessage.Handler::encodeMessage,
+                RolledMessage.Handler::decodeMessage, RolledMessage.Handler::handleMessage,
+                RolledMessage.class);
+        
+        protocol.registerMessage(messageID++, FigureSelectMessage.Handler::encodeMessage,
+                FigureSelectMessage.Handler::decodeMessage, FigureSelectMessage.Handler::handleMessage,
+                FigureSelectMessage.class);
+        
+        protocol.registerMessage(messageID++, FigureSelectedMessage.Handler::encodeMessage,
+                FigureSelectedMessage.Handler::decodeMessage, FigureSelectedMessage.Handler::handleMessage,
+                FigureSelectedMessage.class);
     }
     
     public void connect(String playerName, String ip, int port) throws IOException
@@ -148,7 +164,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     public void clientConnected(LudoClient client)
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
-    
+        
         if(hostManager.getAllClients().size() >= 3)
         {
             startGame(true, hostManager.getAllClients().size());
@@ -164,14 +180,11 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     public void startGame(boolean isServer, int teamCount)
     {
         gameLogic = new LudoGameLogic(TeamColor.getTeams(teamCount), isHost());
+        setScreen(new LudoScreen(this, gameLogic));
         
         if(isServer)
         {
             gameLogic.startGame();
-        }
-        else
-        {
-            setScreen(new LudoScreen(this, gameLogic));
         }
     }
     

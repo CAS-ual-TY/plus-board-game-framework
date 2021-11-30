@@ -58,5 +58,5 @@ public interface IHostManager<C extends IClient> extends IClientManager<C>
     /**
      * @return The {@link IClient} object representing the host.
      */
-    IClient getHostClient(); // Main Thread
+    C getHostClient(); // Main Thread
 }

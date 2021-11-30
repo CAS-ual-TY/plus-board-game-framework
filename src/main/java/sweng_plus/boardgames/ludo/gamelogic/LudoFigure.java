@@ -18,4 +18,9 @@ public class LudoFigure extends NodeFigure
     {
         super(color);
     }
+    
+    public int getIndex()
+    {
+        return index;
+    }
 }

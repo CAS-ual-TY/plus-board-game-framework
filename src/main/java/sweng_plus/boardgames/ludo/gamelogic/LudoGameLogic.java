@@ -1,14 +1,12 @@
 package sweng_plus.boardgames.ludo.gamelogic;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gamelogic.networking.LudoClient;
-import sweng_plus.boardgames.ludo.gamelogic.networking.NewTurnMessage;
-import sweng_plus.boardgames.ludo.gamelogic.networking.RolledMessage;
-import sweng_plus.boardgames.ludo.gamelogic.networking.StartGameMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.framework.boardgame.nodes_board.Dice;
 import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
+import sweng_plus.framework.networking.util.NetworkRole;
 
 import java.io.IOException;
 import java.util.*;
@@ -19,19 +17,20 @@ public class LudoGameLogic
     private static final int MAX_CONSECUTIVE_ROLLS = 3;
     private static final int MIN_CONSECUTIVE_ROLLS = 1;
     
-    private TeamColor[] teams;
-    private LudoBoard ludoBoard;
-    private Dice<Integer> dice;
-    private final boolean isServer;
+    public TeamColor[] teams;
+    public LudoBoard ludoBoard;
+    public Dice<Integer> dice;
+    public final boolean isServer;
     
-    private int currentTeamIndex;
-    private LudoTurnPhase currentTurnPhase;
+    public int currentTeamIndex;
+    public LudoTurnPhase currentTurnPhase;
     
-    private int latestRoll;
+    public int latestRoll;
+    public Map<LudoFigure, List<INode>> movableFigures;
     
-    private boolean gameWon;
+    public boolean gameWon;
     
-    private int numConsecutiveRolls;
+    public int numConsecutiveRolls;
     
     public LudoGameLogic(TeamColor[] teams, boolean isServer)
     {
@@ -64,8 +63,9 @@ public class LudoGameLogic
             {
                 for(LudoClient client : Ludo.instance().getHostManager().getAllClients())
                 {
-                    Ludo.instance().getHostManager()
-                            .sendMessageToClient(client, new StartGameMessage(client.getTeamIndex(), teams.length));
+                    if(client.getRole() != NetworkRole.HOST)
+                        Ludo.instance().getHostManager()
+                                .sendMessageToClient(client, new StartGameMessage(client.getTeamIndex(), teams.length));
                 }
             }
             catch(IOException e)
@@ -73,10 +73,11 @@ public class LudoGameLogic
                 e.printStackTrace();
             }
         }
+        
         startPhaseRoll();
     }
     
-    public void startPhaseRoll()
+    public void startPhaseRoll() // called by Host on start and by previous
     {
         currentTurnPhase = LudoTurnPhase.ROLL;
         
@@ -95,63 +96,52 @@ public class LudoGameLogic
         }
     }
     
-    public void endPhaseRoll()
+    public void endPhaseRoll() // called by turn client
     {
         numConsecutiveRolls++;
-        if(isServer)
-        {
-            // wird vom client aufgerufen
-            // würfeln
-            roll();
-            
-            // TODO next phase
-            startPhaseSelectFigure();
-        }
         
+        // wird vom client aufgerufen
+        // würfeln
+        roll();
+        startPhaseSelectFigure();
     }
     
-    public void startPhaseSelectFigure()
+    public void startPhaseSelectFigure() // called by previous
     {
-        
-        // TODO auszuwählende Figuren bestimmen (bewegbar mit roll-ergebnis)
+        try
+        {
+            Ludo.instance().getHostManager().sendMessageToAllClientsExcept(
+                    Ludo.instance().getHostManager().getHostClient(),
+                    new RolledMessage(latestRoll));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
         
         currentTurnPhase = LudoTurnPhase.SELECT_FIGURE;
+        movableFigures = getMovableFigures(latestRoll);
         
-        
-        // TODO send clients selected Figure and roll result
-        if(isServer)
-        {
-            Map<NodeFigure, List<INode>> movableFigures = getMovableFigures(latestRoll);
-            
-            // send clients roll result
-            try
-            {
-                Ludo.instance().getHostManager().sendMessageToAllClients(new RolledMessage(latestRoll));
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
-            
-            // TODO send clients selectable figures
-            // Ludo.instance().getHostManager().sendMessageToAllClients(new );
-            
-            
-        }
-        
-        // TODO clients do prediction
+        // send clients diceResult result
     }
     
-    public void endPhaseSelectFigure(int figureIndex)
+    public void endPhaseSelectFigure(int selectedFigure)
     {
+        try
+        {
+            Ludo.instance().getHostManager().sendMessageToAllClientsExcept(
+                    Ludo.instance().getHostManager().getHostClient(),
+                    new FigureSelectedMessage(selectedFigure));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
         
-        // TODO next phase
-
-        /*
-        TODO max consecutive rolls
-            no figure on field - max 3
-            else 1 except 6 rolled
-         */
+        movableFigures.keySet().stream().filter(figure -> figure.getIndex() == selectedFigure).findFirst().ifPresent((figure) ->
+        {
+            moveFigure(figure, (LudoNode) movableFigures.get(figure).get(0));
+        });
         
         // maximum numbers of consecutive rolls reached (standard MIN_CONSECUTIVE_ROLLS, if no movable figures - MAX_CONSECUTIVE_ROLLS rolls
         if(!((latestRoll == 6) || (numConsecutiveRolls < maxCurrentConsecutiveRolls())))
@@ -187,7 +177,7 @@ public class LudoGameLogic
             return MAX_CONSECUTIVE_ROLLS;
         }
         
-        // All Figures don't further impact the roll count
+        // All Figures don't further impact the diceResult count
         List<NodeFigure> remainingTeamFigures = Arrays.stream(ludoBoard.getTeamFigures(currentTeam))
                 .filter((figure) -> ((LudoNode) figure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
                 .toList();
@@ -265,16 +255,16 @@ public class LudoGameLogic
         }
     }
     
-    private Map<NodeFigure, List<INode>> getMovableFigures(int roll)
+    private Map<LudoFigure, List<INode>> getMovableFigures(int roll)
     {
-        Map<NodeFigure, List<INode>> movableFigures = new HashMap<>(4);
+        Map<LudoFigure, List<INode>> movableFigures = new HashMap<>(4);
         
         for(NodeFigure teamFigure : ludoBoard.getTeamFigures(teams[currentTeamIndex]))
         {
             List<INode> forwardNodes = ludoBoard.getForwardNodes(teamFigure, roll, createMovablePredicate((LudoFigure) teamFigure));
             if(forwardNodes.size() > 0)
             {
-                movableFigures.put(teamFigure, forwardNodes);
+                movableFigures.put((LudoFigure) teamFigure, forwardNodes);
             }
         }
         return movableFigures;
