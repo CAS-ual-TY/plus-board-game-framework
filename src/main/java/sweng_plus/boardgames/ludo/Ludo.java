@@ -151,7 +151,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     
         if(hostManager.getAllClients().size() >= 3)
         {
-            startGame(true);
+            startGame(true, hostManager.getAllClients().size());
         }
     }
     
@@ -161,9 +161,9 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     
     }
     
-    public void startGame(boolean isServer)
+    public void startGame(boolean isServer, int teamCount)
     {
-        gameLogic = new LudoGameLogic(TeamColor.getTeams(names.size()), isHost());
+        gameLogic = new LudoGameLogic(TeamColor.getTeams(teamCount), isHost());
         
         if(isServer)
         {

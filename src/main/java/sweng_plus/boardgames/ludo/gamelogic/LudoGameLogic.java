@@ -65,7 +65,7 @@ public class LudoGameLogic
                 for(LudoClient client : Ludo.instance().getHostManager().getAllClients())
                 {
                     Ludo.instance().getHostManager()
-                            .sendMessageToClient(client, new StartGameMessage(client.getTeamIndex()));
+                            .sendMessageToClient(client, new StartGameMessage(client.getTeamIndex(), teams.length));
                 }
             }
             catch(IOException e)
