@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager<C>
 {
-    protected final IClientEventsListener eventsListener;
+    public IClientEventsListener eventsListener;
     
     public Socket socket;
     
@@ -99,6 +99,8 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
         {
             throw new RuntimeException(e);
         }
+        
+        connectionSocketClosed();
     }
     
     @Override

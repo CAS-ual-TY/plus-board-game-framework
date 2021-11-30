@@ -6,18 +6,21 @@ public interface IClientEventsListener
     
     void disconnectedWithException(Exception e);
     
-    IClientEventsListener EMPTY = new IClientEventsListener()
+    static IClientEventsListener emptyClientListener()
     {
-        @Override
-        public void disconnected()
+        return new IClientEventsListener()
         {
-        
-        }
-        
-        @Override
-        public void disconnectedWithException(Exception e)
-        {
-        
-        }
-    };
+            @Override
+            public void disconnected()
+            {
+            
+            }
+            
+            @Override
+            public void disconnectedWithException(Exception e)
+            {
+            
+            }
+        };
+    }
 }

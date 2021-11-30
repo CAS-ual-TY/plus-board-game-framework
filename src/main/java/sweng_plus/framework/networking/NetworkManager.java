@@ -28,9 +28,11 @@ public class NetworkManager
      * @return An {@link IHostManager} object for interacting with clients.
      * @throws IOException
      */
-    public static <C extends IClient> IHostManager<C> host(IMessageRegistry<C> registry, IClientFactory<C> clientFactory, int port) throws IOException
+    public static <C extends IClient> IHostManager<C> host(IMessageRegistry<C> registry,
+                                                           IHostEventsListener<C> eventsListener,
+                                                           IClientFactory<C> clientFactory, int port) throws IOException
     {
-        HostManager<C> hostManager = new HostManager<>(registry, clientFactory, port);
+        HostManager<C> hostManager = new HostManager<>(registry, eventsListener, clientFactory, port);
         Thread thread = new Thread(hostManager);
         thread.start();
         return hostManager;

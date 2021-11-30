@@ -1,6 +1,7 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IClient;
+import sweng_plus.framework.networking.interfaces.IHostEventsListener;
 import sweng_plus.framework.networking.interfaces.IHostManager;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
@@ -22,6 +23,7 @@ import java.util.function.Consumer;
 
 public class HostManager<C extends IClient> extends ConnectionInteractor<C> implements IHostManager<C>
 {
+    public IHostEventsListener<C> eventsListener;
     public IClientFactory<C> clientFactory;
     
     public ServerSocket serverSocket;
@@ -40,9 +42,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     
     public CircularBuffer writeBuffer;
     
-    public HostManager(IMessageRegistry<C> registry, IClientFactory<C> clientFactory, int port) throws IOException
+    public HostManager(IMessageRegistry<C> registry, IHostEventsListener<C> eventsListener, IClientFactory<C> clientFactory, int port) throws IOException
     {
         super(registry);
+        this.eventsListener = eventsListener;
         this.clientFactory = clientFactory;
         
         serverSocket = new ServerSocket(port);
@@ -223,6 +226,8 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                     lock.unlock();
                 }
                 
+                eventsListener.clientConnected(client);
+                
                 return socket;
             }
             catch(SocketTimeoutException ignored) {}
@@ -251,8 +256,6 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     @Override
     public void connectionSocketClosed() // Connection Thread
     {
-        // TODO callback zur Engine?
-        
         // no need to do all this cleanup as it's done anyways since the server is closed
         if(shouldClose())
         {
@@ -284,6 +287,8 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         }
         
         client.changeStatus(ClientStatus.DISCONNECTED);
+        
+        eventsListener.clientDisconnected(client);
     }
     
     @Override
@@ -335,8 +340,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         }
         catch(IOException e)
         {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        
+        eventsListener.disconnected();
     }
     
     @Override
