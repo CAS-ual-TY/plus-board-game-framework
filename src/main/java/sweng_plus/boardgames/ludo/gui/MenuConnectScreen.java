@@ -55,7 +55,6 @@ public class MenuConnectScreen extends WrappedScreen
     
     private void accept()
     {
-        Ludo.instance().names.add(inputWidgetName.getText());
         portInput = inputWidgetPort.getText();
         ipInput = inputWidgetIP.getText();
         //TODO

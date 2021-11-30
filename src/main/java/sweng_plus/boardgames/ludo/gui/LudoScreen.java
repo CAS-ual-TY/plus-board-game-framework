@@ -15,6 +15,8 @@ public class LudoScreen extends Screen
     public final LudoBoard board;
     public final HashMap<INode, LudoNodeWidget> nodeWidgetMap;
     
+    public int thisPlayerID;
+    
     public LudoScreen(IScreenHolder screenHolder, LudoGameLogic logic)
     {
         super(screenHolder);
@@ -23,12 +25,19 @@ public class LudoScreen extends Screen
         board = logic.getLudoBoard();
         nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, board, LudoTextures.node, LudoTextures.figure);
         widgets.addAll(nodeWidgetMap.values());
-        // widgets.add(FigureWidget)
+        thisPlayerID = -1;
     }
     
     public void requestDice()
     {
         screenHolder.setScreen(new DiceScreen(this));
+    }
+    
+    public void newTurn(int turnTeam)
+    {
+        logic.setTurnTeam(turnTeam);
+        
+        
     }
     
     public void diceResult(int dice)

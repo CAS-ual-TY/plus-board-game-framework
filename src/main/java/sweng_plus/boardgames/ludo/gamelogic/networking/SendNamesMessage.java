@@ -6,12 +6,14 @@ import sweng_plus.framework.networking.util.CircularBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public record SendNamesMessage(List<String> names)
 {
     public static SendNamesMessage makeNamesMessage()
     {
-        return new SendNamesMessage(Ludo.instance().names);
+        return new SendNamesMessage(Ludo.instance().getHostManager().getAllClients().stream()
+                .map(LudoClient::getName).collect(Collectors.toList()));
     }
     
     public static class Handler

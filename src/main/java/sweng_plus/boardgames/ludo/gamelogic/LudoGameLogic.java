@@ -1,6 +1,7 @@
 package sweng_plus.boardgames.ludo.gamelogic;
 
 import sweng_plus.boardgames.ludo.Ludo;
+import sweng_plus.boardgames.ludo.gamelogic.networking.LudoClient;
 import sweng_plus.boardgames.ludo.gamelogic.networking.NewTurnMessage;
 import sweng_plus.boardgames.ludo.gamelogic.networking.RolledMessage;
 import sweng_plus.boardgames.ludo.gamelogic.networking.StartGameMessage;
@@ -56,11 +57,16 @@ public class LudoGameLogic
     public void startGame()
     {
         currentTeamIndex = new Random().nextInt(teams.length);
+        
         if(isServer)
         {
             try
             {
-                Ludo.instance().getHostManager().sendMessageToAllClients(new StartGameMessage());
+                for(LudoClient client : Ludo.instance().getHostManager().getAllClients())
+                {
+                    Ludo.instance().getHostManager()
+                            .sendMessageToClient(client, new StartGameMessage(client.getTeamIndex()));
+                }
             }
             catch(IOException e)
             {
@@ -277,6 +283,11 @@ public class LudoGameLogic
     private void nextTeam()
     {
         currentTeamIndex = (currentTeamIndex + 1) % teams.length;
+    }
+    
+    public void setTurnTeam(int team)
+    {
+        currentTeamIndex = team;
     }
     
     private static Predicate<INode> createMovablePredicate(LudoFigure figure)

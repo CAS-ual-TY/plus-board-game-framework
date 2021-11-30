@@ -2,10 +2,7 @@ package sweng_plus.boardgames.ludo;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
-import sweng_plus.boardgames.ludo.gamelogic.networking.LudoClient;
-import sweng_plus.boardgames.ludo.gamelogic.networking.SendNameMessage;
-import sweng_plus.boardgames.ludo.gamelogic.networking.SendNamesMessage;
-import sweng_plus.boardgames.ludo.gamelogic.networking.StartGameMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.boardgames.ludo.gui.LudoScreen;
 import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.MenuScreen;
@@ -90,8 +87,14 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
-        
-        protocol.registerSimpleMessage(messageID++, StartGameMessage::handleMessage, new StartGameMessage());
+    
+        protocol.registerMessage(messageID++, StartGameMessage.Handler::encodeMessage,
+                StartGameMessage.Handler::decodeMessage, StartGameMessage.Handler::handleMessage,
+                StartGameMessage.class);
+    
+        protocol.registerMessage(messageID++, NewTurnMessage.Handler::encodeMessage,
+                NewTurnMessage.Handler::decodeMessage, NewTurnMessage.Handler::handleMessage,
+                NewTurnMessage.class);
     }
     
     public void connect(String playerName, String ip, int port) throws IOException
@@ -144,9 +147,11 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     @Override
     public void clientConnected(LudoClient client)
     {
-        if(isHost() && names.size() >= 3) // TODO
+        client.setTeamIndex(hostManager.getAllClients().size() - 1);
+    
+        if(hostManager.getAllClients().size() >= 3)
         {
-            startGame();
+            startGame(true);
         }
     }
     
@@ -156,11 +161,11 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     
     }
     
-    public void startGame()
+    public void startGame(boolean isServer)
     {
         gameLogic = new LudoGameLogic(TeamColor.getTeams(names.size()), isHost());
         
-        if(isHost())
+        if(isServer)
         {
             gameLogic.startGame();
         }

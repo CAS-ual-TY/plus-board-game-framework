@@ -6,12 +6,24 @@ import sweng_plus.framework.networking.util.NetworkRole;
 
 public class LudoClient extends Client
 {
+    public String name;
     public int teamIndex;
     
     public LudoClient(String ip, NetworkRole role, ClientStatus status)
     {
         super(ip, role, status);
+        name = "";
         teamIndex = -1;
+    }
+    
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
+    public String getName()
+    {
+        return name;
     }
     
     public void setTeamIndex(int teamIndex)

@@ -1,6 +1,7 @@
 package sweng_plus.framework.networking.interfaces;
 
 import sweng_plus.framework.networking.MessageRegistry;
+import sweng_plus.framework.networking.util.ClientStatus;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +27,27 @@ public interface IHostManager<C extends IClient> extends IClientManager<C>
      * @throws IOException
      * @see #getAllClients()
      */
-    <M> void sendMessageToAllClients(M message) throws IOException; // Main Thread
+    default <M> void sendMessageToAllClients(M message) throws IOException // Main Thread
+    {
+        for(C c : getAllClients())
+        {
+            if(c.getStatus() == ClientStatus.CONNECTED)
+            {
+                sendMessageToClient(c, message);
+            }
+        }
+    }
+    
+    default <M> void sendMessageToAllClientsExcept(C client, M message) throws IOException // Main Thread
+    {
+        for(C c : getAllClients())
+        {
+            if(client.getStatus() == ClientStatus.CONNECTED && c != client)
+            {
+                sendMessageToClient(c, message);
+            }
+        }
+    }
     
     /**
      * @return all clients represented as {@link IClient} objects which have ever connected to this server.

@@ -46,7 +46,6 @@ public class MenuHostScreen extends WrappedScreen
     
     private void accept()
     {
-        Ludo.instance().names.add(inputWidgetName.getText());
         portInput = inputWidget.getText();
         //TODO
         try

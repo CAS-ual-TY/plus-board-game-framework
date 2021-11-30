@@ -56,7 +56,7 @@ public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
             }
         }
         
-        throw new IllegalArgumentException("Message not registered");
+        throw new IllegalArgumentException("Message not registered: " + message.getClass());
     }
     
     @Override
