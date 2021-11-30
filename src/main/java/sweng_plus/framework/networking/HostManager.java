@@ -290,12 +290,25 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         
         client.changeStatus(ClientStatus.DISCONNECTED);
         
-        mainThreadMessages.add(() -> eventsListener.clientDisconnected(client));
+        // Callback to Engine
+        
+        lock = mainThreadMessagesLock.writeLock();
+        
+        try
+        {
+            lock.lock();
+            mainThreadMessages.add(() -> eventsListener.clientDisconnected(client));
+        }
+        finally
+        {
+            lock.unlock();
+        }
     }
     
     @Override
     public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
+        e.printStackTrace();
         connectionSocketClosed();
     }
     

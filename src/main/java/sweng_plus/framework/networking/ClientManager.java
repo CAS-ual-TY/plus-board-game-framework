@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Optional;
+import java.util.concurrent.locks.Lock;
 import java.util.function.Consumer;
 
 public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager<C>
@@ -60,15 +61,35 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void connectionSocketClosed() // Connection Thread
     {
-        mainThreadMessages.clear();
-        mainThreadMessages.add(eventsListener::disconnected);
+        Lock lock = mainThreadMessagesLock.writeLock();
+        
+        try
+        {
+            lock.lock();
+            mainThreadMessages.clear();
+            mainThreadMessages.add(eventsListener::disconnected);
+        }
+        finally
+        {
+            lock.unlock();
+        }
     }
     
     @Override
     public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
-        mainThreadMessages.clear();
-        mainThreadMessages.add(() -> eventsListener.disconnectedWithException(e));
+        Lock lock = mainThreadMessagesLock.writeLock();
+        
+        try
+        {
+            lock.lock();
+            mainThreadMessages.clear();
+            mainThreadMessages.add(() -> eventsListener.disconnectedWithException(e));
+        }
+        finally
+        {
+            lock.unlock();
+        }
     }
     
     @Override
