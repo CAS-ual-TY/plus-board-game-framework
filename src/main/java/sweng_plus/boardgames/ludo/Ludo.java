@@ -162,7 +162,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         
         if(isHost())
         {
-            startGame();
+            gameLogic.startGame();
         }
         else
         {
