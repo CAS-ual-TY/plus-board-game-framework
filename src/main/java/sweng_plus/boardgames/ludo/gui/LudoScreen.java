@@ -21,8 +21,9 @@ public class LudoScreen extends Screen
         
         this.logic = logic;
         board = logic.getLudoBoard();
-        nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, board, LudoTextures.node);
+        nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, board, LudoTextures.node, LudoTextures.figure);
         widgets.addAll(nodeWidgetMap.values());
+        // widgets.add(FigureWidget)
     }
     
     public void requestDice()

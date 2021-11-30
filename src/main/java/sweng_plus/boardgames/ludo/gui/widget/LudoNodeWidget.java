@@ -1,5 +1,6 @@
 package sweng_plus.boardgames.ludo.gui.widget;
 
+import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
@@ -8,19 +9,19 @@ import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-import java.util.List;
-
 public class LudoNodeWidget extends NodeWidget
 {
-    protected Texture texture;
+    protected Texture nodeTexture;
+    protected Texture figureTexture;
     
     protected TeamColor team;
     protected LudoNodeType type;
     
-    public LudoNodeWidget(IScreenHolder screenHolder, Dimensions dimensions, LudoNode node, Texture texture)
+    public LudoNodeWidget(IScreenHolder screenHolder, Dimensions dimensions, LudoNode node, Texture nodeTexture, Texture figureTexture)
     {
         super(screenHolder, dimensions, node);
-        this.texture = texture;
+        this.nodeTexture = nodeTexture;
+        this.figureTexture = figureTexture;
         
         team = node.getColor();
         type = node.getNodeType();
@@ -36,8 +37,17 @@ public class LudoNodeWidget extends NodeWidget
         else
             team.getColor().glColor3fStrength(0.1F);
         
-        texture.render(
-                dimensions.x + (dimensions.w - texture.getWidth()) / 2,
-                dimensions.y + (dimensions.h - texture.getHeight()) / 2);
+        nodeTexture.render(
+                dimensions.x + (dimensions.w - nodeTexture.getWidth()) / 2,
+                dimensions.y + (dimensions.h - nodeTexture.getHeight()) / 2);
+    
+        if(getNode().isOccupied() && getNode() instanceof LudoNode ludoNode && ludoNode.getNodeFigures().get(0) instanceof LudoFigure ludoFigure)
+        {
+            ludoFigure.getColor().getColor().glColor4f();
+            // TODO Position anpassen
+            figureTexture.render(
+                    dimensions.x + (dimensions.w - nodeTexture.getWidth()) / 2,
+                    dimensions.y + (dimensions.h - nodeTexture.getHeight()) / 2 - dimensions.h/4);
+        }
     }
 }

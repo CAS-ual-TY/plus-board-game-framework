@@ -211,12 +211,12 @@ public class LudoBoard extends NodeBoard
         return true;
     }
     
-    private static NodeFigure[] createFigures(TeamColor teamColor, List<LudoNode> nodes)
+    private static LudoFigure[] createFigures(TeamColor teamColor, List<LudoNode> nodes)
     {
-        NodeFigure[] figures = new NodeFigure[nodes.size()];
+        LudoFigure[] figures = new LudoFigure[nodes.size()];
         for(int i = 0; i < nodes.size(); i++)
         {
-            figures[i] = new NodeFigure(nodes.get(i), teamColor);
+            figures[i] = new LudoFigure(nodes.get(i), teamColor, i);
             nodes.get(i).addNodeFigure(figures[i]);
         }
         return figures;

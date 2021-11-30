@@ -22,7 +22,7 @@ public class LudoBoardMapper
     public static final double HALF_SQRT3 = Math.sqrt(3) * 0.5D;
     
     @SuppressWarnings("unchecked")
-    public static HashMap<INode, LudoNodeWidget> mapLudoBoard(Screen screen, LudoBoard board, Texture texture)
+    public static HashMap<INode, LudoNodeWidget> mapLudoBoard(Screen screen, LudoBoard board, Texture nodeTexture, Texture figureTexture)
     {
         int teams = board.getTeamsAmount();
         
@@ -39,7 +39,7 @@ public class LudoBoardMapper
                 Vector2i coords = function.map(ludoNode, team);
                 
                 return new LudoNodeWidget(screen.getScreenHolder(),
-                        new Dimensions(NODE_WIDTH, NODE_WIDTH, AnchorPoint.M, coords.x(), coords.y()), ludoNode, texture);
+                        new Dimensions(NODE_WIDTH, NODE_WIDTH, AnchorPoint.M, coords.x(), coords.y()), ludoNode, nodeTexture, figureTexture);
             }
             else
             {

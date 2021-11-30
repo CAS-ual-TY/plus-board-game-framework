@@ -25,7 +25,7 @@ public class BoardGameDebugScreen extends Screen
         super(screenHolder);
         
         LudoBoard b = new LudoBoard(TeamColor.TEAMS_2);
-        nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, b, LudoTextures.node);
+        nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, b, LudoTextures.node, LudoTextures.figure);
         widgets.addAll(nodeWidgetMap.values());
         widgets.add(new NodeConnectionsWidget(screenHolder, new Dimensions(AnchorPoint.M), widgets.stream().filter(w -> w instanceof NodeWidget).map(w -> ((NodeWidget) w)).collect(Collectors.toList())));
     }
