@@ -294,6 +294,10 @@ public class LudoGameLogic
             }
             if(ludoNode.getColor().equals(figure.getColor()))
             {
+                if(ludoNode.getNodeType() == LudoNodeType.HOME)
+                {
+                    return !ludoNode.isOccupied();
+                }
                 return ludoNode.getNodeType() != LudoNodeType.START;
             }
             return true;
