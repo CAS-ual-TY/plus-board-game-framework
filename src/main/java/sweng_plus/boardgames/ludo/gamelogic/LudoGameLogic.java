@@ -267,16 +267,25 @@ public class LudoGameLogic
     {
         Map<LudoFigure, List<INode>> movableFigures = new HashMap<>(4);
         
-        for(NodeFigure teamFigure : ludoBoard.getTeamFigures(teams[currentTeamIndex]))
+        if(mustMoveFromStart(teams[currentTeamIndex]))
         {
-            List<INode> forwardNodes = ludoBoard.getForwardNodes(teamFigure, roll, createMovablePredicate((LudoFigure) teamFigure));
-            if(forwardNodes.size() > 0)
+            LudoFigure startFigure = (LudoFigure) ludoBoard.getStartNode(currentTeamIndex).getNodeFigures().get(0);
+            
+            movableFigures.put(startFigure, ludoBoard.getForwardNodes(startFigure, roll, createMovablePredicate(startFigure)));
+        }
+        else
+        {
+            for(LudoFigure teamFigure : ludoBoard.getTeamFigures(teams[currentTeamIndex]))
             {
-                movableFigures.put((LudoFigure) teamFigure, forwardNodes);
-            }
-            else if(latestRoll == 6 && ((LudoNode) teamFigure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
-            {
-                movableFigures.put((LudoFigure) teamFigure, List.of(ludoBoard.getStartNode(currentTeamIndex)));
+                List<INode> forwardNodes = ludoBoard.getForwardNodes(teamFigure, roll, createMovablePredicate(teamFigure));
+                if(forwardNodes.size() > 0)
+                {
+                    movableFigures.put(teamFigure, forwardNodes);
+                }
+                else if(latestRoll == 6 && ((LudoNode) teamFigure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
+                {
+                    movableFigures.put(teamFigure, List.of(ludoBoard.getStartNode(currentTeamIndex)));
+                }
             }
         }
         return movableFigures;
@@ -290,6 +299,10 @@ public class LudoGameLogic
     public void setTurnTeam(int team)
     {
         currentTeamIndex = team;
+    }
+    
+    private boolean mustMoveFromStart(TeamColor teamColor) {
+        return ludoBoard.isOwnStartOccupied(teamColor) && !ludoBoard.isOutsideEmpty(teamColor);
     }
     
     private static Predicate<INode> createMovablePredicate(LudoFigure figure)

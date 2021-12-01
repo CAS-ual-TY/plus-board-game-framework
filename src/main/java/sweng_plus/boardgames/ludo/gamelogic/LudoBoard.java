@@ -220,6 +220,11 @@ public class LudoBoard extends NodeBoard
         return true;
     }
     
+    public boolean isOwnStartOccupied(TeamColor team)
+    {
+        return ludoTeams[getTeamIndex(team)].start().isOccupied() && ludoTeams[getTeamIndex(team)].start().getColor().equals(team);
+    }
+    
     private static LudoFigure[] createFigures(TeamColor teamColor, List<LudoNode> nodes)
     {
         LudoFigure[] figures = new LudoFigure[nodes.size()];
