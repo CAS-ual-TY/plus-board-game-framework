@@ -27,7 +27,7 @@ public class LudoBoard extends NodeBoard
         
         for(LudoTeam team : ludoTeams)
         {
-            for(NodeFigure f : team.figures)
+            for(LudoFigure f : team.figures)
             {
                 addNodeFigure(f);
             }
@@ -47,7 +47,7 @@ public class LudoBoard extends NodeBoard
         return -1;
     }
     
-    public NodeFigure[] getTeamFigures(TeamColor team)
+    public LudoFigure[] getTeamFigures(TeamColor team)
     {
         for(LudoTeam value : ludoTeams)
         {
@@ -128,8 +128,8 @@ public class LudoBoard extends NodeBoard
         }
         
         INode.linkNodes(homeEntrance, home.get(0));
-        
-        NodeFigure[] figures = createFigures(ludoTeam, outside);
+    
+        LudoFigure[] figures = createFigures(ludoTeam, outside);
         
         allNodes.addAll(outside);
         allNodes.add(start);
@@ -231,12 +231,25 @@ public class LudoBoard extends NodeBoard
         return figures;
     }
     
-    public interface BoardCornerConsumer
+    public void moveFigureToOutside(LudoFigure figure)
     {
-        void forBoardCorner(List<LudoNode> outside, LudoNode start, LudoNode homeEntrance, List<LudoNode> home, LudoNode last, List<LudoNode> allNodes, NodeFigure[] figures);
+        for(LudoNode outsideNode : getOutsideNodes(getTeamIndex(figure.getColor())))
+        {
+            if(!outsideNode.isOccupied())
+            {
+                moveFigure(figure, outsideNode);
+                return;
+            }
+        }
+    
     }
     
-    private record LudoTeam(TeamColor color, NodeFigure[] figures, List<LudoNode> outside, LudoNode start,
+    public interface BoardCornerConsumer
+    {
+        void forBoardCorner(List<LudoNode> outside, LudoNode start, LudoNode homeEntrance, List<LudoNode> home, LudoNode last, List<LudoNode> allNodes, LudoFigure[] figures);
+    }
+    
+    private record LudoTeam(TeamColor color, LudoFigure[] figures, List<LudoNode> outside, LudoNode start,
                             LudoNode homeEntrance, List<LudoNode> home, LudoNode last, List<LudoNode> allNodes)
     {
     }

@@ -165,6 +165,9 @@ public class LudoGameLogic
     
     public void moveFigure(NodeFigure figure, LudoNode selectedNode)
     {
+        if(selectedNode.isOccupied()) {
+            ludoBoard.moveFigureToOutside((LudoFigure) selectedNode.getNodeFigures().get(0));
+        }
         ludoBoard.moveFigure(figure, selectedNode);
     }
     
@@ -183,12 +186,12 @@ public class LudoGameLogic
         }
         
         // All Figures don't further impact the diceResult count
-        List<NodeFigure> remainingTeamFigures = Arrays.stream(ludoBoard.getTeamFigures(currentTeam))
+        List<LudoFigure> remainingTeamFigures = Arrays.stream(ludoBoard.getTeamFigures(currentTeam))
                 .filter((figure) -> ((LudoNode) figure.getCurrentNode()).getNodeType() != LudoNodeType.OUTSIDE)
                 .toList();
         
         // Check for figures remaining on the board
-        for(NodeFigure figure : remainingTeamFigures)
+        for(LudoFigure figure : remainingTeamFigures)
         {
             // At least one figure out on the board
             if(((LudoNode) figure.getCurrentNode()).getNodeType() != LudoNodeType.HOME)
