@@ -177,10 +177,14 @@ public class LudoGameLogic
         {
             return MAX_CONSECUTIVE_ROLLS;
         }
+        else if (ludoBoard.isOutsideFull(currentTeam))
+        {
+            return MAX_CONSECUTIVE_ROLLS;
+        }
         
         // All Figures don't further impact the diceResult count
         List<NodeFigure> remainingTeamFigures = Arrays.stream(ludoBoard.getTeamFigures(currentTeam))
-                .filter((figure) -> ((LudoNode) figure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
+                .filter((figure) -> ((LudoNode) figure.getCurrentNode()).getNodeType() != LudoNodeType.OUTSIDE)
                 .toList();
         
         // Check for figures remaining on the board
