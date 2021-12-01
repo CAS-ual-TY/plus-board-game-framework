@@ -49,9 +49,9 @@ public class NetworkManager
      * @return An {@link IClientManager} object for interacting with the server.
      * @throws IOException
      */
-    public static <C extends IClient> IClientManager<C> connect(IMessageRegistry<C> registry,
-                                                                IClientEventsListener eventsListener,
-                                                                String ip, int port) throws IOException
+    public static <C extends IClient> IClientManager connect(IMessageRegistry<C> registry,
+                                                             IClientEventsListener eventsListener,
+                                                             String ip, int port) throws IOException
     {
         ClientManager<C> clientManager = new ClientManager<>(registry, eventsListener, ip, port);
         Thread thread = new Thread(clientManager);

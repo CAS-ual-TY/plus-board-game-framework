@@ -6,7 +6,7 @@ import sweng_plus.framework.networking.util.ClientStatus;
 import java.io.IOException;
 import java.util.List;
 
-public interface IHostManager<C extends IClient> extends IClientManager<C>
+public interface IHostManager<C extends IClient> extends IClientManager
 {
     /**
      * Sends a message to the given {@link IClient} object. The message must be registered

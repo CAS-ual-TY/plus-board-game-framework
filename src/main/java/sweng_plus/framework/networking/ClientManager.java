@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Consumer;
 
-public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager<C>
+public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager
 {
     public IClientEventsListener eventsListener;
     

@@ -31,7 +31,7 @@ public class NetTestGame implements IGame
     
     public IMessageRegistry<Client> protocol;
     
-    public IClientManager<Client> clientManager;
+    public IClientManager clientManager;
     public IHostManager<Client> hostManager;
     
     public NetTestGame()

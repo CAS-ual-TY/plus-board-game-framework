@@ -43,7 +43,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     
     public String name;
     
-    public IClientManager<LudoClient> clientManager;
+    public IClientManager clientManager;
     public IHostManager<LudoClient> hostManager;
     
     public Ludo()
@@ -65,7 +65,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         return gameLogic;
     }
     
-    public IClientManager<LudoClient> getClientManager()
+    public IClientManager getClientManager()
     {
         return clientManager;
     }
@@ -161,7 +161,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
         
-        if(hostManager.getAllClients().size() >= 2) //TODO START
+        if(hostManager.getAllClients().size() >= 6) //TODO START
         {
             startGame(true, hostManager.getAllClients().size());
         }
