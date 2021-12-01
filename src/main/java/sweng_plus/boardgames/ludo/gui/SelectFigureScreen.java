@@ -5,12 +5,9 @@ import sweng_plus.boardgames.ludo.gamelogic.networking.FigureSelectMessage;
 import sweng_plus.boardgames.ludo.gui.widget.SelectableFigureWidget;
 import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
-import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.io.IOException;
-import java.util.List;
 
 public class SelectFigureScreen extends WrappedScreen
 {
@@ -24,15 +21,18 @@ public class SelectFigureScreen extends WrappedScreen
     
     private void select(ButtonWidget button)
     {
-        returnToSubScreen();
-        
-        try
+        if(screenHolder.getScreen() == this)
         {
-            Ludo.instance().getClientManager().sendMessageToServer(new FigureSelectMessage(((SelectableFigureWidget) button).ludoFigure.getIndex()));
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
+            returnToSubScreen();
+            
+            try
+            {
+                Ludo.instance().getClientManager().sendMessageToServer(new FigureSelectMessage(((SelectableFigureWidget) button).ludoFigure.getIndex()));
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
     
