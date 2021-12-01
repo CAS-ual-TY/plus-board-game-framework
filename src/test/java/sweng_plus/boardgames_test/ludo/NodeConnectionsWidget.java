@@ -27,14 +27,15 @@ public class NodeConnectionsWidget extends Widget
         super.render(deltaTick, mouseX, mouseY);
         
         GL11.glLineWidth(2F);
-        GL11.glPointSize(8F);
         
         for(NodeWidget w : widgets)
         {
-            Vector2d start = new Vector2d(w.getDimensions().x, w.getDimensions().y).add(w.getDimensions().w / 2D, w.getDimensions().h / 2D);
+            Vector2d start0 = new Vector2d(w.getDimensions().x, w.getDimensions().y).add(w.getDimensions().w / 2D, w.getDimensions().h / 2D);
             
             for(NodeWidget w2 : w.getForwardNodes())
             {
+                Vector2d start = new Vector2d(start0);
+                
                 Vector2d end = new Vector2d(w2.getDimensions().x, w2.getDimensions().y).add(w2.getDimensions().w / 2D, w2.getDimensions().h / 2D);
                 
                 Vector2d dir = new Vector2d(end).sub(start).normalize().mul(LudoTextures.node.getWidth()).mul(0.333);
@@ -47,8 +48,14 @@ public class NodeConnectionsWidget extends Widget
                 GL11.glVertex2d(end.x, end.y);
                 GL11.glEnd();
                 
+                GL11.glPointSize(10F);
                 GL11.glBegin(GL11.GL_POINTS);
+                GL11.glVertex2d(start.x, start.y);
+                GL11.glVertex2d(end.x, end.y);
+                GL11.glEnd();
                 
+                GL11.glPointSize(6F);
+                GL11.glBegin(GL11.GL_POINTS);
                 Color4f.RED.glColor4f();
                 GL11.glVertex2d(start.x, start.y);
                 
