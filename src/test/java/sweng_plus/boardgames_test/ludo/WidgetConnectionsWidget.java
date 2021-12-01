@@ -4,22 +4,21 @@ import org.joml.Vector2d;
 import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
-import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-import java.util.Map;
+import java.util.List;
 
-public class NodeConnectionsWidget extends Widget
+public class WidgetConnectionsWidget extends Widget
 {
-    public Map<INode, NodeWidget> map;
+    public List<NodeWidget> widgets;
     
-    public NodeConnectionsWidget(IScreenHolder screenHolder, Dimensions dimensions, Map<INode, NodeWidget> map)
+    public WidgetConnectionsWidget(IScreenHolder screenHolder, Dimensions dimensions, List<NodeWidget> widgets)
     {
         super(screenHolder, dimensions);
-        this.map = map;
+        this.widgets = widgets;
     }
     
     @Override
@@ -29,16 +28,12 @@ public class NodeConnectionsWidget extends Widget
         
         GL11.glLineWidth(4F);
         
-        for(INode n : map.keySet())
+        for(NodeWidget w : widgets)
         {
-            NodeWidget w = map.get(n);
-            
             Vector2d start0 = new Vector2d(w.getDimensions().x, w.getDimensions().y).add(w.getDimensions().w / 2D, w.getDimensions().h / 2D);
             
-            for(INode n2 : n.getForwardNodes())
+            for(NodeWidget w2 : w.getForwardNodes())
             {
-                NodeWidget w2 = map.get(n2);
-                
                 Vector2d start = new Vector2d(start0);
                 
                 Vector2d end = new Vector2d(w2.getDimensions().x, w2.getDimensions().y)
@@ -70,10 +65,8 @@ public class NodeConnectionsWidget extends Widget
                 Color4f.NEUTRAL.glColor4f();
             }
             
-            for(INode n2 : n.getBackwardNodes())
+            for(NodeWidget w2 : w.getBackwardNodes())
             {
-                NodeWidget w2 = map.get(n2);
-                
                 Vector2d start = new Vector2d(start0);
                 
                 Vector2d end = new Vector2d(w2.getDimensions().x, w2.getDimensions().y)

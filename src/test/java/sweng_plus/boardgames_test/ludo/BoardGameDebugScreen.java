@@ -14,19 +14,24 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 public class BoardGameDebugScreen extends Screen
 {
-    public HashMap<INode, LudoNodeWidget> nodeWidgetMap;
+    public HashMap<INode, NodeWidget> nodeWidgetMap;
     
     public BoardGameDebugScreen(IScreenHolder screenHolder) throws IOException
     {
         super(screenHolder);
         
         LudoBoard b = new LudoBoard(TeamColor.TEAMS_2);
-        nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, b, LudoTextures.node, LudoTextures.figure);
+        nodeWidgetMap = new HashMap<>();
+        
+        HashMap<INode, LudoNodeWidget> map = LudoBoardMapper.mapLudoBoard(this, b, LudoTextures.node, LudoTextures.figure);
+        nodeWidgetMap.putAll(map);
+        
         widgets.addAll(nodeWidgetMap.values());
-        widgets.add(new NodeConnectionsWidget(screenHolder, new Dimensions(AnchorPoint.M), widgets.stream().filter(w -> w instanceof NodeWidget).map(w -> ((NodeWidget) w)).collect(Collectors.toList())));
+        
+        widgets.add(new NodeConnectionsWidget(screenHolder, new Dimensions(AnchorPoint.M), nodeWidgetMap));
+        //widgets.add(new WidgetConnectionsWidget(screenHolder, new Dimensions(AnchorPoint.M), nodeWidgetMap.values().stream().toList()));
     }
 }
