@@ -37,6 +37,11 @@ public interface IGame extends IScreenHolder
      */
     String getWindowTitle();
     
+    /**
+     * @return The path to the icon of the window.
+     */
+    String getWindowIconResource();
+    
     // Same doc as IRenderable#update
     
     /**

@@ -145,7 +145,7 @@ public class Engine implements Runnable
     
     protected void createWindow()
     {
-        window = new Window(game.getWindowTitle(), game)
+        window = new Window(game.getWindowTitle(), game.getWindowIconResource(), game)
                 .hint(GLFW_VISIBLE, GLFW_FALSE) // Setzt das Fenster unsichtbar
                 .hint(GLFW_RESIZABLE, GLFW_TRUE); // Setzt das Fenster skalierbar
     }

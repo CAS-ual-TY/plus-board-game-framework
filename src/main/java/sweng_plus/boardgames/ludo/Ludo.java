@@ -197,6 +197,12 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     }
     
     @Override
+    public String getWindowIconResource()
+    {
+        return "src/main/resources/icon.png";
+    }
+    
+    @Override
     public void init()
     {
         String chars = FontHelper.getAvailableChars((char) 0xFF);

@@ -52,6 +52,12 @@ public class NetTestGame implements IGame
     }
     
     @Override
+    public String getWindowIconResource()
+    {
+        return "src/main/resources/icon.png";
+    }
+    
+    @Override
     public void init()
     {
         String chars = FontHelper.getAvailableChars((char) 0xFF);

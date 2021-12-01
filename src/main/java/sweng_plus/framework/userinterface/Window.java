@@ -1,5 +1,6 @@
 package sweng_plus.framework.userinterface;
 
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
@@ -7,15 +8,18 @@ import org.lwjgl.system.MemoryUtil;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.input.InputHandler;
 
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.stb.STBImage.stbi_load;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class Window
 {
     private final String title;
+    private final String iconResource;
     private final IScreenHolder screenHolder;
     
     private long windowHandle;
@@ -32,9 +36,10 @@ public class Window
     
     private boolean wasResized;
     
-    public Window(String title, IScreenHolder screenHolder, int windowW, int windowH, WindowScale windowScale)
+    public Window(String title, String iconResource, IScreenHolder screenHolder, int windowW, int windowH, WindowScale windowScale)
     {
         this.title = title;
+        this.iconResource = iconResource;
         this.screenHolder = screenHolder;
         
         windowHandle = -1;
@@ -49,9 +54,9 @@ public class Window
         glfwDefaultWindowHints(); // "Window Hints" = z.B. Fenster skalierbar? Fenster sichtbar? etc.
     }
     
-    public Window(String title, IScreenHolder screenHolder)
+    public Window(String title, String iconResource, IScreenHolder screenHolder)
     {
-        this(title, screenHolder, 640, 360, WindowScale.DEFAULT_WINDOW_SCALE_16_9);
+        this(title, iconResource, screenHolder, 640, 360, WindowScale.DEFAULT_WINDOW_SCALE_16_9);
     }
     
     public Window hint(int hint, int value)
@@ -147,12 +152,40 @@ public class Window
         // Fenster sichtbar machen
         glfwShowWindow(windowHandle);
         
+        initIcon();
+        
         // s. http://forum.lwjgl.org/index.php?topic=6858.0 und http://forum.lwjgl.org/index.php?topic=6459.0
         // OpenGL auf gerade gesetzten Kontext ausrichten
         GL.createCapabilities();
         
         //glfwSetFramebufferSizeCallback() // Für Fenster Skalierungen
         glfwSetFramebufferSizeCallback(windowHandle, (window, windowW, windowH) -> windowResized(windowW, windowH));
+    }
+    
+    private void initIcon()
+    {
+        ByteBuffer buffer;
+        int width, height;
+        try(MemoryStack stack = MemoryStack.stackPush())
+        {
+            IntBuffer comp = stack.mallocInt(1);
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            
+            buffer = stbi_load(iconResource, w, h, comp, 4);
+            if(buffer == null)
+            {
+                // throw new
+            }
+            width = w.get();
+            height = h.get();
+        }
+        
+        GLFWImage image = GLFWImage.malloc();
+        GLFWImage.Buffer imagebf = GLFWImage.malloc(1);
+        image.set(width, height, buffer);
+        imagebf.put(0, image);
+        glfwSetWindowIcon(windowHandle, imagebf);
     }
     
     private void windowResized(int windowW, int windowH)
