@@ -2,6 +2,8 @@ package sweng_plus.framework.boardgame.nodes_board;
 
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 
+import java.util.Random;
+
 public class TeamColor
 {
     public static final TeamColor WHITE = new TeamColor("White", Color4f.WHITE);
@@ -27,7 +29,20 @@ public class TeamColor
                         teamsAmount == 4 ? TeamColor.TEAMS_4 :
                                 teamsAmount == 5 ? TeamColor.TEAMS_5 :
                                         teamsAmount == 6 ? TeamColor.TEAMS_6 :
-                                                TeamColor.TEAMS_4;
+                                                generateRandomTeams(teamsAmount, new Random());
+    }
+    
+    public static TeamColor[] generateRandomTeams(int teamsAmount, Random random)
+    {
+        TeamColor[] teams = new TeamColor[2];
+        
+        for(int i = 0; i < teams.length; ++i)
+        {
+            teams[i] = new TeamColor("Team " + (i + 1),
+                    new Color4f(random.nextFloat(), random.nextFloat(), random.nextFloat()));
+        }
+        
+        return teams;
     }
     
     protected String name;
