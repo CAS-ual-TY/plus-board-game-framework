@@ -11,7 +11,7 @@ import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.networking.MessageRegistry;
-import sweng_plus.framework.networking.NetworkManager;
+import sweng_plus.framework.networking.NetworkHelper;
 import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
@@ -39,7 +39,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     public LudoGameLogic gameLogic;
     public ArrayList<String> names;
     
-    IMessageRegistry<LudoClient> protocol;
+    public IMessageRegistry<LudoClient> protocol;
     
     public String name;
     
@@ -117,7 +117,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         
         hostManager = null;
         names.clear();
-        clientManager = NetworkManager.connect(protocol, this, ip, port);
+        clientManager = NetworkHelper.connect(protocol, this, ip, port);
         
         setScreen(new NameScreen(this));
         
@@ -131,7 +131,7 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
         name = playerName;
         
         names.clear();
-        hostManager = NetworkManager.host(protocol, this, LudoClient::new, port);
+        hostManager = NetworkHelper.host(protocol, this, LudoClient::new, port);
         clientManager = hostManager;
         
         setScreen(new NameScreen(this));

@@ -5,7 +5,7 @@ import sweng_plus.framework.networking.util.IClientFactory;
 
 import java.io.IOException;
 
-public class NetworkManager
+public class NetworkHelper
 {
     /**
      * <p>Starts a server socket and returns an {@link IHostManager} object for interacting with clients.

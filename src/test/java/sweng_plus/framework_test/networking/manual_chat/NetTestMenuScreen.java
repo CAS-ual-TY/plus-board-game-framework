@@ -3,7 +3,7 @@ package sweng_plus.framework_test.networking.manual_chat;
 import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.networking.Client;
-import sweng_plus.framework.networking.NetworkManager;
+import sweng_plus.framework.networking.NetworkHelper;
 import sweng_plus.framework.networking.interfaces.IClientEventsListener;
 import sweng_plus.framework.networking.interfaces.IHostEventsListener;
 import sweng_plus.framework.networking.util.NetworkRole;
@@ -52,7 +52,7 @@ public class NetTestMenuScreen extends Screen
     {
         try
         {
-            NetTestGame.instance().hostManager = NetworkManager.host(NetTestGame.instance().protocol,
+            NetTestGame.instance().hostManager = NetworkHelper.host(NetTestGame.instance().protocol,
                     new IHostEventsListener<Client>()
                     {
                         @Override
@@ -92,7 +92,7 @@ public class NetTestMenuScreen extends Screen
     {
         try
         {
-            NetTestGame.instance().clientManager = NetworkManager.connect(NetTestGame.instance().protocol,
+            NetTestGame.instance().clientManager = NetworkHelper.connect(NetTestGame.instance().protocol,
                     new IClientEventsListener()
                     {
                         @Override
