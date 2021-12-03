@@ -2,9 +2,9 @@ package sweng_plus.boardgames.ludo.gui.widget;
 
 import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
+import sweng_plus.framework.userinterface.gui.style.EmptyStyle;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -15,7 +15,7 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
     
     public SelectableFigureWidget(IScreenHolder screenHolder, SimpleButtonAction buttonAction, LudoNodeWidget nodeWidget)
     {
-        super(screenHolder, nodeWidget.getDimensions(), buttonAction);
+        super(screenHolder, nodeWidget.getDimensions(), EmptyStyle.EMPTY_STYLE, buttonAction);
         
         this.nodeWidget = nodeWidget;
         ludoFigure = ((LudoFigure) nodeWidget.getNode().getNodeFigures().get(0));

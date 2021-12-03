@@ -52,7 +52,7 @@ public class LudoScreen extends Screen
     public void newTurn(int turnTeam)
     {
         System.out.println("Screen: newTurn");
-    
+        
         logic.setTurnTeam(turnTeam);
         logic.startPhaseRoll();
         
@@ -68,7 +68,7 @@ public class LudoScreen extends Screen
         
         logic.setLatestRoll(dice);
         logic.startPhaseSelectFigure();
-    
+        
         if(logic.movableFigures.size() > 0)
         {
             if(logic.currentTeamIndex == thisPlayerID)

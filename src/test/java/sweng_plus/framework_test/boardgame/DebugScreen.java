@@ -6,7 +6,7 @@ import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.style.ColoredQuadStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
-import sweng_plus.framework.userinterface.gui.style.TexturedStyle;
+import sweng_plus.framework.userinterface.gui.style.TextureStyle;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
@@ -33,7 +33,7 @@ public class DebugScreen extends Screen
         try
         {
             widgets.add(new SimpleWidget(screenHolder, new Dimensions(2048, 2048, AnchorPoint.M),
-                    new TexturedStyle(TextureHelper.createTexture("src/test/resources/textures/test_raster.png"),
+                    new TextureStyle(TextureHelper.createTexture("src/test/resources/textures/test_raster.png"),
                             Color4f.HALF_VISIBLE)));
         }
         catch(IOException e)

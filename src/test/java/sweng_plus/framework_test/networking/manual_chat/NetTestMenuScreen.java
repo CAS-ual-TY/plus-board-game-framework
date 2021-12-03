@@ -1,6 +1,6 @@
 package sweng_plus.framework_test.networking.manual_chat;
 
-import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
+import sweng_plus.boardgames.ludo.gui.LudoTextures;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.NetworkHelper;
@@ -9,10 +9,13 @@ import sweng_plus.framework.networking.interfaces.IHostEventsListener;
 import sweng_plus.framework.networking.util.NetworkRole;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.style.HoverStyle;
+import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
+import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
@@ -32,14 +35,14 @@ public class NetTestMenuScreen extends Screen
         {
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
-            
-            widgets.add(new TexturedButtonWidget(screenHolder, topButton, this::host, buttonActive, buttonInactive));
+    
+            widgets.add(new FunctionalButtonWidget(screenHolder, topButton, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::host));
             widgets.add(new TextWidget(screenHolder, topButton, NetTestGame.instance().fontRenderer48, "Host"));
-            
-            widgets.add(new TexturedButtonWidget(screenHolder, middleButton, this::connect, buttonActive, buttonInactive));
+    
+            widgets.add(new FunctionalButtonWidget(screenHolder, middleButton, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::connect));
             widgets.add(new TextWidget(screenHolder, middleButton, NetTestGame.instance().fontRenderer48, "Connect"));
-            
-            widgets.add(new TexturedButtonWidget(screenHolder, bottomButton, this::exit, buttonActive, buttonInactive));
+    
+            widgets.add(new FunctionalButtonWidget(screenHolder, bottomButton, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::exit));
             widgets.add(new TextWidget(screenHolder, bottomButton, NetTestGame.instance().fontRenderer48, "Exit"));
         }
         catch(IOException e)

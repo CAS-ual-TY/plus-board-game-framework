@@ -2,13 +2,16 @@ package sweng_plus.framework_test.boardgame;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
+import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
+import sweng_plus.framework.userinterface.gui.style.HoverStyle;
+import sweng_plus.framework.userinterface.gui.style.IStyle;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
@@ -29,11 +32,13 @@ public class OptionsScreen extends WrappedScreen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new TexturedButtonWidget(screenHolder, topButton, (button, mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
+            IStyle style = new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive));
             
-            widgets.add(new TexturedButtonWidget(screenHolder, middleButton, (button, mouseX, mouseY, mods) -> {}, buttonActive, buttonInactive));
+            widgets.add(new FunctionalButtonWidget(screenHolder, topButton, style, (button, mouseX, mouseY, mods) -> {}));
             
-            widgets.add(new TexturedButtonWidget(screenHolder, bottomButton, (button, mouseX, mouseY, mods) -> Engine.instance().close(), buttonActive, buttonInactive));
+            widgets.add(new FunctionalButtonWidget(screenHolder, middleButton, style, (button, mouseX, mouseY, mods) -> {}));
+            
+            widgets.add(new FunctionalButtonWidget(screenHolder, bottomButton, style, (button, mouseX, mouseY, mods) -> Engine.instance().close()));
             
         }
         catch(IOException e)

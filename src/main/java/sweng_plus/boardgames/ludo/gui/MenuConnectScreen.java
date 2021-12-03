@@ -1,10 +1,12 @@
 package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gui.widget.TexturedButtonWidget;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
+import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
+import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
@@ -45,11 +47,11 @@ public class MenuConnectScreen extends WrappedScreen
         widgets.add(inputWidgetIP);
         
         Dimensions cancelDims = new Dimensions(200, 50, AnchorPoint.M, -150, 280);
-        widgets.add(new TexturedButtonWidget(screenHolder, cancelDims, this::cancel, LudoTextures.activeButton, LudoTextures.inactiveButton));
+        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::cancel));
         widgets.add(new TextWidget(screenHolder, cancelDims, Ludo.instance().fontRenderer32, "Abbruch"));
         
         Dimensions acceptDims = new Dimensions(200, 50, AnchorPoint.M, 150, 280);
-        widgets.add(new TexturedButtonWidget(screenHolder, acceptDims, this::accept, LudoTextures.activeButton, LudoTextures.inactiveButton));
+        widgets.add(new FunctionalButtonWidget(screenHolder, acceptDims, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::accept));
         widgets.add(new TextWidget(screenHolder, acceptDims, Ludo.instance().fontRenderer32, "Fertig"));
     }
     
@@ -61,7 +63,7 @@ public class MenuConnectScreen extends WrappedScreen
         try
         {
             //Ludo.instance().connect(inputWidgetName.getText(), ipInput, Integer.valueOf(portInput));
-            Ludo.instance().connect(inputWidgetName.getText(), "localhost", (int) 25555);
+            Ludo.instance().connect(inputWidgetName.getText(), "localhost", 25555);
         }
         catch(IOException e)
         {

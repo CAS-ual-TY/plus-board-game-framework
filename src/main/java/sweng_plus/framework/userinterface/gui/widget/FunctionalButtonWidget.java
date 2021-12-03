@@ -1,26 +1,27 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
+import sweng_plus.framework.userinterface.gui.style.IStyle;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 public class FunctionalButtonWidget extends ButtonWidget
 {
     protected ButtonAction buttonAction;
     
-    public FunctionalButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, ButtonAction buttonAction)
+    public FunctionalButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, IStyle style, ButtonAction buttonAction)
     {
-        super(screenHolder, dimensions);
+        super(screenHolder, dimensions, style);
         this.buttonAction = buttonAction;
     }
     
-    public FunctionalButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, SimpleButtonAction buttonAction)
+    public FunctionalButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, IStyle style, SimpleButtonAction buttonAction)
     {
-        this(screenHolder, dimensions, (buttonWidget, mouseX, mouseY, mods) -> buttonAction.clicked(buttonWidget));
+        this(screenHolder, dimensions, style, (buttonWidget, mouseX, mouseY, mods) -> buttonAction.clicked(buttonWidget));
     }
     
-    public FunctionalButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, SimplerButtonAction buttonAction)
+    public FunctionalButtonWidget(IScreenHolder screenHolder, Dimensions dimensions, IStyle style, SimplerButtonAction buttonAction)
     {
-        this(screenHolder, dimensions, (buttonWidget, mouseX, mouseY, mods) -> buttonAction.clicked());
+        this(screenHolder, dimensions, style, (buttonWidget, mouseX, mouseY, mods) -> buttonAction.clicked());
     }
     
     @Override

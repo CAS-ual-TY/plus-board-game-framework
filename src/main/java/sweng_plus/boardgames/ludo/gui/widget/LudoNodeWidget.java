@@ -40,14 +40,14 @@ public class LudoNodeWidget extends NodeWidget
         nodeTexture.render(
                 dimensions.x + (dimensions.w - nodeTexture.getWidth()) / 2,
                 dimensions.y + (dimensions.h - nodeTexture.getHeight()) / 2);
-    
+        
         if(getNode().isOccupied() && getNode() instanceof LudoNode ludoNode && ludoNode.getNodeFigures().get(0) instanceof LudoFigure ludoFigure)
         {
             ludoFigure.getColor().getColor().glColor4f();
             // TODO Position anpassen
             figureTexture.render(
                     dimensions.x + (dimensions.w - nodeTexture.getWidth()) / 2,
-                    dimensions.y + (dimensions.h - nodeTexture.getHeight()) / 2 - dimensions.h/4);
+                    dimensions.y + (dimensions.h - nodeTexture.getHeight()) / 2 - dimensions.h / 4);
         }
     }
 }
