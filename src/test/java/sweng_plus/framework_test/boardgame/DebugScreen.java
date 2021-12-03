@@ -4,12 +4,14 @@ import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.style.ColoredQuadStyle;
+import sweng_plus.framework.userinterface.gui.style.HoverStyle;
+import sweng_plus.framework.userinterface.gui.style.TexturedStyle;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.ColoredWidget;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
-import sweng_plus.framework.userinterface.gui.widget.TextureWidget;
+import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.io.IOException;
@@ -30,16 +32,9 @@ public class DebugScreen extends Screen
         
         try
         {
-            widgets.add(new TextureWidget(screenHolder, new Dimensions(2048, 2048, AnchorPoint.M),
-                    TextureHelper.createTexture("src/test/resources/textures/test_raster.png"))
-            {
-                @Override
-                public void render(float deltaTick, int mouseX, int mouseY)
-                {
-                    Color4f.HALF_VISIBLE.glColor4f();
-                    texture.render(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
-                }
-            });
+            widgets.add(new SimpleWidget(screenHolder, new Dimensions(2048, 2048, AnchorPoint.M),
+                    new TexturedStyle(TextureHelper.createTexture("src/test/resources/textures/test_raster.png"),
+                            Color4f.HALF_VISIBLE)));
         }
         catch(IOException e)
         {
@@ -48,8 +43,8 @@ public class DebugScreen extends Screen
         
         for(AnchorPoint anchor : AnchorPoint.values())
         {
-            widgets.add(new ColoredWidget(screenHolder, new Dimensions(100, 100, anchor),
-                    Color4f.BLACK, Color4f.RED));
+            widgets.add(new SimpleWidget(screenHolder, new Dimensions(100, 100, anchor),
+                    new HoverStyle(new ColoredQuadStyle(Color4f.BLACK), new ColoredQuadStyle(Color4f.RED))));
         }
         
         widgets.add(new InputWidget(screenHolder, new Dimensions(600, 80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
