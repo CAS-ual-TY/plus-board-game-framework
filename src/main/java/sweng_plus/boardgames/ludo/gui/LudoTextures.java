@@ -29,7 +29,7 @@ public class LudoTextures
         figure = TextureHelper.createTexture("src/main/resources/textures/figure.png");
         
         diceAnim1 = TextureHelper.createTexture("src/main/resources/textures/dice/anim_1/sprites.png").makeSprites(64, 64);
-        Vector2i[] diceAnim1Positions = new Vector2i[diceAnim1.length];
+        diceAnim1Positions = new Vector2i[diceAnim1.length];
         for(int i = 0; i < diceAnim1Positions.length; i++)
         {
             diceAnim1Positions[i] = new Vector2i(0, 0);
