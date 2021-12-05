@@ -15,7 +15,7 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import java.util.HashMap;
 import java.util.List;
 
-public class LudoScreen extends Screen
+public class LudoScreen extends Screen implements ILudoScreen
 {
     public final LudoGameLogic logic;
     public final LudoBoard board;
@@ -49,6 +49,11 @@ public class LudoScreen extends Screen
         screenHolder.setScreen(new SelectFigureScreen(this));
     }
     
+    public void rollDice(int result, Runnable onEnd)
+    {
+        screenHolder.setScreen(new DiceAnimationScreen(this, onEnd));
+    }
+    
     public void newTurn(int turnTeam)
     {
         System.out.println("Screen: newTurn");
@@ -62,6 +67,7 @@ public class LudoScreen extends Screen
         }
     }
     
+    @Override
     public void diceResult(int dice)
     {
         System.out.println("Screen: diceResult");
@@ -69,19 +75,23 @@ public class LudoScreen extends Screen
         logic.setLatestRoll(dice);
         logic.startPhaseSelectFigure();
         
-        if(logic.movableFigures.size() > 0)
+        rollDice(dice, () ->
         {
-            if(logic.currentTeamIndex == thisPlayerID)
+            if(logic.movableFigures.size() > 0)
             {
-                requestFigure();
+                if(logic.currentTeamIndex == thisPlayerID)
+                {
+                    requestFigure();
+                }
             }
-        }
-        else
-        {
-            figureSelected(-1);
-        }
+            else
+            {
+                figureSelected(-1);
+            }
+        });
     }
     
+    @Override
     public void figureSelected(int figure)
     {
         System.out.println("Screen: figureSelected");

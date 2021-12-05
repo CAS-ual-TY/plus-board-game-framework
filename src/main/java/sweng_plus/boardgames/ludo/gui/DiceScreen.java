@@ -13,7 +13,7 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.io.IOException;
 
-public class DiceScreen extends WrappedScreen
+public class DiceScreen extends WrappedScreen implements ILudoScreen
 {
     public DiceScreen(Screen subScreen)
     {
@@ -36,5 +36,19 @@ public class DiceScreen extends WrappedScreen
         {
             e.printStackTrace();
         }
+    }
+    
+    @Override
+    public void diceResult(int dice)
+    {
+        returnToSubScreen();
+        ((LudoScreen) subScreen).diceResult(dice);
+    }
+    
+    @Override
+    public void figureSelected(int figure)
+    {
+        returnToSubScreen();
+        ((LudoScreen) subScreen).figureSelected(figure);
     }
 }
