@@ -9,6 +9,8 @@ import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 public class DiceAnimationWidget extends Widget
 {
+    public static final int ANIMATION_SPEED = 2;
+    
     protected SpriteTexture[] sprites;
     protected int animationLength;
     protected Vector2i[] spritePositions;
@@ -37,7 +39,7 @@ public class DiceAnimationWidget extends Widget
     @Override
     public void update(int mouseX, int mouseY)
     {
-        timer++;
+        timer += ANIMATION_SPEED;
     }
     
     public boolean hasEnded()
