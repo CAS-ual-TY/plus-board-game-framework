@@ -8,7 +8,7 @@ public class Texture
     
     protected final int textureID;
     protected final String texture;
-
+    
     protected final int width;
     protected final int height;
     
@@ -110,8 +110,8 @@ public class Texture
     
     public SpriteTexture[] makeSprites(int spritesWidth, int spritesHeight)
     {
-        int spritesAmtX = width/spritesWidth;
-        int spritesAmtY = height/spritesHeight;
+        int spritesAmtX = width / spritesWidth;
+        int spritesAmtY = height / spritesHeight;
         
         SpriteTexture[] sprites = new SpriteTexture[spritesAmtX * spritesAmtY];
         
@@ -119,7 +119,7 @@ public class Texture
         {
             for(int x = 0; x < spritesAmtX; x++)
             {
-                sprites[x + y*spritesAmtX] = new SpriteTexture(this, x*spritesWidth, y*spritesHeight, spritesWidth, spritesHeight);
+                sprites[x + y * spritesAmtX] = new SpriteTexture(this, x * spritesWidth, y * spritesHeight, spritesWidth, spritesHeight);
             }
         }
         

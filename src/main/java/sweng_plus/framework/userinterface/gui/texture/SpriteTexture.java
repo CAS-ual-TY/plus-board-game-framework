@@ -1,8 +1,5 @@
 package sweng_plus.framework.userinterface.gui.texture;
 
-import static org.lwjgl.opengl.GL11.glTexCoord2f;
-import static org.lwjgl.opengl.GL11.glVertex3f;
-
 public class SpriteTexture extends Texture
 {
     protected final int spriteX;
@@ -23,6 +20,12 @@ public class SpriteTexture extends Texture
     protected void doQuad(int x, int y, int w, int h, int texX, int texY, int texW, int texH)
     {
         super.doQuad(x, y, w, h, texX + spriteX, texY + spriteY, texW, texH);
+    }
+    
+    @Override
+    public void render(int x, int y)
+    {
+        render(x, y, spriteW, spriteH, 0, 0, spriteW, spriteH);
     }
     
     @Override
