@@ -1,6 +1,5 @@
 package sweng_plus.boardgames.ludo.gui;
 
-import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.gui.widget.DiceAnimationWidget;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
@@ -18,7 +17,7 @@ public class DiceAnimationScreen extends WrappedScreen implements ILudoScreen
         this.onEnd = onEnd;
         
         widgets.add(dice = new DiceAnimationWidget(screenHolder, new Dimensions(AnchorPoint.M),
-                LudoTextures.diceAnim1, LudoTextures.diceAnim1Last, LudoTextures.diceAnim1Positions));
+                LudoTextures.diceAnim1, 16 * 5 /*LudoTextures.diceAnim1Last*/, LudoTextures.diceAnim1Positions));
     }
     
     @Override
@@ -32,6 +31,7 @@ public class DiceAnimationScreen extends WrappedScreen implements ILudoScreen
         }
     }
     
+    /*
     @Override
     public void mouseButtonPressed(int mouseX, int mouseY, int mouseButton, int mods)
     {
@@ -40,6 +40,7 @@ public class DiceAnimationScreen extends WrappedScreen implements ILudoScreen
             onEnd();
         }
     }
+    */
     
     public void onEnd()
     {
