@@ -127,7 +127,7 @@ public class Engine implements Runnable
                 currentMillis %= millisPerTick;
             }
             
-            deltaTick = (float) currentMillis / ticksPerMillis;
+            deltaTick = (float) currentMillis / millisPerTick;
             
             glPushMatrix();
             
