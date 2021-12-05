@@ -8,16 +8,16 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 public class DiceAnimationScreen extends WrappedScreen implements ILudoScreen
 {
     protected Runnable onEnd;
-    protected DiceAnimationWidget dice;
+    protected DiceAnimationWidget animationWidget;
     
-    public DiceAnimationScreen(LudoScreen subScreen, Runnable onEnd)
+    public DiceAnimationScreen(LudoScreen subScreen, Runnable onEnd, int dice)
     {
         super(subScreen);
         
         this.onEnd = onEnd;
         
-        widgets.add(dice = new DiceAnimationWidget(screenHolder, new Dimensions(AnchorPoint.M),
-                LudoTextures.diceAnim1, 16 * 5 /*LudoTextures.diceAnim1Last*/, LudoTextures.diceAnim1Positions));
+        widgets.add(animationWidget = new DiceAnimationWidget(screenHolder, new Dimensions(AnchorPoint.M),
+                LudoTextures.diceAnim[dice - 1], 16 * 5 /*LudoTextures.diceAnimLast[dice-1]*/, LudoTextures.diceAnimPositions[dice - 1]));
     }
     
     @Override
@@ -25,7 +25,7 @@ public class DiceAnimationScreen extends WrappedScreen implements ILudoScreen
     {
         super.update(mouseX, mouseY);
         
-        if(dice.hasEnded())
+        if(animationWidget.hasEnded())
         {
             onEnd();
         }

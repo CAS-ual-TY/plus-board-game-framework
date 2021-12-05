@@ -51,7 +51,7 @@ public class LudoScreen extends Screen implements ILudoScreen
     
     public void rollDice(int result, Runnable onEnd)
     {
-        screenHolder.setScreen(new DiceAnimationScreen(this, onEnd));
+        screenHolder.setScreen(new DiceAnimationScreen(this, onEnd, result));
     }
     
     public void newTurn(int turnTeam)

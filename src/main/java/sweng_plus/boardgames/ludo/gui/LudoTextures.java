@@ -17,9 +17,9 @@ public class LudoTextures
     public static Texture node;
     public static Texture figure;
     
-    public static SpriteTexture[] diceAnim1;
-    public static int diceAnim1Last;
-    public static Vector2i[] diceAnim1Positions;
+    public static SpriteTexture[][] diceAnim;
+    public static int[] diceAnimLast;
+    public static Vector2i[][] diceAnimPositions;
     
     public static void load() throws IOException
     {
@@ -28,32 +28,39 @@ public class LudoTextures
         node = TextureHelper.createTexture("src/main/resources/textures/node.png");
         figure = TextureHelper.createTexture("src/main/resources/textures/figure.png");
         
-        diceAnim1 = TextureHelper.createTexture("src/main/resources/textures/dice/anim_1/sprites.png").makeSprites(64, 64);
-        diceAnim1Positions = new Vector2i[diceAnim1.length];
-        for(int i = 0; i < diceAnim1Positions.length; i++)
+        diceAnim = new SpriteTexture[6][];
+        diceAnimLast = new int[6];
+        diceAnimPositions = new Vector2i[6][];
+        
+        for(int dice = 0; dice < 6; ++dice)
         {
-            diceAnim1Positions[i] = new Vector2i(0, 0);
-        }
-        diceAnim1Last = 0;
-        try(BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/resources/textures/dice/anim_1/coordinates.txt"))))
-        {
-            int index, left, top, right, bottom;
-            int w, h;
-            String line;
-            String[] split;
-            while((line = reader.readLine()) != null && !line.isEmpty())
+            diceAnim[dice] = TextureHelper.createTexture("src/main/resources/textures/dice/anim_" + (dice + 1) + "/sprites.png").makeSprites(64, 64);
+            diceAnimPositions[dice] = new Vector2i[diceAnim[dice].length];
+            for(int i = 0; i < diceAnimPositions[dice].length; i++)
             {
-                split = line.split(" ");
-                index = Integer.parseInt(split[0].substring(0, split[0].length() - 1));
-                left = Integer.parseInt(split[1]);
-                top = Integer.parseInt(split[2]);
-                right = Integer.parseInt(split[3]);
-                bottom = Integer.parseInt(split[4]);
-                
-                diceAnim1Last = Math.max(diceAnim1Last, index);
-                w = right - left;
-                h = bottom - top;
-                diceAnim1Positions[index].add(left, top).add(w / 2, h / 2);
+                diceAnimPositions[dice][i] = new Vector2i(0, 0);
+            }
+            diceAnimLast[dice] = 0;
+            try(BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/resources/textures/dice/anim_" + (dice + 1) + "/coordinates.txt"))))
+            {
+                int index, left, top, right, bottom;
+                int w, h;
+                String line;
+                String[] split;
+                while((line = reader.readLine()) != null && !line.isEmpty())
+                {
+                    split = line.split(" ");
+                    index = Integer.parseInt(split[0].substring(0, split[0].length() - 1));
+                    left = Integer.parseInt(split[1]);
+                    top = Integer.parseInt(split[2]);
+                    right = Integer.parseInt(split[3]);
+                    bottom = Integer.parseInt(split[4]);
+                    
+                    diceAnimLast[dice] = Math.max(diceAnimLast[dice], index);
+                    w = right - left;
+                    h = bottom - top;
+                    diceAnimPositions[dice][index].add(left, top).add(w / 2, h / 2);
+                }
             }
         }
     }
