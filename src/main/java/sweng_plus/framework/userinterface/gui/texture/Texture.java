@@ -6,11 +6,11 @@ public class Texture
 {
     public static final Texture NULL_TEXTURE = new Texture(0, "null", 1, 1);
     
-    private final int textureID;
-    private final String texture;
-    
-    private final int width;
-    private final int height;
+    protected final int textureID;
+    protected final String texture;
+
+    protected final int width;
+    protected final int height;
     
     public Texture(int textureID, String textureName, int width, int height)
     {
@@ -50,7 +50,7 @@ public class Texture
         glBindTexture(GL_TEXTURE_2D, 0);
     }
     
-    private void doQuad(int x, int y, int w, int h, int texX, int texY, int texW, int texH)
+    protected void doQuad(int x, int y, int w, int h, int texX, int texY, int texW, int texH)
     {
         glTexCoord2f(texX / (float) width, texY / (float) height);
         glVertex3f(x, y, 0);
@@ -106,5 +106,23 @@ public class Texture
         
         glEnd();
         unbind();
+    }
+    
+    public SpriteTexture[] makeSprites(int spritesWidth, int spritesHeight)
+    {
+        int spritesAmtX = width/spritesWidth;
+        int spritesAmtY = height/spritesHeight;
+        
+        SpriteTexture[] sprites = new SpriteTexture[spritesAmtX * spritesAmtY];
+        
+        for(int y = 0; y < spritesAmtY; y++)
+        {
+            for(int x = 0; x < spritesAmtX; x++)
+            {
+                sprites[x + y*spritesAmtX] = new SpriteTexture(this, x*spritesWidth, y*spritesHeight, spritesWidth, spritesHeight);
+            }
+        }
+        
+        return sprites;
     }
 }
