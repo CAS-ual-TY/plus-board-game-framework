@@ -11,26 +11,6 @@ public record KickClientMessage(byte code, String message)
     public static final byte CLIENT_KICKED = 2;
     public static final byte CLIENT_KICKED_MESSAGE = 3;
     
-    public static KickClientMessage forceDisconnectClient()
-    {
-        return new KickClientMessage(UNKNOWN, "");
-    }
-    
-    public static KickClientMessage serverClosed()
-    {
-        return new KickClientMessage(SERVER_CLOSED, "");
-    }
-    
-    public static KickClientMessage kickClient()
-    {
-        return new KickClientMessage(CLIENT_KICKED, "");
-    }
-    
-    public static KickClientMessage kickClient(String message)
-    {
-        return new KickClientMessage(CLIENT_KICKED_MESSAGE, message);
-    }
-    
     public static class Handler
     {
         public static void encodeMessage(CircularBuffer buf, KickClientMessage message)

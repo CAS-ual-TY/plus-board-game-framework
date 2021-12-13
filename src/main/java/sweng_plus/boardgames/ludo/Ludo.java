@@ -10,7 +10,7 @@ import sweng_plus.boardgames.ludo.gui.NameScreen;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
-import sweng_plus.framework.networking.MessageRegistry;
+import sweng_plus.framework.networking.AdvancedMessageRegistry;
 import sweng_plus.framework.networking.NetworkHelper;
 import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<LudoClient>
+public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHostEventsListener<LudoClient>
 {
     private static Ludo instance;
     
@@ -77,8 +77,10 @@ public class Ludo implements IGame, IClientEventsListener, IHostEventsListener<L
     
     protected void initProtocol()
     {
-        protocol = new MessageRegistry<>(32);
         byte messageID = 0;
+        protocol = new AdvancedMessageRegistry<LudoClient>(32, messageID++, messageID++, messageID++,
+                this::getClientManager, this::getHostManager,
+                this, this);
         
         protocol.registerMessage(messageID++, SendNameMessage.Handler::encodeMessage,
                 SendNameMessage.Handler::decodeMessage, SendNameMessage.Handler::handleMessage,
