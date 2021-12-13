@@ -34,7 +34,7 @@ public class TeamColor
     
     public static TeamColor[] generateRandomTeams(int teamsAmount, Random random)
     {
-        TeamColor[] teams = new TeamColor[2];
+        TeamColor[] teams = new TeamColor[teamsAmount];
         
         for(int i = 0; i < teams.length; ++i)
         {
