@@ -249,7 +249,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     {
         if(clientManager != null)
         {
-            clientManager.runMessages();
+            clientManager.update();
         }
     }
     

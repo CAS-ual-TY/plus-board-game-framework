@@ -52,7 +52,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
-    public void runMessages() // Main Thread
+    public void update() // Main Thread
     {
         super.runMessages();
     }

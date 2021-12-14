@@ -163,7 +163,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    public void runMessages() // Main Thread
+    public void update() // Main Thread
     {
         super.runMessages();
     }

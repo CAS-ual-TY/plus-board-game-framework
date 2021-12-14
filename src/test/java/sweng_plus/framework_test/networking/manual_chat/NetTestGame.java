@@ -94,9 +94,9 @@ public class NetTestGame implements IGame
     public void update()
     {
         if(hostManager != null)
-            hostManager.runMessages();
+            hostManager.update();
         else if(clientManager != null)
-            clientManager.runMessages();
+            clientManager.update();
     }
     
     @Override
