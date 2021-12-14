@@ -174,6 +174,11 @@ public class LudoGameLogic
     {
         TeamColor currentTeam = teams[currentTeamIndex];
         
+        // Could move on previous turn
+        if(movableFigures.size() > 0) {
+            return MIN_CONSECUTIVE_ROLLS;
+        }
+        
         // All Figures are outside
         if(ludoBoard.isHomeFull(currentTeam))
         {
