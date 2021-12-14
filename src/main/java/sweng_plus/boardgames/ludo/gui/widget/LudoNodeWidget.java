@@ -46,8 +46,8 @@ public class LudoNodeWidget extends NodeWidget
             ludoFigure.getColor().getColor().glColor4f();
             // TODO Position anpassen
             figureTexture.render(
-                    dimensions.x + (dimensions.w - nodeTexture.getWidth()) / 2,
-                    dimensions.y + (dimensions.h - nodeTexture.getHeight()) / 2 - dimensions.h / 4);
+                    dimensions.x + (dimensions.w - figureTexture.getWidth()) / 2,
+                    dimensions.y + (dimensions.h - figureTexture.getHeight()) / 2);
         }
     }
 }

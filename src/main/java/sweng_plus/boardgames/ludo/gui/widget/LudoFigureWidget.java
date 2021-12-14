@@ -26,10 +26,9 @@ public class LudoFigureWidget extends NodeWidget
         if(getNode().isOccupied() && getNode() instanceof LudoNode ludoNode && ludoNode.getNodeFigures().get(0) instanceof LudoFigure ludoFigure)
         {
             ludoFigure.getColor().getColor().glColor4f();
-            // TODO Position anpassen
             texture.render(
                     dimensions.x + (dimensions.w - texture.getWidth()) / 2,
-                    dimensions.y + (dimensions.h - texture.getHeight()) / 2 - dimensions.h / 4);
+                    dimensions.y + (dimensions.h - texture.getHeight()) / 2);
         }
     }
 }
