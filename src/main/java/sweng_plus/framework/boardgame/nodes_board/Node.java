@@ -64,11 +64,13 @@ public class Node implements INode
     public void addNodeFigure(NodeFigure fieldFigure)
     {
         fieldFigures.add(fieldFigure);
+        fieldFigure.setCurrentNode(this);
     }
     
     @Override
     public void removeNodeFigure(NodeFigure fieldFigure)
     {
         fieldFigures.remove(fieldFigure);
+        fieldFigure.setCurrentNode(null);
     }
 }

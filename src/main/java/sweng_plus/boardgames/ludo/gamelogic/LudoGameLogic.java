@@ -133,8 +133,6 @@ public class LudoGameLogic
     public void endPhaseSelectFigure(int figure)
     {
         System.out.println("                Logic: endPhaseSelectFigure");
-    
-        
         
         // maximum numbers of consecutive rolls reached (standard MIN_CONSECUTIVE_ROLLS, if no movable figures - MAX_CONSECUTIVE_ROLLS rolls
         if(latestRoll != 6 && numConsecutiveRolls >= maxCurrentConsecutiveRolls())
@@ -144,13 +142,18 @@ public class LudoGameLogic
         }
     }
     
+    public LudoFigure getFigureForIndex(int selectedFigure)
+    {
+        return movableFigures.keySet().stream().filter(fig -> fig.getIndex() == selectedFigure).findFirst().orElse(null);
+    }
+    
     public LudoFigure startPhaseMoveFigure(int selectedFigure)
     {
         System.out.println("                Logic: startPhaseMoveFigure");
-    
+        
         if(selectedFigure >= 0)
         {
-            LudoFigure figure = movableFigures.keySet().stream().filter(fig -> fig.getIndex() == selectedFigure).findFirst().orElse(null);
+            LudoFigure figure = getFigureForIndex(selectedFigure);
             if(figure != null)
             {
                 figure.getCurrentNode().removeNodeFigure(figure);
@@ -164,7 +167,7 @@ public class LudoGameLogic
         }
     }
     
-    public LudoNode getTargetNode (LudoFigure figure)
+    public LudoNode getTargetNode(LudoFigure figure)
     {
         System.out.println("                Logic: getTargetNode");
         
@@ -189,17 +192,16 @@ public class LudoGameLogic
             prevFigure = Optional.ofNullable((LudoFigure) target.getNodeFigures().get(0));
         }
         
-        
         figure.move(target);
-        
+        target.addNodeFigure(figure);
         
         return prevFigure;
     }
     
-    public void moveFigureToOutside (LudoFigure figure)
+    public void moveFigureToOutside(LudoFigure figure)
     {
         System.out.println("                Logic: moveFigureToOutside");
-    
+        
         figure.move(ludoBoard.getFreeOutsideNode(figure));
     }
     
@@ -227,7 +229,8 @@ public class LudoGameLogic
         TeamColor currentTeam = teams[currentTeamIndex];
         
         // Could move on previous turn
-        if(movableFigures.size() > 0) {
+        if(movableFigures.size() > 0)
+        {
             return MIN_CONSECUTIVE_ROLLS;
         }
         
@@ -329,11 +332,13 @@ public class LudoGameLogic
             
             movableFigures.put(startFigure, ludoBoard.getForwardNodes(startFigure, roll, createMovablePredicate(startFigure)));
         }
-        else if (latestRoll == 6 && !ludoBoard.isOutsideEmpty(teams[currentTeamIndex])) {
+        else if(latestRoll == 6 && !ludoBoard.isOutsideEmpty(teams[currentTeamIndex]))
+        {
             for(LudoNode outsideNode : ludoBoard.getOutsideNodes(currentTeamIndex))
             {
                 
-                if(outsideNode.isOccupied()) {
+                if(outsideNode.isOccupied())
+                {
                     movableFigures.put((LudoFigure) outsideNode.getNodeFigures().get(0), List.of(ludoBoard.getStartNode(currentTeamIndex)));
                 }
             }

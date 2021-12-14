@@ -33,14 +33,6 @@ public class NodeFigure implements INodeFigure
     @Override
     public void setCurrentNode(INode node)
     {
-        if(currentNode != null)
-        {
-            currentNode.removeNodeFigure(this);
-        }
-        if(node != null)
-        {
-            node.addNodeFigure(this);
-        }
         currentNode = node;
     }
     

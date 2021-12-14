@@ -1,14 +1,12 @@
 package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
-import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
-import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
-import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
+import sweng_plus.boardgames.ludo.gamelogic.*;
 import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.ChatWidget;
+import sweng_plus.boardgames.ludo.gui.widget.FigureAnimationWidget;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
@@ -197,24 +195,47 @@ public class LudoScreen extends Screen implements ILudoScreen
     @Override
     public void figureSelected(int figure)
     {
-        LudoFigure selectedFigure;
-        LudoNode selectedNode;
-        
         System.out.println("Screen: figureSelected");
         
+        LudoFigure selectedFigure = logic.getFigureForIndex(figure);
         
-        selectedFigure = logic.startPhaseMoveFigure(figure);
         if(selectedFigure != null)
         {
-            selectedNode = logic.getTargetNode(selectedFigure);
-            if(selectedNode != null)
+            LudoNode startNode = (LudoNode) selectedFigure.getCurrentNode();
+            LudoNode endNode = logic.getTargetNode(selectedFigure);
+            
+            int timer;
+            
+            if(startNode.getNodeType() == LudoNodeType.OUTSIDE)
             {
-                logic.endPhaseMoveFigure(selectedFigure, selectedNode).ifPresent(logic::moveFigureToOutside);
+                timer = 20;
             }
+            else
+            {
+                timer = logic.latestRoll * 10;
+            }
+            
+            logic.startPhaseMoveFigure(figure);
+            
+            Consumer<Widget> onEnd = (w) ->
+            {
+                widgets.remove(w);
+                
+                logic.endPhaseMoveFigure(selectedFigure, endNode).ifPresent(logic::moveFigureToOutside);
+                
+                logic.endPhaseSelectFigure(figure);
+                newTurn(logic.currentTeamIndex);
+            };
+            
+            widgets.add(new FigureAnimationWidget(screenHolder, new Dimensions(AnchorPoint.M), selectedFigure,
+                    LudoTextures.figure, nodeWidgetMap.get(startNode), nodeWidgetMap.get(endNode), onEnd,
+                    timer));
         }
-        
-        logic.endPhaseSelectFigure(figure);
-        newTurn(logic.currentTeamIndex);
+        else
+        {
+            logic.endPhaseSelectFigure(figure);
+            newTurn(logic.currentTeamIndex);
+        }
     }
     
     @Override
