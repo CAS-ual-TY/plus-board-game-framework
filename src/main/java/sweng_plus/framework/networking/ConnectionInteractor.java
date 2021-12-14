@@ -90,7 +90,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
         }
     }
     
-    public void runMessages(Consumer<Runnable> consumer)
+    public void runMessages()
     {
         Lock lock = mainThreadMessagesLock.writeLock();
         
@@ -100,7 +100,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
             
             for(Runnable r : mainThreadMessages)
             {
-                consumer.accept(r);
+                r.run();
             }
             
             mainThreadMessages.clear();

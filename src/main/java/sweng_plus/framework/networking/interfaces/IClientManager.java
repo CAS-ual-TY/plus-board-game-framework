@@ -24,7 +24,7 @@ public interface IClientManager extends Closeable
      * @param consumer The {@link Consumer} that receives every {@link Runnable} representing a decoded message
      *                 from the server.
      */
-    void runMessages(Consumer<Runnable> consumer); // Main Thread
+    void runMessages(); // Main Thread
     
     @Override
     void close(); // Main Thread

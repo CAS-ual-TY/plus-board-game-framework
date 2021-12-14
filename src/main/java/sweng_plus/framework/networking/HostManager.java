@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.function.Consumer;
 
 public class HostManager<C extends IClient> extends ConnectionInteractor<C> implements IHostManager<C>
 {
@@ -164,9 +163,9 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    public void runMessages(Consumer<Runnable> consumer) // Main Thread
+    public void runMessages() // Main Thread
     {
-        super.runMessages(consumer);
+        super.runMessages();
     }
     
     public Socket acceptNewConnection(Connection<C> connection) // Connection Thread

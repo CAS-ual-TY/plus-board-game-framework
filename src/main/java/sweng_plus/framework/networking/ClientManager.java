@@ -11,7 +11,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
-import java.util.function.Consumer;
 
 public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager
 {
@@ -53,9 +52,9 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
-    public void runMessages(Consumer<Runnable> consumer) // Main Thread
+    public void runMessages() // Main Thread
     {
-        super.runMessages(consumer);
+        super.runMessages();
     }
     
     @Override
