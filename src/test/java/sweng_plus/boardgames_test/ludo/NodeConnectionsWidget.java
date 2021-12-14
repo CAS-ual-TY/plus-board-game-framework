@@ -2,7 +2,7 @@ package sweng_plus.boardgames_test.ludo;
 
 import org.joml.Vector2d;
 import org.lwjgl.opengl.GL11;
-import sweng_plus.boardgames.ludo.gui.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
