@@ -2,8 +2,8 @@ package sweng_plus.framework.userinterface.gui.widget.base;
 
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.userinterface.gui.IRenderable;
-import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.IWidgetParent;
+import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.input.IInputListener;
 
 public interface IWidget extends IInputListener, IRenderable

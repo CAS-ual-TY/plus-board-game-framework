@@ -163,7 +163,8 @@ public class LudoGameLogic
     
     public void moveFigure(NodeFigure figure, LudoNode selectedNode)
     {
-        if(selectedNode.isOccupied()) {
+        if(selectedNode.isOccupied())
+        {
             ludoBoard.moveFigureToOutside((LudoFigure) selectedNode.getNodeFigures().get(0));
         }
         ludoBoard.moveFigure(figure, selectedNode);
@@ -178,7 +179,7 @@ public class LudoGameLogic
         {
             return MAX_CONSECUTIVE_ROLLS;
         }
-        else if (ludoBoard.isOutsideFull(currentTeam))
+        else if(ludoBoard.isOutsideFull(currentTeam))
         {
             return MAX_CONSECUTIVE_ROLLS;
         }
@@ -299,7 +300,8 @@ public class LudoGameLogic
         currentTeamIndex = team;
     }
     
-    private boolean mustMoveFromStart(TeamColor teamColor) {
+    private boolean mustMoveFromStart(TeamColor teamColor)
+    {
         return ludoBoard.isOwnStartOccupied(teamColor) && !ludoBoard.isOutsideEmpty(teamColor);
     }
     

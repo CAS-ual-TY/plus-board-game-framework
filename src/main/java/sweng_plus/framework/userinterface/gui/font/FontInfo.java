@@ -122,7 +122,7 @@ public class FontInfo
         {
             return charX;
         }
-    
+        
         public int getCharW()
         {
             return charW;

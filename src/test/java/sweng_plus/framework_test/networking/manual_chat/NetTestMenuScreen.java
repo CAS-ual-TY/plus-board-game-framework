@@ -9,8 +9,8 @@ import sweng_plus.framework.networking.interfaces.IHostEventsListener;
 import sweng_plus.framework.networking.util.NetworkRole;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
-import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
+import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
@@ -35,13 +35,13 @@ public class NetTestMenuScreen extends Screen
         {
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
-    
+            
             widgets.add(new FunctionalButtonWidget(screenHolder, topButton, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::host));
             widgets.add(new TextWidget(screenHolder, topButton, NetTestGame.instance().fontRenderer48, "Host"));
-    
+            
             widgets.add(new FunctionalButtonWidget(screenHolder, middleButton, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::connect));
             widgets.add(new TextWidget(screenHolder, middleButton, NetTestGame.instance().fontRenderer48, "Connect"));
-    
+            
             widgets.add(new FunctionalButtonWidget(screenHolder, bottomButton, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::exit));
             widgets.add(new TextWidget(screenHolder, bottomButton, NetTestGame.instance().fontRenderer48, "Exit"));
         }

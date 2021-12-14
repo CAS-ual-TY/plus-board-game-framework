@@ -25,8 +25,8 @@ public record StartGameMessage(int playerID, int teamCount, int startTeam)
         public static void handleMessage(Optional<LudoClient> clientOptional, StartGameMessage message)
         {
             Ludo.instance().startGame(false, message.teamCount());
-            ((LudoScreen)Ludo.instance().getScreen()).thisPlayerID = message.playerID();
-            ((LudoScreen)Ludo.instance().getScreen()).newTurn(message.startTeam());
+            ((LudoScreen) Ludo.instance().getScreen()).thisPlayerID = message.playerID();
+            ((LudoScreen) Ludo.instance().getScreen()).newTurn(message.startTeam());
         }
     }
 }

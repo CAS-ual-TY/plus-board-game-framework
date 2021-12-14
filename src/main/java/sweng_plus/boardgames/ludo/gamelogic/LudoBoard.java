@@ -126,7 +126,7 @@ public class LudoBoard extends NodeBoard
         }
         
         INode.linkNodes(homeEntrance, home.get(0));
-    
+        
         LudoFigure[] figures = createFigures(ludoTeam, outside);
         
         allNodes.addAll(outside);
@@ -245,7 +245,7 @@ public class LudoBoard extends NodeBoard
                 return;
             }
         }
-    
+        
     }
     
     public interface BoardCornerConsumer
