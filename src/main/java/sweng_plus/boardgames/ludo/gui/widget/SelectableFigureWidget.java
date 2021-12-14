@@ -12,13 +12,16 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
 {
     public LudoNodeWidget nodeWidget;
     public LudoFigure ludoFigure;
+    public boolean active;
     
-    public SelectableFigureWidget(IScreenHolder screenHolder, SimpleButtonAction buttonAction, LudoNodeWidget nodeWidget)
+    public SelectableFigureWidget(IScreenHolder screenHolder, SimpleButtonAction buttonAction, LudoNodeWidget nodeWidget,
+                                  boolean active)
     {
         super(screenHolder, nodeWidget.getDimensions(), EmptyStyle.EMPTY_STYLE, buttonAction);
         
         this.nodeWidget = nodeWidget;
         ludoFigure = ((LudoFigure) nodeWidget.getNode().getNodeFigures().get(0));
+        this.active = active;
     }
     
     @Override
@@ -26,7 +29,7 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
     {
         nodeWidget.render(deltaTick, mouseX, mouseY);
         
-        if(updateMouseOver(deltaTick, mouseX, mouseY))
+        if(active && updateMouseOver(deltaTick, mouseX, mouseY))
         {
             renderQuad(deltaTick, mouseX, mouseY);
         }
@@ -47,5 +50,14 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
         glVertex3f(x2, y2, 0); // Unten Rechts
         glVertex3f(x2, y1, 0); // Oben Rechts
         glEnd();
+    }
+    
+    @Override
+    protected void clicked(int mouseX, int mouseY, int mods)
+    {
+        if(active)
+        {
+            super.clicked(mouseX, mouseY, mods);
+        }
     }
 }

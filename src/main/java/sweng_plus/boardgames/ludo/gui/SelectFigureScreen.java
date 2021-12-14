@@ -18,7 +18,8 @@ public class SelectFigureScreen extends LudoExtensionScreen
         subScreen.logic.movableFigures.keySet().stream().map(NodeFigure::getCurrentNode)
                 .map(subScreen.nodeWidgetMap::get)
                 .forEach((widget) -> widgets.add(
-                        new SelectableFigureWidget(subScreen.screenHolder, this::select, widget)));
+                        new SelectableFigureWidget(subScreen.screenHolder, this::select, widget,
+                                subScreen.isTurnPlayer())));
         widgets.sort(Widget.TOP_TO_BOTTOM_SORTER);
     }
     
@@ -28,13 +29,17 @@ public class SelectFigureScreen extends LudoExtensionScreen
         {
             returnToSubScreen();
             
-            try
+            if(((LudoScreen) subScreen).isTurnPlayer())
             {
-                Ludo.instance().getClientManager().sendMessageToServer(new FigureSelectMessage(((SelectableFigureWidget) button).ludoFigure.getIndex()));
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
+                try
+                {
+                    Ludo.instance().getClientManager().sendMessageToServer(
+                            new FigureSelectMessage(((SelectableFigureWidget) button).ludoFigure.getIndex()));
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }

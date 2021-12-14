@@ -95,6 +95,11 @@ public class LudoScreen extends Screen implements ILudoScreen
         chatWidget.initWidget(this);
     }
     
+    public boolean isTurnPlayer()
+    {
+        return thisPlayerID == logic.currentTeamIndex;
+    }
+    
     public List<String> getChat()
     {
         return chatMessages.stream().map(m -> m.sender() + ": " + m.message())
@@ -178,7 +183,7 @@ public class LudoScreen extends Screen implements ILudoScreen
         {
             if(logic.movableFigures.size() > 0)
             {
-                if(logic.currentTeamIndex == thisPlayerID)
+                if(isTurnPlayer())
                 {
                     requestFigure();
                 }
