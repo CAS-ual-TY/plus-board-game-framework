@@ -24,7 +24,9 @@ public record FigureSelectMessage(int figureID)
             clientOptional.ifPresent(client ->
             {
                 if(client.getTeamIndex() == Ludo.instance().getGameLogic().currentTeamIndex)
+                {
                     Ludo.instance().getGameLogic().tellClientsFigureSelected(message.figureID());
+                }
             });
         }
     }

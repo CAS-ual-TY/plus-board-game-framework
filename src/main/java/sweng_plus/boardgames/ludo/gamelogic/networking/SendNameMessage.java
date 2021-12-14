@@ -47,9 +47,7 @@ public record SendNameMessage(String name)
                     e.printStackTrace();
                 }
             }, () ->
-            {
-                Ludo.instance().names.add(message.name());
-            });
+                    Ludo.instance().names.add(message.name()));
         }
     }
 }

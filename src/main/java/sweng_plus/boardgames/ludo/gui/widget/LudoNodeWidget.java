@@ -34,10 +34,14 @@ public class LudoNodeWidget extends NodeWidget
         super.render(deltaTick, mouseX, mouseY);
         
         if(type != LudoNodeType.NEUTRAL)
+        {
             team.getColor().glColor3fStrength(type == LudoNodeType.HOME_ENTRANCE ?
                     0.15F : type == LudoNodeType.START ? 0.5F : 1F);
+        }
         else
+        {
             team.getColor().glColor3fStrength(0.1F);
+        }
         
         nodeTexture.render(
                 dimensions.x + (dimensions.w - nodeTexture.getWidth()) / 2,

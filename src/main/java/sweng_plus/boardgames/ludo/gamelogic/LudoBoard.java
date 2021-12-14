@@ -1,7 +1,6 @@
 package sweng_plus.boardgames.ludo.gamelogic;
 
 import sweng_plus.framework.boardgame.nodes_board.NodeBoard;
-import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
@@ -27,7 +26,7 @@ public class LudoBoard extends NodeBoard
         
         for(LudoTeam team : ludoTeams)
         {
-            for(LudoFigure f : team.figures)
+            for(LudoFigure f : team.figures())
             {
                 addNodeFigure(f);
             }
@@ -61,7 +60,6 @@ public class LudoBoard extends NodeBoard
     }
     
     
-    @SuppressWarnings("unchecked")
     private void setupBoard(TeamColor[] teamColors)
     {
         ludoTeams = new LudoTeam[teamColors.length];
@@ -102,7 +100,7 @@ public class LudoBoard extends NodeBoard
         ArrayList<LudoNode> allNodes = new ArrayList<>(TOTAL_NODES_PER_CORNER);
         
         LudoNode last = null;
-        LudoNode current = null;
+        LudoNode current;
         LudoNode previous = null;
         
         start = new LudoNode(ludoTeam, LudoNodeType.START, 0);

@@ -5,7 +5,7 @@ import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.util.Optional;
 
-public class RollMessage
+public record RollMessage()
 {
     public static class Handler
     {
@@ -25,7 +25,9 @@ public class RollMessage
                 System.out.println(client.getTeamIndex() + " " + Ludo.instance().getGameLogic().currentTeamIndex);
                 
                 if(client.getTeamIndex() == Ludo.instance().getGameLogic().currentTeamIndex)
+                {
                     Ludo.instance().getGameLogic().tellClientsRoll();
+                }
             });
         }
     }

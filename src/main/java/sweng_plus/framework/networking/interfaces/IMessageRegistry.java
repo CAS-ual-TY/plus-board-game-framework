@@ -24,6 +24,7 @@ public interface IMessageRegistry<C extends IClient>
      */
     <M> MessageRegistry<C> registerMessage(byte id, IMessageEncoder<M> encoder, IMessageDecoder<M> decoder, IMessageHandler<M, C> handler, Class<M> messageClass) throws IllegalArgumentException;
     
+    @SuppressWarnings("unchecked")
     default <M> MessageRegistry<C> registerSimpleMessage(byte id, Runnable runnable, M dummyInstance)
     {
         return registerMessage(id,

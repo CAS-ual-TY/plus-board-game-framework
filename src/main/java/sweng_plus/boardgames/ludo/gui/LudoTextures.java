@@ -6,7 +6,6 @@ import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -41,7 +40,7 @@ public class LudoTextures
                 diceAnimPositions[dice][i] = new Vector2i(0, 0);
             }
             diceAnimLast[dice] = 0;
-            try(BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/resources/textures/dice/anim_" + (dice + 1) + "/coordinates.txt"))))
+            try(BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/textures/dice/anim_" + (dice + 1) + "/coordinates.txt")))
             {
                 int index, left, top, right, bottom;
                 int w, h;

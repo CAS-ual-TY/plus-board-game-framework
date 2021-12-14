@@ -175,17 +175,17 @@ public class Window
             buffer = stbi_load(iconResource, w, h, comp, 4);
             if(buffer == null)
             {
-                // throw new
+                throw new IllegalStateException();
             }
             width = w.get();
             height = h.get();
         }
         
         GLFWImage image = GLFWImage.malloc();
-        GLFWImage.Buffer imagebf = GLFWImage.malloc(1);
+        GLFWImage.Buffer imageBuffer = GLFWImage.malloc(1);
         image.set(width, height, buffer);
-        imagebf.put(0, image);
-        glfwSetWindowIcon(windowHandle, imagebf);
+        imageBuffer.put(0, image);
+        glfwSetWindowIcon(windowHandle, imageBuffer);
     }
     
     private void windowResized(int windowW, int windowH)

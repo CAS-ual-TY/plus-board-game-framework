@@ -78,7 +78,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     protected void initProtocol()
     {
         byte messageID = 0;
-        protocol = new AdvancedMessageRegistry<LudoClient>(32, messageID++, messageID++, messageID++,
+        protocol = new AdvancedMessageRegistry<>(32, messageID++, messageID++, messageID++,
                 this::getClientManager, this::getHostManager,
                 this, this);
         

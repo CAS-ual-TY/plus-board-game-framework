@@ -30,7 +30,8 @@ public class LudoScreen extends Screen implements ILudoScreen
         
         this.logic = logic;
         board = logic.getLudoBoard();
-        
+    
+        //noinspection ThisEscapedInObjectConstruction
         nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, board, LudoTextures.node, LudoTextures.figure);
         widgets.addAll(nodeWidgetMap.values());
         

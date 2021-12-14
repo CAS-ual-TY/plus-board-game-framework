@@ -140,9 +140,7 @@ public class LudoGameLogic
         if(selectedFigure >= 0)
         {
             movableFigures.keySet().stream().filter(figure -> figure.getIndex() == selectedFigure).findFirst().ifPresent((figure) ->
-            {
-                moveFigure(figure, (LudoNode) movableFigures.get(figure).get(0));
-            });
+                    moveFigure(figure, (LudoNode) movableFigures.get(figure).get(0)));
         }
         
         // maximum numbers of consecutive rolls reached (standard MIN_CONSECUTIVE_ROLLS, if no movable figures - MAX_CONSECUTIVE_ROLLS rolls
