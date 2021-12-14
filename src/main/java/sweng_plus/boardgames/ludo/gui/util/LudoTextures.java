@@ -16,6 +16,7 @@ public class LudoTextures
     public static Texture node;
     public static Texture figure;
     public static Texture figureHuge;
+    public static Texture logo;
     
     public static Texture[] dices;
     public static SpriteTexture[][] diceAnim;
@@ -29,6 +30,7 @@ public class LudoTextures
         node = TextureHelper.createTexture("src/main/resources/textures/node.png");
         figure = TextureHelper.createTexture("src/main/resources/textures/figure.png");
         figureHuge = TextureHelper.createTexture("src/main/resources/textures/background/figure_huge.png");
+        logo = TextureHelper.createTexture("src/main/resources/textures/background/logo.png");
         
         dices = new Texture[6];
         diceAnim = new SpriteTexture[dices.length][];

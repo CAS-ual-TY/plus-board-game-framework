@@ -26,14 +26,14 @@ public class MenuHostScreen extends WrappedScreen
         super(subScreen);
         
         Dimensions nameDims = new Dimensions(0, 0, AnchorPoint.M, 0, -160);
-        widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:", Color4f.BLACK));
+        widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:", Color4f.WHITE));
         
         Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -80);
         inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48);
         widgets.add(inputWidgetName);
         
         Dimensions textDims = new Dimensions(0, 0, AnchorPoint.M, 0, 20);
-        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:", Color4f.BLACK));
+        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:", Color4f.WHITE));
         
         Dimensions inputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 100);
         inputWidget = new InputWidget(screenHolder, inputDims, Ludo.instance().fontRenderer48);

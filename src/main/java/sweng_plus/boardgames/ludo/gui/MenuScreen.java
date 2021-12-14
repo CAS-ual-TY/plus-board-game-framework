@@ -7,17 +7,11 @@ import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
-import sweng_plus.framework.userinterface.gui.style.TextureStyle;
-import sweng_plus.framework.userinterface.gui.texture.Texture;
-import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
-
-import java.io.IOException;
 
 public class MenuScreen extends Screen
 {
@@ -66,17 +60,20 @@ public class MenuScreen extends Screen
     public void render(float deltaTick, int mouseX, int mouseY)
     {
         Color4f.BLUE.glColor4f();
-        LudoTextures.figureHuge.render(325,(screenH-700-150)/2,700,700,0,0,LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
+        LudoTextures.figureHuge.render(325, (screenH - 700 - 150) / 2, 700, 700, 0, 0, LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
         
         Color4f.YELLOW.glColor4f();
-        LudoTextures.figureHuge.render(-25,(screenH-700-150)/2,700,700,0,0,LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
+        LudoTextures.figureHuge.render(-25, (screenH - 700 - 150) / 2, 700, 700, 0, 0, LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
         
         Color4f.RED.glColor4f();
-        LudoTextures.figureHuge.render(450,(screenH-700-150)/2 +150,700,700,0,0,LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
-    
+        LudoTextures.figureHuge.render(450, (screenH - 700 - 150) / 2 + 150, 700, 700, 0, 0, LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
+        
         Color4f.GREEN.glColor4f();
-        LudoTextures.figureHuge.render(100,(screenH-700-150)/2 +150,700,700,0,0,LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
-    
+        LudoTextures.figureHuge.render(100, (screenH - 700 - 150) / 2 + 150, 700, 700, 0, 0, LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
+        
+        Color4f.BLACK.glColor4f();
+        LudoTextures.logo.render(900, 50, LudoTextures.logo.getWidth(), LudoTextures.logo.getHeight(), 0, 0, LudoTextures.logo.getWidth(), LudoTextures.logo.getHeight());
+        
         super.render(deltaTick, mouseX, mouseY);
     }
 }
