@@ -3,6 +3,7 @@ package sweng_plus.boardgames.ludo.gui.widget;
 import org.joml.RoundingMode;
 import org.joml.Vector2d;
 import org.joml.Vector2i;
+import org.lwjgl.opengl.GL11;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.texture.SpriteTexture;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
@@ -39,7 +40,13 @@ public class DiceAnimationWidget extends Widget
             Vector2d mot = new Vector2d(spritePositions[timer + ANIMATION_SPEED]).sub(pos).mul(deltaTick);
             Vector2i posI = pos.add(mot).get(RoundingMode.HALF_UP, new Vector2i(0, 0));
             
-            sprites[timer].render(posI.x(), posI.y());
+            GL11.glPushMatrix();
+            
+            GL11.glScalef(2F, 2F, 2F);
+            
+            sprites[timer].render(posI.x() / 2, posI.y() / 2);
+            
+            GL11.glPopMatrix();
         }
     }
     

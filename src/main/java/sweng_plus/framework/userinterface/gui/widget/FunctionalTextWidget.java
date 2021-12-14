@@ -31,8 +31,10 @@ public class FunctionalTextWidget extends Widget
     
     public FunctionalTextWidget adjustSizeToText()
     {
-        dimensions.w = fontRenderer.getTextWidth(getText());
-        dimensions.h = fontRenderer.getTextHeight(getText());
+        List<String> text = getText();
+        
+        dimensions.w = fontRenderer.getTextWidth(text);
+        dimensions.h = fontRenderer.getTextHeight(text);
         
         return this;
     }

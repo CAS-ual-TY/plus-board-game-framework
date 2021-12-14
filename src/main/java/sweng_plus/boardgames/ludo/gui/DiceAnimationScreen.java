@@ -1,13 +1,11 @@
 package sweng_plus.boardgames.ludo.gui;
 
-import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.DiceAnimationWidget;
-import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-public class DiceAnimationScreen extends WrappedScreen implements ILudoScreen
+public class DiceAnimationScreen extends LudoExtensionScreen
 {
     protected Runnable onEnd;
     protected DiceAnimationWidget animationWidget;
@@ -48,25 +46,5 @@ public class DiceAnimationScreen extends WrappedScreen implements ILudoScreen
     {
         returnToSubScreen();
         onEnd.run();
-    }
-    
-    @Override
-    public void diceResult(int dice)
-    {
-        returnToSubScreen();
-        ((LudoScreen) subScreen).diceResult(dice);
-    }
-    
-    @Override
-    public void figureSelected(int figure)
-    {
-        returnToSubScreen();
-        ((LudoScreen) subScreen).figureSelected(figure);
-    }
-    
-    @Override
-    public void chat(ChatMessage message)
-    {
-        ((LudoScreen) subScreen).chat(message);
     }
 }

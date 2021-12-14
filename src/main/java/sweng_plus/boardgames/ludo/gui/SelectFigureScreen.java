@@ -1,17 +1,15 @@
 package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 import sweng_plus.boardgames.ludo.gamelogic.networking.FigureSelectMessage;
 import sweng_plus.boardgames.ludo.gui.widget.SelectableFigureWidget;
 import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
-import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.io.IOException;
 
-public class SelectFigureScreen extends WrappedScreen implements ILudoScreen
+public class SelectFigureScreen extends LudoExtensionScreen
 {
     public SelectFigureScreen(LudoScreen subScreen)
     {
@@ -39,25 +37,5 @@ public class SelectFigureScreen extends WrappedScreen implements ILudoScreen
                 e.printStackTrace();
             }
         }
-    }
-    
-    @Override
-    public void diceResult(int dice)
-    {
-        returnToSubScreen();
-        ((LudoScreen) subScreen).diceResult(dice);
-    }
-    
-    @Override
-    public void figureSelected(int figure)
-    {
-        returnToSubScreen();
-        ((LudoScreen) subScreen).figureSelected(figure);
-    }
-    
-    @Override
-    public void chat(ChatMessage message)
-    {
-        ((LudoScreen) subScreen).chat(message);
     }
 }

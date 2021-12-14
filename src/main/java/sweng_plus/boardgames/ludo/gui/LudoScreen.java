@@ -6,19 +6,27 @@ import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
 import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.widget.ChatWidget;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.font.FontRenderer;
+import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
+import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.FunctionalTextWidget;
+import sweng_plus.framework.userinterface.gui.widget.*;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class LudoScreen extends Screen implements ILudoScreen
 {
@@ -29,6 +37,13 @@ public class LudoScreen extends Screen implements ILudoScreen
     
     public int thisPlayerID;
     
+    public FontRenderer chatFontRenderer;
+    public int chatWidth;
+    public int chatHeight;
+    public ButtonWidget sendChatWidget;
+    public TextWidget sentChatTextWidget;
+    public InputWidget inputWidget;
+    public FunctionalTextWidget chatWidget;
     public List<ChatMessage> chatMessages;
     
     public LudoScreen(IScreenHolder screenHolder, LudoGameLogic logic)
@@ -51,7 +66,74 @@ public class LudoScreen extends Screen implements ILudoScreen
         widgets.add(new FunctionalTextWidget(screenHolder, new Dimensions(80, 80, AnchorPoint.TR),
                 Ludo.instance().fontRenderer48, () -> List.of(String.valueOf(logic.latestRoll)), Color4f.BLACK));
         
+        chatFontRenderer = Ludo.instance().fontRenderer24;
+        chatWidth = 600;
+        chatHeight = chatFontRenderer.getHeight() + chatFontRenderer.getHeight() / 2;
         chatMessages = new LinkedList<>();
+        
+        widgets.add(sendChatWidget = new FunctionalButtonWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::sendMessage));
+        widgets.add(sentChatTextWidget = new TextWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), chatFontRenderer, ">"));
+        
+        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), chatFontRenderer));
+        widgets.add(chatWidget = new ChatWidget(screenHolder, new Dimensions(chatWidth, 0, AnchorPoint.BR, 0, -chatHeight), chatFontRenderer, this::getChat));
+    }
+    
+    @Override
+    public void initScreen(int screenW, int screenH)
+    {
+        super.initScreen(screenW, screenH);
+        
+        int right = nodeWidgetMap.values().stream().mapToInt(w -> w.getDimensions().x + w.getDimensions().w * 2)
+                .max().orElse(screenW - 600);
+        
+        chatWidth = screenW - right;
+        
+        inputWidget.getDimensions().w = chatWidth - chatHeight;
+        chatWidget.getDimensions().w = chatWidth;
+        
+        inputWidget.initWidget(this);
+        chatWidget.initWidget(this);
+    }
+    
+    public List<String> getChat()
+    {
+        return chatMessages.stream().map(m -> m.sender() + ": " + m.message())
+                .map(s -> chatFontRenderer.splitStringToWidth(chatWidth, s)).flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+    
+    public void removeUniversalWidgets(Consumer<Widget> consumer)
+    {
+        widgets.remove(sendChatWidget);
+        widgets.remove(sentChatTextWidget);
+        widgets.remove(inputWidget);
+        widgets.remove(chatWidget);
+        
+        consumer.accept(sendChatWidget);
+        consumer.accept(sentChatTextWidget);
+        consumer.accept(inputWidget);
+        consumer.accept(chatWidget);
+    }
+    
+    public void reAddUniversalWidgets()
+    {
+        widgets.add(sendChatWidget);
+        widgets.add(sentChatTextWidget);
+        widgets.add(inputWidget);
+        widgets.add(chatWidget);
+    }
+    
+    public void sendMessage(ButtonWidget buttonWidget)
+    {
+        try
+        {
+            Ludo.instance().clientManager.sendMessageToServer(new ChatMessage(Ludo.instance().name, inputWidget.getText()));
+            inputWidget.clearText();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public void requestDice()
@@ -120,5 +202,8 @@ public class LudoScreen extends Screen implements ILudoScreen
     public void chat(ChatMessage message)
     {
         chatMessages.add(message);
+        chatWidget.adjustSizeToText();
+        chatWidget.initWidget(this);
+        System.out.println("chat: " + chatWidget.getDimensions().x + " / " + chatWidget.getDimensions().y);
     }
 }
