@@ -2,6 +2,7 @@ package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gamelogic.networking.RollMessage;
+import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;

@@ -1,6 +1,6 @@
 package sweng_plus.framework_test.networking.manual_chat;
 
-import sweng_plus.boardgames.ludo.gui.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.StackedScreen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;

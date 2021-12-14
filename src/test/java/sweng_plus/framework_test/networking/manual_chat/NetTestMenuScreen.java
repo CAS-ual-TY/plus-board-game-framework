@@ -1,6 +1,6 @@
 package sweng_plus.framework_test.networking.manual_chat;
 
-import sweng_plus.boardgames.ludo.gui.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.NetworkHelper;

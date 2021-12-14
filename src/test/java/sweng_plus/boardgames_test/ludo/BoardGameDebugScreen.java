@@ -1,8 +1,8 @@
 package sweng_plus.boardgames_test.ludo;
 
 import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
-import sweng_plus.boardgames.ludo.gui.LudoBoardMapper;
-import sweng_plus.boardgames.ludo.gui.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
+import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;

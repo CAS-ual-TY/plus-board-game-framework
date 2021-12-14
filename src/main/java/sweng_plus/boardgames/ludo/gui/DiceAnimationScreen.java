@@ -1,5 +1,6 @@
 package sweng_plus.boardgames.ludo.gui;
 
+import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.DiceAnimationWidget;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;

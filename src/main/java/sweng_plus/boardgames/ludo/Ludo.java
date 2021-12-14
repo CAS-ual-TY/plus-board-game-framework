@@ -4,7 +4,7 @@ import org.lwjgl.glfw.GLFW;
 import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
 import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.boardgames.ludo.gui.LudoScreen;
-import sweng_plus.boardgames.ludo.gui.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.boardgames.ludo.gui.NameScreen;
 import sweng_plus.framework.boardgame.Engine;

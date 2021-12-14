@@ -1,4 +1,4 @@
-package sweng_plus.boardgames.ludo.gui;
+package sweng_plus.boardgames.ludo.gui.util;
 
 import org.joml.RoundingMode;
 import org.joml.Vector2d;

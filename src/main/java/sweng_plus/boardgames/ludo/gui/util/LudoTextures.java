@@ -1,4 +1,4 @@
-package sweng_plus.boardgames.ludo.gui;
+package sweng_plus.boardgames.ludo.gui.util;
 
 import org.joml.Vector2i;
 import sweng_plus.framework.userinterface.gui.texture.SpriteTexture;
