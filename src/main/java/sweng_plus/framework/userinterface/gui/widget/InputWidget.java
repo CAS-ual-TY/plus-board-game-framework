@@ -6,17 +6,28 @@ import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
+import java.util.function.Consumer;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class InputWidget extends SelectableWidget
 {
     protected StringBuilder stringBuilder;
     protected FontRenderer fontRenderer;
+    protected Consumer<InputWidget> consumer;
     
-    public InputWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer fontRenderer)
+    public InputWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer fontRenderer, Consumer<InputWidget> consumer)
     {
         super(screenHolder, dimensions);
         this.fontRenderer = fontRenderer;
+        this.consumer = consumer;
+        
+        stringBuilder = new StringBuilder();
+    }
+    
+    public InputWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer fontRenderer)
+    {
+        this(screenHolder, dimensions, fontRenderer, (w) -> {});
         
         stringBuilder = new StringBuilder();
     }
@@ -77,10 +88,10 @@ public class InputWidget extends SelectableWidget
         {
             tryDelete();
         }
-        //TODO
+        
         if(key == GLFW.GLFW_KEY_ENTER)
         {
-            stringBuilder.setLength(0);
+            consumer.accept(this);
         }
     }
     
