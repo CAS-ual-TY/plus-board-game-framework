@@ -200,9 +200,14 @@ public class LudoGameLogic
     
     public void moveFigureToOutside(LudoFigure figure)
     {
-        System.out.println("                Logic: moveFigureToOutside");
         
-        figure.move(ludoBoard.getFreeOutsideNode(figure));
+        System.out.println("                Logic: moveFigureToOutside");
+    
+        LudoNode outsideNode = ludoBoard.getFreeOutsideNode(figure);
+        figure.getCurrentNode().removeNodeFigure(figure);
+        figure.move(outsideNode);
+        outsideNode.addNodeFigure(figure);
+    
     }
     
     public int roll()
