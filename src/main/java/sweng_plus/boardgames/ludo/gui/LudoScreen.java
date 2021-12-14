@@ -3,6 +3,7 @@ package sweng_plus.boardgames.ludo.gui;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
 import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
+import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
@@ -16,15 +17,19 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LudoScreen extends Screen implements ILudoScreen
 {
     public final LudoGameLogic logic;
+    
     public final LudoBoard board;
     public final HashMap<INode, LudoNodeWidget> nodeWidgetMap;
     
     public int thisPlayerID;
+    
+    public List<ChatMessage> chatMessages;
     
     public LudoScreen(IScreenHolder screenHolder, LudoGameLogic logic)
     {
@@ -45,6 +50,8 @@ public class LudoScreen extends Screen implements ILudoScreen
         
         widgets.add(new FunctionalTextWidget(screenHolder, new Dimensions(80, 80, AnchorPoint.TR),
                 Ludo.instance().fontRenderer48, () -> List.of(String.valueOf(logic.latestRoll)), Color4f.BLACK));
+        
+        chatMessages = new LinkedList<>();
     }
     
     public void requestDice()
@@ -107,5 +114,11 @@ public class LudoScreen extends Screen implements ILudoScreen
         System.out.println("Screen: figureSelected");
         logic.endPhaseSelectFigure(figure);
         newTurn(logic.currentTeamIndex);
+    }
+    
+    @Override
+    public void chat(ChatMessage message)
+    {
+        chatMessages.add(message);
     }
 }

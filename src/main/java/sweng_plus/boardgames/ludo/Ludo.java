@@ -89,7 +89,11 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
         protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
-        
+    
+        protocol.registerMessage(messageID++, ChatMessage.Handler::encodeMessage,
+                ChatMessage.Handler::decodeMessage, ChatMessage.Handler::handleMessage,
+                ChatMessage.class);
+    
         protocol.registerMessage(messageID++, StartGameMessage.Handler::encodeMessage,
                 StartGameMessage.Handler::decodeMessage, StartGameMessage.Handler::handleMessage,
                 StartGameMessage.class);
