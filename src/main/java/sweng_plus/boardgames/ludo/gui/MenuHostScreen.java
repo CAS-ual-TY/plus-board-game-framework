@@ -7,6 +7,7 @@ import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
@@ -25,14 +26,14 @@ public class MenuHostScreen extends WrappedScreen
         super(subScreen);
         
         Dimensions nameDims = new Dimensions(0, 0, AnchorPoint.M, 0, -160);
-        widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:"));
+        widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:", Color4f.BLACK));
         
         Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -80);
         inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48);
         widgets.add(inputWidgetName);
         
         Dimensions textDims = new Dimensions(0, 0, AnchorPoint.M, 0, 20);
-        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:"));
+        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:", Color4f.BLACK));
         
         Dimensions inputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 100);
         inputWidget = new InputWidget(screenHolder, inputDims, Ludo.instance().fontRenderer48);

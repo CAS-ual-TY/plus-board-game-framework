@@ -110,7 +110,6 @@ public class Engine implements Runnable
                 glMatrixMode(GL_PROJECTION);
                 glLoadIdentity();
                 glOrtho(0, window.getScreenW(), window.getScreenH(), 0, 1, -1);
-                glClearColor(0, 0.7f, 1, 0);
                 
                 screen.initScreen(window.getScreenW(), window.getScreenH());
             }

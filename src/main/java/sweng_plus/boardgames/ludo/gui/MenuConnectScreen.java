@@ -7,6 +7,7 @@ import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
@@ -27,21 +28,21 @@ public class MenuConnectScreen extends WrappedScreen
         super(subScreen);
         
         Dimensions nameDims = new Dimensions(0, 0, AnchorPoint.M, 0, -260);
-        widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:"));
+        widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:", Color4f.BLACK));
         
         Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -180);
         inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48);
         widgets.add(inputWidgetName);
         
         Dimensions textDims = new Dimensions(0, 0, AnchorPoint.M, 0, -80);
-        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:"));
+        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:", Color4f.BLACK));
         
         Dimensions inputDimsPort = new Dimensions(500, 80, AnchorPoint.M, 0, 0);
         inputWidgetPort = new InputWidget(screenHolder, inputDimsPort, Ludo.instance().fontRenderer48);
         widgets.add(inputWidgetPort);
         
         Dimensions textDimsIP = new Dimensions(0, 0, AnchorPoint.M, 0, 100);
-        widgets.add(new TextWidget(screenHolder, textDimsIP, Ludo.instance().fontRenderer48, "IP:"));
+        widgets.add(new TextWidget(screenHolder, textDimsIP, Ludo.instance().fontRenderer48, "IP:", Color4f.BLACK));
         
         Dimensions inputDimsIP = new Dimensions(500, 80, AnchorPoint.M, 0, 180);
         inputWidgetIP = new InputWidget(screenHolder, inputDimsIP, Ludo.instance().fontRenderer48);

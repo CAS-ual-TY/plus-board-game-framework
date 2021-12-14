@@ -1,6 +1,7 @@
 package sweng_plus.boardgames.ludo;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
 import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.boardgames.ludo.gui.LudoScreen;
@@ -89,11 +90,11 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
         protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
-    
+        
         protocol.registerMessage(messageID++, ChatMessage.Handler::encodeMessage,
                 ChatMessage.Handler::decodeMessage, ChatMessage.Handler::handleMessage,
                 ChatMessage.class);
-    
+        
         protocol.registerMessage(messageID++, StartGameMessage.Handler::encodeMessage,
                 StartGameMessage.Handler::decodeMessage, StartGameMessage.Handler::handleMessage,
                 StartGameMessage.class);
@@ -236,6 +237,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
         
         initProtocol();
         
+        GL11.glClearColor(245 / 255f, 238 / 255f, 176 / 255f, 1f);
         screen = new MenuScreen(this);
     }
     
