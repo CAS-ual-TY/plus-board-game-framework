@@ -71,6 +71,9 @@ public class MenuScreen extends Screen
         Color4f.GREEN.glColor4f();
         LudoTextures.figureHuge.render(100, (screenH - 700 - 150) / 2 + 150, 700, 700, 0, 0, LudoTextures.figureHuge.getWidth(), LudoTextures.figureHuge.getHeight());
         
+        Color4f.BLACK.glColor4f();
+        LudoTextures.logo.render(900, 50, LudoTextures.logo.getWidth(), LudoTextures.logo.getHeight(), 0, 0, LudoTextures.logo.getWidth(), LudoTextures.logo.getHeight());
+        
         super.render(deltaTick, mouseX, mouseY);
     }
 }
