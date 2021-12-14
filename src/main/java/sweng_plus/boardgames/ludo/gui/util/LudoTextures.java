@@ -16,6 +16,7 @@ public class LudoTextures
     public static Texture node;
     public static Texture figure;
     
+    public static Texture[] dices;
     public static SpriteTexture[][] diceAnim;
     public static int[] diceAnimLast;
     public static Vector2i[][] diceAnimPositions;
@@ -27,18 +28,23 @@ public class LudoTextures
         node = TextureHelper.createTexture("src/main/resources/textures/node.png");
         figure = TextureHelper.createTexture("src/main/resources/textures/figure.png");
         
-        diceAnim = new SpriteTexture[6][];
-        diceAnimLast = new int[6];
-        diceAnimPositions = new Vector2i[6][];
+        dices = new Texture[6];
+        diceAnim = new SpriteTexture[dices.length][];
+        diceAnimLast = new int[dices.length];
+        diceAnimPositions = new Vector2i[dices.length][];
         
-        for(int dice = 0; dice < 6; ++dice)
+        for(int dice = 0; dice < dices.length; ++dice)
         {
+            dices[dice] = TextureHelper.createTexture("src/main/resources/textures/dice/dice_" + (dice + 1) + ".png");
+            
             diceAnim[dice] = TextureHelper.createTexture("src/main/resources/textures/dice/anim_" + (dice + 1) + "/sprites.png").makeSprites(64, 64);
             diceAnimPositions[dice] = new Vector2i[diceAnim[dice].length];
+            
             for(int i = 0; i < diceAnimPositions[dice].length; i++)
             {
                 diceAnimPositions[dice][i] = new Vector2i(0, 0);
             }
+            
             diceAnimLast[dice] = 0;
             try(BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/textures/dice/anim_" + (dice + 1) + "/coordinates.txt")))
             {

@@ -15,7 +15,6 @@ import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
-import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.*;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
@@ -62,9 +61,6 @@ public class LudoScreen extends Screen implements ILudoScreen
         widgets.sort(Widget.TOP_TO_BOTTOM_SORTER);
         
         thisPlayerID = -1;
-        
-        widgets.add(new FunctionalTextWidget(screenHolder, new Dimensions(80, 80, AnchorPoint.TR),
-                Ludo.instance().fontRenderer48, () -> List.of(String.valueOf(logic.latestRoll)), Color4f.BLACK));
         
         chatFontRenderer = Ludo.instance().fontRenderer24;
         chatWidth = 600;
