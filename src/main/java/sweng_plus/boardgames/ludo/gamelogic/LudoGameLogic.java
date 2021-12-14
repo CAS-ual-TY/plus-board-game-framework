@@ -1,10 +1,7 @@
 package sweng_plus.boardgames.ludo.gamelogic;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gamelogic.networking.FigureSelectedMessage;
-import sweng_plus.boardgames.ludo.gamelogic.networking.LudoClient;
-import sweng_plus.boardgames.ludo.gamelogic.networking.RolledMessage;
-import sweng_plus.boardgames.ludo.gamelogic.networking.StartGameMessage;
+import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.framework.boardgame.nodes_board.Dice;
 import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
@@ -133,6 +130,19 @@ public class LudoGameLogic
     public void endPhaseSelectFigure(int figure)
     {
         System.out.println("                Logic: endPhaseSelectFigure");
+        
+        if(isServer && isGameWon(currentTeamIndex)) {
+            try
+            {
+                Ludo.instance().getHostManager().sendMessageToAllClients(
+                        new WinMessage(currentTeamIndex));
+                return;
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
         
         // maximum numbers of consecutive rolls reached (standard MIN_CONSECUTIVE_ROLLS, if no movable figures - MAX_CONSECUTIVE_ROLLS rolls
         if(latestRoll != 6 && numConsecutiveRolls >= maxCurrentConsecutiveRolls())
@@ -365,6 +375,14 @@ public class LudoGameLogic
             }
         }
         return movableFigures;
+    }
+    
+    public boolean isGameWon(int team)
+    {
+        if(!gameWon) {
+            return gameWon = ludoBoard.isHomeFull(teams[currentTeamIndex]);
+        }
+        return true;
     }
     
     private void nextTeam()

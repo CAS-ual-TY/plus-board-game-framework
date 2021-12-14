@@ -114,6 +114,10 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
         protocol.registerMessage(messageID++, FigureSelectedMessage.Handler::encodeMessage,
                 FigureSelectedMessage.Handler::decodeMessage, FigureSelectedMessage.Handler::handleMessage,
                 FigureSelectedMessage.class);
+    
+        protocol.registerMessage(messageID++, WinMessage.Handler::encodeMessage,
+                WinMessage.Handler::decodeMessage, WinMessage.Handler::handleMessage,
+                WinMessage.class);
     }
     
     public void connect(String playerName, String ip, int port) throws IOException

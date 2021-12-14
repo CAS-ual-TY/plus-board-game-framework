@@ -49,6 +49,13 @@ public class LudoExtensionScreen extends WrappedScreen implements ILudoScreen
     }
     
     @Override
+    public void gameWon(int winningTeamIndex)
+    {
+        returnToSubScreen();
+        ((LudoScreen) subScreen).gameWon(winningTeamIndex);
+    }
+    
+    @Override
     public void chat(ChatMessage message)
     {
         ((LudoScreen) subScreen).chat(message);

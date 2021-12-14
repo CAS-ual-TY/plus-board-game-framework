@@ -157,14 +157,17 @@ public class LudoScreen extends Screen implements ILudoScreen
     
     public void newTurn(int turnTeam)
     {
-        System.out.println("Screen: newTurn");
-        
-        logic.setTurnTeam(turnTeam);
-        logic.startPhaseRoll();
-        
-        if(logic.currentTeamIndex == thisPlayerID)
+        if(!logic.gameWon)
         {
-            requestDice();
+            System.out.println("Screen: newTurn");
+    
+            logic.setTurnTeam(turnTeam);
+            logic.startPhaseRoll();
+    
+            if(logic.currentTeamIndex == thisPlayerID)
+            {
+                requestDice();
+            }
         }
     }
     
@@ -224,6 +227,7 @@ public class LudoScreen extends Screen implements ILudoScreen
                 logic.endPhaseMoveFigure(selectedFigure, endNode).ifPresent(logic::moveFigureToOutside);
                 
                 logic.endPhaseSelectFigure(figure);
+                
                 newTurn(logic.currentTeamIndex);
             };
             
@@ -234,8 +238,19 @@ public class LudoScreen extends Screen implements ILudoScreen
         else
         {
             logic.endPhaseSelectFigure(figure);
+            
             newTurn(logic.currentTeamIndex);
         }
+    }
+    
+    @Override
+    public void gameWon(int winningTeamIndex)
+    {
+        System.out.println("Screen: gameWon");
+    
+        screenHolder.setScreen(new WinScreen(this, logic.teams[winningTeamIndex].getName()));
+        
+        logic.gameWon = true;
     }
     
     @Override
