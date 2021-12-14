@@ -14,8 +14,8 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
     public LudoFigure ludoFigure;
     public boolean active;
     
-    public SelectableFigureWidget(IScreenHolder screenHolder, SimpleButtonAction buttonAction, LudoNodeWidget nodeWidget,
-                                  boolean active)
+    public SelectableFigureWidget(IScreenHolder screenHolder, SimpleButtonAction buttonAction,
+                                  LudoNodeWidget nodeWidget, boolean active)
     {
         super(screenHolder, nodeWidget.getDimensions(), EmptyStyle.EMPTY_STYLE, buttonAction);
         

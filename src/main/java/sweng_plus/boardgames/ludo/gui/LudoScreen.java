@@ -71,7 +71,7 @@ public class LudoScreen extends Screen implements ILudoScreen
         chatMessages = new LinkedList<>();
         
         widgets.add(sendChatWidget = new FunctionalButtonWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::sendMessage));
-        widgets.add(sentChatTextWidget = new TextWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), chatFontRenderer, ">"));
+        widgets.add(sentChatTextWidget = new TextWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), chatFontRenderer, ">", Color4f.BLACK));
         
         widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), chatFontRenderer, (w) -> sendMessage()));
         widgets.add(chatWidget = new ChatWidget(screenHolder, new Dimensions(chatWidth, 0, AnchorPoint.BR, 0, -chatHeight), chatFontRenderer, this::getChat, Color4f.BLACK));
@@ -204,7 +204,8 @@ public class LudoScreen extends Screen implements ILudoScreen
         
         
         selectedFigure = logic.startPhaseMoveFigure(figure);
-        if(selectedFigure != null) {
+        if(selectedFigure != null)
+        {
             selectedNode = logic.getTargetNode(selectedFigure);
             if(selectedNode != null)
             {

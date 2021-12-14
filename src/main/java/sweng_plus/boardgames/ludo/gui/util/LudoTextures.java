@@ -23,8 +23,8 @@ public class LudoTextures
     
     public static void load() throws IOException
     {
-        activeButton = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
-        inactiveButton = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
+        activeButton = TextureHelper.createTexture("src/main/resources/textures/button_active.png");
+        inactiveButton = TextureHelper.createTexture("src/main/resources/textures/button_inactive.png");
         node = TextureHelper.createTexture("src/main/resources/textures/node.png");
         figure = TextureHelper.createTexture("src/main/resources/textures/figure.png");
         

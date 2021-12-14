@@ -27,34 +27,34 @@ public class MenuConnectScreen extends WrappedScreen
     {
         super(subScreen);
         
-        Dimensions nameDims = new Dimensions(0, 0, AnchorPoint.M, 0, -260);
-        widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:", Color4f.BLACK));
+        Dimensions nameTextDims = new Dimensions(0, 0, AnchorPoint.M, 0, -260);
+        widgets.add(new TextWidget(screenHolder, nameTextDims, Ludo.instance().fontRenderer48, "Name:", Color4f.BLACK));
         
-        Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -180);
-        inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48);
+        Dimensions nameInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, -180);
+        inputWidgetName = new InputWidget(screenHolder, nameInputDims, Ludo.instance().fontRenderer48);
         widgets.add(inputWidgetName);
         
-        Dimensions textDims = new Dimensions(0, 0, AnchorPoint.M, 0, -80);
-        widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:", Color4f.BLACK));
+        Dimensions ipTextDims = new Dimensions(0, 0, AnchorPoint.M, 0, -80);
+        widgets.add(new TextWidget(screenHolder, ipTextDims, Ludo.instance().fontRenderer48, "IP:", Color4f.BLACK));
         
-        Dimensions inputDimsPort = new Dimensions(500, 80, AnchorPoint.M, 0, 0);
-        inputWidgetPort = new InputWidget(screenHolder, inputDimsPort, Ludo.instance().fontRenderer48);
-        widgets.add(inputWidgetPort);
-        
-        Dimensions textDimsIP = new Dimensions(0, 0, AnchorPoint.M, 0, 100);
-        widgets.add(new TextWidget(screenHolder, textDimsIP, Ludo.instance().fontRenderer48, "IP:", Color4f.BLACK));
-        
-        Dimensions inputDimsIP = new Dimensions(500, 80, AnchorPoint.M, 0, 180);
-        inputWidgetIP = new InputWidget(screenHolder, inputDimsIP, Ludo.instance().fontRenderer48);
+        Dimensions ipInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 0);
+        inputWidgetIP = new InputWidget(screenHolder, ipInputDims, Ludo.instance().fontRenderer48);
         widgets.add(inputWidgetIP);
+        
+        Dimensions portTextDims = new Dimensions(0, 0, AnchorPoint.M, 0, 100);
+        widgets.add(new TextWidget(screenHolder, portTextDims, Ludo.instance().fontRenderer48, "Port:", Color4f.BLACK));
+        
+        Dimensions portInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 180);
+        inputWidgetPort = new InputWidget(screenHolder, portInputDims, Ludo.instance().fontRenderer48);
+        widgets.add(inputWidgetPort);
         
         Dimensions cancelDims = new Dimensions(200, 50, AnchorPoint.M, -150, 280);
         widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::cancel));
-        widgets.add(new TextWidget(screenHolder, cancelDims, Ludo.instance().fontRenderer32, "Abbruch"));
+        widgets.add(new TextWidget(screenHolder, cancelDims, Ludo.instance().fontRenderer32, "Abbruch", Color4f.BLACK));
         
         Dimensions acceptDims = new Dimensions(200, 50, AnchorPoint.M, 150, 280);
         widgets.add(new FunctionalButtonWidget(screenHolder, acceptDims, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::accept));
-        widgets.add(new TextWidget(screenHolder, acceptDims, Ludo.instance().fontRenderer32, "Fertig"));
+        widgets.add(new TextWidget(screenHolder, acceptDims, Ludo.instance().fontRenderer32, "Fertig", Color4f.BLACK));
     }
     
     private void accept()
