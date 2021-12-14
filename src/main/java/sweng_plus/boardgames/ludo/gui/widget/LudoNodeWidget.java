@@ -7,6 +7,7 @@ import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 public class LudoNodeWidget extends NodeWidget
@@ -33,14 +34,13 @@ public class LudoNodeWidget extends NodeWidget
     {
         super.render(deltaTick, mouseX, mouseY);
         
-        if(type != LudoNodeType.NEUTRAL)
+        if(type == LudoNodeType.NEUTRAL || type == LudoNodeType.HOME_ENTRANCE)
         {
-            team.getColor().glColor3fStrength(type == LudoNodeType.HOME_ENTRANCE ?
-                    0.15F : type == LudoNodeType.START ? 0.5F : 1F);
+            Color4f.WHITE.glColor4f();
         }
         else
         {
-            team.getColor().glColor3fStrength(0.1F);
+            team.getColor().glColor3fStrength(1F);
         }
         
         nodeTexture.render(

@@ -43,7 +43,7 @@ public class InputWidget extends SelectableWidget
         int y1 = dimensions.y;
         int y2 = dimensions.y + dimensions.h;
         
-        Color4f.BLACK.glColor4f();
+        Color4f.WHITE.glColor4f();
         
         glBegin(GL_QUADS);
         glVertex3f(x1, y1, 0); // Oben Links
@@ -56,7 +56,7 @@ public class InputWidget extends SelectableWidget
         int x = dimensions.x + margin; //Höhe wegen gleichem Abstand
         int y = dimensions.y + margin;
         
-        Color4f.NEUTRAL.glColor4f();
+        Color4f.BLACK.glColor4f();
         
         fontRenderer.render(x, y, stringBuilder.toString());
     }

@@ -15,6 +15,7 @@ import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.*;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
@@ -71,7 +72,7 @@ public class LudoScreen extends Screen implements ILudoScreen
         widgets.add(sentChatTextWidget = new TextWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), chatFontRenderer, ">"));
         
         widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), chatFontRenderer, (w) -> sendMessage()));
-        widgets.add(chatWidget = new ChatWidget(screenHolder, new Dimensions(chatWidth, 0, AnchorPoint.BR, 0, -chatHeight), chatFontRenderer, this::getChat));
+        widgets.add(chatWidget = new ChatWidget(screenHolder, new Dimensions(chatWidth, 0, AnchorPoint.BR, 0, -chatHeight), chatFontRenderer, this::getChat, Color4f.BLACK));
     }
     
     @Override
