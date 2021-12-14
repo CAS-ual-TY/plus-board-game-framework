@@ -2,7 +2,9 @@ package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
+import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
 import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
+import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
@@ -198,7 +200,21 @@ public class LudoScreen extends Screen implements ILudoScreen
     @Override
     public void figureSelected(int figure)
     {
+        LudoFigure selectedFigure;
+        LudoNode selectedNode;
+        
         System.out.println("Screen: figureSelected");
+        
+        
+        selectedFigure = logic.startPhaseMoveFigure(figure);
+        if(selectedFigure != null) {
+            selectedNode = logic.getTargetNode(selectedFigure);
+            if(selectedNode != null)
+            {
+                logic.endPhaseMoveFigure(selectedFigure, selectedNode).ifPresent(logic::moveFigureToOutside);
+            }
+        }
+        
         logic.endPhaseSelectFigure(figure);
         newTurn(logic.currentTeamIndex);
     }

@@ -245,7 +245,18 @@ public class LudoBoard extends NodeBoard
                 return;
             }
         }
-        
+    }
+    
+    public LudoNode getFreeOutsideNode(LudoFigure figure)
+    {
+        for(LudoNode outsideNode : getOutsideNodes(getTeamIndex(figure.getColor())))
+        {
+            if(!outsideNode.isOccupied())
+            {
+                return outsideNode;
+            }
+        }
+        return null;
     }
     
     public interface BoardCornerConsumer

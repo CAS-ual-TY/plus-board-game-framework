@@ -11,10 +11,7 @@ import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class LudoGameLogic
@@ -133,15 +130,11 @@ public class LudoGameLogic
         }
     }
     
-    public void endPhaseSelectFigure(int selectedFigure)
+    public void endPhaseSelectFigure(int figure)
     {
         System.out.println("                Logic: endPhaseSelectFigure");
+    
         
-        if(selectedFigure >= 0)
-        {
-            movableFigures.keySet().stream().filter(figure -> figure.getIndex() == selectedFigure).findFirst().ifPresent((figure) ->
-                    moveFigure(figure, (LudoNode) movableFigures.get(figure).get(0)));
-        }
         
         // maximum numbers of consecutive rolls reached (standard MIN_CONSECUTIVE_ROLLS, if no movable figures - MAX_CONSECUTIVE_ROLLS rolls
         if(latestRoll != 6 && numConsecutiveRolls >= maxCurrentConsecutiveRolls())
@@ -149,6 +142,65 @@ public class LudoGameLogic
             nextTeam();
             numConsecutiveRolls = 0;
         }
+    }
+    
+    public LudoFigure startPhaseMoveFigure(int selectedFigure)
+    {
+        System.out.println("                Logic: startPhaseMoveFigure");
+    
+        if(selectedFigure >= 0)
+        {
+            LudoFigure figure = movableFigures.keySet().stream().filter(fig -> fig.getIndex() == selectedFigure).findFirst().orElse(null);
+            if(figure != null)
+            {
+                figure.getCurrentNode().removeNodeFigure(figure);
+                figure.setCurrentNode(null);
+            }
+            return figure;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public LudoNode getTargetNode (LudoFigure figure)
+    {
+        System.out.println("                Logic: getTargetNode");
+        
+        if(figure != null)
+        {
+            return (LudoNode) movableFigures.get(figure).get(0);
+        }
+        else
+        {
+            return null;
+        }
+        
+    }
+    
+    public Optional<LudoFigure> endPhaseMoveFigure(LudoFigure figure, LudoNode target)
+    {
+        Optional<LudoFigure> prevFigure = Optional.empty();
+        System.out.println("                Logic: endPhaseMoveFigure");
+        
+        if(!target.getNodeFigures().isEmpty())
+        {
+            prevFigure = Optional.ofNullable((LudoFigure) target.getNodeFigures().get(0));
+        }
+        
+        
+        figure.move(target);
+        
+        
+        return prevFigure;
+    }
+    
+    public void moveFigureToOutside (LudoFigure figure)
+    {
+        System.out.println("                Logic: moveFigureToOutside");
+    
+        figure.move(ludoBoard.getFreeOutsideNode(figure));
     }
     
     public int roll()
