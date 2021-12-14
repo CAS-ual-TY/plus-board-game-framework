@@ -6,6 +6,7 @@ import sweng_plus.boardgames.ludo.gui.widget.SelectableFigureWidget;
 import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
+import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.io.IOException;
 
@@ -15,8 +16,11 @@ public class SelectFigureScreen extends WrappedScreen
     {
         super(subScreen);
         
-        subScreen.logic.movableFigures.keySet().stream().map(NodeFigure::getCurrentNode).map(subScreen.nodeWidgetMap::get)
-                .forEach((widget) -> widgets.add(new SelectableFigureWidget(subScreen.screenHolder, this::select, widget)));
+        subScreen.logic.movableFigures.keySet().stream().map(NodeFigure::getCurrentNode)
+                .map(subScreen.nodeWidgetMap::get)
+                .forEach((widget) -> widgets.add(
+                        new SelectableFigureWidget(subScreen.screenHolder, this::select, widget)));
+        widgets.sort(Widget.TOP_TO_BOTTOM_SORTER);
     }
     
     private void select(ButtonWidget button)

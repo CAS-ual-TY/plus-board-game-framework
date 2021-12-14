@@ -3,6 +3,8 @@ package sweng_plus.framework.userinterface.gui.widget.base;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.IWidgetParent;
 
+import java.util.Comparator;
+
 public class Widget implements IWidget
 {
     public final IScreenHolder screenHolder;
@@ -80,4 +82,21 @@ public class Widget implements IWidget
     {
         return dimensions;
     }
+    
+    public static Comparator<IWidget> TOP_TO_BOTTOM_SORTER = (w1, w2) ->
+    {
+        if(w1 instanceof Widget w11 && w2 instanceof Widget w22)
+        {
+            int comp = Integer.compare(w11.getDimensions().offY, w22.getDimensions().offY);
+            
+            if(comp == 0)
+            {
+                return Integer.compare(w11.getDimensions().offX, w22.getDimensions().offX);
+            }
+            
+            return comp;
+        }
+        
+        return 0;
+    };
 }

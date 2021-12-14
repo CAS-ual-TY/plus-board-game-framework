@@ -17,7 +17,8 @@ public class LudoNodeWidget extends NodeWidget
     protected TeamColor team;
     protected LudoNodeType type;
     
-    public LudoNodeWidget(IScreenHolder screenHolder, Dimensions dimensions, LudoNode node, Texture nodeTexture, Texture figureTexture)
+    public LudoNodeWidget(IScreenHolder screenHolder, Dimensions dimensions,
+                          LudoNode node, Texture nodeTexture, Texture figureTexture)
     {
         super(screenHolder, dimensions, node);
         this.nodeTexture = nodeTexture;
@@ -33,7 +34,8 @@ public class LudoNodeWidget extends NodeWidget
         super.render(deltaTick, mouseX, mouseY);
         
         if(type != LudoNodeType.NEUTRAL)
-            team.getColor().glColor3fStrength(type == LudoNodeType.HOME_ENTRANCE ? 0.15F : type == LudoNodeType.START ? 0.5F : 1F);
+            team.getColor().glColor3fStrength(type == LudoNodeType.HOME_ENTRANCE ?
+                    0.15F : type == LudoNodeType.START ? 0.5F : 1F);
         else
             team.getColor().glColor3fStrength(0.1F);
         
@@ -41,10 +43,11 @@ public class LudoNodeWidget extends NodeWidget
                 dimensions.x + (dimensions.w - nodeTexture.getWidth()) / 2,
                 dimensions.y + (dimensions.h - nodeTexture.getHeight()) / 2);
         
-        if(getNode().isOccupied() && getNode() instanceof LudoNode ludoNode && ludoNode.getNodeFigures().get(0) instanceof LudoFigure ludoFigure)
+        if(getNode().isOccupied() && getNode() instanceof LudoNode ludoNode &&
+                ludoNode.getNodeFigures().get(0) instanceof LudoFigure ludoFigure)
         {
             ludoFigure.getColor().getColor().glColor4f();
-            // TODO Position anpassen
+            
             figureTexture.render(
                     dimensions.x + (dimensions.w - figureTexture.getWidth()) / 2,
                     dimensions.y + (dimensions.h - figureTexture.getHeight()) / 2);

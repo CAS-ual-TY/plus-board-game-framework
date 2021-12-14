@@ -11,6 +11,7 @@ import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalTextWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,12 +30,18 @@ public class LudoScreen extends Screen implements ILudoScreen
         
         this.logic = logic;
         board = logic.getLudoBoard();
+        
         nodeWidgetMap = LudoBoardMapper.mapLudoBoard(this, board, LudoTextures.node, LudoTextures.figure);
         widgets.addAll(nodeWidgetMap.values());
+        
+        // sort widgets (nodes), render top to bottom so bottom widgets are in front
+        // and make figures render on top of nodes above (= behind) them
+        widgets.sort(Widget.TOP_TO_BOTTOM_SORTER);
+        
         thisPlayerID = -1;
         
-        widgets.add(new FunctionalTextWidget(screenHolder, new Dimensions(80, 80, AnchorPoint.TR), Ludo.instance().fontRenderer48,
-                () -> List.of(String.valueOf(logic.latestRoll)), Color4f.BLACK));
+        widgets.add(new FunctionalTextWidget(screenHolder, new Dimensions(80, 80, AnchorPoint.TR),
+                Ludo.instance().fontRenderer48, () -> List.of(String.valueOf(logic.latestRoll)), Color4f.BLACK));
     }
     
     public void requestDice()
