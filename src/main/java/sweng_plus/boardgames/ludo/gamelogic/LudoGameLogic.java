@@ -272,6 +272,15 @@ public class LudoGameLogic
             
             movableFigures.put(startFigure, ludoBoard.getForwardNodes(startFigure, roll, createMovablePredicate(startFigure)));
         }
+        else if (latestRoll == 6 && !ludoBoard.isOutsideEmpty(teams[currentTeamIndex])) {
+            for(LudoNode outsideNode : ludoBoard.getOutsideNodes(currentTeamIndex))
+            {
+                
+                if(outsideNode.isOccupied()) {
+                    movableFigures.put((LudoFigure) outsideNode.getNodeFigures().get(0), List.of(ludoBoard.getStartNode(currentTeamIndex)));
+                }
+            }
+        }
         else
         {
             for(LudoFigure teamFigure : ludoBoard.getTeamFigures(teams[currentTeamIndex]))
@@ -281,6 +290,7 @@ public class LudoGameLogic
                 {
                     movableFigures.put(teamFigure, forwardNodes);
                 }
+                // not needed until customs rules are implemented
                 else if(latestRoll == 6 && ((LudoNode) teamFigure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
                 {
                     movableFigures.put(teamFigure, List.of(ludoBoard.getStartNode(currentTeamIndex)));
