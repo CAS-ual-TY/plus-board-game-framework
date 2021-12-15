@@ -13,8 +13,8 @@ public class FigureAnimationScreen extends LudoExtensionScreen
     protected Runnable onEnd;
     protected FigureAnimationWidget animationWidget;
     
-    public FigureAnimationScreen(LudoScreen subScreen, Runnable onEnd, int figure, LudoFigure selectedFigure,
-                                 LudoNode startNode, LudoNode endNode)
+    public FigureAnimationScreen(LudoScreen subScreen, Runnable onEnd, LudoFigure selectedFigure, LudoNode startNode,
+                                 LudoNode endNode, boolean accelerate, boolean decelerate, boolean rotate)
     {
         super(subScreen);
         
@@ -24,16 +24,20 @@ public class FigureAnimationScreen extends LudoExtensionScreen
         
         if(startNode.getNodeType() == LudoNodeType.OUTSIDE)
         {
-            timer = 20;
+            timer = 15;
+        }
+        else if(endNode.getNodeType() == LudoNodeType.OUTSIDE)
+        {
+            timer = 30;
         }
         else
         {
-            timer = subScreen.logic.latestRoll * 10;
+            timer = Math.min(25, subScreen.logic.latestRoll * 10);
         }
         
         widgets.add(animationWidget = new FigureAnimationWidget(screenHolder, new Dimensions(AnchorPoint.M), selectedFigure,
                 LudoTextures.figure, subScreen.nodeWidgetMap.get(startNode), subScreen.nodeWidgetMap.get(endNode),
-                timer));
+                timer, accelerate, decelerate, rotate));
     }
     
     @Override

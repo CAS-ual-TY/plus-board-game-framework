@@ -12,6 +12,8 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 public class LudoNodeWidget extends NodeWidget
 {
+    public static final int FIGURE_TEXTURE_OFFSET = 24;
+    
     protected Texture nodeTexture;
     protected Texture figureTexture;
     
@@ -54,7 +56,7 @@ public class LudoNodeWidget extends NodeWidget
             
             figureTexture.render(
                     dimensions.x + (dimensions.w - figureTexture.getWidth()) / 2,
-                    dimensions.y + (dimensions.h - figureTexture.getHeight()) / 2);
+                    dimensions.y + (dimensions.h - figureTexture.getHeight()) / 2 - FIGURE_TEXTURE_OFFSET);
         }
     }
 }
