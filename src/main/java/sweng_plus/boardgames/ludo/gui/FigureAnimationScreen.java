@@ -4,14 +4,9 @@ import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
-import sweng_plus.boardgames.ludo.gui.widget.DiceAnimationWidget;
 import sweng_plus.boardgames.ludo.gui.widget.FigureAnimationWidget;
-import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
-import sweng_plus.framework.userinterface.gui.widget.base.Widget;
-
-import java.util.function.Consumer;
 
 public class FigureAnimationScreen extends LudoExtensionScreen
 {
@@ -24,9 +19,9 @@ public class FigureAnimationScreen extends LudoExtensionScreen
         super(subScreen);
         
         this.onEnd = onEnd;
-    
+        
         int timer;
-    
+        
         if(startNode.getNodeType() == LudoNodeType.OUTSIDE)
         {
             timer = 20;
@@ -35,7 +30,7 @@ public class FigureAnimationScreen extends LudoExtensionScreen
         {
             timer = subScreen.logic.latestRoll * 10;
         }
-    
+        
         widgets.add(animationWidget = new FigureAnimationWidget(screenHolder, new Dimensions(AnchorPoint.M), selectedFigure,
                 LudoTextures.figure, subScreen.nodeWidgetMap.get(startNode), subScreen.nodeWidgetMap.get(endNode),
                 timer));

@@ -9,8 +9,6 @@ import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-import java.util.function.Consumer;
-
 public class FigureAnimationWidget extends Widget
 {
     public static final int ANIMATION_SPEED = 2;

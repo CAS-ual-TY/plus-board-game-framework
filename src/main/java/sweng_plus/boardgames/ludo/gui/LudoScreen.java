@@ -1,12 +1,14 @@
 package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gamelogic.*;
+import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
+import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
+import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
+import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.ChatWidget;
-import sweng_plus.boardgames.ludo.gui.widget.FigureAnimationWidget;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
@@ -160,10 +162,10 @@ public class LudoScreen extends Screen implements ILudoScreen
         if(!logic.gameWon)
         {
             System.out.println("Screen: newTurn");
-    
+            
             logic.setTurnTeam(turnTeam);
             logic.startPhaseRoll();
-    
+            
             if(logic.currentTeamIndex == thisPlayerID)
             {
                 requestDice();
@@ -232,7 +234,7 @@ public class LudoScreen extends Screen implements ILudoScreen
     public void gameWon(int winningTeamIndex)
     {
         System.out.println("Screen: gameWon");
-    
+        
         screenHolder.setScreen(new WinScreen(this, logic.teams[winningTeamIndex].getName()));
         
         logic.gameWon = true;
