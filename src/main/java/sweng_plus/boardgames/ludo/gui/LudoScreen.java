@@ -207,23 +207,10 @@ public class LudoScreen extends Screen implements ILudoScreen
             LudoNode startNode = (LudoNode) selectedFigure.getCurrentNode();
             LudoNode endNode = logic.getTargetNode(selectedFigure);
             
-            int timer;
-            
-            if(startNode.getNodeType() == LudoNodeType.OUTSIDE)
-            {
-                timer = 20;
-            }
-            else
-            {
-                timer = logic.latestRoll * 10;
-            }
-            
             logic.startPhaseMoveFigure(figure);
             
-            Consumer<Widget> onEnd = (w) ->
+            Runnable onEnd = () ->
             {
-                widgets.remove(w);
-                
                 logic.endPhaseMoveFigure(selectedFigure, endNode).ifPresent(logic::moveFigureToOutside);
                 
                 logic.endPhaseSelectFigure(figure);
@@ -231,9 +218,7 @@ public class LudoScreen extends Screen implements ILudoScreen
                 newTurn(logic.currentTeamIndex);
             };
             
-            widgets.add(new FigureAnimationWidget(screenHolder, new Dimensions(AnchorPoint.M), selectedFigure,
-                    LudoTextures.figure, nodeWidgetMap.get(startNode), nodeWidgetMap.get(endNode), onEnd,
-                    timer));
+            screenHolder.setScreen(new FigureAnimationScreen(this, onEnd, figure, selectedFigure, startNode, endNode));
         }
         else
         {

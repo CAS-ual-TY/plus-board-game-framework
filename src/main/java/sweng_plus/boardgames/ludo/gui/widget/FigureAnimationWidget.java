@@ -19,20 +19,18 @@ public class FigureAnimationWidget extends Widget
     protected Texture figureTexture;
     protected LudoNodeWidget startNode;
     protected LudoNodeWidget endNode;
-    protected Consumer<Widget> onEnd;
     
     protected int timer;
     protected int animationLength;
     
     public FigureAnimationWidget(IScreenHolder screenHolder, Dimensions dimensions, LudoFigure figure, Texture figureTexture,
-                                 LudoNodeWidget startNode, LudoNodeWidget endNode, Consumer<Widget> onEnd, int animationLength)
+                                 LudoNodeWidget startNode, LudoNodeWidget endNode, int animationLength)
     {
         super(screenHolder, dimensions);
         this.figure = figure;
         this.figureTexture = figureTexture;
         this.startNode = startNode;
         this.endNode = endNode;
-        this.onEnd = onEnd;
         this.animationLength = animationLength;
     }
     
@@ -62,11 +60,6 @@ public class FigureAnimationWidget extends Widget
     public void update(int mouseX, int mouseY)
     {
         timer += ANIMATION_SPEED;
-        
-        if(hasEnded())
-        {
-            onEnd.accept(this);
-        }
     }
     
     public boolean hasEnded()
