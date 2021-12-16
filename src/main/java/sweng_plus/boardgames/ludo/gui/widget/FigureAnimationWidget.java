@@ -44,12 +44,6 @@ public class FigureAnimationWidget extends Widget
     @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        /*Vector2d startPos = new Vector2d(startNode.getDimensions().x, startNode.getDimensions().y)
-                .add((startNode.getDimensions().w - figureTexture.getWidth()) / 2D,
-                        (startNode.getDimensions().h - figureTexture.getHeight()) / 2D);
-        Vector2d endPos = new Vector2d(endNode.getDimensions().x, endNode.getDimensions().y)
-                .add((endNode.getDimensions().w - figureTexture.getWidth()) / 2D,
-                        (endNode.getDimensions().h - figureTexture.getHeight()) / 2D);*/
         Vector2d startPos = new Vector2d(startNode.getDimensions().x, startNode.getDimensions().y)
                 .add(0, -LudoNodeWidget.FIGURE_TEXTURE_OFFSET);
         Vector2d endPos = new Vector2d(endNode.getDimensions().x, endNode.getDimensions().y)
