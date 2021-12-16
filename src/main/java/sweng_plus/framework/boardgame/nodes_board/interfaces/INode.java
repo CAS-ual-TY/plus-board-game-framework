@@ -21,25 +21,25 @@ public interface INode<F extends INodeFigure<N, F>, N extends INode<F, N>>
         return getDistantNodes(distance, predicate, this, INode::getForwardNodes);
     }
     
-    void addForwardNode(N forwardNode);
+    void addForwardNode(N node);
     
-    default void addForwardNodes(List<N> forwardNodes)
+    default void addForwardNodes(List<N> nodes)
     {
-        forwardNodes.forEach(this::addForwardNode);
+        nodes.forEach(this::addForwardNode);
     }
     
-    void removeForwardNode(N forwardNode);
+    void removeForwardNode(N node);
     
     List<N> getBackwardNodes();
     
-    void addBackwardNode(N backwardNode);
+    void addBackwardNode(N node);
     
-    default void addBackwardNodes(List<N> backwardNodes)
+    default void addBackwardNodes(List<N> nodes)
     {
-        backwardNodes.forEach(this::addBackwardNode);
+        nodes.forEach(this::addBackwardNode);
     }
     
-    void removeBackwardNode(N backwardNode);
+    void removeBackwardNode(N node);
     
     default List<N> getBackwardNodes(Predicate<N> predicate)
     {

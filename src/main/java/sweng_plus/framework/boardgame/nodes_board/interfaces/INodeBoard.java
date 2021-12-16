@@ -7,7 +7,7 @@ public interface INodeBoard<N extends INode<F, N>, F extends INodeFigure<N, F>>
 {
     List<N> getNodes();
     
-    List<F> getNodeFigures();
+    List<F> getFigures();
     
     void addNode(N node);
     
@@ -16,11 +16,11 @@ public interface INodeBoard<N extends INode<F, N>, F extends INodeFigure<N, F>>
         nodes.forEach(this::addNode);
     }
     
-    void addNodeFigure(F figure);
+    void addFigure(F figure);
     
     default void addNodeFigures(List<F> figures)
     {
-        figures.forEach(this::addNodeFigure);
+        figures.forEach(this::addFigure);
     }
     
     boolean isNodeOnBoard(N node);
