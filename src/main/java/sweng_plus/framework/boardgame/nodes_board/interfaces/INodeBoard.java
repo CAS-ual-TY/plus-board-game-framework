@@ -62,7 +62,11 @@ public interface INodeBoard<N extends INode<F, N>, F extends INodeFigure<N, F>>
             return;
         }
         
-        figure.getCurrentNode().removeFigure(figure);
+        if(figure.getCurrentNode() != null)
+        {
+            figure.getCurrentNode().removeFigure(figure);
+        }
+        
         figure.setCurrentNode(target);
         target.addFigure(figure);
     }
