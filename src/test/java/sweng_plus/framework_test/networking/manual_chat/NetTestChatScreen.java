@@ -1,6 +1,5 @@
 package sweng_plus.framework_test.networking.manual_chat;
 
-import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.StackedScreen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
@@ -41,10 +40,10 @@ public class NetTestChatScreen extends StackedScreen
             Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
             
-            widgets.add(new FunctionalButtonWidget(screenHolder, leaveDimensions, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::leave));
+            widgets.add(new FunctionalButtonWidget(screenHolder, leaveDimensions, new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive)), this::leave));
             widgets.add(new TextWidget(screenHolder, leaveDimensions, chatFontRenderer, "Leave"));
             
-            widgets.add(new FunctionalButtonWidget(screenHolder, sendDimensions, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::sendMessage));
+            widgets.add(new FunctionalButtonWidget(screenHolder, sendDimensions, new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive)), this::sendMessage));
             widgets.add(new TextWidget(screenHolder, sendDimensions, chatFontRenderer, ">"));
         }
         catch(IOException e)

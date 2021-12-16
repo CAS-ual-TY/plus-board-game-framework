@@ -1,13 +1,14 @@
 package sweng_plus.framework_test.networking.manual_chat;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.IGame;
+import sweng_plus.framework.networking.AdvancedMessageRegistry;
 import sweng_plus.framework.networking.Client;
-import sweng_plus.framework.networking.MessageRegistry;
+import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
 import sweng_plus.framework.networking.interfaces.IClientManager;
 import sweng_plus.framework.networking.interfaces.IHostManager;
-import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
 import sweng_plus.framework.userinterface.gui.font.FontInfo;
@@ -29,7 +30,8 @@ public class NetTestGame implements IGame
     public FontRenderer fontRenderer24;
     public FontRenderer fontRenderer16;
     
-    public IMessageRegistry<Client> protocol;
+    public IAdvancedMessageRegistry<Client> protocol;
+    public NetTestEventsListener listener;
     
     public IClientManager clientManager;
     public IHostManager<Client> hostManager;
@@ -76,9 +78,13 @@ public class NetTestGame implements IGame
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ESCAPE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ENTER);
         
-        protocol = new MessageRegistry<>(8);
-        protocol.registerMessage((byte) 0, NetTestMessage.Handler::encodeMessage, NetTestMessage.Handler::decodeMessage,
+        listener = new NetTestEventsListener();
+        
+        protocol = new AdvancedMessageRegistry<>(8, (byte) 0, (byte) 1, (byte) 2, () -> clientManager, () -> hostManager, listener, listener);
+        protocol.registerMessage((byte) 3, NetTestMessage.Handler::encodeMessage, NetTestMessage.Handler::decodeMessage,
                 NetTestMessage.Handler::handleMessage, NetTestMessage.class);
+        
+        GL11.glClearColor(0.5F, 0.5F, 1F, 1F);
     }
     
     @Override
