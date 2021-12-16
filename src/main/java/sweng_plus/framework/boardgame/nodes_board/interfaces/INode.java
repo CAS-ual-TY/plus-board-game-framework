@@ -1,74 +1,75 @@
 package sweng_plus.framework.boardgame.nodes_board.interfaces;
 
-import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
-
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface INode
+public interface INode<F extends INodeFigure<N, F>, N extends INode<F, N>>
 {
-    List<INode> getForwardNodes();
+    List<N> getForwardNodes();
     
-    default List<INode> getForwardNodes(Predicate<INode> predicate)
+    default List<N> getForwardNodes(Predicate<N> predicate)
     {
         return getForwardNodes().stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
     }
     
-    default List<INode> getDistantForwardNodes(int distance, Predicate<INode> predicate)
+    default List<N> getDistantForwardNodes(int distance, Predicate<N> predicate)
     {
         return getDistantNodes(distance, predicate, this, INode::getForwardNodes);
     }
     
-    void addForwardNode(INode forwardNode);
+    void addForwardNode(N forwardNode);
     
-    default void addForwardNodes(List<INode> forwardNodes)
+    default void addForwardNodes(List<N> forwardNodes)
     {
         forwardNodes.forEach(this::addForwardNode);
     }
     
-    void removeForwardNode(INode forwardNode);
+    void removeForwardNode(N forwardNode);
     
-    List<INode> getBackwardNodes();
+    List<N> getBackwardNodes();
     
-    void addBackwardNode(INode backwardNode);
+    void addBackwardNode(N backwardNode);
     
-    default void addBackwardNodes(List<INode> backwardNodes)
+    default void addBackwardNodes(List<N> backwardNodes)
     {
         backwardNodes.forEach(this::addBackwardNode);
     }
     
-    void removeBackwardNode(INode backwardNode);
+    void removeBackwardNode(N backwardNode);
     
-    default List<INode> getBackwardNodes(Predicate<INode> predicate)
+    default List<N> getBackwardNodes(Predicate<N> predicate)
     {
         return getBackwardNodes().stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
     }
     
-    default List<INode> getDistantBackwardNodes(int distance, Predicate<INode> predicate)
+    default List<N> getDistantBackwardNodes(int distance, Predicate<N> predicate)
     {
         return getDistantNodes(distance, predicate, this, INode::getBackwardNodes);
     }
     
-    List<NodeFigure> getNodeFigures();
+    List<F> getFigures();
     
-    void addNodeFigure(NodeFigure fieldFigure);
+    void addFigure(F figure);
     
-    default void addNodeFigures(List<NodeFigure> fieldFigures)
+    default void addFigures(List<F> figures)
     {
-        fieldFigures.forEach(this::addNodeFigure);
+        figures.forEach(this::addFigure);
     }
     
-    void removeNodeFigure(NodeFigure fieldFigure);
+    void removeFigure(F figure);
     
-    default boolean isOccupied() {return getNodeFigures().size() > 0;}
+    default boolean isOccupied()
+    {
+        return getFigures().size() > 0;
+    }
     
-    static List<INode> getDistantNodes(int distance, Predicate<INode> predicate, INode currentNode, BiFunction<INode, Predicate<INode>, List<INode>> function)
+    static <F extends INodeFigure<N, F>, N extends INode<F, N>> List<N> getDistantNodes(int distance, Predicate<N> predicate, INode<F, N> currentNode, BiFunction<INode<F, N>, Predicate<N>, List<N>> function)
     {
         if(distance < 1)
         {
@@ -90,13 +91,13 @@ public interface INode
         }
     }
     
-    static void linkNodes(INode from, INode to)
+    static <F extends INodeFigure<N, F>, N extends INode<F, N>> void linkNodes(N from, N to)
     {
         from.addForwardNode(to);
         to.addBackwardNode(from);
     }
     
-    static void unlinkNodes(INode from, INode to)
+    static <F extends INodeFigure<N, F>, N extends INode<F, N>> void unlinkNodes(N from, N to)
     {
         from.removeForwardNode(to);
         to.removeBackwardNode(from);

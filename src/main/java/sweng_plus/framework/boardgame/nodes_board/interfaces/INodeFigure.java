@@ -1,10 +1,8 @@
 package sweng_plus.framework.boardgame.nodes_board.interfaces;
 
-public interface INodeFigure
+public interface INodeFigure<N extends INode<F, N>, F extends INodeFigure<N, F>>
 {
-    INode getCurrentNode();
+    N getCurrentNode();
     
-    void setCurrentNode(INode node);
-    
-    void move(INode node);
+    void setCurrentNode(N node);
 }
