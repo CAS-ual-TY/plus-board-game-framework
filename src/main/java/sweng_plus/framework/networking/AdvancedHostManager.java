@@ -1,9 +1,10 @@
-package sweng_plus.framework.networking.util;
+package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.HostManager;
 import sweng_plus.framework.networking.interfaces.IAdvancedHostEventsListener;
 import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
 import sweng_plus.framework.networking.interfaces.IClient;
+import sweng_plus.framework.networking.util.IClientFactory;
 
 import java.io.IOException;
 
