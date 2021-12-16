@@ -3,21 +3,19 @@ package sweng_plus.framework.boardgame.nodes_board;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeFigure;
 
-import java.util.List;
-
-public class TeamNode<F extends INodeFigure<N, F>, N extends INode<F, N>> extends Node<F, N>
+public class TeamNodeFigure<N extends INode<F, N>, F extends INodeFigure<N, F>> extends NodeFigure<N, F>
 {
-    protected TeamColor team;
+    private TeamColor team;
     
-    public TeamNode(TeamColor team)
+    public TeamNodeFigure(TeamColor team)
     {
         super();
         this.team = team;
     }
     
-    public TeamNode(TeamColor team, List<N> forwardNodes, List<N> backwardNodes, List<F> figures)
+    public TeamNodeFigure(N currentNode, TeamColor team)
     {
-        super(forwardNodes, backwardNodes, figures);
+        super(currentNode);
         this.team = team;
     }
     

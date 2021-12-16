@@ -1,76 +1,80 @@
 package sweng_plus.framework.boardgame.nodes_board;
 
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
+import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeFigure;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Node implements INode
+public class Node<F extends INodeFigure<N, F>, N extends INode<F, N>> implements INode<F, N>
 {
-    private final List<INode> forwardNodes;
-    private final List<INode> backwardNodes;
-    private final List<NodeFigure> fieldFigures;
+    private final List<N> forwardNodes;
+    private final List<N> backwardNodes;
+    private final List<F> figures;
+    
+    public Node(List<N> forwardNodes, List<N> backwardNodes, List<F> figures)
+    {
+        this.forwardNodes = forwardNodes;
+        this.backwardNodes = backwardNodes;
+        this.figures = figures;
+    }
     
     public Node()
     {
-        forwardNodes = new LinkedList<>();
-        backwardNodes = new LinkedList<>();
-        fieldFigures = new LinkedList<>();
+        this(new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
     }
     
     @Override
-    public List<INode> getForwardNodes()
+    public List<N> getForwardNodes()
     {
         return forwardNodes;
     }
     
     @Override
-    public void addForwardNode(INode forwardNode)
+    public void addForwardNode(N node)
     {
-        forwardNodes.add(forwardNode);
+        forwardNodes.add(node);
     }
     
     @Override
-    public void removeForwardNode(INode forwardNode)
+    public void removeForwardNode(N node)
     {
-        forwardNodes.remove(forwardNode);
+        forwardNodes.remove(node);
     }
     
     @Override
-    public List<INode> getBackwardNodes()
+    public List<N> getBackwardNodes()
     {
         return backwardNodes;
     }
     
     @Override
-    public void addBackwardNode(INode backwardNode)
+    public void addBackwardNode(N node)
     {
-        backwardNodes.add(backwardNode);
+        backwardNodes.add(node);
     }
     
     @Override
-    public void removeBackwardNode(INode backwardNode)
+    public void removeBackwardNode(N node)
     {
-        backwardNodes.remove(backwardNode);
+        backwardNodes.remove(node);
     }
     
     @Override
-    public List<NodeFigure> getNodeFigures()
+    public List<F> getFigures()
     {
-        return fieldFigures;
+        return figures;
     }
     
     @Override
-    public void addNodeFigure(NodeFigure fieldFigure)
+    public void addFigure(F figure)
     {
-        fieldFigures.add(fieldFigure);
-        fieldFigure.setCurrentNode(this);
+        figures.add(figure);
     }
     
     @Override
-    public void removeNodeFigure(NodeFigure fieldFigure)
+    public void removeFigure(F figure)
     {
-        fieldFigures.remove(fieldFigure);
-        fieldFigure.setCurrentNode(null);
+        figures.remove(figure);
     }
 }

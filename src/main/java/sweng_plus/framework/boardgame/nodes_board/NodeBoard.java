@@ -1,21 +1,21 @@
 package sweng_plus.framework.boardgame.nodes_board;
 
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
+import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeBoard;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeFigure;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Predicate;
 
-public class NodeBoard
+public class NodeBoard<N extends INode<F, N>, F extends INodeFigure<N, F>> implements INodeBoard<N, F>
 {
-    protected final List<INode> nodes;
-    protected final List<INodeFigure> fieldFigures;
+    protected final List<N> nodes;
+    protected final List<F> figures;
     
-    public NodeBoard(List<INode> nodes, List<INodeFigure> fieldFigures)
+    public NodeBoard(List<N> nodes, List<F> figures)
     {
         this.nodes = nodes;
-        this.fieldFigures = fieldFigures;
+        this.figures = figures;
     }
     
     public NodeBoard()
@@ -23,115 +23,39 @@ public class NodeBoard
         this(new LinkedList<>(), new LinkedList<>());
     }
     
-    public List<INode> getNodes()
+    @Override
+    public List<N> getNodes()
     {
         return nodes;
     }
     
-    public List<INodeFigure> getNodeFigures()
+    @Override
+    public List<F> getFigures()
     {
-        return fieldFigures;
+        return figures;
     }
     
-    protected void addNodeFigure(INodeFigure figure)
-    {
-        fieldFigures.add(figure);
-    }
-    
-    protected void addAllNodeFigures(List<? extends INodeFigure> figure)
-    {
-        fieldFigures.addAll(figure);
-    }
-    
-    protected void addNode(INode node)
+    @Override
+    public void addNode(N node)
     {
         nodes.add(node);
     }
     
-    protected void addAllNodes(List<? extends INode> nodes)
+    @Override
+    public void addFigure(F figure)
     {
-        this.nodes.addAll(nodes);
+        figures.add(figure);
     }
     
-    public List<INode> getForwardNodes(INode start, int distance, Predicate<INode> predicate)
+    @Override
+    public boolean isNodeOnBoard(N node)
     {
-        if(!nodes.contains(start))
-        {   // Node not on board
-            return new LinkedList<>();
-        }
-        return start.getDistantForwardNodes(distance, predicate);
+        return nodes.contains(node);
     }
     
-    public List<INode> getForwardNodes(INode start)
+    @Override
+    public boolean isFigureOnBoard(F figure)
     {
-        if(!nodes.contains(start))
-        {   // Node not on board
-            return new LinkedList<>();
-        }
-        return start.getForwardNodes();
-    }
-    
-    public List<INode> getForwardNodes(NodeFigure figure, int distance, Predicate<INode> predicate)
-    {
-        if(!fieldFigures.contains(figure))
-        {   // Figure not on board
-            return new LinkedList<>();
-        }
-        return figure.getCurrentNode().getDistantForwardNodes(distance, predicate);
-    }
-    
-    public List<INode> getForwardNodes(NodeFigure figure)
-    {
-        if(!fieldFigures.contains(figure))
-        {   // Figure not on board
-            return new LinkedList<>();
-        }
-        return figure.getCurrentNode().getForwardNodes();
-    }
-    
-    
-    public List<INode> getBackwardNodes(INode start, int distance, Predicate<INode> predicate)
-    {
-        if(!nodes.contains(start))
-        {   // Node not on board
-            return new LinkedList<>();
-        }
-        return start.getDistantBackwardNodes(distance, predicate);
-    }
-    
-    public List<INode> getBackwardNodes(INode start)
-    {
-        if(!nodes.contains(start))
-        {   // Node not on board
-            return new LinkedList<>();
-        }
-        return start.getBackwardNodes();
-    }
-    
-    public List<INode> getBackwardNodes(NodeFigure figure, int distance, Predicate<INode> predicate)
-    {
-        if(!fieldFigures.contains(figure))
-        {   // Figure not on board
-            return new LinkedList<>();
-        }
-        return figure.getCurrentNode().getDistantBackwardNodes(distance, predicate);
-    }
-    
-    public List<INode> getAllBackwardNodes(NodeFigure figure)
-    {
-        if(!fieldFigures.contains(figure))
-        {   // Figure not on board
-            return new LinkedList<>();
-        }
-        return figure.getCurrentNode().getBackwardNodes();
-    }
-    
-    public void moveFigure(NodeFigure figure, INode target)
-    {
-        if(!(fieldFigures.contains(figure) || nodes.contains(target)))
-        {   // Figure not on board
-            return;
-        }
-        figure.move(target);
+        return figures.contains(figure);
     }
 }

@@ -3,42 +3,29 @@ package sweng_plus.framework.boardgame.nodes_board;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeFigure;
 
-public class NodeFigure implements INodeFigure
+public class NodeFigure<N extends INode<F, N>, F extends INodeFigure<N, F>> implements INodeFigure<N, F>
 {
-    private INode currentNode;
-    private TeamColor color;
+    private N currentNode;
     
-    public NodeFigure(INode currentNode, TeamColor color)
+    public NodeFigure(N currentNode)
     {
         this.currentNode = currentNode;
-        this.color = color;
     }
     
-    public NodeFigure(TeamColor color)
+    public NodeFigure()
     {
-        this(null, color);
-    }
-    
-    public TeamColor getColor()
-    {
-        return color;
+        this(null);
     }
     
     @Override
-    public INode getCurrentNode()
+    public N getCurrentNode()
     {
         return currentNode;
     }
     
     @Override
-    public void setCurrentNode(INode node)
+    public void setCurrentNode(N node)
     {
         currentNode = node;
-    }
-    
-    @Override
-    public void move(INode node)
-    {
-        setCurrentNode(node);
     }
 }
