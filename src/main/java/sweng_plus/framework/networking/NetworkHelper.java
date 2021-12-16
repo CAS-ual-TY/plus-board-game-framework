@@ -58,4 +58,14 @@ public class NetworkHelper
         thread.start();
         return clientManager;
     }
+    
+    public static <C extends IClient> IClientManager advancedConnect(IAdvancedMessageRegistry<C> registry,
+                                                                     IAdvancedClientEventsListener eventsListener,
+                                                                     String ip, int port) throws IOException
+    {
+        AdvancedClientManager<C> clientManager = new AdvancedClientManager<>(registry, eventsListener, ip, port);
+        Thread thread = new Thread(clientManager);
+        thread.start();
+        return clientManager;
+    }
 }
