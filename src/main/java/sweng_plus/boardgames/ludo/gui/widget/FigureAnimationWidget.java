@@ -70,7 +70,7 @@ public class FigureAnimationWidget extends Widget
         
         if(rotate)
         {
-            GL11.glRotatef(360F * (float) relativePos, 0F, 0F, -1F);
+            GL11.glRotatef(2 * 360F * (float) relativePos, 0F, 0F, -1F);
         }
         
         GL11.glTranslatef((float) -figureTexture.getWidth() / 2F,
