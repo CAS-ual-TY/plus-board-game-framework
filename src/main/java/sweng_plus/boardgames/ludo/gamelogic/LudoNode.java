@@ -3,7 +3,7 @@ package sweng_plus.boardgames.ludo.gamelogic;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.boardgame.nodes_board.TeamNode;
 
-public class LudoNode extends TeamNode
+public class LudoNode extends TeamNode<LudoFigure, LudoNode>
 {
     private final LudoNodeType nodeType;
     

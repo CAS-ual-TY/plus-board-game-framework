@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LudoBoard extends NodeBoard
+public class LudoBoard extends NodeBoard<LudoNode, LudoFigure>
 {
     public static final int HOUSES_PER_CORNER = 4;
     public static final int NEUTRAL_NODES_PER_CORNER = 8;
@@ -70,7 +70,7 @@ public class LudoBoard extends NodeBoard
             createBoardCorner(teamColors[finalI], (cornerOutside, cornerStart, cornerHomeEntrance, cornerHome, cornerLast, allNodes, figures) ->
             {
                 ludoTeams[finalI] = new LudoTeam(teamColors[finalI], figures, cornerOutside, cornerStart, cornerHomeEntrance, cornerHome, cornerLast, allNodes);
-                addAllNodes(allNodes);
+                addNodes(allNodes);
                 
                 if(ludoTeams.length == 2)
                 {
@@ -221,7 +221,7 @@ public class LudoBoard extends NodeBoard
     public boolean isOwnStartOccupied(TeamColor team)
     {
         LudoNode startNode = ludoTeams[getTeamIndex(team)].start();
-        return startNode.isOccupied() && startNode.getFigures().get(0).getColor().equals(team);
+        return startNode.isOccupied() && startNode.getFigures().get(0).getTeam().equals(team);
     }
     
     private static LudoFigure[] createFigures(TeamColor teamColor, List<LudoNode> nodes)
@@ -230,7 +230,7 @@ public class LudoBoard extends NodeBoard
         for(int i = 0; i < nodes.size(); i++)
         {
             figures[i] = new LudoFigure(nodes.get(i), teamColor, i);
-            nodes.get(i).addNodeFigure(figures[i]);
+            nodes.get(i).addFigure(figures[i]);
         }
         return figures;
     }

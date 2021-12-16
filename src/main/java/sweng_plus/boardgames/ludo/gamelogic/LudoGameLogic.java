@@ -3,9 +3,7 @@ package sweng_plus.boardgames.ludo.gamelogic;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.framework.boardgame.nodes_board.Dice;
-import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
-import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
 import java.io.IOException;
 import java.util.*;
@@ -25,7 +23,7 @@ public class LudoGameLogic
     public LudoTurnPhase currentTurnPhase;
     
     public int latestRoll;
-    public Map<LudoFigure, List<INode>> movableFigures;
+    public Map<LudoFigure, List<LudoNode>> movableFigures;
     
     public boolean gameWon;
     
@@ -131,7 +129,8 @@ public class LudoGameLogic
     {
         System.out.println("                Logic: endPhaseSelectFigure");
         
-        if(isServer && isGameWon(currentTeamIndex)) {
+        if(isServer && isGameWon(currentTeamIndex))
+        {
             try
             {
                 Ludo.instance().getHostManager().sendMessageToAllClients(
@@ -183,7 +182,7 @@ public class LudoGameLogic
         
         if(figure != null)
         {
-            return (LudoNode) movableFigures.get(figure).get(0);
+            return movableFigures.get(figure).get(0);
         }
         else
         {
@@ -199,11 +198,10 @@ public class LudoGameLogic
         
         if(!target.getFigures().isEmpty())
         {
-            prevFigure = Optional.ofNullable((LudoFigure) target.getFigures().get(0));
+            prevFigure = Optional.ofNullable(target.getFigures().get(0));
         }
         
-        figure.move(target);
-        target.addNodeFigure(figure);
+        ludoBoard.moveFigure(figure, target);
         
         return prevFigure;
     }
@@ -212,12 +210,11 @@ public class LudoGameLogic
     {
         
         System.out.println("                Logic: moveFigureToOutside");
-    
+        
         LudoNode outsideNode = ludoBoard.getFreeOutsideNode(figure);
         figure.getCurrentNode().removeFigure(figure);
-        figure.move(outsideNode);
-        outsideNode.addNodeFigure(figure);
-    
+        ludoBoard.moveFigure(figure, outsideNode);
+        
     }
     
     public int roll()
@@ -230,11 +227,11 @@ public class LudoGameLogic
         this.latestRoll = latestRoll;
     }
     
-    public void moveFigure(NodeFigure figure, LudoNode selectedNode)
+    public void moveFigure(LudoFigure figure, LudoNode selectedNode)
     {
         if(selectedNode.isOccupied())
         {
-            ludoBoard.moveFigureToOutside((LudoFigure) selectedNode.getFigures().get(0));
+            ludoBoard.moveFigureToOutside(selectedNode.getFigures().get(0));
         }
         ludoBoard.moveFigure(figure, selectedNode);
     }
@@ -261,14 +258,14 @@ public class LudoGameLogic
         
         // All Figures don't further impact the diceResult count
         List<LudoFigure> remainingTeamFigures = Arrays.stream(ludoBoard.getTeamFigures(currentTeam))
-                .filter((figure) -> ((LudoNode) figure.getCurrentNode()).getNodeType() != LudoNodeType.OUTSIDE)
+                .filter((figure) -> (figure.getCurrentNode()).getNodeType() != LudoNodeType.OUTSIDE)
                 .toList();
         
         // Check for figures remaining on the board
         for(LudoFigure figure : remainingTeamFigures)
         {
             // At least one figure out on the board
-            if(((LudoNode) figure.getCurrentNode()).getNodeType() != LudoNodeType.HOME)
+            if((figure.getCurrentNode()).getNodeType() != LudoNodeType.HOME)
             {
                 return MIN_CONSECUTIVE_ROLLS;
             }
@@ -337,13 +334,13 @@ public class LudoGameLogic
         }
     }
     
-    private Map<LudoFigure, List<INode>> getMovableFigures(int roll)
+    private Map<LudoFigure, List<LudoNode>> getMovableFigures(int roll)
     {
-        Map<LudoFigure, List<INode>> movableFigures = new HashMap<>(4);
+        Map<LudoFigure, List<LudoNode>> movableFigures = new HashMap<>(4);
         
         if(mustMoveFromStart(teams[currentTeamIndex]))
         {
-            LudoFigure startFigure = (LudoFigure) ludoBoard.getStartNode(currentTeamIndex).getFigures().get(0);
+            LudoFigure startFigure = ludoBoard.getStartNode(currentTeamIndex).getFigures().get(0);
             
             movableFigures.put(startFigure, ludoBoard.getForwardNodes(startFigure, roll, createMovablePredicate(startFigure)));
         }
@@ -354,7 +351,7 @@ public class LudoGameLogic
                 
                 if(outsideNode.isOccupied())
                 {
-                    movableFigures.put((LudoFigure) outsideNode.getFigures().get(0), List.of(ludoBoard.getStartNode(currentTeamIndex)));
+                    movableFigures.put(outsideNode.getFigures().get(0), List.of(ludoBoard.getStartNode(currentTeamIndex)));
                 }
             }
         }
@@ -362,13 +359,13 @@ public class LudoGameLogic
         {
             for(LudoFigure teamFigure : ludoBoard.getTeamFigures(teams[currentTeamIndex]))
             {
-                List<INode> forwardNodes = ludoBoard.getForwardNodes(teamFigure, roll, createMovablePredicate(teamFigure));
+                List<LudoNode> forwardNodes = ludoBoard.getForwardNodes(teamFigure, roll, createMovablePredicate(teamFigure));
                 if(forwardNodes.size() > 0)
                 {
                     movableFigures.put(teamFigure, forwardNodes);
                 }
                 // not needed until customs rules are implemented
-                else if(latestRoll == 6 && ((LudoNode) teamFigure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
+                else if(latestRoll == 6 && (teamFigure.getCurrentNode()).getNodeType() == LudoNodeType.OUTSIDE)
                 {
                     movableFigures.put(teamFigure, List.of(ludoBoard.getStartNode(currentTeamIndex)));
                 }
@@ -379,7 +376,8 @@ public class LudoGameLogic
     
     public boolean isGameWon(int team)
     {
-        if(!gameWon) {
+        if(!gameWon)
+        {
             return gameWon = ludoBoard.isHomeFull(teams[currentTeamIndex]);
         }
         return true;
@@ -400,20 +398,16 @@ public class LudoGameLogic
         return ludoBoard.isOwnStartOccupied(teamColor) && !ludoBoard.isOutsideEmpty(teamColor);
     }
     
-    private static Predicate<INode> createMovablePredicate(LudoFigure figure)
+    private static Predicate<LudoNode> createMovablePredicate(LudoFigure figure)
     {
         return (node -> {
-            if(!(node instanceof LudoNode ludoNode))
+            if(node.getTeam().equals(figure.getTeam()))
             {
-                return true;
-            }
-            if(ludoNode.getTeam().equals(figure.getTeam()))
-            {
-                if(ludoNode.getNodeType() == LudoNodeType.HOME)
+                if(node.getNodeType() == LudoNodeType.HOME)
                 {
-                    return !ludoNode.isOccupied();
+                    return !node.isOccupied();
                 }
-                return ludoNode.getNodeType() != LudoNodeType.START;
+                return node.getNodeType() != LudoNodeType.START;
             }
             return true;
         });
