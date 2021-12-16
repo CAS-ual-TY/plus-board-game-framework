@@ -1,5 +1,6 @@
 package sweng_plus.boardgames.ludo.gui.widget;
 
+import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;
@@ -10,7 +11,7 @@ import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-public class LudoNodeWidget extends NodeWidget
+public class LudoNodeWidget extends NodeWidget<LudoNodeWidget, LudoNode, LudoFigure>
 {
     public static final int FIGURE_TEXTURE_OFFSET = 24;
     public static final int NODE_TEXTURE_RADIUS_SQUARED = 32 * 32;
@@ -48,10 +49,9 @@ public class LudoNodeWidget extends NodeWidget
         
         renderNode();
         
-        if(getNode().isOccupied() && getNode() instanceof LudoNode ludoNode &&
-                ludoNode.getFigures().get(0) instanceof LudoFigure ludoFigure)
+        if(getNode().isOccupied())
         {
-            ludoFigure.getTeam().getColor().glColor4f();
+            getNode().getFigures().get(0).getTeam().getColor().glColor4f();
             
             renderFigure();
         }

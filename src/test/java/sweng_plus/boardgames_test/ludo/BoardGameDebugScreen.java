@@ -1,6 +1,7 @@
 package sweng_plus.boardgames_test.ludo;
 
 import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
+import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 
 public class BoardGameDebugScreen extends Screen
 {
-    public HashMap<INode, NodeWidget> nodeWidgetMap;
+    public HashMap<LudoNode, LudoNodeWidget> nodeWidgetMap;
     
     public BoardGameDebugScreen(IScreenHolder screenHolder) throws IOException
     {
@@ -26,7 +27,7 @@ public class BoardGameDebugScreen extends Screen
         LudoBoard b = new LudoBoard(TeamColor.TEAMS_2);
         nodeWidgetMap = new HashMap<>();
         
-        HashMap<INode, LudoNodeWidget> map = LudoBoardMapper.mapLudoBoard(this, b, LudoTextures.node, LudoTextures.figure);
+        HashMap<LudoNode, LudoNodeWidget> map = LudoBoardMapper.mapLudoBoard(this, b, LudoTextures.node, LudoTextures.figure);
         nodeWidgetMap.putAll(map);
         
         widgets.addAll(nodeWidgetMap.values());

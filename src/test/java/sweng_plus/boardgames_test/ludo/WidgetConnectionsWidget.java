@@ -3,6 +3,7 @@ package sweng_plus.boardgames_test.ludo;
 import org.joml.Vector2d;
 import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
@@ -13,9 +14,9 @@ import java.util.List;
 
 public class WidgetConnectionsWidget extends Widget
 {
-    public List<NodeWidget> widgets;
+    public List<LudoNodeWidget> widgets;
     
-    public WidgetConnectionsWidget(IScreenHolder screenHolder, Dimensions dimensions, List<NodeWidget> widgets)
+    public WidgetConnectionsWidget(IScreenHolder screenHolder, Dimensions dimensions, List<LudoNodeWidget> widgets)
     {
         super(screenHolder, dimensions);
         this.widgets = widgets;
@@ -28,11 +29,11 @@ public class WidgetConnectionsWidget extends Widget
         
         GL11.glLineWidth(4F);
         
-        for(NodeWidget w : widgets)
+        for(LudoNodeWidget w : widgets)
         {
             Vector2d start0 = new Vector2d(w.getDimensions().x, w.getDimensions().y).add(w.getDimensions().w / 2D, w.getDimensions().h / 2D);
             
-            for(NodeWidget w2 : w.getForwardNodes())
+            for(LudoNodeWidget w2 : w.getForwardNodes())
             {
                 Vector2d start = new Vector2d(start0);
                 
@@ -65,7 +66,7 @@ public class WidgetConnectionsWidget extends Widget
                 Color4f.NEUTRAL.glColor4f();
             }
             
-            for(NodeWidget w2 : w.getBackwardNodes())
+            for(LudoNodeWidget w2 : w.getBackwardNodes())
             {
                 Vector2d start = new Vector2d(start0);
                 

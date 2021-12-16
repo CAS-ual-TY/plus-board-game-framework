@@ -7,7 +7,6 @@ import sweng_plus.boardgames.ludo.gamelogic.LudoBoard;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.gui.BoardWidgetMapper;
-import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
@@ -22,37 +21,31 @@ public class LudoBoardMapper
     public static final double HALF_SQRT3 = Math.sqrt(3) * 0.5D;
     
     @SuppressWarnings("unchecked")
-    public static HashMap<INode, LudoNodeWidget> mapLudoBoard(Screen screen, LudoBoard board, Texture nodeTexture, Texture figureTexture)
+    public static HashMap<LudoNode, LudoNodeWidget> mapLudoBoard(Screen screen, LudoBoard board, Texture nodeTexture, Texture figureTexture)
     {
         int teams = board.getTeamsAmount();
         
-        HashMap<INode, LudoNodeWidget> fullMap = new HashMap<>();
+        HashMap<LudoNode, LudoNodeWidget> fullMap = new HashMap<>();
         
         PositionFunction function = createMapFunction(teams,
                 LudoBoard.HOUSES_PER_CORNER, LudoBoard.NEUTRAL_NODES_PER_CORNER);
         
-        java.util.function.Function<INode, LudoNodeWidget> widgetFactory = (node) ->
+        java.util.function.Function<LudoNode, LudoNodeWidget> widgetFactory = (node) ->
         {
-            if(node instanceof LudoNode ludoNode)
-            {
-                int team = board.getTeamIndex(ludoNode.getTeam());
-                Vector2i coords = function.map(ludoNode, team);
+            int team = board.getTeamIndex(node.getTeam());
+            Vector2i coords = function.map(node, team);
                 
-                return new LudoNodeWidget(screen.getScreenHolder(),
-                        new Dimensions(NODE_WIDTH, NODE_WIDTH, AnchorPoint.M, coords.x(), coords.y()), ludoNode, nodeTexture, figureTexture);
-            }
-            else
-            {
-                throw new IllegalArgumentException();
-            }
+            return new LudoNodeWidget(screen.getScreenHolder(),
+                    new Dimensions(NODE_WIDTH, NODE_WIDTH, AnchorPoint.M, coords.x(), coords.y()),
+                    node, nodeTexture, figureTexture);
+            
         };
         
-        HashMap<INode, LudoNodeWidget>[] maps = new HashMap[board.getTeamsAmount()];
+        HashMap<LudoNode, LudoNodeWidget>[] maps = new HashMap[board.getTeamsAmount()];
         
         for(int team = 0; team < teams; ++team)
         {
-            maps[team] = (HashMap<INode, LudoNodeWidget>)
-                    BoardWidgetMapper.mapListToWidgets(board.getFullCornerNodes(team), widgetFactory);
+            maps[team] = BoardWidgetMapper.mapListToWidgets(board.getFullCornerNodes(team), widgetFactory);
             fullMap.putAll(maps[team]);
         }
         

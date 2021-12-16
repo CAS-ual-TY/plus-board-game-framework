@@ -2,7 +2,9 @@ package sweng_plus.boardgames_test.ludo;
 
 import org.joml.Vector2d;
 import org.lwjgl.opengl.GL11;
+import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
@@ -14,9 +16,9 @@ import java.util.Map;
 
 public class NodeConnectionsWidget extends Widget
 {
-    public Map<INode, NodeWidget> map;
+    public Map<LudoNode, LudoNodeWidget> map;
     
-    public NodeConnectionsWidget(IScreenHolder screenHolder, Dimensions dimensions, Map<INode, NodeWidget> map)
+    public NodeConnectionsWidget(IScreenHolder screenHolder, Dimensions dimensions, Map<LudoNode, LudoNodeWidget> map)
     {
         super(screenHolder, dimensions);
         this.map = map;
@@ -29,15 +31,15 @@ public class NodeConnectionsWidget extends Widget
         
         GL11.glLineWidth(4F);
         
-        for(INode n : map.keySet())
+        for(LudoNode n : map.keySet())
         {
-            NodeWidget w = map.get(n);
+            LudoNodeWidget w = map.get(n);
             
             Vector2d start0 = new Vector2d(w.getDimensions().x, w.getDimensions().y).add(w.getDimensions().w / 2D, w.getDimensions().h / 2D);
             
-            for(INode n2 : n.getForwardNodes())
+            for(LudoNode n2 : n.getForwardNodes())
             {
-                NodeWidget w2 = map.get(n2);
+                LudoNodeWidget w2 = map.get(n2);
                 
                 Vector2d start = new Vector2d(start0);
                 
@@ -70,9 +72,9 @@ public class NodeConnectionsWidget extends Widget
                 Color4f.NEUTRAL.glColor4f();
             }
             
-            for(INode n2 : n.getBackwardNodes())
+            for(LudoNode n2 : n.getBackwardNodes())
             {
-                NodeWidget w2 = map.get(n2);
+                LudoNodeWidget w2 = map.get(n2);
                 
                 Vector2d start = new Vector2d(start0);
                 

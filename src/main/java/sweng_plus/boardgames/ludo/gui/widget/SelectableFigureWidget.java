@@ -18,7 +18,7 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
         super(screenHolder, nodeWidget.getDimensions(), EmptyStyle.EMPTY_STYLE, buttonAction);
         
         this.nodeWidget = nodeWidget;
-        ludoFigure = ((LudoFigure) nodeWidget.getNode().getFigures().get(0));
+        ludoFigure = (nodeWidget.getNode().getFigures().get(0));
         this.active = active;
     }
     

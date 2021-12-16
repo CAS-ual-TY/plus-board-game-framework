@@ -10,7 +10,6 @@ import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.ChatWidget;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
-import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
@@ -35,7 +34,7 @@ public class LudoScreen extends Screen implements ILudoScreen
     public final LudoGameLogic logic;
     
     public final LudoBoard board;
-    public final HashMap<INode, LudoNodeWidget> nodeWidgetMap;
+    public final HashMap<LudoNode, LudoNodeWidget> nodeWidgetMap;
     
     public int thisPlayerID;
     
@@ -206,7 +205,7 @@ public class LudoScreen extends Screen implements ILudoScreen
         
         if(selectedFigure != null)
         {
-            LudoNode startNode = (LudoNode) selectedFigure.getCurrentNode();
+            LudoNode startNode = selectedFigure.getCurrentNode();
             LudoNode endNode = logic.getTargetNode(selectedFigure);
             
             logic.startPhaseMoveFigure(figure);

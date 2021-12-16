@@ -3,6 +3,7 @@ package sweng_plus.framework.boardgame.gui;
 import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
 import sweng_plus.framework.boardgame.nodes_board.NodeBoard;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
+import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeFigure;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,23 +13,23 @@ import java.util.function.Function;
 
 public class BoardWidgetMapper
 {
-    public static HashMap<INode, ? extends NodeWidget> mapBoardToWidgets(NodeBoard board, Function<INode, NodeWidget> widgetFactory)
+    public static <W extends NodeWidget<W, N, F>, N extends INode<F, N>, F extends INodeFigure<N, F>> HashMap<N, W> mapBoardToWidgets(NodeBoard<N, F> board, Function<N, W> widgetFactory)
     {
         return mapListToWidgets(board.getNodes(), widgetFactory);
     }
     
-    public static HashMap<INode, ? extends NodeWidget> mapListToWidgets(List<? extends INode> nodes, Function<INode, ? extends NodeWidget> widgetFactory)
+    public static <W extends NodeWidget<W, N, F>, N extends INode<F, N>, F extends INodeFigure<N, F>> HashMap<N, W> mapListToWidgets(List<N> nodes, Function<N, W> widgetFactory)
     {
-        HashMap<INode, NodeWidget> map = new HashMap<>(nodes.size());
+        HashMap<N, W> map = new HashMap<>(nodes.size());
         
-        for(INode node : nodes)
+        for(N node : nodes)
         {
             map.put(node, widgetFactory.apply(node));
         }
         
-        List<NodeWidget> nodesLinked = new LinkedList<>();
+        List<W> nodesLinked = new LinkedList<>();
         
-        for(NodeWidget node : map.values())
+        for(W node : map.values())
         {
             linkNodeWidgets(node, map, nodesLinked);
         }
@@ -41,7 +42,7 @@ public class BoardWidgetMapper
         return map;
     }
     
-    public static void linkNodeWidgets(NodeWidget widget, HashMap<INode, NodeWidget> map, List<NodeWidget> nodesLinked)
+    public static <W extends NodeWidget<W, N, F>, N extends INode<F, N>, F extends INodeFigure<N, F>> void linkNodeWidgets(W widget, HashMap<N, W> map, List<W> nodesLinked)
     {
         if(nodesLinked.contains(widget))
         {

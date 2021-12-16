@@ -1,6 +1,7 @@
 package sweng_plus.framework.boardgame.gui.widget;
 
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
+import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeFigure;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
@@ -8,14 +9,14 @@ import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeWidget extends Widget
+public class NodeWidget<W extends NodeWidget<W, N, F>, N extends INode<F, N>, F extends INodeFigure<N, F>> extends Widget
 {
-    protected INode node;
+    protected N node;
     
-    protected List<NodeWidget> forwardNodes;
-    protected List<NodeWidget> backwardNodes;
+    protected List<W> forwardNodes;
+    protected List<W> backwardNodes;
     
-    public NodeWidget(IScreenHolder screenHolder, Dimensions dimensions, INode node)
+    public NodeWidget(IScreenHolder screenHolder, Dimensions dimensions, N node)
     {
         super(screenHolder, dimensions);
         
@@ -25,27 +26,27 @@ public class NodeWidget extends Widget
         backwardNodes = new ArrayList<>(node.getBackwardNodes().size());
     }
     
-    public INode getNode()
+    public N getNode()
     {
         return node;
     }
     
-    public List<NodeWidget> getForwardNodes()
+    public List<W> getForwardNodes()
     {
         return forwardNodes;
     }
     
-    public List<NodeWidget> getBackwardNodes()
+    public List<W> getBackwardNodes()
     {
         return backwardNodes;
     }
     
-    public void addForwardNode(NodeWidget node)
+    public void addForwardNode(W node)
     {
         forwardNodes.add(node);
     }
     
-    public void addBackwardNode(NodeWidget node)
+    public void addBackwardNode(W node)
     {
         backwardNodes.add(node);
     }
