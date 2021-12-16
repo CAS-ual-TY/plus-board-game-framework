@@ -30,7 +30,7 @@ public class LudoNode extends TeamNode
     public String toString()
     {
         return "LudoNode{" +
-                ", color=" + color +
+                ", color=" + team +
                 "nodeType=" + nodeType +
                 ", index=" + index +
                 '}';

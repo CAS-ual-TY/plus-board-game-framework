@@ -216,12 +216,11 @@ public class LudoScreen extends Screen implements ILudoScreen
                 logic.endPhaseMoveFigure(selectedFigure, endNode).ifPresentOrElse((hitFigure) ->
                 {
                     LudoNode outsideNode = logic.ludoBoard.getFreeOutsideNode(hitFigure);
-                    hitFigure.getCurrentNode().removeNodeFigure(hitFigure);
+                    hitFigure.getCurrentNode().removeFigure(hitFigure);
                     
                     Runnable onEnd2 = () ->
                     {
-                        hitFigure.move(outsideNode);
-                        outsideNode.addNodeFigure(hitFigure);
+                        logic.getLudoBoard().moveFigure(hitFigure, outsideNode);
                         logic.endPhaseSelectFigure(figure);
                         newTurn(logic.currentTeamIndex);
                     };

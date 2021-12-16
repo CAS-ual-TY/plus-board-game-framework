@@ -28,7 +28,7 @@ public class LudoBoard extends NodeBoard
         {
             for(LudoFigure f : team.figures())
             {
-                addNodeFigure(f);
+                addFigure(f);
             }
         }
     }
@@ -221,7 +221,7 @@ public class LudoBoard extends NodeBoard
     public boolean isOwnStartOccupied(TeamColor team)
     {
         LudoNode startNode = ludoTeams[getTeamIndex(team)].start();
-        return startNode.isOccupied() && startNode.getNodeFigures().get(0).getColor().equals(team);
+        return startNode.isOccupied() && startNode.getFigures().get(0).getColor().equals(team);
     }
     
     private static LudoFigure[] createFigures(TeamColor teamColor, List<LudoNode> nodes)
@@ -237,7 +237,7 @@ public class LudoBoard extends NodeBoard
     
     public void moveFigureToOutside(LudoFigure figure)
     {
-        for(LudoNode outsideNode : getOutsideNodes(getTeamIndex(figure.getColor())))
+        for(LudoNode outsideNode : getOutsideNodes(getTeamIndex(figure.getTeam())))
         {
             if(!outsideNode.isOccupied())
             {
@@ -249,7 +249,7 @@ public class LudoBoard extends NodeBoard
     
     public LudoNode getFreeOutsideNode(LudoFigure figure)
     {
-        for(LudoNode outsideNode : getOutsideNodes(getTeamIndex(figure.getColor())))
+        for(LudoNode outsideNode : getOutsideNodes(getTeamIndex(figure.getTeam())))
         {
             if(!outsideNode.isOccupied())
             {

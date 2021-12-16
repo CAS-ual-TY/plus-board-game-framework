@@ -55,7 +55,7 @@ public class FigureAnimationWidget extends Widget
         Vector2d pos = new Vector2d(startPos).add(motion);
         Vector2i posI = pos.get(RoundingMode.HALF_UP, new Vector2i());
         
-        figure.getColor().getColor().glColor4f();
+        figure.getTeam().getColor().glColor4f();
         
         GL11.glPushMatrix();
         GL11.glTranslatef(posI.x(), posI.y(), 0);

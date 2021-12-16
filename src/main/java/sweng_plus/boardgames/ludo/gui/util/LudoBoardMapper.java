@@ -35,7 +35,7 @@ public class LudoBoardMapper
         {
             if(node instanceof LudoNode ludoNode)
             {
-                int team = board.getTeamIndex(ludoNode.getColor());
+                int team = board.getTeamIndex(ludoNode.getTeam());
                 Vector2i coords = function.map(ludoNode, team);
                 
                 return new LudoNodeWidget(screen.getScreenHolder(),

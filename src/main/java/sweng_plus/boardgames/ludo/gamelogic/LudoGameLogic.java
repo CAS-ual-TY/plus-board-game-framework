@@ -166,7 +166,7 @@ public class LudoGameLogic
             LudoFigure figure = getFigureForIndex(selectedFigure);
             if(figure != null)
             {
-                figure.getCurrentNode().removeNodeFigure(figure);
+                figure.getCurrentNode().removeFigure(figure);
                 figure.setCurrentNode(null);
             }
             return figure;
@@ -197,9 +197,9 @@ public class LudoGameLogic
         Optional<LudoFigure> prevFigure = Optional.empty();
         System.out.println("                Logic: endPhaseMoveFigure");
         
-        if(!target.getNodeFigures().isEmpty())
+        if(!target.getFigures().isEmpty())
         {
-            prevFigure = Optional.ofNullable((LudoFigure) target.getNodeFigures().get(0));
+            prevFigure = Optional.ofNullable((LudoFigure) target.getFigures().get(0));
         }
         
         figure.move(target);
@@ -214,7 +214,7 @@ public class LudoGameLogic
         System.out.println("                Logic: moveFigureToOutside");
     
         LudoNode outsideNode = ludoBoard.getFreeOutsideNode(figure);
-        figure.getCurrentNode().removeNodeFigure(figure);
+        figure.getCurrentNode().removeFigure(figure);
         figure.move(outsideNode);
         outsideNode.addNodeFigure(figure);
     
@@ -234,7 +234,7 @@ public class LudoGameLogic
     {
         if(selectedNode.isOccupied())
         {
-            ludoBoard.moveFigureToOutside((LudoFigure) selectedNode.getNodeFigures().get(0));
+            ludoBoard.moveFigureToOutside((LudoFigure) selectedNode.getFigures().get(0));
         }
         ludoBoard.moveFigure(figure, selectedNode);
     }
@@ -343,7 +343,7 @@ public class LudoGameLogic
         
         if(mustMoveFromStart(teams[currentTeamIndex]))
         {
-            LudoFigure startFigure = (LudoFigure) ludoBoard.getStartNode(currentTeamIndex).getNodeFigures().get(0);
+            LudoFigure startFigure = (LudoFigure) ludoBoard.getStartNode(currentTeamIndex).getFigures().get(0);
             
             movableFigures.put(startFigure, ludoBoard.getForwardNodes(startFigure, roll, createMovablePredicate(startFigure)));
         }
@@ -354,7 +354,7 @@ public class LudoGameLogic
                 
                 if(outsideNode.isOccupied())
                 {
-                    movableFigures.put((LudoFigure) outsideNode.getNodeFigures().get(0), List.of(ludoBoard.getStartNode(currentTeamIndex)));
+                    movableFigures.put((LudoFigure) outsideNode.getFigures().get(0), List.of(ludoBoard.getStartNode(currentTeamIndex)));
                 }
             }
         }
@@ -407,7 +407,7 @@ public class LudoGameLogic
             {
                 return true;
             }
-            if(ludoNode.getColor().equals(figure.getColor()))
+            if(ludoNode.getTeam().equals(figure.getTeam()))
             {
                 if(ludoNode.getNodeType() == LudoNodeType.HOME)
                 {

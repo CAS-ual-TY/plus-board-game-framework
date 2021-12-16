@@ -28,7 +28,7 @@ public class LudoNodeWidget extends NodeWidget
         this.nodeTexture = nodeTexture;
         this.figureTexture = figureTexture;
         
-        team = node.getColor();
+        team = node.getTeam();
         type = node.getNodeType();
     }
     
@@ -49,9 +49,9 @@ public class LudoNodeWidget extends NodeWidget
         renderNode();
         
         if(getNode().isOccupied() && getNode() instanceof LudoNode ludoNode &&
-                ludoNode.getNodeFigures().get(0) instanceof LudoFigure ludoFigure)
+                ludoNode.getFigures().get(0) instanceof LudoFigure ludoFigure)
         {
-            ludoFigure.getColor().getColor().glColor4f();
+            ludoFigure.getTeam().getColor().glColor4f();
             
             renderFigure();
         }
