@@ -6,8 +6,6 @@ import sweng_plus.framework.userinterface.gui.style.EmptyStyle;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 
-import static org.lwjgl.opengl.GL11.*;
-
 public class SelectableFigureWidget extends FunctionalButtonWidget
 {
     public LudoNodeWidget nodeWidget;
@@ -25,31 +23,23 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
     }
     
     @Override
+    public boolean updateMouseOver(float deltaTick, int mouseX, int mouseY)
+    {
+        int x = dimensions.x + dimensions.w / 2;
+        int y = dimensions.y + dimensions.h / 2;
+        return (x - mouseX) * (x - mouseX) + (y - mouseY) * (y - mouseY) <= LudoNodeWidget.NODE_TEXTURE_RADIUS_SQUARED;
+    }
+    
+    @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
         nodeWidget.render(deltaTick, mouseX, mouseY);
         
         if(active && updateMouseOver(deltaTick, mouseX, mouseY))
         {
-            renderQuad(deltaTick, mouseX, mouseY);
+            Color4f.HALF_VISIBLE.glColor4f();
+            nodeWidget.renderFigure();
         }
-    }
-    
-    public void renderQuad(float deltaTick, int mouseX, int mouseY)
-    {
-        int x1 = dimensions.x;
-        int x2 = dimensions.x + dimensions.w;
-        int y1 = dimensions.y;
-        int y2 = dimensions.y + dimensions.h;
-        
-        Color4f.FOREGROUND.glColor4f();
-        
-        glBegin(GL_QUADS);
-        glVertex3f(x1, y1, 0); // Oben Links
-        glVertex3f(x1, y2, 0); // Unten Links
-        glVertex3f(x2, y2, 0); // Unten Rechts
-        glVertex3f(x2, y1, 0); // Oben Rechts
-        glEnd();
     }
     
     @Override
