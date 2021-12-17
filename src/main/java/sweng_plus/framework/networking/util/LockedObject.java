@@ -2,6 +2,7 @@ package sweng_plus.framework.networking.util;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class LockedObject<O>
 {
@@ -27,12 +28,38 @@ public class LockedObject<O>
         }
     }
     
+    public <A> A shared(Function<O, A> consumer)
+    {
+        try
+        {
+            lock.readLock().lock();
+            return consumer.apply(object);
+        }
+        finally
+        {
+            lock.writeLock().unlock();
+        }
+    }
+    
     public void exclusive(Consumer<O> consumer)
     {
         try
         {
             lock.writeLock().lock();
             consumer.accept(object);
+        }
+        finally
+        {
+            lock.writeLock().unlock();
+        }
+    }
+    
+    public <A> A exclusive(Function<O, A> consumer)
+    {
+        try
+        {
+            lock.writeLock().lock();
+            return consumer.apply(object);
         }
         finally
         {
