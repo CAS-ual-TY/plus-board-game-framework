@@ -17,9 +17,8 @@ import java.io.IOException;
 
 public class MenuHostScreen extends WrappedScreen
 {
-    private String portInput;
-    private InputWidget inputWidget;
     private InputWidget inputWidgetName;
+    private InputWidget inputWidgetPort;
     
     public MenuHostScreen(Screen subScreen)
     {
@@ -29,15 +28,17 @@ public class MenuHostScreen extends WrappedScreen
         widgets.add(new TextWidget(screenHolder, nameDims, Ludo.instance().fontRenderer48, "Name:", Color4f.WHITE));
         
         Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -80);
-        inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48);
+        inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48)
+                .setText("Host");
         widgets.add(inputWidgetName);
         
         Dimensions textDims = new Dimensions(0, 0, AnchorPoint.M, 0, 20);
         widgets.add(new TextWidget(screenHolder, textDims, Ludo.instance().fontRenderer48, "Port:", Color4f.WHITE));
         
         Dimensions inputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 100);
-        inputWidget = new InputWidget(screenHolder, inputDims, Ludo.instance().fontRenderer48);
-        widgets.add(inputWidget);
+        inputWidgetPort = new InputWidget(screenHolder, inputDims, Ludo.instance().fontRenderer48)
+                .setText("25555");
+        widgets.add(inputWidgetPort);
         
         Dimensions cancelDims = new Dimensions(200, 50, AnchorPoint.M, -150, 200);
         
@@ -51,14 +52,13 @@ public class MenuHostScreen extends WrappedScreen
     
     private void accept()
     {
-        portInput = inputWidget.getText();
-        //TODO
+        String portInput = inputWidgetPort.getText();
+        
         try
         {
-            //Ludo.instance().host(inputWidgetName.getText(), Integer.valueOf(portInput));
-            Ludo.instance().host("Host", 25555);
+            Ludo.instance().host(inputWidgetName.getText(), Integer.parseInt(portInput));
         }
-        catch(IOException e)
+        catch(IOException | NumberFormatException e)
         {
             e.printStackTrace();
         }

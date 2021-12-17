@@ -28,8 +28,13 @@ public class InputWidget extends SelectableWidget
     public InputWidget(IScreenHolder screenHolder, Dimensions dimensions, FontRenderer fontRenderer)
     {
         this(screenHolder, dimensions, fontRenderer, (w) -> {});
-        
-        stringBuilder = new StringBuilder();
+    }
+    
+    public InputWidget setText(String text)
+    {
+        clearText();
+        stringBuilder.append(text);
+        return this;
     }
     
     @Override
