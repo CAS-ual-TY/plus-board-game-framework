@@ -38,6 +38,16 @@ public class NetworkHelper
         return hostManager;
     }
     
+    public static <C extends IClient> IHostManager<C> advancedHost(IAdvancedMessageRegistry<C> registry,
+                                                                   IAdvancedHostEventsListener<C> eventsListener,
+                                                                   IClientFactory<C> clientFactory, int port) throws IOException
+    {
+        AdvancedHostManager<C> hostManager = new AdvancedHostManager<>(registry, eventsListener, clientFactory, port);
+        Thread thread = new Thread(hostManager);
+        thread.start();
+        return hostManager;
+    }
+    
     /**
      * Connects to a server socket and returns an {@link IClientManager} object for sending and receiving messages.
      *

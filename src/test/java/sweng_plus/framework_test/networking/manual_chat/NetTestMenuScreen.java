@@ -3,8 +3,6 @@ package sweng_plus.framework_test.networking.manual_chat;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.NetworkHelper;
-import sweng_plus.framework.networking.interfaces.IHostEventsListener;
-import sweng_plus.framework.networking.util.NetworkRole;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
@@ -53,33 +51,7 @@ public class NetTestMenuScreen extends Screen
     {
         try
         {
-            NetTestGame.instance().hostManager = NetworkHelper.host(NetTestGame.instance().protocol,
-                    new IHostEventsListener<Client>()
-                    {
-                        @Override
-                        public void clientConnected(Client client)
-                        {
-                            if(screenHolder.getScreen() instanceof NetTestChatScreen chatScreen)
-                            {
-                                chatScreen.addMessage("Server",
-                                        (client.getRole() == NetworkRole.HOST
-                                                ? "Host" : "Client") + " connected!",
-                                        System.currentTimeMillis());
-                            }
-                        }
-                        
-                        @Override
-                        public void clientSocketClosed(Client client)
-                        {
-                            if(screenHolder.getScreen() instanceof NetTestChatScreen chatScreen)
-                            {
-                                chatScreen.addMessage("Server",
-                                        (client.getRole() == NetworkRole.HOST
-                                                ? "Host" : "Client") + " disconnected!",
-                                        System.currentTimeMillis());
-                            }
-                        }
-                    }, Client.createFactory(), 100);
+            NetTestGame.instance().hostManager = NetworkHelper.advancedHost(NetTestGame.instance().protocol, NetTestGame.instance().listener, Client.createFactory(), 100);
             NetTestGame.instance().clientManager = NetTestGame.instance().hostManager;
             NetTestGame.instance().setScreen(new NetTestChatScreen(this));
         }
