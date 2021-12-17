@@ -64,7 +64,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         
         writeBuffer = new CircularBuffer();
         
-        mainThreadMessages.add(() -> eventsListener.clientConnected(hostClient));
+        mainThreadMessages.getUnsafe().add(() -> eventsListener.clientConnected(hostClient));
     }
     
     @Override
@@ -189,7 +189,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                 
                 addClient(connection, client);
                 
-                mainThreadMessages.add(() -> eventsListener.clientConnected(client));
+                mainThreadMessages.exclusive(mainThreadMessages1 ->
+                {
+                    mainThreadMessages1.add(() -> eventsListener.clientConnected(client));
+                });
                 
                 return socket;
             }
@@ -300,16 +303,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         C client = removeClientByThread();
         removeClient(client);
         
-        Lock lock = mainThreadMessagesLock.writeLock();
-        try
+        mainThreadMessages.exclusive(mainThreadMessages1 ->
         {
-            lock.lock();
-            mainThreadMessages.add(() -> eventsListener.clientSocketClosed(client));
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            mainThreadMessages1.add(() -> eventsListener.clientSocketClosed(client));
+        });
     }
     
     @Override
@@ -318,16 +315,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         C client = removeClientByThread();
         removeClient(client);
         
-        Lock lock = mainThreadMessagesLock.writeLock();
-        try
+        mainThreadMessages.exclusive(mainThreadMessages1 ->
         {
-            lock.lock();
-            mainThreadMessages.add(() -> eventsListener.clientSocketClosedWithException(client, e));
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            mainThreadMessages1.add(() -> eventsListener.clientSocketClosedWithException(client, e));
+        });
     }
     
     @Override

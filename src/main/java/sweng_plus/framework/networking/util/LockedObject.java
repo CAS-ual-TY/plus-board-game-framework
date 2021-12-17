@@ -72,6 +72,19 @@ public class LockedObject<O>
         }
     }
     
+    public void exclusive(Consumer<O> getter)
+    {
+        try
+        {
+            writeLock().lock();
+            getter.accept(object);
+        }
+        finally
+        {
+            writeLock().unlock();
+        }
+    }
+    
     public void exclusive(Function<O, O> setter)
     {
         try

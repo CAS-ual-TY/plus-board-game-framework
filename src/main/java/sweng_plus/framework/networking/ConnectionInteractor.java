@@ -9,8 +9,6 @@ import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
 public abstract class ConnectionInteractor<C extends IClient> implements IConnectionInteractor<C>, Runnable, Closeable
@@ -19,11 +17,8 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     
     protected LockedObject<Boolean> close;
     
-    protected ReentrantReadWriteLock mainThreadMessagesLock;
-    protected List<Runnable> mainThreadMessages;
-    
-    protected ReentrantReadWriteLock connectionThreadMessagesLock;
-    protected List<Runnable> connectionThreadMessages;
+    protected LockedObject<List<Runnable>> mainThreadMessages;
+    protected LockedObject<List<Runnable>> connectionThreadMessages;
     
     public ConnectionInteractor(IMessageRegistry<C> registry)
     {
@@ -31,11 +26,8 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
         
         close = new LockedObject<>(false);
         
-        mainThreadMessagesLock = new ReentrantReadWriteLock();
-        mainThreadMessages = new ArrayList<>(64);
-        
-        connectionThreadMessagesLock = new ReentrantReadWriteLock();
-        connectionThreadMessages = new ArrayList<>(64);
+        mainThreadMessages = new LockedObject<>(new ArrayList<>(16));
+        connectionThreadMessages = new LockedObject<>(new ArrayList<>(16));
     }
     
     @Override
@@ -62,50 +54,27 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     
     public void movePackets() // Network Manager Thread
     {
-        Lock lock1 = connectionThreadMessagesLock.writeLock();
-        Lock lock2 = mainThreadMessagesLock.writeLock();
-        
-        try
+        connectionThreadMessages.exclusive(connectionThreadMessages1 ->
         {
-            lock1.lock();
-            
-            try
+            mainThreadMessages.exclusive(mainThreadMessages1 ->
             {
-                lock2.lock();
-                
-                mainThreadMessages.addAll(connectionThreadMessages);
-                connectionThreadMessages.clear();
-            }
-            finally
-            {
-                lock2.unlock();
-            }
-        }
-        finally
-        {
-            lock1.unlock();
-        }
+                mainThreadMessages1.addAll(connectionThreadMessages1);
+                connectionThreadMessages1.clear();
+            });
+        });
     }
     
     public void runMessages()
     {
-        Lock lock = mainThreadMessagesLock.writeLock();
-        
-        try
+        mainThreadMessages.exclusive(mainThreadMessages1 ->
         {
-            lock.lock();
-            
-            for(Runnable r : mainThreadMessages)
+            for(Runnable r : mainThreadMessages1)
             {
                 r.run();
             }
             
-            mainThreadMessages.clear();
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            mainThreadMessages1.clear();
+        });
     }
     
     @Override
@@ -116,17 +85,10 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     
     public void receivedMessage(Consumer<Optional<C>> message, Optional<C> client)
     {
-        Lock lock = connectionThreadMessagesLock.writeLock();
-        
-        try
+        connectionThreadMessages.exclusive(connectionThreadMessages1 ->
         {
-            lock.lock();
-            connectionThreadMessages.add(() -> message.accept(client));
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            connectionThreadMessages1.add(() -> message.accept(client));
+        });
     }
     
     @Override
