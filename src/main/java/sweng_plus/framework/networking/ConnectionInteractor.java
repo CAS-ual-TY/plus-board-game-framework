@@ -55,13 +55,11 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     public void movePackets() // Network Manager Thread
     {
         connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
-        {
-            mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
-            {
-                mainThreadMessages1.addAll(connectionThreadMessages1);
-                connectionThreadMessages1.clear();
-            });
-        });
+                mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
+                {
+                    mainThreadMessages1.addAll(connectionThreadMessages1);
+                    connectionThreadMessages1.clear();
+                }));
     }
     
     public void runMessages()
@@ -86,9 +84,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     public void receivedMessage(Consumer<Optional<C>> message, Optional<C> client)
     {
         connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
-        {
-            connectionThreadMessages1.add(() -> message.accept(client));
-        });
+                connectionThreadMessages1.add(() -> message.accept(client)));
     }
     
     @Override

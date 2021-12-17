@@ -159,9 +159,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                 addClient(connection, client);
                 
                 mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
-                {
-                    mainThreadMessages1.add(() -> eventsListener.clientConnected(client));
-                });
+                        mainThreadMessages1.add(() -> eventsListener.clientConnected(client)));
                 
                 return socket;
             }
@@ -197,35 +195,25 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         });
         
         clientConnectionMap.exclusiveGet(clientConnectionMap1 ->
-        {
-            clientConnectionMap1.put(client, connection);
-        });
+                clientConnectionMap1.put(client, connection));
         
         threadClientMap.exclusiveGet(threadClientMap1 ->
-        {
-            threadClientMap1.put(Thread.currentThread(), client);
-        });
+                threadClientMap1.put(Thread.currentThread(), client));
     }
     
     public void removeClientByThread(Consumer<C> consumer)
     {
         threadClientMap.exclusiveGet(threadClientMap1 ->
-        {
-            consumer.accept(threadClientMap1.remove(Thread.currentThread()));
-        });
+                consumer.accept(threadClientMap1.remove(Thread.currentThread())));
     }
     
     public void removeClient(C client)
     {
         clientConnectionMap.exclusiveGet(clientConnectionMap1 ->
-        {
-            clientConnectionMap1.remove(client);
-        });
+                clientConnectionMap1.remove(client));
         
         clientsList.exclusiveGet(clientsList1 ->
-        {
-            clientsList1.remove(client);
-        });
+                clientsList1.remove(client));
         
         client.changeStatus(ClientStatus.DISCONNECTED);
     }
@@ -238,9 +226,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
             removeClient(client);
             
             mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
-            {
-                mainThreadMessages1.add(() -> eventsListener.clientSocketClosed(client));
-            });
+                    mainThreadMessages1.add(() -> eventsListener.clientSocketClosed(client)));
         });
     }
     
@@ -252,9 +238,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
             removeClient(client);
             
             mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
-            {
-                mainThreadMessages1.add(() -> eventsListener.clientSocketClosedWithException(client, e));
-            });
+                    mainThreadMessages1.add(() -> eventsListener.clientSocketClosedWithException(client, e)));
         });
     }
     

@@ -39,9 +39,7 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         super.update();
         
         clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
-        {
-            clientTimeOutTrackerMap1.values().forEach(TimeOutTracker::update);
-        });
+                clientTimeOutTrackerMap1.values().forEach(TimeOutTracker::update));
     }
     
     @Override
@@ -65,13 +63,11 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         super.receivedMessage(message, client);
         
         client.ifPresent(c ->
-        {
-            clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
-            {
-                TimeOutTracker tracker = clientTimeOutTrackerMap1.get(c);
-                tracker.reset();
-            });
-        });
+                clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
+                {
+                    TimeOutTracker tracker = clientTimeOutTrackerMap1.get(c);
+                    tracker.reset();
+                }));
     }
     
     @Override
@@ -80,9 +76,7 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         super.addClient(connection, client);
         
         clientTimeOutTrackerMap.exclusiveGet(clientTimeOutTrackerMap1 ->
-        {
-            clientTimeOutTrackerMap1.put(client, new TimeOutTracker(() -> sendPing(client), () -> lostConnection(client)));
-        });
+                clientTimeOutTrackerMap1.put(client, new TimeOutTracker(() -> sendPing(client), () -> lostConnection(client))));
     }
     
     @Override
@@ -91,28 +85,22 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         super.removeClient(client);
         
         clientTimeOutTrackerMap.exclusiveGet(clientTimeOutTrackerMap1 ->
-        {
-            clientTimeOutTrackerMap1.remove(client);
-        });
+                clientTimeOutTrackerMap1.remove(client));
     }
     
     public void sendPing(C client)
     {
         mainThreadMessages.exclusiveGet(mainThreadMessages ->
-        {
-            mainThreadMessages.add(() -> trySendMessageToClient(client, advancedRegistry.requestPing()));
-        });
+                mainThreadMessages.add(() -> trySendMessageToClient(client, advancedRegistry.requestPing())));
     }
     
     public void lostConnection(C client)
     {
         mainThreadMessages.exclusiveGet(mainThreadMessages ->
-        {
-            mainThreadMessages.add(() ->
-            {
-                removeClient(client);
-                advancedEventsListener.clientLostConnection(client);
-            });
-        });
+                mainThreadMessages.add(() ->
+                {
+                    removeClient(client);
+                    advancedEventsListener.clientLostConnection(client);
+                }));
     }
 }
