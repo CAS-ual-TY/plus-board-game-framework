@@ -114,8 +114,11 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     @Override
     public void receivedMessage(Consumer<Optional<C>> message)
     {
-        Optional<C> client = getClientForConnThread(Thread.currentThread());
-        
+        receivedMessage(message, getClientForConnThread(Thread.currentThread()));
+    }
+    
+    public void receivedMessage(Consumer<Optional<C>> message, Optional<C> client)
+    {
         Lock lock = connectionThreadMessagesLock.writeLock();
         
         try

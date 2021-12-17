@@ -114,7 +114,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
         protocol.registerMessage(messageID++, FigureSelectedMessage.Handler::encodeMessage,
                 FigureSelectedMessage.Handler::decodeMessage, FigureSelectedMessage.Handler::handleMessage,
                 FigureSelectedMessage.class);
-    
+        
         protocol.registerMessage(messageID++, WinMessage.Handler::encodeMessage,
                 WinMessage.Handler::decodeMessage, WinMessage.Handler::handleMessage,
                 WinMessage.class);
@@ -156,15 +156,9 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     }
     
     @Override
-    public void disconnected()
+    public void lostConnection()
     {
     
-    }
-    
-    @Override
-    public void disconnectedWithException(Exception e)
-    {
-        disconnected();
     }
     
     @Override
@@ -179,7 +173,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     }
     
     @Override
-    public void clientDisconnected(LudoClient client)
+    public void clientDisconnectedOrderly(LudoClient client)
     {
     
     }

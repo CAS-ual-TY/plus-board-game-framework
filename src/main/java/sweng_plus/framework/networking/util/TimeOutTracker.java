@@ -1,5 +1,8 @@
 package sweng_plus.framework.networking.util;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 public class TimeOutTracker
 {
     // How many seconds after the last packet was received is a ping to be sent?
@@ -14,6 +17,8 @@ public class TimeOutTracker
     protected Runnable sendPing;
     protected Runnable onTimeOut;
     
+    protected ReentrantReadWriteLock lock;
+    
     protected int time;
     protected int pings;
     protected int nextPing;
@@ -22,32 +27,54 @@ public class TimeOutTracker
     {
         this.sendPing = sendPing;
         this.onTimeOut = onTimeOut;
+        lock = new ReentrantReadWriteLock();
         reset();
     }
     
     public void reset()
     {
-        time = 0;
-        pings = 0;
-        nextPing = PING_START_TIME;
+        Lock lock = this.lock.writeLock();
+        
+        try
+        {
+            lock.lock();
+            time = 0;
+            pings = 0;
+            nextPing = PING_START_TIME;
+        }
+        finally
+        {
+            lock.unlock();
+        }
     }
     
     public void update()
     {
-        time++;
+        Lock lock = this.lock.writeLock();
         
-        if(time >= nextPing)
+        try
         {
-            if(pings < PING_REPETITIONS)
+            lock.lock();
+            
+            time++;
+            
+            if(time >= nextPing)
             {
-                pings++;
-                nextPing += PING_WAIT_TIME;
-                sendPing.run();
+                if(pings < PING_REPETITIONS)
+                {
+                    pings++;
+                    nextPing += PING_WAIT_TIME;
+                    sendPing.run();
+                }
+                else if(time == nextPing)
+                {
+                    onTimeOut.run();
+                }
             }
-            else if(time == nextPing)
-            {
-                onTimeOut.run();
-            }
+        }
+        finally
+        {
+            lock.unlock();
         }
     }
 }

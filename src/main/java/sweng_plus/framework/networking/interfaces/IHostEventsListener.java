@@ -4,7 +4,15 @@ public interface IHostEventsListener<C extends IClient>
 {
     void clientConnected(C client); // Called from main thread
     
-    void clientDisconnected(C client); // Called from main thread
+    default void clientSocketClosed(C client) // Called from main thread
+    {
+    
+    }
+    
+    default void clientSocketClosedWithException(C client, Exception e) // Called from main thread
+    {
+        clientSocketClosed(client);
+    }
     
     static <C extends IClient> IHostEventsListener<C> emptyHostListener()
     {
@@ -18,7 +26,7 @@ public interface IHostEventsListener<C extends IClient>
             }
             
             @Override
-            public void clientDisconnected(C client)
+            public void clientSocketClosed(C client)
             {
             
             }

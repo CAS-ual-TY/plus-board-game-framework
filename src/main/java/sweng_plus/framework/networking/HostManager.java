@@ -145,7 +145,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
             
             for(C c : clientsList)
             {
-                sendMessageToClient(c, message);
+                if(c.getStatus() == ClientStatus.CONNECTED)
+                {
+                    sendMessageToClient(c, message);
+                }
             }
         }
         finally
@@ -181,51 +184,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                 // Connection reingekommen => Auf neue Connection hören
                 listenToNewConnection();
                 
-                C client;
                 String ip = socket.getRemoteSocketAddress().toString();
+                C client = clientFactory.makeClient(ip);
                 
-                Lock lock = clientsListLock.writeLock();
-                try
-                {
-                    lock.lock();
-                    
-                    client = clientsList.stream().filter(c -> c.getIP().equals(ip)).findFirst().orElse(clientFactory.makeClient(ip));
-                    
-                    if(!clientsList.contains(client))
-                    {
-                        clientsList.add(client);
-                    }
-                    else
-                    {
-                        client.changeStatus(ClientStatus.CONNECTED);
-                    }
-                }
-                finally
-                {
-                    lock.unlock();
-                }
-                
-                lock = clientConnectionMapLock.writeLock();
-                try
-                {
-                    lock.lock();
-                    clientConnectionMap.put(client, connection);
-                }
-                finally
-                {
-                    lock.unlock();
-                }
-                
-                lock = threadClientMapLock.writeLock();
-                try
-                {
-                    lock.lock();
-                    threadClientMap.put(Thread.currentThread(), client);
-                }
-                finally
-                {
-                    lock.unlock();
-                }
+                addClient(connection, client);
                 
                 mainThreadMessages.add(() -> eventsListener.clientConnected(client));
                 
@@ -254,22 +216,14 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         return null;
     }
     
-    @Override
-    public void connectionSocketClosed() // Connection Thread
+    public void addClient(Connection<C> connection, C client)
     {
-        // no need to do all this cleanup as it's done anyways since the server is closed
-        if(shouldClose())
-        {
-            return;
-        }
-        
-        C client;
-        
-        Lock lock = threadClientMapLock.writeLock();
+        Lock lock = clientsListLock.writeLock();
         try
         {
             lock.lock();
-            client = threadClientMap.remove(Thread.currentThread());
+            clientsList.add(client);
+            client.changeStatus(ClientStatus.CONNECTED);
         }
         finally
         {
@@ -280,6 +234,45 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         try
         {
             lock.lock();
+            clientConnectionMap.put(client, connection);
+        }
+        finally
+        {
+            lock.unlock();
+        }
+        
+        lock = threadClientMapLock.writeLock();
+        try
+        {
+            lock.lock();
+            threadClientMap.put(Thread.currentThread(), client);
+        }
+        finally
+        {
+            lock.unlock();
+        }
+    }
+    
+    public C removeClientByThread()
+    {
+        Lock lock = threadClientMapLock.writeLock();
+        try
+        {
+            lock.lock();
+            return threadClientMap.remove(Thread.currentThread());
+        }
+        finally
+        {
+            lock.unlock();
+        }
+    }
+    
+    public void removeClient(C client)
+    {
+        Lock lock = clientConnectionMapLock.writeLock();
+        try
+        {
+            lock.lock();
             clientConnectionMap.remove(client);
         }
         finally
@@ -287,16 +280,31 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
             lock.unlock();
         }
         
-        client.changeStatus(ClientStatus.DISCONNECTED);
-        
-        // Callback to Engine
-        
-        lock = mainThreadMessagesLock.writeLock();
-        
+        lock = clientsListLock.writeLock();
         try
         {
             lock.lock();
-            mainThreadMessages.add(() -> eventsListener.clientDisconnected(client));
+            clientsList.remove(client);
+        }
+        finally
+        {
+            lock.unlock();
+        }
+        
+        client.changeStatus(ClientStatus.DISCONNECTED);
+    }
+    
+    @Override
+    public void connectionSocketClosed() // Connection Thread
+    {
+        C client = removeClientByThread();
+        removeClient(client);
+        
+        Lock lock = mainThreadMessagesLock.writeLock();
+        try
+        {
+            lock.lock();
+            mainThreadMessages.add(() -> eventsListener.clientSocketClosed(client));
         }
         finally
         {
@@ -307,8 +315,19 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     @Override
     public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
-        e.printStackTrace();
-        connectionSocketClosed();
+        C client = removeClientByThread();
+        removeClient(client);
+        
+        Lock lock = mainThreadMessagesLock.writeLock();
+        try
+        {
+            lock.lock();
+            mainThreadMessages.add(() -> eventsListener.clientSocketClosedWithException(client, e));
+        }
+        finally
+        {
+            lock.unlock();
+        }
     }
     
     @Override
@@ -318,32 +337,40 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         
         super.close();
         
+        System.out.println("close2");
+        
         // auf den connection thread warten
         // dieser sollte terminieren, sobald shouldClose == true ist
         
-        Lock lock = threadClientMapLock.readLock();
+        List<Thread> threads;
         
+        Lock lock = threadClientMapLock.readLock();
         try
         {
             lock.lock();
-            
-            for(Thread t : threadClientMap.keySet())
-            {
-                while(true)
-                {
-                    try
-                    {
-                        t.join();
-                        break;
-                    }
-                    catch(InterruptedException ignored) {}
-                }
-            }
+            threads = threadClientMap.keySet().stream().toList();
         }
         finally
         {
             lock.unlock();
         }
+        
+        for(Thread t : threads)
+        {
+            while(true)
+            {
+                try
+                {
+                    System.out.println("Joining");
+                    t.join();
+                    System.out.println("Joined!");
+                    break;
+                }
+                catch(InterruptedException ignored) {}
+            }
+        }
+        
+        System.out.println("Joined all!");
         
         // socket schließen
         

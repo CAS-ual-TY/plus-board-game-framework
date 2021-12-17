@@ -7,21 +7,9 @@ import sweng_plus.framework.networking.interfaces.IAdvancedHostEventsListener;
 public class NetTestEventsListener implements IAdvancedClientEventsListener, IAdvancedHostEventsListener<Client>
 {
     @Override
-    public void disconnected()
-    {
-        NetTestGame.instance().setScreen(new NetTestMessageScreen(NetTestGame.instance(), "Disconnected"));
-    }
-    
-    @Override
     public void lostConnection()
     {
         NetTestGame.instance().setScreen(new NetTestMessageScreen(NetTestGame.instance(), "Lost Connection"));
-    }
-    
-    @Override
-    public void disconnectedWithException(Exception e)
-    {
-        disconnected();
     }
     
     @Override
@@ -31,7 +19,7 @@ public class NetTestEventsListener implements IAdvancedClientEventsListener, IAd
     }
     
     @Override
-    public void clientDisconnected(Client client)
+    public void clientDisconnectedOrderly(Client client)
     {
     
     }

@@ -69,7 +69,7 @@ public class NetTestMenuScreen extends Screen
                         }
                         
                         @Override
-                        public void clientDisconnected(Client client)
+                        public void clientSocketClosed(Client client)
                         {
                             if(screenHolder.getScreen() instanceof NetTestChatScreen chatScreen)
                             {

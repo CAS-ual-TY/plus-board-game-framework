@@ -66,7 +66,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
         {
             lock.lock();
             mainThreadMessages.clear();
-            mainThreadMessages.add(eventsListener::disconnected);
+            mainThreadMessages.add(eventsListener::socketClosed);
         }
         finally
         {
@@ -83,7 +83,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
         {
             lock.lock();
             mainThreadMessages.clear();
-            mainThreadMessages.add(() -> eventsListener.disconnectedWithException(e));
+            mainThreadMessages.add(() -> eventsListener.socketClosedWithException(e));
         }
         finally
         {

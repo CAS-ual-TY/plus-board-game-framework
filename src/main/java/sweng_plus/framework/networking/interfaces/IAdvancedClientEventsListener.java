@@ -2,24 +2,21 @@ package sweng_plus.framework.networking.interfaces;
 
 public interface IAdvancedClientEventsListener extends IClientEventsListener
 {
-    default void lostConnection()
-    {
-        disconnected();
-    }
+    void lostConnection();
     
     default void forcedDisconnected()
     {
-        disconnected();
+        lostConnection();
     }
     
     default void serverClosed()
     {
-        disconnected();
+        lostConnection();
     }
     
     default void kickedFromServer()
     {
-        disconnected();
+        lostConnection();
     }
     
     default void kickedFromServerWithMessage(String message)
