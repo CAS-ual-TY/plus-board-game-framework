@@ -16,6 +16,18 @@ public interface IClientManager extends Closeable
      */
     <M> void sendMessageToServer(M message) throws IOException; // Main Thread
     
+    default <M> void trySendMessageToServer(M message) // Main Thread
+    {
+        try
+        {
+            sendMessageToServer(message);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * All received messages are decoded according to the used {@link MessageRegistry}
      * and turned into a {@link Runnable}. This method then runs them all.

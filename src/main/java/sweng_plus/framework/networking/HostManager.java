@@ -7,6 +7,7 @@ import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 import sweng_plus.framework.networking.util.ClientStatus;
 import sweng_plus.framework.networking.util.IClientFactory;
+import sweng_plus.framework.networking.util.LockedObject;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,8 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Consumer;
 
 public class HostManager<C extends IClient> extends ConnectionInteractor<C> implements IHostManager<C>
 {
@@ -29,15 +29,9 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     
     public C hostClient;
     
-    protected ReentrantReadWriteLock clientsListLock;
-    // Enthält alle Clients, auch die, die disconnected sind oder gekickt wurden
-    public LinkedList<C> clientsList;
-    
-    protected ReentrantReadWriteLock threadClientMapLock;
-    public HashMap<Thread, C> threadClientMap;
-    
-    protected ReentrantReadWriteLock clientConnectionMapLock;
-    public HashMap<C, Connection<C>> clientConnectionMap;
+    protected LockedObject<LinkedList<C>> clientsList;
+    protected LockedObject<HashMap<Thread, C>> threadClientMap;
+    protected LockedObject<HashMap<C, Connection<C>>> clientConnectionMap;
     
     public CircularBuffer writeBuffer;
     
@@ -52,18 +46,13 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         
         hostClient = clientFactory.makeHost();
         
-        clientsListLock = new ReentrantReadWriteLock();
-        clientsList = new LinkedList<>();
-        clientsList.add(hostClient);
-        
-        threadClientMapLock = new ReentrantReadWriteLock();
-        threadClientMap = new HashMap<>();
-        
-        clientConnectionMapLock = new ReentrantReadWriteLock();
-        clientConnectionMap = new HashMap<>();
+        clientsList = new LockedObject<>(new LinkedList<>());
+        threadClientMap = new LockedObject<>(new HashMap<>());
+        clientConnectionMap = new LockedObject<>(new HashMap<>());
         
         writeBuffer = new CircularBuffer();
         
+        clientsList.getUnsafe().add(hostClient);
         mainThreadMessages.getUnsafe().add(() -> eventsListener.clientConnected(hostClient));
     }
     
@@ -83,17 +72,14 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     @Override
     public List<C> getAllClients() // Main Thread
     {
-        Lock lock = clientsListLock.readLock();
-        
         try
         {
-            lock.lock();
-            return clientsList;
+            clientsList.readLock().lock();
+            return clientsList.getUnsafe();
         }
         finally
         {
-            // TODO wie siehts aus, wenn man über getAllClients direkt drüber-iteriert? Lock funktioniert?
-            lock.unlock();
+            clientsList.readLock().unlock();
         }
     }
     
@@ -112,49 +98,32 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         }
         else
         {
-            Connection<C> connection;
-            
-            Lock lock = clientConnectionMapLock.readLock();
-            
-            try
+            clientConnectionMap.sharedIO(clientConnectionMap1 ->
             {
-                lock.lock();
-                connection = clientConnectionMap.get(client);
-            }
-            finally
-            {
-                lock.unlock();
-            }
-            
-            if(!connection.socket.isClosed())
-            {
-                getMessageRegistry().encodeMessage(writeBuffer, message);
-                writeBuffer.writeToOutputStream(connection.out);
-            }
+                Connection<C> connection = clientConnectionMap1.get(client);
+                
+                if(!connection.socket.isClosed())
+                {
+                    getMessageRegistry().encodeMessage(writeBuffer, message);
+                    writeBuffer.writeToOutputStream(connection.out);
+                }
+            });
         }
     }
     
     @Override
     public <M> void sendMessageToAllClients(M message) throws IOException // Main Thread
     {
-        Lock lock = clientsListLock.readLock();
-        
-        try
+        clientsList.shared(clientsList1 ->
         {
-            lock.lock();
-            
-            for(C c : clientsList)
+            for(C c : clientsList1)
             {
                 if(c.getStatus() == ClientStatus.CONNECTED)
                 {
-                    sendMessageToClient(c, message);
+                    trySendMessageToClient(c, message);
                 }
             }
-        }
-        finally
-        {
-            lock.unlock();
-        }
+        });
     }
     
     @Override
@@ -189,7 +158,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                 
                 addClient(connection, client);
                 
-                mainThreadMessages.exclusive(mainThreadMessages1 ->
+                mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
                 {
                     mainThreadMessages1.add(() -> eventsListener.clientConnected(client));
                 });
@@ -221,78 +190,42 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     
     public void addClient(Connection<C> connection, C client)
     {
-        Lock lock = clientsListLock.writeLock();
-        try
+        clientsList.exclusiveGet(clientsList1 ->
         {
-            lock.lock();
-            clientsList.add(client);
+            clientsList1.add(client);
             client.changeStatus(ClientStatus.CONNECTED);
-        }
-        finally
-        {
-            lock.unlock();
-        }
+        });
         
-        lock = clientConnectionMapLock.writeLock();
-        try
+        clientConnectionMap.exclusiveGet(clientConnectionMap1 ->
         {
-            lock.lock();
-            clientConnectionMap.put(client, connection);
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            clientConnectionMap1.put(client, connection);
+        });
         
-        lock = threadClientMapLock.writeLock();
-        try
+        threadClientMap.exclusiveGet(threadClientMap1 ->
         {
-            lock.lock();
-            threadClientMap.put(Thread.currentThread(), client);
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            threadClientMap1.put(Thread.currentThread(), client);
+        });
     }
     
-    public C removeClientByThread()
+    public void removeClientByThread(Consumer<C> consumer)
     {
-        Lock lock = threadClientMapLock.writeLock();
-        try
+        threadClientMap.exclusiveGet(threadClientMap1 ->
         {
-            lock.lock();
-            return threadClientMap.remove(Thread.currentThread());
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            consumer.accept(threadClientMap1.remove(Thread.currentThread()));
+        });
     }
     
     public void removeClient(C client)
     {
-        Lock lock = clientConnectionMapLock.writeLock();
-        try
+        clientConnectionMap.exclusiveGet(clientConnectionMap1 ->
         {
-            lock.lock();
-            clientConnectionMap.remove(client);
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            clientConnectionMap1.remove(client);
+        });
         
-        lock = clientsListLock.writeLock();
-        try
+        clientsList.exclusiveGet(clientsList1 ->
         {
-            lock.lock();
-            clientsList.remove(client);
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            clientsList1.remove(client);
+        });
         
         client.changeStatus(ClientStatus.DISCONNECTED);
     }
@@ -300,24 +233,28 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     @Override
     public void connectionSocketClosed() // Connection Thread
     {
-        C client = removeClientByThread();
-        removeClient(client);
-        
-        mainThreadMessages.exclusive(mainThreadMessages1 ->
+        removeClientByThread(client ->
         {
-            mainThreadMessages1.add(() -> eventsListener.clientSocketClosed(client));
+            removeClient(client);
+            
+            mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
+            {
+                mainThreadMessages1.add(() -> eventsListener.clientSocketClosed(client));
+            });
         });
     }
     
     @Override
     public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
-        C client = removeClientByThread();
-        removeClient(client);
-        
-        mainThreadMessages.exclusive(mainThreadMessages1 ->
+        removeClientByThread(client ->
         {
-            mainThreadMessages1.add(() -> eventsListener.clientSocketClosedWithException(client, e));
+            removeClient(client);
+            
+            mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
+            {
+                mainThreadMessages1.add(() -> eventsListener.clientSocketClosedWithException(client, e));
+            });
         });
     }
     
@@ -327,41 +264,6 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         // close = true setzen
         
         super.close();
-        
-        System.out.println("close2");
-        
-        // auf den connection thread warten
-        // dieser sollte terminieren, sobald shouldClose == true ist
-        
-        List<Thread> threads;
-        
-        Lock lock = threadClientMapLock.readLock();
-        try
-        {
-            lock.lock();
-            threads = threadClientMap.keySet().stream().toList();
-        }
-        finally
-        {
-            lock.unlock();
-        }
-        
-        for(Thread t : threads)
-        {
-            while(true)
-            {
-                try
-                {
-                    System.out.println("Joining");
-                    t.join();
-                    System.out.println("Joined!");
-                    break;
-                }
-                catch(InterruptedException ignored) {}
-            }
-        }
-        
-        System.out.println("Joined all!");
         
         // socket schließen
         
@@ -376,9 +278,9 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    protected Optional<C> getClientForConnThread(Thread thread)
+    protected void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer)
     {
-        return Optional.of(threadClientMap.get(thread));
+        threadClientMap.shared(threadClientMap1 -> consumer.accept(Optional.of(threadClientMap1.get(thread))));
     }
     
     @Override

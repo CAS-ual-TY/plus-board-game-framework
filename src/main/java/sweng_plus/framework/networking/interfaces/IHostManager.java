@@ -19,6 +19,18 @@ public interface IHostManager<C extends IClient> extends IClientManager
      */
     <M> void sendMessageToClient(C client, M message) throws IOException; // Main Thread
     
+    default <M> void trySendMessageToClient(C client, M message) // Main Thread
+    {
+        try
+        {
+            sendMessageToClient(client, message);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * Sends a message to all {@link IClient} objects which are currently connected to the server.
      *

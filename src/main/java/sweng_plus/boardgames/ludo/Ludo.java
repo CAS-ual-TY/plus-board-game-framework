@@ -166,7 +166,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
         
-        if(hostManager.getAllClients().size() >= 2) //TODO START
+        if(hostManager.getAllClients().size() >= 4) //TODO START
         {
             startGame(true, hostManager.getAllClients().size());
         }

@@ -1,5 +1,6 @@
 package sweng_plus.framework.networking.util;
 
+import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
@@ -36,14 +37,9 @@ public class LockedObject<O>
         return lock.writeLock();
     }
     
-    public O read()
-    {
-        return shared(o -> o);
-    }
-    
     public void write(O value)
     {
-        exclusive(o -> value);
+        exclusiveSet(o -> value);
     }
     
     public void shared(Consumer<O> getter)
@@ -59,20 +55,20 @@ public class LockedObject<O>
         }
     }
     
-    public <A> A shared(Function<O, A> returnFunction)
+    public void sharedIO(IOConsumer<O> getter) throws IOException
     {
         try
         {
             readLock().lock();
-            return returnFunction.apply(object);
+            getter.accept(object);
         }
         finally
         {
-            writeLock().unlock();
+            readLock().unlock();
         }
     }
     
-    public void exclusive(Consumer<O> getter)
+    public void exclusiveGet(Consumer<O> getter)
     {
         try
         {
@@ -85,7 +81,20 @@ public class LockedObject<O>
         }
     }
     
-    public void exclusive(Function<O, O> setter)
+    public void exclusiveGetIO(IOConsumer<O> getter) throws IOException
+    {
+        try
+        {
+            writeLock().lock();
+            getter.accept(object);
+        }
+        finally
+        {
+            writeLock().unlock();
+        }
+    }
+    
+    public void exclusiveSet(Function<O, O> setter)
     {
         try
         {
@@ -98,17 +107,26 @@ public class LockedObject<O>
         }
     }
     
-    public <A> A exclusive(Function<O, O> setter, Function<O, A> returnFunction)
+    public void exclusiveSetIO(IOFunction<O, O> setter) throws IOException
     {
         try
         {
             writeLock().lock();
             object = setter.apply(object);
-            return returnFunction.apply(object);
         }
         finally
         {
             writeLock().unlock();
         }
+    }
+    
+    public interface IOConsumer<T>
+    {
+        void accept(T t) throws IOException;
+    }
+    
+    public interface IOFunction<T, R>
+    {
+        R apply(T t) throws IOException;
     }
 }

@@ -73,19 +73,21 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C>
     
     public void sendPing()
     {
-        try
+        mainThreadMessages.exclusiveGet(mainThreadMessages ->
         {
-            sendMessageToServer(advancedRegistry.requestPing());
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+            mainThreadMessages.add(() -> trySendMessageToServer(advancedRegistry.requestPing()));
+        });
     }
     
     public void lostConnection()
     {
-        close();
-        advancedEventsListener.lostConnection();
+        mainThreadMessages.exclusiveGet(mainThreadMessages ->
+        {
+            mainThreadMessages.add(() ->
+            {
+                close();
+                advancedEventsListener.lostConnection();
+            });
+        });
     }
 }

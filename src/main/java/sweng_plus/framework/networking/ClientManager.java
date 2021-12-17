@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager
 {
@@ -59,7 +60,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void connectionSocketClosed() // Connection Thread
     {
-        mainThreadMessages.exclusive(mainThreadMessages1 ->
+        mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
         {
             mainThreadMessages1.clear();
             mainThreadMessages1.add(eventsListener::socketClosed);
@@ -69,7 +70,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void connectionSocketClosedWithException(Exception e) // Connection Thread
     {
-        mainThreadMessages.exclusive(mainThreadMessages1 ->
+        mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
         {
             mainThreadMessages1.clear();
             mainThreadMessages1.add(() -> eventsListener.socketClosedWithException(e));
@@ -109,8 +110,8 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
-    protected Optional<C> getClientForConnThread(Thread thread)
+    protected void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer)
     {
-        return Optional.empty();
+        consumer.accept(Optional.empty());
     }
 }

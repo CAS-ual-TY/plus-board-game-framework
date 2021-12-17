@@ -33,6 +33,28 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     }
     
     @Override
+    public void update()
+    {
+        if(shouldClose())
+        {
+            return;
+        }
+        
+        super.update();
+        
+        Lock lock = clientTimeOutTrackerMapLock.readLock();
+        try
+        {
+            lock.lock();
+            clientTimeOutTrackerMap.values().forEach(TimeOutTracker::update);
+        }
+        finally
+        {
+            lock.unlock();
+        }
+    }
+    
+    @Override
     public void close()
     {
         try
@@ -107,19 +129,21 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     
     public void sendPing(C client)
     {
-        try
+        mainThreadMessages.exclusiveGet(mainThreadMessages ->
         {
-            sendMessageToClient(client, advancedRegistry.requestPing());
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+            mainThreadMessages.add(() -> trySendMessageToClient(client, advancedRegistry.requestPing()));
+        });
     }
     
     public void lostConnection(C client)
     {
-        removeClient(client);
-        advancedEventsListener.clientLostConnection(client);
+        mainThreadMessages.exclusiveGet(mainThreadMessages ->
+        {
+            mainThreadMessages.add(() ->
+            {
+                removeClient(client);
+                advancedEventsListener.clientLostConnection(client);
+            });
+        });
     }
 }

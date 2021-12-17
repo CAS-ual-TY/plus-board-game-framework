@@ -54,9 +54,9 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     
     public void movePackets() // Network Manager Thread
     {
-        connectionThreadMessages.exclusive(connectionThreadMessages1 ->
+        connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
         {
-            mainThreadMessages.exclusive(mainThreadMessages1 ->
+            mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
             {
                 mainThreadMessages1.addAll(connectionThreadMessages1);
                 connectionThreadMessages1.clear();
@@ -66,7 +66,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     
     public void runMessages()
     {
-        mainThreadMessages.exclusive(mainThreadMessages1 ->
+        mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
         {
             for(Runnable r : mainThreadMessages1)
             {
@@ -80,12 +80,12 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     @Override
     public void receivedMessage(Consumer<Optional<C>> message)
     {
-        receivedMessage(message, getClientForConnThread(Thread.currentThread()));
+        getClientForConnThread(Thread.currentThread(), client -> receivedMessage(message, client));
     }
     
     public void receivedMessage(Consumer<Optional<C>> message, Optional<C> client)
     {
-        connectionThreadMessages.exclusive(connectionThreadMessages1 ->
+        connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
         {
             connectionThreadMessages1.add(() -> message.accept(client));
         });
@@ -103,7 +103,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     @Override
     public abstract void connectionSocketClosedWithException(Exception e);
     
-    protected abstract Optional<C> getClientForConnThread(Thread thread);
+    protected abstract void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer);
     
     @Override
     public boolean shouldClose()
