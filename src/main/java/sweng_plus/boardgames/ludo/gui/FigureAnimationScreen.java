@@ -65,6 +65,12 @@ public class FigureAnimationScreen extends LudoExtensionScreen
     public void onEnd()
     {
         returnToSubScreen();
+    }
+    
+    @Override
+    public void returnToSubScreen()
+    {
+        super.returnToSubScreen();
         onEnd.run();
     }
     
