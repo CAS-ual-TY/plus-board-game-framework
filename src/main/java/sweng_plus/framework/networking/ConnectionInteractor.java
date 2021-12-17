@@ -3,6 +3,7 @@ package sweng_plus.framework.networking;
 import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IConnectionInteractor;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
+import sweng_plus.framework.networking.util.LockedObject;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -16,8 +17,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
 {
     public IMessageRegistry<C> registry;
     
-    protected ReentrantReadWriteLock closeLock;
-    protected boolean close;
+    protected LockedObject<Boolean> close;
     
     protected ReentrantReadWriteLock mainThreadMessagesLock;
     protected List<Runnable> mainThreadMessages;
@@ -29,8 +29,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     {
         this.registry = registry;
         
-        closeLock = new ReentrantReadWriteLock();
-        close = false;
+        close = new LockedObject<>(false);
         
         mainThreadMessagesLock = new ReentrantReadWriteLock();
         mainThreadMessages = new ArrayList<>(64);
@@ -42,24 +41,22 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     @Override
     public void run()
     {
-        ReentrantReadWriteLock.ReadLock lock = closeLock.readLock();
-        
         try
         {
-            lock.lock();
+            close.readLock().lock();
             
-            while(!close)
+            while(!close.getUnsafe())
             {
-                lock.unlock();
+                close.readLock().unlock();
                 
                 movePackets();
                 
-                lock.lock();
+                close.readLock().lock();
             }
         }
         finally
         {
-            lock.unlock();
+            close.readLock().unlock();
         }
     }
     
@@ -149,32 +146,20 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     @Override
     public boolean shouldClose()
     {
-        Lock lock = closeLock.readLock();
-        
         try
         {
-            lock.lock();
-            return close;
+            close.readLock().lock();
+            return close.getUnsafe();
         }
         finally
         {
-            lock.unlock();
+            close.readLock().unlock();
         }
     }
     
     @Override
     public void close()
     {
-        Lock lock = closeLock.writeLock();
-        
-        try
-        {
-            lock.lock();
-            close = true;
-        }
-        finally
-        {
-            lock.unlock();
-        }
+        close.write(true);
     }
 }
