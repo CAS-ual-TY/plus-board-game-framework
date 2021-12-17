@@ -15,16 +15,12 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
 {
     public IMessageRegistry<C> registry;
     
-    protected LockedObject<Boolean> close;
-    
     protected LockedObject<List<Runnable>> mainThreadMessages;
     protected LockedObject<List<Runnable>> connectionThreadMessages;
     
     public ConnectionInteractor(IMessageRegistry<C> registry)
     {
         this.registry = registry;
-        
-        close = new LockedObject<>(false);
         
         mainThreadMessages = new LockedObject<>(new ArrayList<>(16));
         connectionThreadMessages = new LockedObject<>(new ArrayList<>(16));
@@ -33,22 +29,9 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     @Override
     public void run()
     {
-        try
+        while(!shouldClose())
         {
-            close.readLock().lock();
-            
-            while(!close.getUnsafe())
-            {
-                close.readLock().unlock();
-                
-                movePackets();
-                
-                close.readLock().lock();
-            }
-        }
-        finally
-        {
-            close.readLock().unlock();
+            movePackets();
         }
     }
     
@@ -64,15 +47,18 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     
     public void runMessages()
     {
+        List<Runnable> list = new ArrayList<>(16);
+        
         mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
         {
-            for(Runnable r : mainThreadMessages1)
-            {
-                r.run();
-            }
-            
+            list.addAll(mainThreadMessages1);
             mainThreadMessages1.clear();
         });
+        
+        for(Runnable r : list)
+        {
+            r.run();
+        }
     }
     
     @Override
@@ -85,6 +71,11 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     {
         connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
                 connectionThreadMessages1.add(() -> message.accept(client)));
+    }
+    
+    public void runOnMainThreadSafely(Runnable r)
+    {
+        mainThreadMessages.exclusiveGet(mainThreadMessages1 -> mainThreadMessages1.add(r));
     }
     
     @Override
@@ -100,24 +91,4 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     public abstract void connectionSocketClosedWithException(Exception e);
     
     protected abstract void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer);
-    
-    @Override
-    public boolean shouldClose()
-    {
-        try
-        {
-            close.readLock().lock();
-            return close.getUnsafe();
-        }
-        finally
-        {
-            close.readLock().unlock();
-        }
-    }
-    
-    @Override
-    public void close()
-    {
-        close.write(true);
-    }
 }

@@ -25,8 +25,8 @@ public class AdvancedMessageRegistry<C extends IClient> extends MessageRegistry<
                                     IAdvancedHostEventsListener<C> hostEventsListener)
     {
         registerPingMessage(pingID, clientManager, hostManager);
-        registerKickClientMessage(kickID, clientEventsListener);
-        registerLeaveServerMessage(leaveID, hostEventsListener);
+        registerKickClientMessage(kickID, clientManager, clientEventsListener);
+        registerLeaveServerMessage(leaveID, hostManager, hostEventsListener);
     }
     
     protected AdvancedMessageRegistry<C> registerPingMessage(byte id, Supplier<IClientManager> clientManager,
@@ -45,45 +45,59 @@ public class AdvancedMessageRegistry<C extends IClient> extends MessageRegistry<
         return this;
     }
     
-    protected AdvancedMessageRegistry<C> registerKickClientMessage(byte id, IAdvancedClientEventsListener eventsListener)
+    protected AdvancedMessageRegistry<C> registerKickClientMessage(byte id, Supplier<IClientManager> clientManager,
+                                                                   IAdvancedClientEventsListener eventsListener)
     {
         registerMessage(id, KickClientMessage.Handler::encodeMessage, KickClientMessage.Handler::decodeMessage,
                 (clientOptional, message) ->
                         clientOptional.ifPresentOrElse((client) -> {}, () ->
                         {
+                            IClientManager clientManager1 = clientManager.get();
+                            
                             if(message.code() == KickClientMessage.UNKNOWN)
                             {
-                                eventsListener.forcedDisconnected();
+                                clientManager1.close();
+                                clientManager1.runOnMainThreadSafely(eventsListener::forcedDisconnected);
                             }
                             else if(message.code() == KickClientMessage.SERVER_CLOSED)
                             {
-                                eventsListener.serverClosed();
+                                clientManager1.close();
+                                clientManager1.runOnMainThreadSafely(eventsListener::serverClosed);
                             }
                             else if(message.code() == KickClientMessage.CLIENT_KICKED)
                             {
-                                eventsListener.kickedFromServer();
+                                clientManager1.close();
+                                clientManager1.runOnMainThreadSafely(eventsListener::kickedFromServer);
                             }
                             else if(message.code() == KickClientMessage.CLIENT_KICKED_MESSAGE)
                             {
-                                eventsListener.kickedFromServerWithMessage(message.message());
+                                clientManager1.close();
+                                clientManager1.runOnMainThreadSafely(() -> eventsListener.kickedFromServerWithMessage(message.message()));
                             }
                         }), KickClientMessage.class);
         return this;
     }
     
-    protected AdvancedMessageRegistry<C> registerLeaveServerMessage(byte id, IAdvancedHostEventsListener<C> eventsListener)
+    protected AdvancedMessageRegistry<C> registerLeaveServerMessage(byte id, Supplier<IHostManager<C>> hostManager,
+                                                                    IAdvancedHostEventsListener<C> eventsListener)
     {
         registerMessage(id, LeaveServerMessage.Handler::encodeMessage, LeaveServerMessage.Handler::decodeMessage,
                 (clientOptional, message) ->
                         clientOptional.ifPresent(client ->
                         {
+                            IHostManager<C> hostManager1 = hostManager.get();
+                            
                             if(message.code() == LeaveServerMessage.ORDERLY_DISCONNECTED)
                             {
-                                eventsListener.clientDisconnectedOrderly(client);
+                                hostManager1.closeClient(client);
+                                hostManager1.runOnMainThreadSafely(
+                                        () -> eventsListener.clientDisconnectedOrderly(client));
                             }
                             else if(message.code() == LeaveServerMessage.DISCONNECTED_DUE_TO_EXCEPTION)
                             {
-                                eventsListener.clientDisconnectedDueToException(client);
+                                hostManager1.closeClient(client);
+                                hostManager1.runOnMainThreadSafely(
+                                        () -> eventsListener.clientDisconnectedDueToException(client));
                             }
                         }), LeaveServerMessage.class);
         return this;

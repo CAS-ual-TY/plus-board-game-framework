@@ -26,7 +26,7 @@ public interface IHostManager<C extends IClient> extends IClientManager
         }
         catch(IOException e)
         {
-            disconnectClient(client);
+            failedToSendMessageToClient(client);
         }
     }
     
@@ -62,7 +62,17 @@ public interface IHostManager<C extends IClient> extends IClientManager
         sendMessageToAllClientsExcept(getHostClient(), message);
     }
     
-    void disconnectClient(C client);
+    void closeClient(C client);
+    
+    default void disconnectClient(C client)
+    {
+        closeClient(client);
+    }
+    
+    default void failedToSendMessageToClient(C client)
+    {
+        disconnectClient(client);
+    }
     
     /**
      * @return all clients represented as {@link IClient} objects which have ever connected to this server.

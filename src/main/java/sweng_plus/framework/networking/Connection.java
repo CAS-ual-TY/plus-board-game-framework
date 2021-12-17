@@ -80,7 +80,6 @@ public class Connection<C extends IClient> implements Runnable
     
     public interface SocketSupplier<C extends IClient>
     {
-        @SuppressWarnings("RedundantThrows")
         Socket makeOrGetSocket(Connection<C> connection) throws IOException;
     }
 }

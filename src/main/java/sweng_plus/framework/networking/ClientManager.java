@@ -54,7 +54,10 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void update() // Main Thread
     {
-        super.runMessages();
+        if(!shouldClose())
+        {
+            super.runMessages();
+        }
     }
     
     @Override
@@ -80,32 +83,13 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void close() // Main Thread
     {
-        // close = true setzen
-        
-        super.close();
-        
-        // auf den connection thread warten
-        // dieser sollte terminieren, sobald shouldClose == true ist
-        
-        while(true)
-        {
-            try
-            {
-                thread.join();
-                break;
-            }
-            catch(InterruptedException ignored) {}
-        }
-        
-        // socket schließen
-        
         try
         {
             socket.close();
         }
         catch(IOException e)
         {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
     
@@ -113,5 +97,11 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     protected void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer)
     {
         consumer.accept(Optional.empty());
+    }
+    
+    @Override
+    public boolean shouldClose()
+    {
+        return socket.isClosed();
     }
 }

@@ -24,7 +24,7 @@ public interface IClientManager extends Closeable
         }
         catch(IOException e)
         {
-            disconnect();
+            failedToSendMessage();
         }
     }
     
@@ -34,9 +34,16 @@ public interface IClientManager extends Closeable
      */
     void update(); // Main Thread
     
+    void runOnMainThreadSafely(Runnable r);
+    
     default void disconnect()
     {
         close();
+    }
+    
+    default void failedToSendMessage()
+    {
+        disconnect();
     }
     
     @Override

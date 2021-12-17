@@ -4,10 +4,7 @@ import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IHostEventsListener;
 import sweng_plus.framework.networking.interfaces.IHostManager;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
-import sweng_plus.framework.networking.util.CircularBuffer;
-import sweng_plus.framework.networking.util.ClientStatus;
-import sweng_plus.framework.networking.util.IClientFactory;
-import sweng_plus.framework.networking.util.LockedObject;
+import sweng_plus.framework.networking.util.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -122,7 +119,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     @Override
     public void update() // Main Thread
     {
-        super.runMessages();
+        if(!shouldClose())
+        {
+            super.runMessages();
+        }
     }
     
     public Socket acceptNewConnection(Connection<C> connection) // Connection Thread
@@ -151,11 +151,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
             catch(SocketTimeoutException ignored) {}
             catch(SocketException e)
             {
-                if(!e.getMessage().equals("Socket closed"))
-                {
-                    e.printStackTrace();
-                }
-                
+                // Thrown when the server socket is closed
                 return null;
             }
             catch(IOException e)
@@ -228,28 +224,35 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    public void disconnectClient(C client)
+    public void closeClient(C client)
     {
-        try
+        if(client.getRole() == NetworkRole.HOST)
         {
-            clientConnectionMap.sharedIO(clientConnectionMap1 ->
-                    clientConnectionMap1.get(client).socket.close());
+            close();
         }
-        catch(IOException e)
+        else
         {
-            e.printStackTrace();
+            try
+            {
+                clientConnectionMap.sharedIO(clientConnectionMap1 ->
+                        clientConnectionMap1.get(client).socket.close());
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
         }
+    }
+    
+    @Override
+    protected void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer)
+    {
+        threadClientMap.shared(threadClientMap1 -> consumer.accept(Optional.of(threadClientMap1.get(thread))));
     }
     
     @Override
     public void close() // Main Thread
     {
-        // close = true setzen
-        
-        super.close();
-        
-        // socket schließen
-        
         try
         {
             serverSocket.close();
@@ -261,14 +264,8 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    protected void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer)
-    {
-        threadClientMap.shared(threadClientMap1 -> consumer.accept(Optional.of(threadClientMap1.get(thread))));
-    }
-    
-    @Override
     public boolean shouldClose()
     {
-        return serverSocket.isClosed() || super.shouldClose();
+        return serverSocket.isClosed();
     }
 }
