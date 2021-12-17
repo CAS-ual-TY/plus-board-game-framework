@@ -51,7 +51,8 @@ public class NetTestMenuScreen extends Screen
     {
         try
         {
-            NetTestGame.instance().hostManager = NetworkHelper.advancedHost(NetTestGame.instance().protocol, NetTestGame.instance().listener, Client.createFactory(), 100);
+            NetTestGame.instance().hostManager = NetworkHelper.advancedHost(NetTestGame.instance().protocol,
+                    NetTestGame.instance().listener, Client.createFactory(), 100);
             NetTestGame.instance().clientManager = NetTestGame.instance().hostManager;
             NetTestGame.instance().setScreen(new NetTestChatScreen(this));
         }
