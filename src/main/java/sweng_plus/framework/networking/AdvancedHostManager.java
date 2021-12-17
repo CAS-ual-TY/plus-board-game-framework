@@ -4,13 +4,12 @@ import sweng_plus.framework.networking.interfaces.IAdvancedHostEventsListener;
 import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
 import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.util.IClientFactory;
+import sweng_plus.framework.networking.util.LockedObject;
 import sweng_plus.framework.networking.util.TimeOutTracker;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
 public class AdvancedHostManager<C extends IClient> extends HostManager<C>
@@ -18,8 +17,7 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     public IAdvancedMessageRegistry<C> advancedRegistry;
     public IAdvancedHostEventsListener<C> advancedEventsListener;
     
-    protected ReentrantReadWriteLock clientTimeOutTrackerMapLock;
-    public HashMap<C, TimeOutTracker> clientTimeOutTrackerMap;
+    public LockedObject<HashMap<C, TimeOutTracker>> clientTimeOutTrackerMap;
     
     public AdvancedHostManager(IAdvancedMessageRegistry<C> registry, IAdvancedHostEventsListener<C> eventsListener,
                                IClientFactory<C> clientFactory, int port) throws IOException
@@ -27,9 +25,7 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         super(registry, eventsListener, clientFactory, port);
         advancedRegistry = registry;
         advancedEventsListener = eventsListener;
-        
-        clientTimeOutTrackerMapLock = new ReentrantReadWriteLock();
-        clientTimeOutTrackerMap = new HashMap<>();
+        clientTimeOutTrackerMap = new LockedObject<>(new HashMap<>());
     }
     
     @Override
@@ -42,16 +38,10 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         
         super.update();
         
-        Lock lock = clientTimeOutTrackerMapLock.readLock();
-        try
+        clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
         {
-            lock.lock();
-            clientTimeOutTrackerMap.values().forEach(TimeOutTracker::update);
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            clientTimeOutTrackerMap1.values().forEach(TimeOutTracker::update);
+        });
     }
     
     @Override
@@ -76,18 +66,11 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         
         client.ifPresent(c ->
         {
-            Lock lock = clientTimeOutTrackerMapLock.readLock();
-            
-            try
+            clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
             {
-                lock.lock();
-                TimeOutTracker tracker = clientTimeOutTrackerMap.get(c);
+                TimeOutTracker tracker = clientTimeOutTrackerMap1.get(c);
                 tracker.reset();
-            }
-            finally
-            {
-                lock.unlock();
-            }
+            });
         });
     }
     
@@ -96,17 +79,10 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     {
         super.addClient(connection, client);
         
-        Lock lock = clientTimeOutTrackerMapLock.writeLock();
-        
-        try
+        clientTimeOutTrackerMap.exclusiveGet(clientTimeOutTrackerMap1 ->
         {
-            lock.lock();
-            clientTimeOutTrackerMap.put(client, new TimeOutTracker(() -> sendPing(client), () -> lostConnection(client)));
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            clientTimeOutTrackerMap1.put(client, new TimeOutTracker(() -> sendPing(client), () -> lostConnection(client)));
+        });
     }
     
     @Override
@@ -114,17 +90,10 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     {
         super.removeClient(client);
         
-        Lock lock = clientTimeOutTrackerMapLock.writeLock();
-        
-        try
+        clientTimeOutTrackerMap.exclusiveGet(clientTimeOutTrackerMap1 ->
         {
-            lock.lock();
-            clientTimeOutTrackerMap.remove(client);
-        }
-        finally
-        {
-            lock.unlock();
-        }
+            clientTimeOutTrackerMap1.remove(client);
+        });
     }
     
     public void sendPing(C client)
