@@ -21,7 +21,6 @@ import sweng_plus.framework.userinterface.gui.widget.*;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -128,15 +127,8 @@ public class LudoScreen extends Screen implements ILudoScreen
     
     public void sendMessage()
     {
-        try
-        {
-            Ludo.instance().clientManager.sendMessageToServer(new ChatMessage(Ludo.instance().name, inputWidget.getText()));
-            inputWidget.clearText();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        Ludo.instance().clientManager.sendMessageToServer(new ChatMessage(Ludo.instance().name, inputWidget.getText()));
+        inputWidget.clearText();
     }
     
     public void requestDice()

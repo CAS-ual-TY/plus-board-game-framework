@@ -4,7 +4,6 @@ import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.util.CircularBuffer;
 import sweng_plus.framework.networking.util.NetworkRole;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
@@ -46,21 +45,15 @@ public class NetTestMessage
         
         public static void handleMessage(Optional<Client> clientOptional, NetTestMessage msg)
         {
-            clientOptional.ifPresentOrElse((client) ->
-            {
-                try
-                {
-                    msg.sender = client.getRole() == NetworkRole.HOST ? "Host" : "Client";
-                    NetTestGame.instance().hostManager.sendMessageToAllClients(msg);
-                }
-                catch(IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }, () ->
-            {
-                ((NetTestChatScreen) NetTestGame.instance().getScreen()).addMessage(msg.sender, msg.message, msg.timestamp);
-            });
+            clientOptional.ifPresentOrElse(
+                    (client) ->
+                    {
+                        msg.sender = client.getRole() == NetworkRole.HOST ? "Host" : "Client";
+                        NetTestGame.instance().hostManager.sendMessageToAllClients(msg);
+                    },
+                    () -> ((NetTestChatScreen) NetTestGame.instance().getScreen())
+                            .addMessage(msg.sender, msg.message, msg.timestamp)
+            );
         }
     }
 }

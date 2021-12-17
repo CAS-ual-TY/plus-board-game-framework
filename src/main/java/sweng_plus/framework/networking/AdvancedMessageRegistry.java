@@ -5,7 +5,6 @@ import sweng_plus.framework.networking.messages.KickClientMessage;
 import sweng_plus.framework.networking.messages.LeaveServerMessage;
 import sweng_plus.framework.networking.messages.PingMessage;
 
-import java.io.IOException;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unchecked")
@@ -39,28 +38,8 @@ public class AdvancedMessageRegistry<C extends IClient> extends MessageRegistry<
                     if(message.code() == PingMessage.REQUEST)
                     {
                         clientOptional.ifPresentOrElse(
-                                (client) ->
-                                {
-                                    try
-                                    {
-                                        hostManager.get().sendMessageToClient(client, respondToPing());
-                                    }
-                                    catch(IOException e)
-                                    {
-                                        e.printStackTrace();
-                                    }
-                                },
-                                () ->
-                                {
-                                    try
-                                    {
-                                        clientManager.get().sendMessageToServer(respondToPing());
-                                    }
-                                    catch(IOException e)
-                                    {
-                                        e.printStackTrace();
-                                    }
-                                });
+                                (client) -> hostManager.get().sendMessageToClient(client, respondToPing()),
+                                () -> clientManager.get().sendMessageToServer(respondToPing()));
                     }
                 }, PingMessage.class);
         return this;

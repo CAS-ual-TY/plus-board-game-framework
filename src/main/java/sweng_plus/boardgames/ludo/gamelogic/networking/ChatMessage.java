@@ -25,20 +25,9 @@ public record ChatMessage(String sender, String message)
         
         public static void handleMessage(Optional<LudoClient> clientOptional, ChatMessage message)
         {
-            clientOptional.ifPresentOrElse((client) ->
-            {
-                try
-                {
-                    Ludo.instance().getHostManager().sendMessageToAllClients(message);
-                }
-                catch(IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }, () ->
-            {
-                ((ILudoScreen) Ludo.instance().getScreen()).chat(message);
-            });
+            clientOptional.ifPresentOrElse(
+                    (client) -> Ludo.instance().getHostManager().sendMessageToAllClients(message),
+                    () -> ((ILudoScreen) Ludo.instance().getScreen()).chat(message));
         }
     }
 }

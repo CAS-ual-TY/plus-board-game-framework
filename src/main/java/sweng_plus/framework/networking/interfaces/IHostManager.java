@@ -1,7 +1,6 @@
 package sweng_plus.framework.networking.interfaces;
 
 import sweng_plus.framework.networking.MessageRegistry;
-import sweng_plus.framework.networking.util.ClientStatus;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,17 +16,17 @@ public interface IHostManager<C extends IClient> extends IClientManager
      * @param <M>     The type of the message.
      * @throws IOException
      */
-    <M> void sendMessageToClient(C client, M message) throws IOException; // Main Thread
+    <M> void sendMessageToClientUnsafe(C client, M message) throws IOException; // Main Thread
     
-    default <M> void trySendMessageToClient(C client, M message) // Main Thread
+    default <M> void sendMessageToClient(C client, M message) // Main Thread
     {
         try
         {
-            sendMessageToClient(client, message);
+            sendMessageToClientUnsafe(client, message);
         }
         catch(IOException e)
         {
-            e.printStackTrace();
+            disconnectClient(client);
         }
     }
     
@@ -39,32 +38,31 @@ public interface IHostManager<C extends IClient> extends IClientManager
      * @throws IOException
      * @see #getAllClients()
      */
-    default <M> void sendMessageToAllClients(M message) throws IOException // Main Thread
+    default <M> void sendMessageToAllClients(M message) // Main Thread
     {
         for(C c : getAllClients())
         {
-            if(c.getStatus() == ClientStatus.CONNECTED)
+            sendMessageToClient(c, message);
+        }
+    }
+    
+    default <M> void sendMessageToAllClientsExcept(C client, M message) // Main Thread
+    {
+        for(C c : getAllClients())
+        {
+            if(c != client)
             {
                 sendMessageToClient(c, message);
             }
         }
     }
     
-    default <M> void sendMessageToAllClientsExcept(C client, M message) throws IOException // Main Thread
-    {
-        for(C c : getAllClients())
-        {
-            if(client.getStatus() == ClientStatus.CONNECTED && c != client)
-            {
-                sendMessageToClient(c, message);
-            }
-        }
-    }
-    
-    default <M> void sendMessageToAllClientsExceptHost(M message) throws IOException // Main Thread
+    default <M> void sendMessageToAllClientsExceptHost(M message) // Main Thread
     {
         sendMessageToAllClientsExcept(getHostClient(), message);
     }
+    
+    void disconnectClient(C client);
     
     /**
      * @return all clients represented as {@link IClient} objects which have ever connected to this server.

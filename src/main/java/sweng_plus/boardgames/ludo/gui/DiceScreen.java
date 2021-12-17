@@ -11,8 +11,6 @@ import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.TextWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-import java.io.IOException;
-
 public class DiceScreen extends LudoExtensionScreen
 {
     public DiceScreen(LudoScreen subScreen)
@@ -27,14 +25,6 @@ public class DiceScreen extends LudoExtensionScreen
     private void roll()
     {
         returnToSubScreen();
-        
-        try
-        {
-            Ludo.instance().getClientManager().sendMessageToServer(new RollMessage());
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        Ludo.instance().getClientManager().sendMessageToServer(new RollMessage());
     }
 }

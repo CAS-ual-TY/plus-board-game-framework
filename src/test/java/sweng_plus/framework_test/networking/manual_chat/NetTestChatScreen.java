@@ -79,14 +79,7 @@ public class NetTestChatScreen extends StackedScreen
     
     public void sendMessage(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
-        try
-        {
-            NetTestGame.instance().clientManager.sendMessageToServer(new NetTestMessage(inputWidget.getText(), System.currentTimeMillis()));
-            inputWidget.clearText();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        NetTestGame.instance().clientManager.sendMessageToServer(new NetTestMessage(inputWidget.getText(), System.currentTimeMillis()));
+        inputWidget.clearText();
     }
 }

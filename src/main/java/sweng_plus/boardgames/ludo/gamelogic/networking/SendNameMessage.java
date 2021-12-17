@@ -35,17 +35,9 @@ public record SendNameMessage(String name)
                 // client1 receives names
                 // client2 sends name
                 // client1 received empty name of client 2
-                
-                try
-                {
-                    Ludo.instance().getHostManager().sendMessageToClient(client, SendNamesMessage.makeNamesMessage());
-                    Ludo.instance().getHostManager().sendMessageToAllClientsExcept(client, message);
-                }
-                catch(IOException e)
-                {
-                    // TODO kick client
-                    e.printStackTrace();
-                }
+    
+                Ludo.instance().getHostManager().sendMessageToClient(client, SendNamesMessage.makeNamesMessage());
+                Ludo.instance().getHostManager().sendMessageToAllClientsExcept(client, message);
             }, () ->
                     Ludo.instance().names.add(message.name()));
         }

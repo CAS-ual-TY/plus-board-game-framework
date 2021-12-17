@@ -90,7 +90,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    public <M> void sendMessageToClient(C client, M message) throws IOException // Main Thread
+    public <M> void sendMessageToClientUnsafe(C client, M message) throws IOException // Main Thread
     {
         if(client == getHostClient())
         {
@@ -112,22 +112,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    public <M> void sendMessageToAllClients(M message) throws IOException // Main Thread
-    {
-        clientsList.shared(clientsList1 ->
-        {
-            for(C c : clientsList1)
-            {
-                if(c.getStatus() == ClientStatus.CONNECTED)
-                {
-                    trySendMessageToClient(c, message);
-                }
-            }
-        });
-    }
-    
-    @Override
-    public <M> void sendMessageToServer(M message) // Main Thread
+    public <M> void sendMessageToServerUnsafe(M message) // Main Thread
     {
         // Wird vom Client der auch Host ist gecallt
         // Deshalb kanns auch direkt ausgeführt werden
@@ -240,6 +225,20 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
             mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
                     mainThreadMessages1.add(() -> eventsListener.clientSocketClosedWithException(client, e)));
         });
+    }
+    
+    @Override
+    public void disconnectClient(C client)
+    {
+        try
+        {
+            clientConnectionMap.sharedIO(clientConnectionMap1 ->
+                    clientConnectionMap1.get(client).socket.close());
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     @Override

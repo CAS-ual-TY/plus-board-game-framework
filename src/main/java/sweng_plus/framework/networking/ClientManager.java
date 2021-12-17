@@ -42,7 +42,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
-    public <M> void sendMessageToServer(M message) throws IOException // Main Thread
+    public <M> void sendMessageToServerUnsafe(M message) throws IOException // Main Thread
     {
         if(!socket.isClosed())
         {

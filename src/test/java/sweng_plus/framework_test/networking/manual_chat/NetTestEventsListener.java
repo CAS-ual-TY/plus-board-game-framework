@@ -17,26 +17,12 @@ public class NetTestEventsListener implements IAdvancedClientEventsListener, IAd
     @Override
     public void clientConnected(Client client)
     {
-        try
-        {
-            NetTestGame.instance().hostManager.sendMessageToAllClients(new NetTestMessage("Someone connected!", System.currentTimeMillis()));
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        NetTestGame.instance().hostManager.sendMessageToAllClients(new NetTestMessage("Someone connected!", System.currentTimeMillis()));
     }
     
     @Override
     public void clientDisconnectedOrderly(Client client)
     {
-        try
-        {
-            NetTestGame.instance().hostManager.sendMessageToAllClients(new NetTestMessage("Someone disconnected!", System.currentTimeMillis()));
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        NetTestGame.instance().hostManager.sendMessageToAllClients(new NetTestMessage("Someone disconnected!", System.currentTimeMillis()));
     }
 }

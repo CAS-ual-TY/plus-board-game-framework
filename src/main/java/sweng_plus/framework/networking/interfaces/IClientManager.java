@@ -14,17 +14,17 @@ public interface IClientManager extends Closeable
      * @param <M>     The type of the message.
      * @throws IOException
      */
-    <M> void sendMessageToServer(M message) throws IOException; // Main Thread
+    <M> void sendMessageToServerUnsafe(M message) throws IOException; // Main Thread
     
-    default <M> void trySendMessageToServer(M message) // Main Thread
+    default <M> void sendMessageToServer(M message) // Main Thread
     {
         try
         {
-            sendMessageToServer(message);
+            sendMessageToServerUnsafe(message);
         }
         catch(IOException e)
         {
-            e.printStackTrace();
+            disconnect();
         }
     }
     
@@ -33,6 +33,11 @@ public interface IClientManager extends Closeable
      * and turned into a {@link Runnable}. This method then runs them all.
      */
     void update(); // Main Thread
+    
+    default void disconnect()
+    {
+        close();
+    }
     
     @Override
     void close(); // Main Thread

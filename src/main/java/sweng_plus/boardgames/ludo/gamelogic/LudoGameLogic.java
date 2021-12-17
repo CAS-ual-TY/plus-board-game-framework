@@ -5,7 +5,6 @@ import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.framework.boardgame.nodes_board.Dice;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -57,18 +56,11 @@ public class LudoGameLogic
         
         if(isServer)
         {
-            try
+            for(LudoClient client : Ludo.instance().getHostManager().getAllClients())
             {
-                for(LudoClient client : Ludo.instance().getHostManager().getAllClients())
-                {
-                    Ludo.instance().getHostManager()
-                            .sendMessageToClient(client,
-                                    new StartGameMessage(client.getTeamIndex(), teams.length, currentTeamIndex));
-                }
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
+                Ludo.instance().getHostManager()
+                        .sendMessageToClient(client,
+                                new StartGameMessage(client.getTeamIndex(), teams.length, currentTeamIndex));
             }
         }
     }
@@ -88,15 +80,8 @@ public class LudoGameLogic
         
         if(isServer)
         {
-            try
-            {
-                Ludo.instance().getHostManager().sendMessageToAllClients(
-                        new RolledMessage(latestRoll));
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
+            Ludo.instance().getHostManager().sendMessageToAllClients(
+                    new RolledMessage(latestRoll));
         }
     }
     
@@ -113,15 +98,8 @@ public class LudoGameLogic
     {
         if(isServer)
         {
-            try
-            {
-                Ludo.instance().getHostManager().sendMessageToAllClients(
-                        new FigureSelectedMessage(selectedFigure));
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
+            Ludo.instance().getHostManager().sendMessageToAllClients(
+                    new FigureSelectedMessage(selectedFigure));
         }
     }
     
@@ -131,16 +109,9 @@ public class LudoGameLogic
         
         if(isServer && isGameWon(currentTeamIndex))
         {
-            try
-            {
-                Ludo.instance().getHostManager().sendMessageToAllClients(
-                        new WinMessage(currentTeamIndex));
-                return;
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
+            Ludo.instance().getHostManager().sendMessageToAllClients(
+                    new WinMessage(currentTeamIndex));
+            return;
         }
         
         // maximum numbers of consecutive rolls reached (standard MIN_CONSECUTIVE_ROLLS, if no movable figures - MAX_CONSECUTIVE_ROLLS rolls

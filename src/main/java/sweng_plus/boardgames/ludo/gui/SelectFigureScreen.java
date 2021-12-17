@@ -12,8 +12,6 @@ import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-import java.io.IOException;
-
 public class SelectFigureScreen extends LudoExtensionScreen
 {
     public SelectFigureScreen(LudoScreen subScreen)
@@ -38,15 +36,8 @@ public class SelectFigureScreen extends LudoExtensionScreen
             
             if(((LudoScreen) subScreen).isTurnPlayer())
             {
-                try
-                {
-                    Ludo.instance().getClientManager().sendMessageToServer(
-                            new FigureSelectMessage(((SelectableFigureWidget) button).ludoFigure.getIndex()));
-                }
-                catch(IOException e)
-                {
-                    e.printStackTrace();
-                }
+                Ludo.instance().getClientManager().sendMessageToServer(
+                        new FigureSelectMessage(((SelectableFigureWidget) button).ludoFigure.getIndex()));
             }
         }
     }
