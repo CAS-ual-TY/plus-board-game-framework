@@ -15,6 +15,7 @@ import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -22,9 +23,10 @@ import java.util.List;
 
 public class NetTestChatScreen extends StackedScreen
 {
-    public static final int CHAT_WIDTH = 500;
+    public static final int CHAT_WIDTH = 1000;
     
     public InputWidget inputWidget;
+    public Widget chatWidget;
     
     public FontRenderer chatFontRenderer;
     
@@ -36,7 +38,7 @@ public class NetTestChatScreen extends StackedScreen
         
         chatFontRenderer = NetTestGame.instance().fontRenderer48;
         
-        Dimensions leaveDimensions = new Dimensions(400, 100, AnchorPoint.TR);
+        Dimensions leaveDimensions = new Dimensions(400, 100, AnchorPoint.BL);
         Dimensions sendDimensions = new Dimensions(100, 100, AnchorPoint.BR);
         
         try
@@ -57,9 +59,17 @@ public class NetTestChatScreen extends StackedScreen
         
         chatMessages = new LinkedList<>();
         
-        widgets.add(new SimpleWidget(screenHolder, new Dimensions(AnchorPoint.BR, 0, -100), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL)));
+        widgets.add(chatWidget = new SimpleWidget(screenHolder, new Dimensions(CHAT_WIDTH, 100, AnchorPoint.BR, 0, -100), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL)));
         
         widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(CHAT_WIDTH - 100, 100, AnchorPoint.BR, -100, 0), new FunctionalTextStyle(chatFontRenderer, () -> inputWidget.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(chatFontRenderer, () -> inputWidget.getTextAsList(), AnchorPoint.L)));
+    }
+    
+    @Override
+    public void initScreen(int screenW, int screenH)
+    {
+        chatWidget.getDimensions().h = screenH - 100;
+        
+        super.initScreen(screenW, screenH);
     }
     
     private void leave(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
