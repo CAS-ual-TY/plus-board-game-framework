@@ -8,11 +8,12 @@ import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.style.IStyle;
+import sweng_plus.framework.userinterface.gui.style.TextStyle;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.TextWidget;
+import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.io.IOException;
@@ -46,9 +47,9 @@ public class OptionsScreen extends WrappedScreen
             e.printStackTrace();
         }
         
-        widgets.add(new TextWidget(screenHolder, topButton.clone(), Ludo.instance().fontRenderer32, "Top Button"));
-        widgets.add(new TextWidget(screenHolder, middleButton.clone(), Ludo.instance().fontRenderer32, "Middle Button"));
-        widgets.add(new TextWidget(screenHolder, bottomButton.clone(), Ludo.instance().fontRenderer32, "Exit"));
+        widgets.add(new SimpleWidget(screenHolder, topButton.clone(), new TextStyle(Ludo.instance().fontRenderer32, "Top Button")));
+        widgets.add(new SimpleWidget(screenHolder, middleButton.clone(), new TextStyle(Ludo.instance().fontRenderer32, "Middle Button")));
+        widgets.add(new SimpleWidget(screenHolder, bottomButton.clone(), new TextStyle(Ludo.instance().fontRenderer32, "Exit")));
     }
     
     @Override

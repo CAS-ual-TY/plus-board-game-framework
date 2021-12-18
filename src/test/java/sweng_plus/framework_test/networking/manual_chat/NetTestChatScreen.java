@@ -4,11 +4,16 @@ import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.StackedScreen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
+import sweng_plus.framework.userinterface.gui.style.FunctionalTextStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
+import sweng_plus.framework.userinterface.gui.style.TextStyle;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
-import sweng_plus.framework.userinterface.gui.widget.*;
+import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
+import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
+import sweng_plus.framework.userinterface.gui.widget.InputWidget;
+import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.io.IOException;
@@ -19,7 +24,6 @@ public class NetTestChatScreen extends StackedScreen
 {
     public static final int CHAT_WIDTH = 500;
     
-    public FunctionalTextWidget textWidget;
     public InputWidget inputWidget;
     
     public FontRenderer chatFontRenderer;
@@ -41,10 +45,10 @@ public class NetTestChatScreen extends StackedScreen
             Texture buttonInactive = TextureHelper.createTexture("/textures/button_test_inactive.png");
             
             widgets.add(new FunctionalButtonWidget(screenHolder, leaveDimensions, new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive)), this::leave));
-            widgets.add(new TextWidget(screenHolder, leaveDimensions, chatFontRenderer, "Leave"));
+            widgets.add(new SimpleWidget(screenHolder, leaveDimensions, new TextStyle(chatFontRenderer, "Leave")));
             
             widgets.add(new FunctionalButtonWidget(screenHolder, sendDimensions, new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive)), this::sendMessage));
-            widgets.add(new TextWidget(screenHolder, sendDimensions, chatFontRenderer, ">"));
+            widgets.add(new SimpleWidget(screenHolder, sendDimensions, new TextStyle(chatFontRenderer, ">")));
         }
         catch(IOException e)
         {
@@ -53,8 +57,7 @@ public class NetTestChatScreen extends StackedScreen
         
         chatMessages = new LinkedList<>();
         
-        textWidget = new FunctionalTextWidget(screenHolder, new Dimensions(AnchorPoint.BR, 0, -100), chatFontRenderer, this::getChat);
-        widgets.add(textWidget);
+        widgets.add(new SimpleWidget(screenHolder, new Dimensions(AnchorPoint.BR, 0, -100), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL)));
         
         widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(CHAT_WIDTH - 100, 100, AnchorPoint.BR, -100, 0), chatFontRenderer));
     }
@@ -68,8 +71,6 @@ public class NetTestChatScreen extends StackedScreen
     public void addMessage(String sender, String message, long timestamp)
     {
         chatMessages.addAll(chatFontRenderer.splitStringToWidth(CHAT_WIDTH, sender + ": " + message));
-        textWidget.adjustSizeToText();
-        textWidget.initWidget(this);
     }
     
     public List<String> getChat()

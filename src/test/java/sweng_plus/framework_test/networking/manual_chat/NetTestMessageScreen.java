@@ -4,11 +4,12 @@ import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
+import sweng_plus.framework.userinterface.gui.style.TextStyle;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.TextWidget;
+import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.io.IOException;
@@ -27,10 +28,10 @@ public class NetTestMessageScreen extends Screen
             Texture buttonActive = TextureHelper.createTexture("/textures/button_test_active.png");
             Texture buttonInactive = TextureHelper.createTexture("/textures/button_test_inactive.png");
             
-            widgets.add(new TextWidget(screenHolder, topButton, NetTestGame.instance().fontRenderer48, message).adjustSizeToText());
+            widgets.add(new SimpleWidget(screenHolder, topButton, new TextStyle(NetTestGame.instance().fontRenderer48, message)));
             
             widgets.add(new FunctionalButtonWidget(screenHolder, bottomButton, new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive)), this::toMainMenu));
-            widgets.add(new TextWidget(screenHolder, bottomButton, NetTestGame.instance().fontRenderer48, "Main Menu"));
+            widgets.add(new SimpleWidget(screenHolder, bottomButton, new TextStyle(NetTestGame.instance().fontRenderer48, "Main Menu")));
         }
         catch(IOException e)
         {

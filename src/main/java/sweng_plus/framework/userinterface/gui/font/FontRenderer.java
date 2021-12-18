@@ -75,7 +75,7 @@ public class FontRenderer
         }
     }
     
-    public void renderCentered(int x, int y, String text)
+    public void renderPointCentered(int x, int y, String text)
     {
         int w = getTextWidth(text);
         int h = getHeight();
@@ -83,7 +83,7 @@ public class FontRenderer
         render(x - w / 2, y - h / 2, text);
     }
     
-    public void renderCentered(int x, int y, List<String> text)
+    public void renderPointCentered(int x, int y, List<String> text)
     {
         int h = getTextHeight(text);
         
@@ -93,6 +93,43 @@ public class FontRenderer
         for(String line : text)
         {
             x0 = x - getTextWidth(line) / 2;
+            render(x0, y0, line);
+            y0 += getHeight();
+        }
+    }
+    
+    public void renderMiddleAligned(int x, int y, List<String> text)
+    {
+        int x0;
+        int y0 = y;
+    
+        for(String line : text)
+        {
+            x0 = x - getTextWidth(line) / 2;
+            render(x0, y0, line);
+            y0 += getHeight();
+        }
+    }
+    
+    public void renderLeftAligned(int x, int y, List<String> text)
+    {
+        int y0 = y;
+        
+        for(String line : text)
+        {
+            render(x, y0, line);
+            y0 += getHeight();
+        }
+    }
+    
+    public void renderRightAligned(int x, int y, List<String> text)
+    {
+        int x0;
+        int y0 = y;
+        
+        for(String line : text)
+        {
+            x0 = x - getTextWidth(line);
             render(x0, y0, line);
             y0 += getHeight();
         }
