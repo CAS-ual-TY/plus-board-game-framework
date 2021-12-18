@@ -5,7 +5,7 @@ import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class ColoredQuadStyle implements IStyle
+public class ColoredQuadStyle extends BaseStyle
 {
     protected Color4f color;
     

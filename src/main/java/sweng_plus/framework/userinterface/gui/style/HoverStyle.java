@@ -2,7 +2,7 @@ package sweng_plus.framework.userinterface.gui.style;
 
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-public class HoverStyle implements IStyle
+public class HoverStyle extends BaseStyle
 {
     protected IStyle unhovered;
     protected IStyle hovered;

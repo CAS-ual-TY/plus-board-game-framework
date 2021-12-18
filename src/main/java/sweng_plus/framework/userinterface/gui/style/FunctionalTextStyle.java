@@ -9,7 +9,7 @@ import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class FunctionalTextStyle implements IStyle
+public class FunctionalTextStyle extends BaseStyle
 {
     protected FontRenderer fontRenderer;
     protected Supplier<List<String>> text;
@@ -64,7 +64,5 @@ public class FunctionalTextStyle implements IStyle
         {
             fontRenderer.renderMiddleAligned(x, y, text);
         }
-        
-        //fontRenderer.renderPointCentered(widget.getDimensions().x + widget.getDimensions().w / 2, widget.getDimensions().y + widget.getDimensions().h / 2, text);
     }
 }

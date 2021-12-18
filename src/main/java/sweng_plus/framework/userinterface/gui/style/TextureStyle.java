@@ -4,7 +4,7 @@ import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-public class TextureStyle implements IStyle
+public class TextureStyle extends BaseStyle
 {
     protected Texture texture;
     protected Color4f color;

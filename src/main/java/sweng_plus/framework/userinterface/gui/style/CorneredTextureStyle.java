@@ -4,7 +4,7 @@ import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-public class CorneredTextureStyle implements IStyle
+public class CorneredTextureStyle extends BaseStyle
 {
     protected Texture texture;
     protected Color4f color;
