@@ -5,6 +5,7 @@ import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
+import sweng_plus.framework.userinterface.gui.style.FunctionalTextStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.style.TextStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
@@ -29,7 +30,7 @@ public class MenuHostScreen extends WrappedScreen
         widgets.add(new SimpleWidget(screenHolder, nameDims, new TextStyle(Ludo.instance().fontRenderer48, "Name:", Color4f.WHITE)));
         
         Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -80);
-        inputWidgetName = new InputWidget(screenHolder, inputDimsName, Ludo.instance().fontRenderer48)
+        inputWidgetName = new InputWidget(screenHolder, inputDimsName, new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetName.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetName.getTextAsList(), AnchorPoint.L))
                 .setText("Host");
         widgets.add(inputWidgetName);
         
@@ -37,7 +38,7 @@ public class MenuHostScreen extends WrappedScreen
         widgets.add(new SimpleWidget(screenHolder, textDims, new TextStyle(Ludo.instance().fontRenderer48, "Port:", Color4f.WHITE)));
         
         Dimensions inputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 100);
-        inputWidgetPort = new InputWidget(screenHolder, inputDims, Ludo.instance().fontRenderer48)
+        inputWidgetPort = new InputWidget(screenHolder, inputDims, new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetPort.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetPort.getTextAsList(), AnchorPoint.L))
                 .setText("25555");
         widgets.add(inputWidgetPort);
         

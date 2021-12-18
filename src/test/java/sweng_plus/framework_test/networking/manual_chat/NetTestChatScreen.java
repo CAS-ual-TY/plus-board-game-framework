@@ -59,7 +59,7 @@ public class NetTestChatScreen extends StackedScreen
         
         widgets.add(new SimpleWidget(screenHolder, new Dimensions(AnchorPoint.BR, 0, -100), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL)));
         
-        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(CHAT_WIDTH - 100, 100, AnchorPoint.BR, -100, 0), chatFontRenderer));
+        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(CHAT_WIDTH - 100, 100, AnchorPoint.BR, -100, 0), new FunctionalTextStyle(chatFontRenderer, () -> inputWidget.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(chatFontRenderer, () -> inputWidget.getTextAsList(), AnchorPoint.L)));
     }
     
     private void leave(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)

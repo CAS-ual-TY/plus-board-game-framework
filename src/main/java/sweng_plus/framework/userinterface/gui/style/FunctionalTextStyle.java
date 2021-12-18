@@ -29,6 +29,16 @@ public class FunctionalTextStyle implements IStyle
         this(fontRenderer, text, anchorPoint, Color4f.NEUTRAL);
     }
     
+    public FunctionalTextStyle(FontRenderer fontRenderer, Supplier<List<String>> text, Color4f color)
+    {
+        this(fontRenderer, text, AnchorPoint.M, color);
+    }
+    
+    public FunctionalTextStyle(FontRenderer fontRenderer, Supplier<List<String>> text)
+    {
+        this(fontRenderer, text, AnchorPoint.M, Color4f.NEUTRAL);
+    }
+    
     @Override
     public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
     {

@@ -74,7 +74,7 @@ public class LudoScreen extends Screen implements ILudoScreen
         widgets.add(sendChatWidget = new FunctionalButtonWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::sendMessage));
         widgets.add(sentChatTextWidget = new SimpleWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), new TextStyle(chatFontRenderer, ">", Color4f.BLACK)));
         
-        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), chatFontRenderer, (w) -> sendMessage()));
+        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), new FunctionalTextStyle(chatFontRenderer, () -> inputWidget.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(chatFontRenderer, () -> inputWidget.getTextAsList(), AnchorPoint.L), (w) -> sendMessage()));
         widgets.add(chatWidget = new SimpleWidget(screenHolder, new Dimensions(chatWidth, 0, AnchorPoint.BR, 0, -chatHeight), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL, Color4f.BLACK)));
     }
     

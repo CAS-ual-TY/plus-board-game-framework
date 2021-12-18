@@ -5,6 +5,7 @@ import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.style.ColoredQuadStyle;
+import sweng_plus.framework.userinterface.gui.style.FunctionalTextStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.style.TextureStyle;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
@@ -26,6 +27,8 @@ public class DebugScreen extends Screen
     private long millisTPS = System.currentTimeMillis();
     private LinkedList<Double> tpsAverage = new LinkedList<>();
     
+    private InputWidget inputWidget;
+    
     public DebugScreen(IScreenHolder screenHolder)
     {
         super(screenHolder);
@@ -46,8 +49,6 @@ public class DebugScreen extends Screen
             widgets.add(new SimpleWidget(screenHolder, new Dimensions(100, 100, anchor),
                     new HoverStyle(new ColoredQuadStyle(Color4f.BLACK), new ColoredQuadStyle(Color4f.RED))));
         }
-        
-        widgets.add(new InputWidget(screenHolder, new Dimensions(600, 80, AnchorPoint.BR), Ludo.instance().fontRenderer24));
     }
     
     @Override
