@@ -9,6 +9,7 @@ import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.boardgames.ludo.gui.NameScreen;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.networking.AdvancedMessageRegistry;
@@ -22,6 +23,7 @@ import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -166,7 +168,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
         
-        if(hostManager.getAllClients().size() >= 4) //TODO START
+        if(hostManager.getAllClients().size() >= 2) //TODO START
         {
             startGame(true, hostManager.getAllClients().size());
         }
@@ -204,20 +206,28 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     @Override
     public String getWindowIconResource()
     {
-        return "src/main/resources/icon.png";
+        return "/icon.png";
     }
     
     @Override
     public void init()
     {
         String chars = FontHelper.getAvailableChars((char) 0xFF);
-        Font fontChicagoFLF = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"));
         
-        fontRenderer64 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(64F), StandardCharsets.UTF_8.name(), chars));
-        fontRenderer48 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(48F), StandardCharsets.UTF_8.name(), chars));
-        fontRenderer32 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(32F), StandardCharsets.UTF_8.name(), chars));
-        fontRenderer24 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(24F), StandardCharsets.UTF_8.name(), chars));
-        fontRenderer16 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(16F), StandardCharsets.UTF_8.name(), chars));
+        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/chicagoFLF.ttf"))
+        {
+            Font fontChicagoFLF = FontHelper.createFont(in);
+    
+            fontRenderer64 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(64F), StandardCharsets.UTF_8.name(), chars));
+            fontRenderer48 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(48F), StandardCharsets.UTF_8.name(), chars));
+            fontRenderer32 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(32F), StandardCharsets.UTF_8.name(), chars));
+            fontRenderer24 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(24F), StandardCharsets.UTF_8.name(), chars));
+            fontRenderer16 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(16F), StandardCharsets.UTF_8.name(), chars));
+        }
+        catch(IOException e)
+        {
+            throw new RuntimeException("failed to load font.", e);
+        }
         
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_SPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_BACKSPACE);

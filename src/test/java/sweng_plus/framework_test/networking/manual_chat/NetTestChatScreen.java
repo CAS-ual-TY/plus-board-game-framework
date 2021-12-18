@@ -37,8 +37,8 @@ public class NetTestChatScreen extends StackedScreen
         
         try
         {
-            Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
-            Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
+            Texture buttonActive = TextureHelper.createTexture("/textures/button_test_active.png");
+            Texture buttonInactive = TextureHelper.createTexture("/textures/button_test_inactive.png");
             
             widgets.add(new FunctionalButtonWidget(screenHolder, leaveDimensions, new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive)), this::leave));
             widgets.add(new TextWidget(screenHolder, leaveDimensions, chatFontRenderer, "Leave"));

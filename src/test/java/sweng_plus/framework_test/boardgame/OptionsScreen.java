@@ -29,8 +29,8 @@ public class OptionsScreen extends WrappedScreen
         
         try
         {
-            Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
-            Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
+            Texture buttonActive = TextureHelper.createTexture("/textures/button_test_active.png");
+            Texture buttonInactive = TextureHelper.createTexture("/textures/button_test_inactive.png");
             
             IStyle style = new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive));
             

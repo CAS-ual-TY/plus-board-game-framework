@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import sweng_plus.boardgames.ludo.Ludo;
+import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
 import sweng_plus.framework.userinterface.gui.font.FontInfo;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
@@ -13,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +36,15 @@ public class FontTests
         engine = new EngineTest(new Ludo());
         engine.pre();
         
-        font = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"));
+        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/chicagoFLF.ttf"))
+        {
+            font = FontHelper.createFont(in);
+        }
+        catch(IOException e)
+        {
+            throw new RuntimeException("failed to load font.", e);
+        }
+        
         chars = FontHelper.getAvailableChars((char) 0xFF);
         info = new FontInfo(font.deriveFont(32F), StandardCharsets.UTF_8.name(), chars);
         fontRenderer = new FontRenderer(info);

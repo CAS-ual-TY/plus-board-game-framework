@@ -3,6 +3,7 @@ package sweng_plus.framework_test.networking.manual_chat;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.networking.AdvancedMessageRegistry;
 import sweng_plus.framework.networking.Client;
@@ -16,6 +17,8 @@ import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class NetTestGame implements IGame
@@ -63,7 +66,16 @@ public class NetTestGame implements IGame
     public void init()
     {
         String chars = FontHelper.getAvailableChars((char) 0xFF);
-        Font fontChicagoFLF = FontHelper.createFont(new File("src/main/resources/fonts/chicagoFLF.ttf"));
+        Font fontChicagoFLF;
+    
+        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/chicagoFLF.ttf"))
+        {
+            fontChicagoFLF = FontHelper.createFont(in);
+        }
+        catch(IOException e)
+        {
+            throw new RuntimeException("failed to load font.", e);
+        }
         
         fontRenderer64 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(64F), StandardCharsets.UTF_8.name(), chars));
         fontRenderer48 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(48F), StandardCharsets.UTF_8.name(), chars));

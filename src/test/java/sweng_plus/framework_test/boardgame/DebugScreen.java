@@ -33,7 +33,7 @@ public class DebugScreen extends Screen
         try
         {
             widgets.add(new SimpleWidget(screenHolder, new Dimensions(2048, 2048, AnchorPoint.M),
-                    new TextureStyle(TextureHelper.createTexture("src/test/resources/textures/test_raster.png"),
+                    new TextureStyle(TextureHelper.createTexture("/textures/test_raster.png"),
                             Color4f.HALF_VISIBLE)));
         }
         catch(IOException e)

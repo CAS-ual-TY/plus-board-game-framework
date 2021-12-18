@@ -24,8 +24,8 @@ public class NetTestMessageScreen extends Screen
         
         try
         {
-            Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
-            Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
+            Texture buttonActive = TextureHelper.createTexture("/textures/button_test_active.png");
+            Texture buttonInactive = TextureHelper.createTexture("/textures/button_test_inactive.png");
             
             widgets.add(new TextWidget(screenHolder, topButton, NetTestGame.instance().fontRenderer48, message).adjustSizeToText());
             

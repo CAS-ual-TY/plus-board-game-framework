@@ -13,6 +13,7 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.stb.STBImage.stbi_failure_reason;
 import static org.lwjgl.stb.STBImage.stbi_load;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
@@ -173,10 +174,14 @@ public class Window
             IntBuffer h = stack.mallocInt(1);
             
             buffer = stbi_load(iconResource, w, h, comp, 4);
+            
             if(buffer == null)
             {
-                throw new IllegalStateException();
+                //throw new RuntimeException(stbi_failure_reason());
+                System.err.println(stbi_failure_reason());
+                return;
             }
+            
             width = w.get();
             height = h.get();
         }

@@ -29,8 +29,8 @@ public class NetTestMenuScreen extends Screen
         
         try
         {
-            Texture buttonActive = TextureHelper.createTexture("src/test/resources/textures/button_test_active.png");
-            Texture buttonInactive = TextureHelper.createTexture("src/test/resources/textures/button_test_inactive.png");
+            Texture buttonActive = TextureHelper.createTexture("/textures/button_test_active.png");
+            Texture buttonInactive = TextureHelper.createTexture("/textures/button_test_inactive.png");
             
             widgets.add(new FunctionalButtonWidget(screenHolder, topButton, new HoverStyle(new CorneredTextureStyle(buttonInactive), new CorneredTextureStyle(buttonActive)), this::host));
             widgets.add(new TextWidget(screenHolder, topButton, NetTestGame.instance().fontRenderer48, "Host"));

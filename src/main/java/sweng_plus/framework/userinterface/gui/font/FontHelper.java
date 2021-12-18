@@ -3,28 +3,17 @@ package sweng_plus.framework.userinterface.gui.font;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
 public class FontHelper
 {
-    /**
-     * Erstellt eine {@link Font} Instanz von der angegebenen Datei @file in der angegebenen Größe @size
-     *
-     * @param file Font Datei, muss auf ".ttf" enden und ein True Type Font sein
-     * @return {@link Font} entsprechend nach Parametern
-     * @throws IllegalArgumentException Wenn etwas mit der angegebenen Font Datei oder deren Format nicht stimmt
-     */
-    public static Font createFont(File file) throws IllegalArgumentException
+    public static Font createFont(InputStream in) throws IllegalArgumentException
     {
-        if(!file.getName().endsWith(".ttf"))
-        {
-            throw new IllegalArgumentException("Font must be truetype and file must end with \".ttf\"");
-        }
-        
         try
         {
-            return Font.createFont(Font.TRUETYPE_FONT, file);
+            return Font.createFont(Font.TRUETYPE_FONT, in);
         }
         catch(IOException | NullPointerException | SecurityException e)
         {

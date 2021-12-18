@@ -1,6 +1,7 @@
 package sweng_plus.boardgames.ludo.gui.util;
 
 import org.joml.Vector2i;
+import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.userinterface.gui.texture.SpriteTexture;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
@@ -8,6 +9,7 @@ import sweng_plus.framework.userinterface.gui.texture.TextureHelper;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class LudoTextures
 {
@@ -25,12 +27,12 @@ public class LudoTextures
     
     public static void load() throws IOException
     {
-        activeButton = TextureHelper.createTexture("src/main/resources/textures/button_active.png");
-        inactiveButton = TextureHelper.createTexture("src/main/resources/textures/button_inactive.png");
-        node = TextureHelper.createTexture("src/main/resources/textures/node.png");
-        figure = TextureHelper.createTexture("src/main/resources/textures/figure.png");
-        figureHuge = TextureHelper.createTexture("src/main/resources/textures/background/figure_huge.png");
-        logo = TextureHelper.createTexture("src/main/resources/textures/background/logo.png");
+        activeButton = TextureHelper.createTexture("/textures/button_active.png");
+        inactiveButton = TextureHelper.createTexture("/textures/button_inactive.png");
+        node = TextureHelper.createTexture("/textures/node.png");
+        figure = TextureHelper.createTexture("/textures/figure.png");
+        figureHuge = TextureHelper.createTexture("/textures/background/figure_huge.png");
+        logo = TextureHelper.createTexture("/textures/background/logo.png");
         
         dices = new Texture[6];
         diceAnim = new SpriteTexture[dices.length][];
@@ -39,9 +41,9 @@ public class LudoTextures
         
         for(int dice = 0; dice < dices.length; ++dice)
         {
-            dices[dice] = TextureHelper.createTexture("src/main/resources/textures/dice/dice_" + (dice + 1) + ".png");
+            dices[dice] = TextureHelper.createTexture("/textures/dice/dice_" + (dice + 1) + ".png");
             
-            diceAnim[dice] = TextureHelper.createTexture("src/main/resources/textures/dice/anim_" + (dice + 1) + "/sprites.png").makeSprites(64, 64);
+            diceAnim[dice] = TextureHelper.createTexture("/textures/dice/anim_" + (dice + 1) + "/sprites.png").makeSprites(64, 64);
             diceAnimPositions[dice] = new Vector2i[diceAnim[dice].length];
             
             for(int i = 0; i < diceAnimPositions[dice].length; i++)
@@ -50,7 +52,7 @@ public class LudoTextures
             }
             
             diceAnimLast[dice] = 0;
-            try(BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/textures/dice/anim_" + (dice + 1) + "/coordinates.txt")))
+            try(BufferedReader reader = EngineUtil.getResourceReader("/textures/dice/anim_" + (dice + 1) + "/coordinates.txt"))
             {
                 int index, left, top, right, bottom;
                 int w, h;
@@ -70,6 +72,10 @@ public class LudoTextures
                     h = bottom - top;
                     diceAnimPositions[dice][index].add(left, top).add(w / 2, h / 2);
                 }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
             }
         }
     }
