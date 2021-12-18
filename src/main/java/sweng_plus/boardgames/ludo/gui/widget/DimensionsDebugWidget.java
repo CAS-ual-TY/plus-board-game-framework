@@ -1,4 +1,4 @@
-package sweng_plus.boardgames_test.ludo;
+package sweng_plus.boardgames.ludo.gui.widget;
 
 import org.lwjgl.opengl.GL11;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
@@ -9,25 +9,27 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.IWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.lwjgl.opengl.GL11.*;
 
-public class WidgetDimensionsWidget extends Widget
+public class DimensionsDebugWidget extends Widget
 {
     public Screen screen;
     public Color4f baseColor;
     public Color4f hoverColor;
     public Color4f lineColor;
     
-    public WidgetDimensionsWidget(IScreenHolder screenHolder, Screen screen, Color4f baseColor, Color4f hoverColor, Color4f lineColor)
+    public DimensionsDebugWidget(IScreenHolder screenHolder, Screen screen, Color4f baseColor, Color4f hoverColor, Color4f lineColor)
     {
         super(screenHolder, new Dimensions(AnchorPoint.M));
         this.screen = screen;
         this.baseColor = baseColor;
         this.hoverColor = hoverColor;
         this.lineColor = lineColor;
+    }
+    
+    public DimensionsDebugWidget(IScreenHolder screenHolder, Screen screen)
+    {
+        this(screenHolder, screen, new Color4f(1F, 0.5F, 0.5F, 0.2F), new Color4f(1F, 0F, 0F, 0.25F), Color4f.BLUE);
     }
     
     @Override
