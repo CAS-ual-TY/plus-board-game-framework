@@ -7,15 +7,13 @@ import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 import sweng_plus.boardgames.ludo.gui.util.LudoBoardMapper;
+import sweng_plus.boardgames.ludo.gui.util.LudoStyles;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
-import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.FunctionalTextStyle;
-import sweng_plus.framework.userinterface.gui.style.HoverStyle;
-import sweng_plus.framework.userinterface.gui.style.TextStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
@@ -44,7 +42,6 @@ public class LudoScreen extends Screen implements ILudoScreen
     public int chatWidth;
     public int chatHeight;
     public Widget sendChatWidget;
-    public Widget sentChatTextWidget;
     public InputWidget inputWidget;
     public Widget chatWidget;
     public List<ChatMessage> chatMessages;
@@ -71,10 +68,8 @@ public class LudoScreen extends Screen implements ILudoScreen
         chatHeight = chatFontRenderer.getHeight() + chatFontRenderer.getHeight() / 2;
         chatMessages = new LinkedList<>();
         
-        widgets.add(sendChatWidget = new FunctionalButtonWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::sendMessage));
-        widgets.add(sentChatTextWidget = new SimpleWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), new TextStyle(chatFontRenderer, ">", Color4f.BLACK)));
-        
-        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), new FunctionalTextStyle(chatFontRenderer, () -> inputWidget.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(chatFontRenderer, () -> inputWidget.getTextAsList(), AnchorPoint.L), (w) -> sendMessage()));
+        widgets.add(sendChatWidget = new FunctionalButtonWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), LudoStyles.makeButtonStyle(">"), this::sendMessage));
+        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), LudoStyles.makeActiveInputStyle(() -> inputWidget), LudoStyles.makeInactiveInputStyle(() -> inputWidget), (w) -> sendMessage()));
         widgets.add(chatWidget = new SimpleWidget(screenHolder, new Dimensions(chatWidth, 0, AnchorPoint.BR, 0, -chatHeight), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL, Color4f.BLACK)));
     }
     
@@ -110,12 +105,10 @@ public class LudoScreen extends Screen implements ILudoScreen
     public void removeUniversalWidgets(Consumer<Widget> consumer)
     {
         widgets.remove(sendChatWidget);
-        widgets.remove(sentChatTextWidget);
         widgets.remove(inputWidget);
         widgets.remove(chatWidget);
         
         consumer.accept(sendChatWidget);
-        consumer.accept(sentChatTextWidget);
         consumer.accept(inputWidget);
         consumer.accept(chatWidget);
     }
@@ -123,7 +116,6 @@ public class LudoScreen extends Screen implements ILudoScreen
     public void reAddUniversalWidgets()
     {
         widgets.add(sendChatWidget);
-        widgets.add(sentChatTextWidget);
         widgets.add(inputWidget);
         widgets.add(chatWidget);
     }

@@ -1,12 +1,9 @@
 package sweng_plus.boardgames.ludo.gui;
 
 import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
+import sweng_plus.boardgames.ludo.gui.util.LudoStyles;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
-import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
-import sweng_plus.framework.userinterface.gui.style.FunctionalTextStyle;
-import sweng_plus.framework.userinterface.gui.style.HoverStyle;
 import sweng_plus.framework.userinterface.gui.style.TextStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
@@ -32,7 +29,7 @@ public class MenuConnectScreen extends WrappedScreen
         widgets.add(new SimpleWidget(screenHolder, nameTextDims, new TextStyle(Ludo.instance().fontRenderer48, "Name:", Color4f.WHITE)));
         
         Dimensions nameInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, -180);
-        inputWidgetName = new InputWidget(screenHolder, nameInputDims, new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetName.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetName.getTextAsList(), AnchorPoint.L))
+        inputWidgetName = new InputWidget(screenHolder, nameInputDims, LudoStyles.makeActiveInputStyle(() -> inputWidgetName), LudoStyles.makeInactiveInputStyle(() -> inputWidgetName))
                 .setText(generateRandomPlayer());
         widgets.add(inputWidgetName);
         
@@ -40,7 +37,7 @@ public class MenuConnectScreen extends WrappedScreen
         widgets.add(new SimpleWidget(screenHolder, ipTextDims, new TextStyle(Ludo.instance().fontRenderer48, "IP:", Color4f.WHITE)));
         
         Dimensions ipInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 0);
-        inputWidgetIP = new InputWidget(screenHolder, ipInputDims, new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetIP.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetIP.getTextAsList(), AnchorPoint.L))
+        inputWidgetIP = new InputWidget(screenHolder, ipInputDims, LudoStyles.makeActiveInputStyle(() -> inputWidgetIP), LudoStyles.makeInactiveInputStyle(() -> inputWidgetIP))
                 .setText("localhost");
         widgets.add(inputWidgetIP);
         
@@ -48,17 +45,15 @@ public class MenuConnectScreen extends WrappedScreen
         widgets.add(new SimpleWidget(screenHolder, portTextDims, new TextStyle(Ludo.instance().fontRenderer48, "Port:", Color4f.WHITE)));
         
         Dimensions portInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 180);
-        inputWidgetPort = new InputWidget(screenHolder, portInputDims, new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetPort.getTextAsList(), AnchorPoint.L), new FunctionalTextStyle(Ludo.instance().fontRenderer48, () -> inputWidgetPort.getTextAsList(), AnchorPoint.L))
+        inputWidgetPort = new InputWidget(screenHolder, portInputDims, LudoStyles.makeActiveInputStyle(() -> inputWidgetPort), LudoStyles.makeInactiveInputStyle(() -> inputWidgetPort))
                 .setText("25555");
         widgets.add(inputWidgetPort);
         
         Dimensions cancelDims = new Dimensions(200, 50, AnchorPoint.M, -150, 280);
-        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::cancel));
-        widgets.add(new SimpleWidget(screenHolder, cancelDims, new TextStyle(Ludo.instance().fontRenderer32, "Abbruch", Color4f.BLACK)));
+        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, LudoStyles.makeButtonStyle("Abbruch"), this::cancel));
         
         Dimensions acceptDims = new Dimensions(200, 50, AnchorPoint.M, 150, 280);
-        widgets.add(new FunctionalButtonWidget(screenHolder, acceptDims, new HoverStyle(new CorneredTextureStyle(LudoTextures.inactiveButton), new CorneredTextureStyle(LudoTextures.activeButton)), this::accept));
-        widgets.add(new SimpleWidget(screenHolder, acceptDims, new TextStyle(Ludo.instance().fontRenderer32, "Fertig", Color4f.BLACK)));
+        widgets.add(new FunctionalButtonWidget(screenHolder, acceptDims, LudoStyles.makeButtonStyle("Fertig"), this::accept));
     }
     
     private void accept()
