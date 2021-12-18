@@ -68,7 +68,7 @@ public class NetTestGame implements IGame
         String chars = FontHelper.getAvailableChars((char) 0xFF);
         Font fontChicagoFLF;
     
-        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/chicagoFLF.ttf"))
+        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/ChicagoFLF.ttf"))
         {
             fontChicagoFLF = FontHelper.createFont(in);
         }

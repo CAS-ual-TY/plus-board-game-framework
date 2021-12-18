@@ -11,7 +11,7 @@ public class EngineUtil
         
         if(url == null)
         {
-            throw new NullPointerException();
+            throw new NullPointerException("Can not find: " + resource);
         }
         
         return url;

@@ -36,7 +36,7 @@ public class FontTests
         engine = new EngineTest(new Ludo());
         engine.pre();
         
-        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/chicagoFLF.ttf"))
+        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/ChicagoFLF.ttf"))
         {
             font = FontHelper.createFont(in);
         }

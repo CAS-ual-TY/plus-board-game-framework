@@ -214,7 +214,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     {
         String chars = FontHelper.getAvailableChars((char) 0xFF);
         
-        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/chicagoFLF.ttf"))
+        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/ChicagoFLF.ttf"))
         {
             Font fontChicagoFLF = FontHelper.createFont(in);
     
