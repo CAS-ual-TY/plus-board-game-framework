@@ -25,7 +25,7 @@ public class MenuConnectScreen extends WrappedScreen
     {
         super(subScreen);
         
-        Dimensions nameTextDims = new Dimensions(0, 0, AnchorPoint.M, 0, -260);
+        Dimensions nameTextDims = new Dimensions(400, 0, AnchorPoint.M, 0, -260);
         widgets.add(new SimpleWidget(screenHolder, nameTextDims, new TextStyle(Ludo.instance().fontRenderer48, "Name:", Color4f.WHITE)));
         
         Dimensions nameInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, -180);
@@ -33,7 +33,7 @@ public class MenuConnectScreen extends WrappedScreen
                 .setText(generateRandomPlayer());
         widgets.add(inputWidgetName);
         
-        Dimensions ipTextDims = new Dimensions(0, 0, AnchorPoint.M, 0, -80);
+        Dimensions ipTextDims = new Dimensions(400, 0, AnchorPoint.M, 0, -80);
         widgets.add(new SimpleWidget(screenHolder, ipTextDims, new TextStyle(Ludo.instance().fontRenderer48, "IP:", Color4f.WHITE)));
         
         Dimensions ipInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 0);
@@ -41,7 +41,7 @@ public class MenuConnectScreen extends WrappedScreen
                 .setText("localhost");
         widgets.add(inputWidgetIP);
         
-        Dimensions portTextDims = new Dimensions(0, 0, AnchorPoint.M, 0, 100);
+        Dimensions portTextDims = new Dimensions(400, 0, AnchorPoint.M, 0, 100);
         widgets.add(new SimpleWidget(screenHolder, portTextDims, new TextStyle(Ludo.instance().fontRenderer48, "Port:", Color4f.WHITE)));
         
         Dimensions portInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 180);

@@ -6,8 +6,10 @@ import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class FunctionalTextStyle extends BaseStyle
 {
@@ -43,7 +45,8 @@ public class FunctionalTextStyle extends BaseStyle
     public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
     {
         Dimensions dims = widget.getDimensions();
-        List<String> text = this.text.get();
+        List<String> text = this.text.get().stream().map(line -> fontRenderer.splitStringToWidth(dims.w, line))
+                .flatMap(Collection::stream).collect(Collectors.toList());
         
         int textHeight = fontRenderer.getTextHeight(text);
         int textWidth = fontRenderer.getTextWidth(text);

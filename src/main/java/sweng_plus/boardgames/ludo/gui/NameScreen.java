@@ -17,7 +17,7 @@ public class NameScreen extends Screen
     {
         super(screenHolder);
         
-        Dimensions textDims = new Dimensions(0, 0, AnchorPoint.M, 0, 0);
+        Dimensions textDims = new Dimensions(800, 0, AnchorPoint.M, 0, 0);
         widgets.add(new SimpleWidget(screenHolder, textDims, new TextStyle(Ludo.instance().fontRenderer64, Ludo.instance().names, Color4f.BLACK)));
         
         Dimensions cancelDims = new Dimensions(350, 80, AnchorPoint.L, 100, 400);

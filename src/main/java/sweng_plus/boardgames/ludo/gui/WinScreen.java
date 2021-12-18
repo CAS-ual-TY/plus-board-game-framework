@@ -13,7 +13,7 @@ public class WinScreen extends LudoExtensionScreen
     {
         super(subScreen);
         
-        Dimensions nameTextDims = new Dimensions(0, 0, AnchorPoint.M, 0, 0);
+        Dimensions nameTextDims = new Dimensions(800, 0, AnchorPoint.M, 0, 0);
         widgets.add(new SimpleWidget(screenHolder, nameTextDims, new TextStyle(Ludo.instance().fontRenderer64, winner + " hat Gewonnen!", Color4f.WHITE)));
     }
 }

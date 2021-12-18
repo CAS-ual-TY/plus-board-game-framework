@@ -137,7 +137,7 @@ public class FontRenderer
     
     public String trimStringToWidth(int w, String text)
     {
-        for(int i = 1; i < text.length(); ++i)
+        for(int i = 2; i < text.length(); ++i)
         {
             if(getTextWidth(text.substring(0, i)) > w)
             {
