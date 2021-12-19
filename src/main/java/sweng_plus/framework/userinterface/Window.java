@@ -1,20 +1,24 @@
 package sweng_plus.framework.userinterface;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.input.InputHandler;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
-import static org.lwjgl.stb.STBImage.stbi_load;
+import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class Window
@@ -173,17 +177,27 @@ public class Window
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
             
-            buffer = stbi_load(iconResource, w, h, comp, 4);
+            InputStream in = EngineUtil.getResourceInputStream(iconResource);
+            byte[] bytes = in.readAllBytes();
+            buffer = BufferUtils.createByteBuffer(bytes.length);
+            buffer.put(bytes);
+            buffer.flip();
+            
+            buffer = stbi_load_from_memory(buffer, w, h, comp, 4);
             
             if(buffer == null)
             {
-                //throw new RuntimeException(stbi_failure_reason());
                 System.err.println(stbi_failure_reason());
                 return;
             }
             
             width = w.get();
             height = h.get();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+            return;
         }
         
         GLFWImage image = GLFWImage.malloc();
