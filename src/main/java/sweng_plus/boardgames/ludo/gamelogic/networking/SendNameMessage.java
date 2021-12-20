@@ -3,7 +3,6 @@ package sweng_plus.boardgames.ludo.gamelogic.networking;
 import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
@@ -35,9 +34,9 @@ public record SendNameMessage(String name)
                 // client1 receives names
                 // client2 sends name
                 // client1 received empty name of client 2
-    
-                Ludo.instance().getHostManager().sendMessageToClient(client, SendNamesMessage.makeNamesMessage());
-                Ludo.instance().getHostManager().sendMessageToAllClientsExcept(client, message);
+                
+                Ludo.instance().getNetworking().getHostManager().sendMessageToClient(client, SendNamesMessage.makeNamesMessage());
+                Ludo.instance().getNetworking().getHostManager().sendMessageToAllClientsExcept(client, message);
             }, () ->
                     Ludo.instance().names.add(message.name()));
         }

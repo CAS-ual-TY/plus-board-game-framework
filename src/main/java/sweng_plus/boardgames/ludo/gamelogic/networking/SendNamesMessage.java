@@ -12,7 +12,7 @@ public record SendNamesMessage(List<String> names)
 {
     public static SendNamesMessage makeNamesMessage()
     {
-        return new SendNamesMessage(Ludo.instance().getHostManager().getAllClients().stream()
+        return new SendNamesMessage(Ludo.instance().getNetworking().getHostManager().getAllClients().stream()
                 .map(LudoClient::getName).collect(Collectors.toList()));
     }
     

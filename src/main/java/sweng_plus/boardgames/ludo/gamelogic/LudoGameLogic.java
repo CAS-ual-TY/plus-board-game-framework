@@ -56,9 +56,9 @@ public class LudoGameLogic
         
         if(isServer)
         {
-            for(LudoClient client : Ludo.instance().getHostManager().getAllClients())
+            for(LudoClient client : Ludo.instance().getNetworking().getHostManager().getAllClients())
             {
-                Ludo.instance().getHostManager()
+                Ludo.instance().getNetworking().getHostManager()
                         .sendMessageToClient(client,
                                 new StartGameMessage(client.getTeamIndex(), teams.length, currentTeamIndex));
             }
@@ -80,7 +80,7 @@ public class LudoGameLogic
         
         if(isServer)
         {
-            Ludo.instance().getHostManager().sendMessageToAllClients(
+            Ludo.instance().getNetworking().getHostManager().sendMessageToAllClients(
                     new RolledMessage(latestRoll));
         }
     }
@@ -98,7 +98,7 @@ public class LudoGameLogic
     {
         if(isServer)
         {
-            Ludo.instance().getHostManager().sendMessageToAllClients(
+            Ludo.instance().getNetworking().getHostManager().sendMessageToAllClients(
                     new FigureSelectedMessage(selectedFigure));
         }
     }
@@ -109,7 +109,7 @@ public class LudoGameLogic
         
         if(isServer && isGameWon(currentTeamIndex))
         {
-            Ludo.instance().getHostManager().sendMessageToAllClients(
+            Ludo.instance().getNetworking().getHostManager().sendMessageToAllClients(
                     new WinMessage(currentTeamIndex));
             return;
         }

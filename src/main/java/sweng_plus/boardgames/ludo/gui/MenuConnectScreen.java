@@ -63,7 +63,7 @@ public class MenuConnectScreen extends WrappedScreen
         
         try
         {
-            Ludo.instance().connect(inputWidgetName.getText(), ipInput, Integer.parseInt(portInput));
+            Ludo.instance().getNetworking().connect(inputWidgetName.getText(), ipInput, Integer.parseInt(portInput));
         }
         catch(IOException | NumberFormatException e)
         {

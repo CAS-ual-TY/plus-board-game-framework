@@ -3,31 +3,25 @@ package sweng_plus.boardgames.ludo;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
-import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.boardgames.ludo.gui.LudoScreen;
 import sweng_plus.boardgames.ludo.gui.MenuScreen;
-import sweng_plus.boardgames.ludo.gui.NameScreen;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
-import sweng_plus.framework.networking.AdvancedMessageRegistry;
-import sweng_plus.framework.networking.NetworkHelper;
-import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
 import sweng_plus.framework.userinterface.gui.font.FontInfo;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHostEventsListener<LudoClient>
+public class Ludo implements IGame
 {
     private static Ludo instance;
     
@@ -39,15 +33,9 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     public FontRenderer fontRenderer24;
     public FontRenderer fontRenderer16;
     
+    private LudoNetworking networking;
     public LudoGameLogic gameLogic;
     public ArrayList<String> names;
-    
-    public IMessageRegistry<LudoClient> protocol;
-    
-    public String name;
-    
-    public IClientManager clientManager;
-    public IHostManager<LudoClient> hostManager;
     
     public Ludo()
     {
@@ -68,123 +56,16 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
         return gameLogic;
     }
     
-    public IClientManager getClientManager()
+    public LudoNetworking getNetworking()
     {
-        return clientManager;
-    }
-    
-    public IHostManager<LudoClient> getHostManager()
-    {
-        return hostManager;
-    }
-    
-    protected void initProtocol()
-    {
-        byte messageID = 0;
-        protocol = new AdvancedMessageRegistry<>(32, messageID++, messageID++, messageID++,
-                this::getClientManager, this::getHostManager,
-                this, this);
-        
-        protocol.registerMessage(messageID++, SendNameMessage.Handler::encodeMessage,
-                SendNameMessage.Handler::decodeMessage, SendNameMessage.Handler::handleMessage,
-                SendNameMessage.class);
-        
-        protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
-                SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
-                SendNamesMessage.class);
-        
-        protocol.registerMessage(messageID++, ChatMessage.Handler::encodeMessage,
-                ChatMessage.Handler::decodeMessage, ChatMessage.Handler::handleMessage,
-                ChatMessage.class);
-        
-        protocol.registerMessage(messageID++, StartGameMessage.Handler::encodeMessage,
-                StartGameMessage.Handler::decodeMessage, StartGameMessage.Handler::handleMessage,
-                StartGameMessage.class);
-        
-        protocol.registerMessage(messageID++, RollMessage.Handler::encodeMessage,
-                RollMessage.Handler::decodeMessage, RollMessage.Handler::handleMessage,
-                RollMessage.class);
-        
-        protocol.registerMessage(messageID++, RolledMessage.Handler::encodeMessage,
-                RolledMessage.Handler::decodeMessage, RolledMessage.Handler::handleMessage,
-                RolledMessage.class);
-        
-        protocol.registerMessage(messageID++, FigureSelectMessage.Handler::encodeMessage,
-                FigureSelectMessage.Handler::decodeMessage, FigureSelectMessage.Handler::handleMessage,
-                FigureSelectMessage.class);
-        
-        protocol.registerMessage(messageID++, FigureSelectedMessage.Handler::encodeMessage,
-                FigureSelectedMessage.Handler::decodeMessage, FigureSelectedMessage.Handler::handleMessage,
-                FigureSelectedMessage.class);
-        
-        protocol.registerMessage(messageID++, WinMessage.Handler::encodeMessage,
-                WinMessage.Handler::decodeMessage, WinMessage.Handler::handleMessage,
-                WinMessage.class);
-    }
-    
-    public void connect(String playerName, String ip, int port) throws IOException
-    {
-        System.out.println("connect");
-        
-        name = playerName;
-        
-        hostManager = null;
-        names.clear();
-        clientManager = NetworkHelper.connect(protocol, this, ip, port);
-        
-        setScreen(new NameScreen(this));
-        
-        clientManager.sendMessageToServer(new SendNameMessage(playerName));
-    }
-    
-    public void host(String playerName, int port) throws IOException
-    {
-        System.out.println("host");
-        
-        name = playerName;
-        
-        names.clear();
-        hostManager = NetworkHelper.host(protocol, this, LudoClient::new, port);
-        clientManager = hostManager;
-        
-        setScreen(new NameScreen(this));
-        
-        clientManager.sendMessageToServer(new SendNameMessage(playerName));
-    }
-    
-    public boolean isHost()
-    {
-        return hostManager != null;
-    }
-    
-    @Override
-    public void lostConnection()
-    {
-    
-    }
-    
-    @Override
-    public void clientConnected(LudoClient client)
-    {
-        client.setTeamIndex(hostManager.getAllClients().size() - 1);
-        
-        if(hostManager.getAllClients().size() >= 2) //TODO START
-        {
-            startGame(true, hostManager.getAllClients().size());
-        }
-    }
-    
-    @Override
-    public void clientDisconnectedOrderly(LudoClient client)
-    {
-    
+        return networking;
     }
     
     public void startGame(boolean isServer, int teamCount)
     {
         if(gameLogic == null)
         {
-            gameLogic = new LudoGameLogic(TeamColor.getTeams(teamCount), isHost());
+            gameLogic = new LudoGameLogic(TeamColor.getTeams(teamCount), networking.isHost());
         }
         
         if(isServer)
@@ -217,7 +98,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
         try(InputStream in = EngineUtil.getResourceInputStream("/fonts/ChicagoFLF.ttf"))
         {
             Font fontChicagoFLF = FontHelper.createFont(in);
-    
+            
             fontRenderer64 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(64F), StandardCharsets.UTF_8.name(), chars));
             fontRenderer48 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(48F), StandardCharsets.UTF_8.name(), chars));
             fontRenderer32 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(32F), StandardCharsets.UTF_8.name(), chars));
@@ -243,7 +124,7 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
             e.printStackTrace();
         }
         
-        initProtocol();
+        networking = new LudoNetworking(this);
         
         GL11.glClearColor(245 / 255f, 238 / 255f, 176 / 255f, 1f);
         screen = new MenuScreen(this);
@@ -252,19 +133,13 @@ public class Ludo implements IGame, IAdvancedClientEventsListener, IAdvancedHost
     @Override
     public void cleanup()
     {
-        if(clientManager != null)
-        {
-            clientManager.close();
-        }
+        networking.cleanup();
     }
     
     @Override
     public void update()
     {
-        if(clientManager != null)
-        {
-            clientManager.update();
-        }
+        networking.update();
     }
     
     @Override

@@ -4,7 +4,6 @@ import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gui.ILudoScreen;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ public record ChatMessage(String sender, String message)
         public static void handleMessage(Optional<LudoClient> clientOptional, ChatMessage message)
         {
             clientOptional.ifPresentOrElse(
-                    (client) -> Ludo.instance().getHostManager().sendMessageToAllClients(message),
+                    (client) -> Ludo.instance().getNetworking().getHostManager().sendMessageToAllClients(message),
                     () -> ((ILudoScreen) Ludo.instance().getScreen()).chat(message));
         }
     }

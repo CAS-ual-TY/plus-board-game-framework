@@ -52,7 +52,7 @@ public class MenuHostScreen extends WrappedScreen
         
         try
         {
-            Ludo.instance().host(inputWidgetName.getText(), Integer.parseInt(portInput));
+            Ludo.instance().getNetworking().host(inputWidgetName.getText(), Integer.parseInt(portInput));
         }
         catch(IOException | NumberFormatException e)
         {

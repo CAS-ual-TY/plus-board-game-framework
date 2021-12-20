@@ -1,7 +1,10 @@
 package sweng_plus.framework.networking.interfaces;
 
-public interface IAdvancedHostEventsListener<C extends IClient> extends IHostEventsListener<C>
+public interface IAdvancedHostEventsListener<C extends IClient> extends IHostEventsListener<C>, IAdvancedClientEventsListener
 {
+    @Override
+    default void lostConnection() {}
+    
     void clientDisconnectedOrderly(C client);
     
     default void clientDisconnectedDueToException(C client)

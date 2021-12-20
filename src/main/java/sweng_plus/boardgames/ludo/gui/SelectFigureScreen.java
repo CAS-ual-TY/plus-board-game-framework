@@ -36,7 +36,7 @@ public class SelectFigureScreen extends LudoExtensionScreen
             
             if(((LudoScreen) subScreen).isTurnPlayer())
             {
-                Ludo.instance().getClientManager().sendMessageToServer(
+                Ludo.instance().getNetworking().getClientManager().sendMessageToServer(
                         new FigureSelectMessage(((SelectableFigureWidget) button).ludoFigure.getIndex()));
             }
         }

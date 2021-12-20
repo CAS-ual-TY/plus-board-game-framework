@@ -26,6 +26,6 @@ public class DiceScreen extends LudoExtensionScreen
     private void roll()
     {
         returnToSubScreen();
-        Ludo.instance().getClientManager().sendMessageToServer(new RollMessage());
+        Ludo.instance().getNetworking().getClientManager().sendMessageToServer(new RollMessage());
     }
 }
