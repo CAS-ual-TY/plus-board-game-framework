@@ -1,4 +1,4 @@
-package sweng_plus.framework_test.networking.manual_chat;
+package sweng_plus.demos.chat;
 
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.networking.Client;

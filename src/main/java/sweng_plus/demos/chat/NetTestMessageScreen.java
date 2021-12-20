@@ -1,4 +1,4 @@
-package sweng_plus.framework_test.networking.manual_chat;
+package sweng_plus.demos.chat;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;

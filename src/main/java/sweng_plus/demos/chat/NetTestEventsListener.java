@@ -1,10 +1,8 @@
-package sweng_plus.framework_test.networking.manual_chat;
+package sweng_plus.demos.chat;
 
 import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.interfaces.IAdvancedClientEventsListener;
 import sweng_plus.framework.networking.interfaces.IAdvancedHostEventsListener;
-
-import java.io.IOException;
 
 public class NetTestEventsListener implements IAdvancedClientEventsListener, IAdvancedHostEventsListener<Client>
 {
