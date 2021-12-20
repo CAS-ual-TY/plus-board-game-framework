@@ -56,8 +56,6 @@ public class TimeOutTracker
         {
             lock.lock();
             
-            System.out.println(time + " " + nextPing + " " + pings);
-            
             time++;
             
             if(time >= nextPing)
