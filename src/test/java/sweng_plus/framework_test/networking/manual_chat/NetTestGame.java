@@ -59,7 +59,7 @@ public class NetTestGame implements IGame
     @Override
     public String getWindowIconResource()
     {
-        return "src/main/resources/icon.png";
+        return "/icon.png";
     }
     
     @Override
