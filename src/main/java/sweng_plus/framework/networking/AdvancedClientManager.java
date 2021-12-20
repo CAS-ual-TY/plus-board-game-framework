@@ -41,6 +41,21 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C>
     }
     
     @Override
+    public void close()
+    {
+        try
+        {
+            sendMessageToServerUnsafe(advancedRegistry.orderlyDisconnected());
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        
+        super.close();
+    }
+    
+    @Override
     public void receivedMessage(Consumer<Optional<C>> message)
     {
         timeOutTracker.exclusiveGet(TimeOutTracker::reset);
