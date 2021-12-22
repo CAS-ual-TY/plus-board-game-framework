@@ -5,15 +5,42 @@ import sweng_plus.framework.boardgame.nodes_board.TeamNodeFigure;
 
 public class MillFigure extends TeamNodeFigure<MillNode, MillFigure>
 {
-    private int index;
+    private final int index;
+    private boolean alreadyPlaced;
+    private boolean inMill;
     
-    public MillFigure(MillNode currentNode, TeamColor team)
-    {
-        super(currentNode, team);
-    }
     
-    public MillFigure(TeamColor team)
+    public MillFigure(TeamColor team, int index)
     {
         super(team);
+        this.index = index;
+        
+        this.alreadyPlaced = false;
+        this.inMill = false;
+    }
+    
+    public int getIndex()
+    {
+        return index;
+    }
+    
+    public boolean isAlreadyPlaced()
+    {
+        return alreadyPlaced;
+    }
+    
+    public void setAlreadyPlaced(boolean alreadyPlaced)
+    {
+        this.alreadyPlaced = alreadyPlaced;
+    }
+    
+    public boolean isInMill()
+    {
+        return inMill;
+    }
+    
+    public void setInMill(boolean inMill)
+    {
+        this.inMill = inMill;
     }
 }
