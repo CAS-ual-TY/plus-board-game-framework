@@ -1,9 +1,7 @@
 package sweng_plus.boardgames.ludo.gamelogic;
 
-import sweng_plus.framework.boardgame.nodes_board.NodeFigure;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.boardgame.nodes_board.TeamNodeFigure;
-import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
 public class LudoFigure extends TeamNodeFigure<LudoNode, LudoFigure>
 {

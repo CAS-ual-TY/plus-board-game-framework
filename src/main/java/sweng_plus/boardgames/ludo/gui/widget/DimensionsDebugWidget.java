@@ -43,7 +43,7 @@ public class DimensionsDebugWidget extends Widget
                 int x2 = widget.getDimensions().x + widget.getDimensions().w;
                 int y1 = widget.getDimensions().y;
                 int y2 = widget.getDimensions().y + widget.getDimensions().h;
-    
+                
                 if(widget.updateMouseOver(deltaTick, mouseX, mouseY))
                 {
                     hoverColor.glColor4f();
@@ -52,7 +52,7 @@ public class DimensionsDebugWidget extends Widget
                 {
                     baseColor.glColor4f();
                 }
-    
+                
                 glBegin(GL_QUADS);
                 glVertex3f(x1, y1, 0); // Oben Links
                 glVertex3f(x1, y2, 0); // Unten Links
@@ -61,9 +61,9 @@ public class DimensionsDebugWidget extends Widget
                 glEnd();
             }
         }
-    
+        
         GL11.glLineWidth(2F);
-    
+        
         for(IWidget w : screen.getWidgets())
         {
             if(w instanceof Widget widget)
@@ -73,9 +73,9 @@ public class DimensionsDebugWidget extends Widget
                 
                 int x2 = widget.getDimensions().x + widget.getDimensions().headAnchor.widthToX(widget.getDimensions().w);
                 int y2 = widget.getDimensions().y + widget.getDimensions().headAnchor.heightToY(widget.getDimensions().h);
-    
+                
                 lineColor.glColor4f();
-            
+                
                 glBegin(GL_LINES);
                 glVertex3f(x1, y1, 0);
                 glVertex3f(x2, y2, 0);

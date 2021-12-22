@@ -1,7 +1,6 @@
 package sweng_plus.framework.userinterface.gui.font;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;

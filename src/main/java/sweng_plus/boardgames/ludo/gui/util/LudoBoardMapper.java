@@ -34,7 +34,7 @@ public class LudoBoardMapper
         {
             int team = board.getTeamIndex(node.getTeam());
             Vector2i coords = function.map(node, team);
-                
+            
             return new LudoNodeWidget(screen.getScreenHolder(),
                     new Dimensions(NODE_WIDTH, NODE_WIDTH, AnchorPoint.M, coords.x(), coords.y()),
                     node, nodeTexture, figureTexture);

@@ -1,6 +1,5 @@
 package sweng_plus.boardgames.ludo.gui.widget;
 
-import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;

@@ -1,6 +1,9 @@
 package sweng_plus.framework.boardgame;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 public class EngineUtil

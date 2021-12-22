@@ -102,7 +102,7 @@ public class FontRenderer
     {
         int x0;
         int y0 = y;
-    
+        
         for(String line : text)
         {
             x0 = x - getTextWidth(line) / 2;

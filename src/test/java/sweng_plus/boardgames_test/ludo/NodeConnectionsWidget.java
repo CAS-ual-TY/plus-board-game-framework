@@ -5,8 +5,6 @@ import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.gamelogic.LudoNode;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
-import sweng_plus.framework.boardgame.gui.widget.NodeWidget;
-import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
