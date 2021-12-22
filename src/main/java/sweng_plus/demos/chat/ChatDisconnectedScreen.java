@@ -11,9 +11,9 @@ import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.util.List;
 
-public class ChatDisconnectScreen extends Screen
+public class ChatDisconnectedScreen extends Screen
 {
-    public ChatDisconnectScreen(IScreenHolder screenHolder, List<String> message)
+    public ChatDisconnectedScreen(IScreenHolder screenHolder, List<String> message)
     {
         super(screenHolder);
         

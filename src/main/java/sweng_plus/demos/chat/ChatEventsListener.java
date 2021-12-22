@@ -10,7 +10,7 @@ public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvan
 {
     private void displayScreen(List<String> message)
     {
-        ChatGame.instance().setScreen(new ChatDisconnectScreen(ChatGame.instance(), message));
+        ChatGame.instance().setScreen(new ChatDisconnectedScreen(ChatGame.instance(), message));
     }
     
     private void displayScreen(String message)
