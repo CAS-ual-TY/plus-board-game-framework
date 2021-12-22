@@ -1,7 +1,6 @@
 package sweng_plus.boardgames.mill.gui;
 
-import sweng_plus.boardgames.mill.gui.MenuConnectScreen;
-import sweng_plus.boardgames.mill.gui.MenuHostScreen;
+import sweng_plus.boardgames.mill.gui.util.MillTextures;
 import sweng_plus.boardgames.mill.gui.util.MillStyles;
 import sweng_plus.boardgames.mill.gui.util.MillTextures;
 import sweng_plus.framework.boardgame.Engine;
@@ -19,19 +18,19 @@ public class MenuScreen extends Screen
     {
         super(screenHolder);
         
-        Dimensions quadDims = new Dimensions(950, 950, AnchorPoint.M, 0, 0);
-        widgets.add(new SimpleWidget(screenHolder, quadDims, MillStyles.makeButtonStyle("")));
+        //Dimensions quadDims = new Dimensions(950, 950, AnchorPoint.M, 0, 0);
+        //widgets.add(new SimpleWidget(screenHolder, quadDims, MillStyles.makeButtonStyle("")));
         
-        Dimensions hostDims = new Dimensions(700, 80, AnchorPoint.M, 0, -8);
+        Dimensions hostDims = new Dimensions(700, 80, AnchorPoint.M, 0, 48);
         widgets.add(new FunctionalButtonWidget(screenHolder, hostDims, MillStyles.makeButtonStyle("Neues Spiel"), this::host));
         
-        Dimensions connectDims = new Dimensions(700, 80, AnchorPoint.M, 0, 97);
+        Dimensions connectDims = new Dimensions(700, 80, AnchorPoint.M, 0, 147);
         widgets.add(new FunctionalButtonWidget(screenHolder, connectDims, MillStyles.makeButtonStyle("Spiel beitreten"), this::connect));
         
-        Dimensions optionsDims = new Dimensions(700, 80, AnchorPoint.M, 0, 202);
+        Dimensions optionsDims = new Dimensions(700, 80, AnchorPoint.M, 0, 252);
         widgets.add(new FunctionalButtonWidget(screenHolder, optionsDims, MillStyles.makeButtonStyle("Einstellungen"), this::options));
         
-        Dimensions exitDims = new Dimensions(700, 80, AnchorPoint.M, 0, 307);
+        Dimensions exitDims = new Dimensions(700, 80, AnchorPoint.M, 0, 357);
         widgets.add(new FunctionalButtonWidget(screenHolder, exitDims, MillStyles.makeButtonStyle("Beenden"), this::exit));
     }
     
@@ -54,5 +53,13 @@ public class MenuScreen extends Screen
     {
         Engine.instance().close();
     }
-
+    
+    @Override
+    public void render(float deltaTick, int mouseX, int mouseY)
+    {
+        Color4f.BLACK.glColor4f();
+        MillTextures.logo.render(screenH/2+75, 75, MillTextures.logo.getWidth(), MillTextures.logo.getHeight(), 0, 0, MillTextures.logo.getWidth(), MillTextures.logo.getHeight());
+    
+        super.render(deltaTick, mouseX, mouseY);
+    }
 }
