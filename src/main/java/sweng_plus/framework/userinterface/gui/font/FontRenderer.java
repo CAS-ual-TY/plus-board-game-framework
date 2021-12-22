@@ -192,7 +192,10 @@ public class FontRenderer
             list.add(line.toString());
         }
         
-        list.remove(0);
+        if(!list.isEmpty())
+        {
+            list.remove(0);
+        }
         
         return list;
     }
