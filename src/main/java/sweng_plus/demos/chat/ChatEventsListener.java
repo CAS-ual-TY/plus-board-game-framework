@@ -20,13 +20,13 @@ public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvan
     @Override
     public void lostConnection()
     {
-        displayScreen("Lost Connection...");
+        displayScreen("Lost connection...");
     }
     
     @Override
     public void serverClosed()
     {
-        displayScreen("Server Closed.");
+        displayScreen("Server closed.");
     }
     
     @Override

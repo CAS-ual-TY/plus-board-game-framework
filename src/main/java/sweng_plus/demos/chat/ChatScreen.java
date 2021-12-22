@@ -66,7 +66,8 @@ public class ChatScreen extends Screen
     private void leave(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
         ChatGame.instance().clientManager.close();
-        screenHolder.setScreen(new ChatMenuScreen(screenHolder));
+        screenHolder.setScreen(new ChatDisconnectedScreen(screenHolder,
+                ChatGame.instance().hostManager != null ? List.of("Closed the server.") : List.of("Disconnected.")));
     }
     
     public void addMessage(String sender, String message, long timestamp)

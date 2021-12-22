@@ -26,6 +26,8 @@ public class ChatDisconnectedScreen extends Screen
     
     private void toMainMenu()
     {
+        ChatGame.instance().clientManager = null;
+        ChatGame.instance().hostManager = null;
         screenHolder.setScreen(new ChatMenuScreen(screenHolder));
     }
 }
