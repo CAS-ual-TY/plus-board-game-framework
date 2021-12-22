@@ -2,7 +2,6 @@ package sweng_plus.boardgames.mill.gamelogic;
 
 import sweng_plus.framework.boardgame.nodes_board.NodeBoard;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
-import sweng_plus.framework.boardgame.nodes_board.TeamNode;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
     private final int NODES_PER_CIRCLE = 8;
     
     private MillTeam[] millTeams;
+    private MillNode[][] nodeCircles;
     
     public MillBoard(TeamColor[] teamColors)
     {
@@ -52,14 +52,16 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
         return null;
     }
     
+    public MillNode[][] getNodeCircles()
+    {
+        return nodeCircles;
+    }
     
     private void setupBoard(TeamColor[] teamColors)
     {
         
         millTeams = new MillBoard.MillTeam[teamColors.length];
-    
-        MillNode[][] nodeCircles = new MillNode[3][];
-        
+        nodeCircles = new MillNode[3][];
         
         // create 3 non-connected circles
         for(int i = 0; i < NUM_CIRCLES; i++) {
@@ -73,6 +75,7 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
             }
         }
     
+        // create both Teams
         List<MillNode> outsideNodes = new ArrayList<>(FIGURES_PER_TEAM*millTeams.length);
         for(int i = 0; i < millTeams.length; i++)
         {
@@ -80,14 +83,15 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
             outsideNodes.addAll(List.of(millTeams[i].outsideNodes()));
         }
     
-    
+        // Connect outsideNodes of Teams with every node in the field
         for(MillNode outsideNode : outsideNodes)
         {
             for(int i = 0; i < NODES_PER_CIRCLE; i++)
             {
-                outsideNode.addForwardNode(nodeCircles[0][i]);
-                outsideNode.addForwardNode(nodeCircles[1][i]);
-                outsideNode.addForwardNode(nodeCircles[2][i]);
+                for(MillNode[] nodeCircle : nodeCircles)
+                {
+                    outsideNode.addForwardNode(nodeCircle[i]);
+                }
             }
         }
     }
