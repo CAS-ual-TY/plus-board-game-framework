@@ -19,19 +19,19 @@ public class MenuScreen extends Screen
     {
         super(screenHolder);
         
-        Dimensions quadDims = new Dimensions(1000, 1000, AnchorPoint.M, -500, -500);
+        Dimensions quadDims = new Dimensions(950, 950, AnchorPoint.M, 0, 0);
         widgets.add(new SimpleWidget(screenHolder, quadDims, MillStyles.makeButtonStyle("")));
         
-        Dimensions hostDims = new Dimensions(700, 80, AnchorPoint.M, 0, 157);
+        Dimensions hostDims = new Dimensions(700, 80, AnchorPoint.M, 0, -8);
         widgets.add(new FunctionalButtonWidget(screenHolder, hostDims, MillStyles.makeButtonStyle("Neues Spiel"), this::host));
         
-        Dimensions connectDims = new Dimensions(700, 80, AnchorPoint.BR, -120, 52);
+        Dimensions connectDims = new Dimensions(700, 80, AnchorPoint.M, 0, 97);
         widgets.add(new FunctionalButtonWidget(screenHolder, connectDims, MillStyles.makeButtonStyle("Spiel beitreten"), this::connect));
         
-        Dimensions optionsDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -53);
+        Dimensions optionsDims = new Dimensions(700, 80, AnchorPoint.M, 0, 202);
         widgets.add(new FunctionalButtonWidget(screenHolder, optionsDims, MillStyles.makeButtonStyle("Einstellungen"), this::options));
         
-        Dimensions exitDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -158);
+        Dimensions exitDims = new Dimensions(700, 80, AnchorPoint.M, 0, 307);
         widgets.add(new FunctionalButtonWidget(screenHolder, exitDims, MillStyles.makeButtonStyle("Beenden"), this::exit));
     }
     
