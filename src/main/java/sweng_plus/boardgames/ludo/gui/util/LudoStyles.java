@@ -35,13 +35,23 @@ public class LudoStyles
         return new HoverStyle(makeInactiveButtonStyle(text), makeActiveButtonStyle(text));
     }
     
+    public static BaseStyle makeActiveInputStyle(Supplier<InputWidget> inputWidget, AnchorPoint anchor)
+    {
+        return makeActiveButtonBackground().stack(new FunctionalTextStyle(Ludo.instance().fontRenderer32, () -> inputWidget.get().getTextAsList(), anchor, Color4f.BLACK));
+    }
+    
+    public static BaseStyle makeInactiveInputStyle(Supplier<InputWidget> inputWidget, AnchorPoint anchor)
+    {
+        return makeInactiveButtonBackground().stack(new FunctionalTextStyle(Ludo.instance().fontRenderer32, () -> inputWidget.get().getTextAsList(), anchor, Color4f.BLACK));
+    }
+    
     public static BaseStyle makeActiveInputStyle(Supplier<InputWidget> inputWidget)
     {
-        return makeActiveButtonBackground().stack(new FunctionalTextStyle(Ludo.instance().fontRenderer32, () -> inputWidget.get().getTextAsList(), AnchorPoint.L, Color4f.BLACK));
+        return makeActiveInputStyle(inputWidget, AnchorPoint.M);
     }
     
     public static BaseStyle makeInactiveInputStyle(Supplier<InputWidget> inputWidget)
     {
-        return makeInactiveButtonBackground().stack(new FunctionalTextStyle(Ludo.instance().fontRenderer32, () -> inputWidget.get().getTextAsList(), AnchorPoint.L, Color4f.BLACK));
+        return makeInactiveInputStyle(inputWidget, AnchorPoint.M);
     }
 }
