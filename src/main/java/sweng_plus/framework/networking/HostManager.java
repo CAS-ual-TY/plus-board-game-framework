@@ -119,10 +119,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     @Override
     public void update() // Main Thread
     {
-        if(!shouldClose())
-        {
-            super.runMessages();
-        }
+        super.runMessages();
     }
     
     public Socket acceptNewConnection(Connection<C> connection) // Connection Thread

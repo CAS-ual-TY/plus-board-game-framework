@@ -30,12 +30,12 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C>
     @Override
     public void update()
     {
+        super.update();
+        
         if(shouldClose())
         {
             return;
         }
-        
-        super.update();
         
         timeOutTracker.exclusiveGet(TimeOutTracker::update);
     }

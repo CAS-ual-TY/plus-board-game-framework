@@ -31,12 +31,12 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     @Override
     public void update()
     {
+        super.update();
+        
         if(shouldClose())
         {
             return;
         }
-        
-        super.update();
         
         clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
                 clientTimeOutTrackerMap1.values().forEach(TimeOutTracker::update));

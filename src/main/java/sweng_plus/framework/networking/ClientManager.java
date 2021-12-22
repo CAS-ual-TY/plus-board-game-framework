@@ -54,10 +54,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void update() // Main Thread
     {
-        if(!shouldClose())
-        {
-            super.runMessages();
-        }
+        super.runMessages();
     }
     
     @Override
