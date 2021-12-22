@@ -2,9 +2,6 @@ package sweng_plus.boardgames.mill;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-import sweng_plus.boardgames.ludo.Ludo;
-import sweng_plus.boardgames.ludo.gamelogic.LudoGameLogic;
-import sweng_plus.boardgames.ludo.gui.LudoScreen;
 import sweng_plus.boardgames.mill.gamelogic.MillGameLogic;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.EngineUtil;
@@ -164,6 +161,6 @@ public class Mill implements IGame
     
     public static void main(String... args)
     {
-        new Engine(new Ludo()).run();
+        new Engine(new Mill()).run();
     }
 }
