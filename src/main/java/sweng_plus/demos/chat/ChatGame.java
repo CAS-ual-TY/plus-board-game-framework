@@ -32,7 +32,7 @@ public class ChatGame implements IGame
     private Screen screen;
     
     public FontRenderer fontRenderer64;
-    public FontRenderer fontRenderer48;
+    public FontRenderer fontRenderer;
     public FontRenderer fontRenderer32;
     public FontRenderer fontRenderer24;
     public FontRenderer fontRenderer16;
@@ -72,7 +72,7 @@ public class ChatGame implements IGame
         String chars = FontHelper.getAvailableChars((char) 0xFF);
         Font fontChicagoFLF;
         
-        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/ChicagoFLF.ttf"))
+        try(InputStream in = EngineUtil.getResourceInputStream("/fonts/NotoSans-Regular.ttf"))
         {
             fontChicagoFLF = FontHelper.createFont(in);
         }
@@ -81,11 +81,7 @@ public class ChatGame implements IGame
             throw new RuntimeException("failed to load font.", e);
         }
         
-        fontRenderer64 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(64F), StandardCharsets.UTF_8.name(), chars));
-        fontRenderer48 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(48F), StandardCharsets.UTF_8.name(), chars));
-        fontRenderer32 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(32F), StandardCharsets.UTF_8.name(), chars));
-        fontRenderer24 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(24F), StandardCharsets.UTF_8.name(), chars));
-        fontRenderer16 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(16F), StandardCharsets.UTF_8.name(), chars));
+        fontRenderer = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(48F), StandardCharsets.UTF_8.name(), chars));
         
         screen = new ChatMenuScreen(this);
         
@@ -146,7 +142,7 @@ public class ChatGame implements IGame
     
     public static BaseStyle activeStyle(Supplier<List<String>> text, AnchorPoint anchor)
     {
-        return activeStyle().stack(new FunctionalTextStyle(instance().fontRenderer48, text, anchor, Color4f.GREY));
+        return activeStyle().stack(new FunctionalTextStyle(instance().fontRenderer, text, anchor, Color4f.GREY));
     }
     
     public static BaseStyle activeStyle(Supplier<List<String>> text)
@@ -167,7 +163,7 @@ public class ChatGame implements IGame
     
     public static BaseStyle inactiveStyle(Supplier<List<String>> text, AnchorPoint anchor)
     {
-        return inactiveStyle().stack(new FunctionalTextStyle(instance().fontRenderer48, text, anchor, Color4f.BLACK));
+        return inactiveStyle().stack(new FunctionalTextStyle(instance().fontRenderer, text, anchor, Color4f.BLACK));
     }
     
     public static BaseStyle inactiveStyle(Supplier<List<String>> text)

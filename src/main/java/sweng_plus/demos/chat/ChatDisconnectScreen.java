@@ -20,7 +20,7 @@ public class ChatDisconnectScreen extends Screen
         Dimensions topButton = new Dimensions(400, 100, AnchorPoint.M, 0, -75);
         Dimensions bottomButton = new Dimensions(400, 100, AnchorPoint.M, 0, 75);
         
-        widgets.add(new SimpleWidget(screenHolder, topButton, new TextStyle(ChatGame.instance().fontRenderer48, message, Color4f.BLACK)));
+        widgets.add(new SimpleWidget(screenHolder, topButton, new TextStyle(ChatGame.instance().fontRenderer, message, Color4f.BLACK)));
         widgets.add(new FunctionalButtonWidget(screenHolder, bottomButton, ChatGame.hoverStyle("Main Menu"), this::toMainMenu));
     }
     

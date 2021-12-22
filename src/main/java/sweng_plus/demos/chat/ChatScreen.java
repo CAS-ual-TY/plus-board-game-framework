@@ -31,7 +31,7 @@ public class ChatScreen extends StackedScreen
     {
         super(subScreen);
         
-        chatFontRenderer = ChatGame.instance().fontRenderer48;
+        chatFontRenderer = ChatGame.instance().fontRenderer;
         
         Dimensions leaveDimensions = new Dimensions(400, 100, AnchorPoint.BL);
         Dimensions sendDimensions = new Dimensions(100, 100, AnchorPoint.BR);
