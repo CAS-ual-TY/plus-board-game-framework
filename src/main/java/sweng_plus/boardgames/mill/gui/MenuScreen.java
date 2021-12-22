@@ -1,0 +1,58 @@
+package sweng_plus.boardgames.mill.gui;
+
+import sweng_plus.boardgames.ludo.gui.MenuConnectScreen;
+import sweng_plus.boardgames.ludo.gui.MenuHostScreen;
+import sweng_plus.boardgames.ludo.gui.util.LudoStyles;
+import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
+import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
+import sweng_plus.framework.userinterface.gui.Screen;
+import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
+import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
+import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+
+public class MenuScreen extends Screen
+{
+    public MenuScreen(IScreenHolder screenHolder)
+    {
+        super(screenHolder);
+        
+        Dimensions quadDims = new Dimensions(1000, 1000, AnchorPoint.M, -500, -500);
+        widgets.add(new SimpleWidget(screenHolder, quadDims, LudoStyles.makeButtonStyle("")));
+        
+        Dimensions hostDims = new Dimensions(700, 80, AnchorPoint.M, 0, 157);
+        widgets.add(new FunctionalButtonWidget(screenHolder, hostDims, LudoStyles.makeButtonStyle("Neues Spiel"), this::host));
+        
+        Dimensions connectDims = new Dimensions(700, 80, AnchorPoint.BR, -120, 52);
+        widgets.add(new FunctionalButtonWidget(screenHolder, connectDims, LudoStyles.makeButtonStyle("Spiel beitreten"), this::connect));
+        
+        Dimensions optionsDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -53);
+        widgets.add(new FunctionalButtonWidget(screenHolder, optionsDims, LudoStyles.makeButtonStyle("Einstellungen"), this::options));
+        
+        Dimensions exitDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -158);
+        widgets.add(new FunctionalButtonWidget(screenHolder, exitDims, LudoStyles.makeButtonStyle("Beenden"), this::exit));
+    }
+    
+    private void host()
+    {
+        screenHolder.setScreen(new MenuHostScreen(this));
+    }
+    
+    private void connect()
+    {
+        screenHolder.setScreen(new MenuConnectScreen(this));
+    }
+    
+    private void options()
+    {
+    
+    }
+    
+    private void exit()
+    {
+        Engine.instance().close();
+    }
+
+}
