@@ -32,11 +32,6 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C>
     {
         super.update();
         
-        if(shouldClose())
-        {
-            return;
-        }
-        
         timeOutTracker.exclusiveGet(TimeOutTracker::update);
     }
     
@@ -75,7 +70,10 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C>
     
     public void lostConnection()
     {
-        close();
-        advancedEventsListener.lostConnection();
+        if(!shouldClose())
+        {
+            close();
+            advancedEventsListener.lostConnection();
+        }
     }
 }

@@ -3,6 +3,7 @@ package sweng_plus.framework.networking;
 import sweng_plus.framework.networking.interfaces.IAdvancedHostEventsListener;
 import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
 import sweng_plus.framework.networking.interfaces.IClient;
+import sweng_plus.framework.networking.util.ClientStatus;
 import sweng_plus.framework.networking.util.IClientFactory;
 import sweng_plus.framework.networking.util.LockedObject;
 import sweng_plus.framework.networking.util.TimeOutTracker;
@@ -33,11 +34,6 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     {
         super.update();
         
-        if(shouldClose())
-        {
-            return;
-        }
-        
         clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
                 clientTimeOutTrackerMap1.values().forEach(TimeOutTracker::update));
     }
@@ -46,6 +42,7 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     public void close()
     {
         sendMessageToAllClientsExceptHost(advancedRegistry.serverClosed());
+        
         super.close();
     }
     
@@ -93,7 +90,10 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
     
     public void clientLostConnection(C client)
     {
-        closeClient(client);
-        advancedEventsListener.clientLostConnection(client);
+        if(client.getStatus() == ClientStatus.CONNECTED)
+        {
+            closeClient(client);
+            advancedEventsListener.clientLostConnection(client);
+        }
     }
 }
