@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class TeamColor
 {
+    public static final TeamColor NEUTRAL = new TeamColor("Neutral", Color4f.WHITE);
+    
     public static final TeamColor WHITE = new TeamColor("White", Color4f.WHITE);
     public static final TeamColor BLACK = new TeamColor("Black", Color4f.BLACK);
     public static final TeamColor GREY = new TeamColor("Grey", Color4f.GREY);
