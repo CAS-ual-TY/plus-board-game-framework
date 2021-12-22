@@ -18,7 +18,7 @@ public interface INodeBoard<N extends INode<F, N>, F extends INodeFigure<N, F>>
     
     void addFigure(F figure);
     
-    default void addNodeFigures(List<F> figures)
+    default void addFigures(List<F> figures)
     {
         figures.forEach(this::addFigure);
     }
@@ -66,7 +66,15 @@ public interface INodeBoard<N extends INode<F, N>, F extends INodeFigure<N, F>>
         {
             figure.getCurrentNode().removeFigure(figure);
         }
-        
+    
+        placeFigure(figure, target);
+    }
+    
+    default void placeFigure(F figure, N target) {
+        if(!isFigureOnBoard(figure) || !isNodeOnBoard(target))
+        {
+            return;
+        }
         figure.setCurrentNode(target);
         target.addFigure(figure);
     }

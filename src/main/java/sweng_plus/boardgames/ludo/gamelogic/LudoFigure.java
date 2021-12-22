@@ -7,12 +7,6 @@ public class LudoFigure extends TeamNodeFigure<LudoNode, LudoFigure>
 {
     private int index;
     
-    public LudoFigure(LudoNode currentNode, TeamColor color, int index)
-    {
-        super(currentNode, color);
-        this.index = index;
-    }
-    
     public LudoFigure(TeamColor color, int index)
     {
         super(color);

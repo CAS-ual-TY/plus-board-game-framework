@@ -229,7 +229,8 @@ public class LudoBoard extends NodeBoard<LudoNode, LudoFigure>
         LudoFigure[] figures = new LudoFigure[nodes.size()];
         for(int i = 0; i < nodes.size(); i++)
         {
-            figures[i] = new LudoFigure(nodes.get(i), teamColor, i);
+            figures[i] = new LudoFigure(teamColor, i);
+            figures[i].setCurrentNode(nodes.get(i));
             nodes.get(i).addFigure(figures[i]);
         }
         return figures;
