@@ -55,6 +55,23 @@ public interface INodeBoard<N extends INode<F, N>, F extends INodeFigure<N, F>>
         return getBackwardNodes(figure.getCurrentNode(), distance, predicate);
     }
     
+    default List<N> getForwardAndBackwardNodes(N start, int distance, Predicate<N> predicate)
+    {
+        if(!isNodeOnBoard(start))
+        {
+            return List.of();
+        }
+        List<N> distantNodes = start.getDistantForwardNodes(distance, predicate);
+        distantNodes.addAll(start.getDistantBackwardNodes(distance, predicate));
+        
+        return distantNodes;
+    }
+    
+    default List<N> getForwardAndBackwardNodes(F figure, int distance, Predicate<N> predicate)
+    {
+        return getForwardAndBackwardNodes(figure.getCurrentNode(), distance, predicate);
+    }
+    
     default void moveFigure(F figure, N target)
     {
         if(!isFigureOnBoard(figure) || !isNodeOnBoard(target))
