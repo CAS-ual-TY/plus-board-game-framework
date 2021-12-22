@@ -1,4 +1,4 @@
-package sweng_plus.boardgames.mill.networking;
+package sweng_plus.boardgames.mill.gamelogic.networking;
 
 import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.util.ClientStatus;

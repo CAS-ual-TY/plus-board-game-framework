@@ -1,6 +1,6 @@
 package sweng_plus.boardgames.mill;
 
-import sweng_plus.boardgames.mill.networking.MillClient;
+import sweng_plus.boardgames.mill.gamelogic.networking.MillClient;
 import sweng_plus.framework.networking.AdvancedMessageRegistry;
 import sweng_plus.framework.networking.NetworkHelper;
 import sweng_plus.framework.networking.interfaces.*;
