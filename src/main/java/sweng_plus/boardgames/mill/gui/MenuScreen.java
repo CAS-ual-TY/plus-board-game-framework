@@ -1,9 +1,9 @@
 package sweng_plus.boardgames.mill.gui;
 
-import sweng_plus.boardgames.ludo.gui.MenuConnectScreen;
-import sweng_plus.boardgames.ludo.gui.MenuHostScreen;
-import sweng_plus.boardgames.ludo.gui.util.LudoStyles;
-import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
+import sweng_plus.boardgames.mill.gui.MenuConnectScreen;
+import sweng_plus.boardgames.mill.gui.MenuHostScreen;
+import sweng_plus.boardgames.mill.gui.util.MillStyles;
+import sweng_plus.boardgames.mill.gui.util.MillTextures;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -20,19 +20,19 @@ public class MenuScreen extends Screen
         super(screenHolder);
         
         Dimensions quadDims = new Dimensions(1000, 1000, AnchorPoint.M, -500, -500);
-        widgets.add(new SimpleWidget(screenHolder, quadDims, LudoStyles.makeButtonStyle("")));
+        widgets.add(new SimpleWidget(screenHolder, quadDims, MillStyles.makeButtonStyle("")));
         
         Dimensions hostDims = new Dimensions(700, 80, AnchorPoint.M, 0, 157);
-        widgets.add(new FunctionalButtonWidget(screenHolder, hostDims, LudoStyles.makeButtonStyle("Neues Spiel"), this::host));
+        widgets.add(new FunctionalButtonWidget(screenHolder, hostDims, MillStyles.makeButtonStyle("Neues Spiel"), this::host));
         
         Dimensions connectDims = new Dimensions(700, 80, AnchorPoint.BR, -120, 52);
-        widgets.add(new FunctionalButtonWidget(screenHolder, connectDims, LudoStyles.makeButtonStyle("Spiel beitreten"), this::connect));
+        widgets.add(new FunctionalButtonWidget(screenHolder, connectDims, MillStyles.makeButtonStyle("Spiel beitreten"), this::connect));
         
         Dimensions optionsDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -53);
-        widgets.add(new FunctionalButtonWidget(screenHolder, optionsDims, LudoStyles.makeButtonStyle("Einstellungen"), this::options));
+        widgets.add(new FunctionalButtonWidget(screenHolder, optionsDims, MillStyles.makeButtonStyle("Einstellungen"), this::options));
         
         Dimensions exitDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -158);
-        widgets.add(new FunctionalButtonWidget(screenHolder, exitDims, LudoStyles.makeButtonStyle("Beenden"), this::exit));
+        widgets.add(new FunctionalButtonWidget(screenHolder, exitDims, MillStyles.makeButtonStyle("Beenden"), this::exit));
     }
     
     private void host()
