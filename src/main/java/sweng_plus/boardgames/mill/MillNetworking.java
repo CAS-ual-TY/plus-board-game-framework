@@ -1,6 +1,8 @@
 package sweng_plus.boardgames.mill;
 
 import sweng_plus.boardgames.mill.gamelogic.networking.MillClient;
+import sweng_plus.boardgames.mill.gamelogic.networking.SendNameMessage;
+import sweng_plus.boardgames.mill.gui.NameScreen;
 import sweng_plus.framework.networking.AdvancedMessageRegistry;
 import sweng_plus.framework.networking.NetworkHelper;
 import sweng_plus.framework.networking.interfaces.*;
@@ -70,9 +72,9 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         mill.names.clear();
         clientManager = NetworkHelper.connect(protocol, this, ip, port);
         
-        // mill.setScreen(new NameScreen(mill));
+        mill.setScreen(new NameScreen(mill));
         
-        // clientManager.sendMessageToServer(new SendNameMessage(playerName));
+        clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
     
     public void host(String playerName, int port) throws IOException
@@ -85,9 +87,9 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         hostManager = NetworkHelper.host(protocol, this, MillClient::new, port);
         clientManager = hostManager;
         
-        // mill.setScreen(new NameScreen(mill));
+        mill.setScreen(new NameScreen(mill));
         
-        // clientManager.sendMessageToServer(new SendNameMessage(playerName));
+        clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
     
     public boolean isHost()
@@ -105,11 +107,11 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
     public void clientConnected(MillClient client)
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
-    
+        
         if(hostManager.getAllClients().size() >= 2) //TODO START
         {
             mill.startGame(true, hostManager.getAllClients().size());
         }
     }
-
+    
 }

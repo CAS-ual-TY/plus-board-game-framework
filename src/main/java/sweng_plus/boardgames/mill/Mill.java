@@ -3,6 +3,9 @@ package sweng_plus.boardgames.mill;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.mill.gamelogic.MillGameLogic;
+import sweng_plus.boardgames.mill.gui.MenuScreen;
+import sweng_plus.boardgames.mill.gui.MillScreen;
+import sweng_plus.boardgames.mill.gui.util.MillTextures;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.boardgame.IGame;
@@ -82,7 +85,7 @@ public class Mill implements IGame
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_BACKSPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ESCAPE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ENTER);
-        /*
+        
         try
         {
             MillTextures.load();
@@ -92,12 +95,10 @@ public class Mill implements IGame
             e.printStackTrace();
         }
         
-         */
-        
         networking = new MillNetworking(this);
         
         GL11.glClearColor(245 / 255f, 238 / 255f, 176 / 255f, 1f);
-        // screen = new MenuScreen(this);
+        screen = new MenuScreen(this);
     }
     
     public void startGame(boolean isServer, int teamCount)
@@ -113,7 +114,7 @@ public class Mill implements IGame
         }
         else
         {
-            //setScreen(new MillScreen(this, gameLogic));
+            setScreen(new MillScreen(this, gameLogic));
         }
     }
     
