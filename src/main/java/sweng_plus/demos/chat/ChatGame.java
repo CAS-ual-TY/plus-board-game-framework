@@ -14,15 +14,20 @@ import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
 import sweng_plus.framework.userinterface.gui.font.FontInfo;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
+import sweng_plus.framework.userinterface.gui.style.*;
+import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.function.Supplier;
 
-public class NetTestGame implements IGame
+public class ChatGame implements IGame
 {
-    private static NetTestGame instance;
+    private static ChatGame instance;
     
     private Screen screen;
     
@@ -33,18 +38,18 @@ public class NetTestGame implements IGame
     public FontRenderer fontRenderer16;
     
     public IAdvancedMessageRegistry<Client> protocol;
-    public NetTestEventsListener listener;
+    public ChatEventsListener listener;
     
     public IClientManager clientManager;
     public IHostManager<Client> hostManager;
     
-    public NetTestGame()
+    public ChatGame()
     {
         //noinspection ThisEscapedInObjectConstruction
         instance = this;
     }
     
-    public static NetTestGame instance()
+    public static ChatGame instance()
     {
         return instance;
     }
@@ -52,7 +57,7 @@ public class NetTestGame implements IGame
     @Override
     public String getWindowTitle()
     {
-        return "Ludo";
+        return "Online Chat";
     }
     
     @Override
@@ -66,7 +71,7 @@ public class NetTestGame implements IGame
     {
         String chars = FontHelper.getAvailableChars((char) 0xFF);
         Font fontChicagoFLF;
-    
+        
         try(InputStream in = EngineUtil.getResourceInputStream("/fonts/ChicagoFLF.ttf"))
         {
             fontChicagoFLF = FontHelper.createFont(in);
@@ -82,18 +87,18 @@ public class NetTestGame implements IGame
         fontRenderer24 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(24F), StandardCharsets.UTF_8.name(), chars));
         fontRenderer16 = new FontRenderer(new FontInfo(fontChicagoFLF.deriveFont(16F), StandardCharsets.UTF_8.name(), chars));
         
-        screen = new NetTestMenuScreen(this);
+        screen = new ChatMenuScreen(this);
         
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_SPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_BACKSPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ESCAPE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ENTER);
         
-        listener = new NetTestEventsListener();
+        listener = new ChatEventsListener();
         
         protocol = new AdvancedMessageRegistry<>(8, (byte) 0, (byte) 1, (byte) 2, () -> clientManager, () -> hostManager, listener, listener);
-        protocol.registerMessage((byte) 3, NetTestMessage.Handler::encodeMessage, NetTestMessage.Handler::decodeMessage,
-                NetTestMessage.Handler::handleMessage, NetTestMessage.class);
+        protocol.registerMessage((byte) 3, ChatMessage.Handler::encodeMessage, ChatMessage.Handler::decodeMessage,
+                ChatMessage.Handler::handleMessage, ChatMessage.class);
         
         GL11.glClearColor(0.5F, 0.5F, 1F, 1F);
     }
@@ -101,19 +106,19 @@ public class NetTestGame implements IGame
     @Override
     public void cleanup()
     {
-        if(hostManager != null)
-            hostManager.close();
-        else if(clientManager != null)
+        if(clientManager != null)
+        {
             clientManager.close();
+        }
     }
     
     @Override
     public void update()
     {
-        if(hostManager != null)
-            hostManager.update();
-        else if(clientManager != null)
+        if(clientManager != null)
+        {
             clientManager.update();
+        }
     }
     
     @Override
@@ -134,8 +139,55 @@ public class NetTestGame implements IGame
         this.screen = screen;
     }
     
+    public static BaseStyle activeStyle()
+    {
+        return new ColoredQuadStyle(Color4f.WHITE).stack(new ColoredBorderStyle(Color4f.GREY, 4));
+    }
+    
+    public static BaseStyle activeStyle(Supplier<List<String>> text, AnchorPoint anchor)
+    {
+        return activeStyle().stack(new FunctionalTextStyle(instance().fontRenderer48, text, anchor, Color4f.GREY));
+    }
+    
+    public static BaseStyle activeStyle(Supplier<List<String>> text)
+    {
+        return activeStyle(text, AnchorPoint.M);
+    }
+    
+    public static BaseStyle activeStyle(String text)
+    {
+        List<String> list = List.of(text);
+        return activeStyle(() -> list);
+    }
+    
+    public static BaseStyle inactiveStyle()
+    {
+        return new ColoredQuadStyle(Color4f.WHITE).stack(new ColoredBorderStyle(Color4f.BLACK, 4));
+    }
+    
+    public static BaseStyle inactiveStyle(Supplier<List<String>> text, AnchorPoint anchor)
+    {
+        return inactiveStyle().stack(new FunctionalTextStyle(instance().fontRenderer48, text, anchor, Color4f.BLACK));
+    }
+    
+    public static BaseStyle inactiveStyle(Supplier<List<String>> text)
+    {
+        return inactiveStyle(text, AnchorPoint.M);
+    }
+    
+    public static BaseStyle inactiveStyle(String text)
+    {
+        List<String> list = List.of(text);
+        return inactiveStyle(() -> list);
+    }
+    
+    public static BaseStyle hoverStyle(String text)
+    {
+        return new HoverStyle(inactiveStyle(text), activeStyle(text));
+    }
+    
     public static void main(String... args)
     {
-        new Engine(new NetTestGame()).run();
+        new Engine(new ChatGame()).run();
     }
 }
