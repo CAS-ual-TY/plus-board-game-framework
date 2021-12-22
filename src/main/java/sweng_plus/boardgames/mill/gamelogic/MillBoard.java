@@ -10,13 +10,13 @@ import java.util.List;
 
 public class MillBoard extends NodeBoard<MillNode, MillFigure>
 {
-    private static final int FIGURES_PER_TEAM = 9;
-    private static final int MAX_FIGURES_TO_JUMP = 3;
-    private final int NUM_CIRCLES = 3;
-    private final int NODES_PER_CIRCLE = 8;
+    public static final int FIGURES_PER_TEAM = 9;
+    public static final int MAX_FIGURES_TO_JUMP = 3;
+    public static final int NUM_CIRCLES = 3;
+    public static final int NODES_PER_CIRCLE = 8;
     
     private MillTeam[] millTeams;
-    private MillNode[][] nodeCircles;
+    private List<MillNode> fieldNodes;
     
     public MillBoard(TeamColor[] teamColors)
     {
@@ -24,6 +24,13 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
         
         setupBoard(teamColors);
         
+    }
+    
+    @Override
+    public void moveFigure(MillFigure figure, MillNode target)
+    {
+        super.moveFigure(figure, target);
+        figure.setAlreadyPlaced(true);
     }
     
     public int getTeamIndex(TeamColor team)
@@ -39,40 +46,65 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
         return -1;
     }
     
-    public MillFigure[] getTeamFigures(TeamColor team)
+    public List<MillFigure> getActiveTeamFigures(TeamColor team)
     {
-        for(MillBoard.MillTeam value : millTeams)
+        return millTeams[getTeamIndex(team)].activeFigures();
+    }
+    
+    public List<MillFigure> getTakenTeamFigures(TeamColor team)
+    {
+        return millTeams[getTeamIndex(team)].takenFigures();
+    }
+    
+    public void takeFigure(TeamColor team, MillFigure figure)
+    {
+        if(team.equals(figure.getTeam()))
         {
-            if(team == value.color())
+            getActiveTeamFigures(team).remove(figure);
+            millTeams[getTeamIndex(team)].takenFigures().add(figure);
+            
+            moveFigure(figure, getFreeOutsideNode(team));
+        }
+    }
+    public void takeFigure(MillFigure figure)
+    {
+        takeFigure(figure.getTeam(), figure);
+    }
+    
+    public List<MillNode> getFieldNodes() {
+        return fieldNodes;
+    }
+    
+    public MillNode getFieldNode(int index) {
+        return fieldNodes.get(index);
+    }
+    
+    private MillNode getFreeOutsideNode(TeamColor team) {
+        for(MillNode outsideNode : millTeams[getTeamIndex(team)].outsideNodes())
+        {
+            if(!outsideNode.isOccupied())
             {
-                return value.figures();
+                return outsideNode;
             }
         }
-        
         return null;
     }
     
-    public MillNode[][] getNodeCircles()
-    {
-        return nodeCircles;
-    }
     
     private void setupBoard(TeamColor[] teamColors)
     {
         
         millTeams = new MillBoard.MillTeam[teamColors.length];
-        nodeCircles = new MillNode[3][];
+        fieldNodes = new ArrayList<>(NUM_CIRCLES*NODES_PER_CIRCLE);
         
         // create 3 non-connected circles
         for(int i = 0; i < NUM_CIRCLES; i++) {
-            nodeCircles[i]=createCircle();
+            fieldNodes.addAll(createCircle(i));
         }
         // create connections between circles - every second node is connected
-        for(int i = 1; i < NODES_PER_CIRCLE; i+=2)
+        for(int i = 1; i < fieldNodes.size(); i+=2)
         {
-            for(int j = 0; j < NUM_CIRCLES; j++) {
-                INode.linkNodes(nodeCircles[j][i], nodeCircles[(j+1)%NUM_CIRCLES ][i]);
-            }
+            INode.linkNodes(fieldNodes.get(i), fieldNodes.get((i+NODES_PER_CIRCLE)% fieldNodes.size()));
         }
     
         // create both Teams
@@ -86,58 +118,52 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
         // Connect outsideNodes of Teams with every node in the field
         for(MillNode outsideNode : outsideNodes)
         {
-            for(int i = 0; i < NODES_PER_CIRCLE; i++)
+            for(MillNode node : fieldNodes)
             {
-                for(MillNode[] nodeCircle : nodeCircles)
-                {
-                    outsideNode.addForwardNode(nodeCircle[i]);
-                }
+                outsideNode.addForwardNode(node);
             }
         }
     }
     
-    private MillNode[] createCircle()
+    private List<MillNode> createCircle(int circleNumber)
     {
-        MillNode[] circleNodes = new MillNode[NODES_PER_CIRCLE];
+        List<MillNode> circleNodes = new ArrayList<>(NODES_PER_CIRCLE);
         for(int i = 0; i < NODES_PER_CIRCLE; i++) {
-            circleNodes[i] = new MillNode(TeamColor.NEUTRAL, i);
+            circleNodes.add(new MillNode(TeamColor.NEUTRAL, i + circleNumber*NODES_PER_CIRCLE));
             
             if(i > 0)
             {
-                linkNodes(circleNodes[i-1], circleNodes[i]);
+                linkNodes(circleNodes.get(i-1), circleNodes.get(i));
             }
         }
-        linkNodes(circleNodes[NODES_PER_CIRCLE-1], circleNodes[0]);
+        linkNodes(circleNodes.get(circleNodes.size()-1), circleNodes.get(0));
         
-        addNodes(List.of(circleNodes));
+        addNodes(circleNodes);
         return circleNodes;
     }
     
     private MillTeam createMillTeam(TeamColor team)
     {
         MillNode[] outsideNodes = new MillNode[FIGURES_PER_TEAM];
-        MillFigure[] figures = new MillFigure[FIGURES_PER_TEAM];
+        List<MillFigure> figures = new ArrayList<>(FIGURES_PER_TEAM);
         for(int i = 0; i < FIGURES_PER_TEAM; i++) {
-            figures[i] = new MillFigure(team, i);
+            figures.add(new MillFigure(team, i));
             outsideNodes[i] = new MillNode(team, i);
         }
         
         addNodes(List.of(outsideNodes));
-        addFigures(List.of(figures));
+        addFigures(figures);
     
         for(int i = 0; i < FIGURES_PER_TEAM; i++) {
-            placeFigure(figures[i], outsideNodes[i]);
+            placeFigure(figures.get(i), outsideNodes[i]);
         }
-        return new MillTeam(team, figures, outsideNodes);
+        return new MillTeam(team, figures, new LinkedList<>(), outsideNodes);
     }
     
     
-    private record MillTeam(TeamColor color, MillFigure[] figures, MillNode[] outsideNodes)
+    private record MillTeam(TeamColor color, List<MillFigure> activeFigures, List<MillFigure> takenFigures, MillNode[] outsideNodes)
     {
     }
-    
-    
-    
 }
 
 

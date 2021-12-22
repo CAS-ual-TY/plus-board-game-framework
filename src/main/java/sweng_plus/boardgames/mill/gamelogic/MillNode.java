@@ -6,7 +6,7 @@ import sweng_plus.framework.boardgame.nodes_board.TeamNode;
 
 public class MillNode extends TeamNode<MillFigure, MillNode>
 {
-    protected final int index;
+    private final int index;
     
     public MillNode(TeamColor team, int index)
     {
@@ -15,4 +15,8 @@ public class MillNode extends TeamNode<MillFigure, MillNode>
         this.index = index;
     }
     
+    public int getIndex()
+    {
+        return index;
+    }
 }
