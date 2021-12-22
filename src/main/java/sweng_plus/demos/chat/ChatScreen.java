@@ -1,7 +1,7 @@
 package sweng_plus.demos.chat;
 
+import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
-import sweng_plus.framework.userinterface.gui.StackedScreen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.style.FunctionalTextStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
@@ -16,7 +16,7 @@ import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ChatScreen extends StackedScreen
+public class ChatScreen extends Screen
 {
     public static final int CHAT_WIDTH = 1000;
     
@@ -27,9 +27,9 @@ public class ChatScreen extends StackedScreen
     
     public List<String> chatMessages;
     
-    public ChatScreen(Screen subScreen)
+    public ChatScreen(IScreenHolder screenHolder)
     {
-        super(subScreen);
+        super(screenHolder);
         
         chatFontRenderer = ChatGame.instance().fontRenderer;
         
@@ -66,7 +66,7 @@ public class ChatScreen extends StackedScreen
     private void leave(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
         ChatGame.instance().clientManager.close();
-        returnToSubScreen();
+        screenHolder.setScreen(new ChatMenuScreen(screenHolder));
     }
     
     public void addMessage(String sender, String message, long timestamp)
