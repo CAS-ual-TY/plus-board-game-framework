@@ -1,12 +1,11 @@
 package sweng_plus.demos.chat;
 
-import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.interfaces.IAdvancedClientEventsListener;
 import sweng_plus.framework.networking.interfaces.IAdvancedHostEventsListener;
 
 import java.util.List;
 
-public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvancedHostEventsListener<Client>
+public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvancedHostEventsListener<ChatClient>
 {
     private void displayScreen(List<String> message)
     {
@@ -43,14 +42,14 @@ public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvan
     }
     
     @Override
-    public void clientConnected(Client client)
+    public void clientConnected(ChatClient client)
     {
-        ChatGame.instance().hostManager.sendMessageToAllClients(new ChatMessage("Someone connected!", System.currentTimeMillis()));
+        ChatGame.instance().hostManager.sendMessageToClient(client, ChatNameMessage.request());
     }
     
     @Override
-    public void clientDisconnectedOrderly(Client client)
+    public void clientDisconnectedOrderly(ChatClient client)
     {
-        ChatGame.instance().hostManager.sendMessageToAllClients(new ChatMessage("Someone disconnected!", System.currentTimeMillis()));
+        ChatGame.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(client.getName() + " disconnected."));
     }
 }

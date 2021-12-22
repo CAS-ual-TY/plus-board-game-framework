@@ -86,9 +86,11 @@ public class ChatScreen extends Screen
     
     public void sendMessage()
     {
-        if(!inputWidget.getText().trim().isEmpty())
+        String text = inputWidget.getText().trim();
+        
+        if(!text.isEmpty())
         {
-            ChatGame.instance().clientManager.sendMessageToServer(new ChatMessage(inputWidget.getText().trim(), System.currentTimeMillis()));
+            ChatGame.instance().clientManager.sendMessageToServer(ChatMessage.clientToServer(text));
         }
         
         inputWidget.clearText();

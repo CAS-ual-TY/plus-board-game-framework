@@ -1,6 +1,5 @@
 package sweng_plus.demos.chat;
 
-import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.NetworkHelper;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.StackedScreen;
@@ -48,12 +47,14 @@ public class ChatMenuHostScreen extends StackedScreen
     
     private void accept()
     {
+        ChatGame.instance().name = inputWidgetName.getText();
+        
         String portInput = inputWidgetPort.getText();
         
         try
         {
             ChatGame.instance().hostManager = NetworkHelper.advancedHost(ChatGame.instance().protocol,
-                    ChatGame.instance().listener, Client.createFactory(), Integer.parseInt(portInput));
+                    ChatGame.instance().listener, ChatClient::new, Integer.parseInt(portInput));
             ChatGame.instance().clientManager = ChatGame.instance().hostManager;
             ChatGame.instance().setScreen(new ChatScreen(screenHolder));
         }

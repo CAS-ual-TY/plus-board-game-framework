@@ -1,58 +1,87 @@
 package sweng_plus.demos.chat;
 
-import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.util.CircularBuffer;
-import sweng_plus.framework.networking.util.NetworkRole;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-public class ChatMessage
+public record ChatMessage(byte type, String sender, String message, long timestamp)
 {
-    public String sender;
-    public String message;
-    public long timestamp;
+    public static byte SERVER_TO_CLIENT = 0;
+    public static byte CLIENT_TO_SERVER = 1;
+    public static byte ANNOUNCEMENT = 2;
     
-    public ChatMessage(String sender, String message, long timestamp)
+    public static ChatMessage serverToClient(ChatClient client, String message)
     {
-        this.sender = sender;
-        this.message = message;
-        this.timestamp = timestamp;
+        return new ChatMessage(SERVER_TO_CLIENT, client.getName(), message, System.currentTimeMillis());
     }
     
-    public ChatMessage(String message, long timestamp)
+    public static ChatMessage clientToServer(String message)
     {
-        this("", message, timestamp);
+        return new ChatMessage(CLIENT_TO_SERVER, "", message, 0);
+    }
+    
+    public static ChatMessage announcement(String message)
+    {
+        return new ChatMessage(ANNOUNCEMENT, "", message, System.currentTimeMillis());
     }
     
     public static class Handler
     {
         public static void encodeMessage(CircularBuffer buf, ChatMessage msg)
         {
-            buf.writeString(msg.sender, StandardCharsets.UTF_8);
-            buf.writeString(msg.message, StandardCharsets.UTF_8);
-            buf.writeLong(msg.timestamp);
+            buf.writeByte(msg.type());
+            
+            if(msg.type() == CLIENT_TO_SERVER)
+            {
+                buf.writeString(msg.message(), StandardCharsets.UTF_8);
+            }
+            else if(msg.type() == ANNOUNCEMENT)
+            {
+                buf.writeString(msg.message(), StandardCharsets.UTF_8);
+                buf.writeLong(msg.timestamp());
+            }
+            else
+            {
+                buf.writeString(msg.sender(), StandardCharsets.UTF_8);
+                buf.writeString(msg.message(), StandardCharsets.UTF_8);
+                buf.writeLong(msg.timestamp());
+            }
         }
         
         public static ChatMessage decodeMessage(CircularBuffer buf)
         {
-            String sender = buf.readString(StandardCharsets.UTF_8);
-            String message = buf.readString(StandardCharsets.UTF_8);
-            long timestamp = buf.readLong();
+            byte type = buf.readByte();
             
-            return new ChatMessage(sender, message, timestamp);
+            if(type == CLIENT_TO_SERVER)
+            {
+                String message = buf.readString(StandardCharsets.UTF_8);
+                
+                return new ChatMessage(type, "", message, 0);
+            }
+            else if(type == ANNOUNCEMENT)
+            {
+                String message = buf.readString(StandardCharsets.UTF_8);
+                long timestamp = buf.readLong();
+                
+                return new ChatMessage(type, "", message, timestamp);
+            }
+            else
+            {
+                String sender = buf.readString(StandardCharsets.UTF_8);
+                String message = buf.readString(StandardCharsets.UTF_8);
+                long timestamp = buf.readLong();
+                
+                return new ChatMessage(type, sender, message, timestamp);
+            }
         }
         
-        public static void handleMessage(Optional<Client> clientOptional, ChatMessage msg)
+        public static void handleMessage(Optional<ChatClient> clientOptional, ChatMessage msg)
         {
             clientOptional.ifPresentOrElse(
-                    (client) ->
-                    {
-                        msg.sender = client.getRole() == NetworkRole.HOST ? "Host" : "Client";
-                        ChatGame.instance().hostManager.sendMessageToAllClients(msg);
-                    },
+                    (client) -> ChatGame.instance().hostManager.sendMessageToAllClients(serverToClient(client, msg.message())),
                     () -> ((ChatScreen) ChatGame.instance().getScreen())
-                            .addMessage(msg.sender, msg.message, msg.timestamp)
+                            .addMessage(msg.sender(), msg.message(), msg.timestamp())
             );
         }
     }

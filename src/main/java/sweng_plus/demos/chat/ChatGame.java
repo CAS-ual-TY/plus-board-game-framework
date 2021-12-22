@@ -6,7 +6,6 @@ import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.networking.AdvancedMessageRegistry;
-import sweng_plus.framework.networking.Client;
 import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
 import sweng_plus.framework.networking.interfaces.IClientManager;
 import sweng_plus.framework.networking.interfaces.IHostManager;
@@ -37,11 +36,13 @@ public class ChatGame implements IGame
     public FontRenderer fontRenderer24;
     public FontRenderer fontRenderer16;
     
-    public IAdvancedMessageRegistry<Client> protocol;
+    public IAdvancedMessageRegistry<ChatClient> protocol;
     public ChatEventsListener listener;
     
     public IClientManager clientManager;
-    public IHostManager<Client> hostManager;
+    public IHostManager<ChatClient> hostManager;
+    
+    public String name;
     
     public ChatGame()
     {
@@ -95,6 +96,8 @@ public class ChatGame implements IGame
         protocol = new AdvancedMessageRegistry<>(8, (byte) 0, (byte) 1, (byte) 2, () -> clientManager, () -> hostManager, listener, listener);
         protocol.registerMessage((byte) 3, ChatMessage.Handler::encodeMessage, ChatMessage.Handler::decodeMessage,
                 ChatMessage.Handler::handleMessage, ChatMessage.class);
+        protocol.registerMessage((byte) 4, ChatNameMessage.Handler::encodeMessage, ChatNameMessage.Handler::decodeMessage,
+                ChatNameMessage.Handler::handleMessage, ChatNameMessage.class);
         
         GL11.glClearColor(0.5F, 0.5F, 1F, 1F);
     }
