@@ -5,6 +5,8 @@ import java.util.function.Consumer;
 
 public interface IConnectionInteractor<C extends IClient>
 {
+    void connectionSocketCreated(); // Connection Thread
+    
     void receivedMessage(Consumer<Optional<C>> message); // Connection Thread
     
     IMessageRegistry<C> getMessageRegistry(); // Connection Thread

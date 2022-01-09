@@ -14,14 +14,14 @@ import java.util.function.Consumer;
 
 public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager
 {
-    public IClientEventsListener eventsListener;
+    protected IClientEventsListener eventsListener;
     
-    public Socket socket;
+    protected Socket socket;
     
-    public OutputStream out;
-    public CircularBuffer writeBuffer;
+    protected OutputStream out;
+    protected CircularBuffer writeBuffer;
     
-    public Thread thread;
+    protected Thread thread;
     
     public ClientManager(IMessageRegistry<C> registry, IClientEventsListener eventsListener, String ip, int port) throws IOException
     {

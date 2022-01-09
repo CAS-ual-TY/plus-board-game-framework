@@ -12,12 +12,10 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
 {
     public final Ludo ludo;
     
-    public IMessageRegistry<LudoClient> protocol;
+    public IAdvancedMessageRegistry<LudoClient> protocol;
     
-    public String name;
-    
-    public IClientManager clientManager;
-    public IHostManager<LudoClient> hostManager;
+    public IAdvancedClientManager clientManager;
+    public IAdvancedHostManager<LudoClient> hostManager;
     
     public LudoNetworking(Ludo ludo)
     {
@@ -25,12 +23,12 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
         initProtocol();
     }
     
-    public IClientManager getClientManager()
+    public IAdvancedClientManager getClientManager()
     {
         return clientManager;
     }
     
-    public IHostManager<LudoClient> getHostManager()
+    public IAdvancedHostManager<LudoClient> getHostManager()
     {
         return hostManager;
     }
@@ -38,7 +36,7 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
     protected void initProtocol()
     {
         byte messageID = 0;
-        protocol = new AdvancedMessageRegistry<>(32, messageID++, messageID++, messageID++,
+        protocol = new AdvancedMessageRegistry<>(32, messageID++, messageID++, messageID++, messageID++,
                 this::getClientManager, this::getHostManager,
                 this, this);
         
@@ -99,11 +97,9 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
     {
         System.out.println("connect");
         
-        name = playerName;
-        
         hostManager = null;
         ludo.names.clear();
-        clientManager = NetworkHelper.connect(protocol, this, ip, port);
+        clientManager = NetworkHelper.advancedConnect(protocol, this, playerName, ip, port);
         
         ludo.setScreen(new NameScreen(ludo));
         
@@ -114,10 +110,8 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
     {
         System.out.println("host");
         
-        name = playerName;
-        
         ludo.names.clear();
-        hostManager = NetworkHelper.host(protocol, this, LudoClient::new, port);
+        hostManager = NetworkHelper.advancedHost(protocol, this, LudoClient::new, playerName, port);
         clientManager = hostManager;
         
         ludo.setScreen(new NameScreen(ludo));
@@ -137,7 +131,7 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
     }
     
     @Override
-    public void clientConnected(LudoClient client)
+    public void clientAuthSuccessful(LudoClient client)
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
         

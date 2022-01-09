@@ -1,10 +1,10 @@
 package sweng_plus.boardgames.ludo.gamelogic.networking;
 
-import sweng_plus.framework.networking.Client;
+import sweng_plus.framework.networking.AdvancedClient;
 import sweng_plus.framework.networking.util.ClientStatus;
 import sweng_plus.framework.networking.util.NetworkRole;
 
-public class LudoClient extends Client
+public class LudoClient extends AdvancedClient
 {
     public String name;
     public int teamIndex;
@@ -16,11 +16,13 @@ public class LudoClient extends Client
         teamIndex = -1;
     }
     
+    @Override
     public void setName(String name)
     {
         this.name = name;
     }
     
+    @Override
     public String getName()
     {
         return name;

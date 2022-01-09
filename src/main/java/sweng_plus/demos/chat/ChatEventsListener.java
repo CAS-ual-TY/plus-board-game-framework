@@ -42,14 +42,14 @@ public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvan
     }
     
     @Override
-    public void clientConnected(ChatClient client)
-    {
-        ChatGame.instance().hostManager.sendMessageToClient(client, ChatNameMessage.request());
-    }
-    
-    @Override
     public void clientDisconnectedOrderly(ChatClient client)
     {
         ChatGame.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(client.getName() + " disconnected."));
+    }
+    
+    @Override
+    public void clientAuthSuccessful(ChatClient client)
+    {
+        ChatGame.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(client.getName() + " connected."));
     }
 }

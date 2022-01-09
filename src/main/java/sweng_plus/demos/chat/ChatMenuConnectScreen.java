@@ -57,15 +57,16 @@ public class ChatMenuConnectScreen extends StackedScreen
     
     private void accept()
     {
-        ChatGame.instance().name = inputWidgetName.getText();
-        
+        String nameInput = inputWidgetName.getText();
         String ipInput = inputWidgetIP.getText();
         String portInput = inputWidgetPort.getText();
-        
+    
+        ChatGame.instance().name = nameInput;
+    
         try
         {
             ChatGame.instance().clientManager = NetworkHelper.advancedConnect(ChatGame.instance().protocol,
-                    ChatGame.instance().listener, ipInput, Integer.parseInt(portInput));
+                    ChatGame.instance().listener, nameInput, ipInput, Integer.parseInt(portInput));
             ChatGame.instance().setScreen(new ChatScreen(screenHolder));
         }
         catch(IOException e)

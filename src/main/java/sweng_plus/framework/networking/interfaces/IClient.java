@@ -11,5 +11,5 @@ public interface IClient
     
     ClientStatus getStatus();
     
-    void changeStatus(ClientStatus status);
+    void setStatus(ClientStatus status);
 }

@@ -41,9 +41,8 @@ public class Client implements IClient
         return status;
     }
     
-    // TODO Thread-Safe machen
     @Override
-    public void changeStatus(ClientStatus status)
+    public void setStatus(ClientStatus status)
     {
         this.status = status;
     }

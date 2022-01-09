@@ -1,10 +1,10 @@
 package sweng_plus.demos.chat;
 
-import sweng_plus.framework.networking.Client;
+import sweng_plus.framework.networking.AdvancedClient;
 import sweng_plus.framework.networking.util.ClientStatus;
 import sweng_plus.framework.networking.util.NetworkRole;
 
-public class ChatClient extends Client
+public class ChatClient extends AdvancedClient
 {
     protected String name;
     
@@ -13,11 +13,13 @@ public class ChatClient extends Client
         super(ip, role, status);
     }
     
+    @Override
     public void setName(String name)
     {
         this.name = name;
     }
     
+    @Override
     public String getName()
     {
         return name;

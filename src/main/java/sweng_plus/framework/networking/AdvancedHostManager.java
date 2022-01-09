@@ -1,32 +1,44 @@
 package sweng_plus.framework.networking;
 
+import sweng_plus.framework.networking.interfaces.IAdvancedClient;
 import sweng_plus.framework.networking.interfaces.IAdvancedHostEventsListener;
+import sweng_plus.framework.networking.interfaces.IAdvancedHostManager;
 import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
-import sweng_plus.framework.networking.interfaces.IClient;
-import sweng_plus.framework.networking.util.ClientStatus;
-import sweng_plus.framework.networking.util.IClientFactory;
-import sweng_plus.framework.networking.util.LockedObject;
-import sweng_plus.framework.networking.util.TimeOutTracker;
+import sweng_plus.framework.networking.util.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
-public class AdvancedHostManager<C extends IClient> extends HostManager<C>
+public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<C> implements IAdvancedHostManager<C>
 {
-    public IAdvancedMessageRegistry<C> advancedRegistry;
-    public IAdvancedHostEventsListener<C> advancedEventsListener;
+    protected IAdvancedMessageRegistry<C> advancedRegistry;
+    protected IAdvancedHostEventsListener<C> advancedEventsListener;
     
-    public LockedObject<HashMap<C, TimeOutTracker>> clientTimeOutTrackerMap;
+    protected String clientName;
+    
+    protected UUID sessionIdentifier;
+    
+    protected LockedObject<HashMap<C, TimeOutTracker>> clientTimeOutTrackerMap;
+    protected LockedObject<HashMap<C, AuthTracker<C>>> clientAuthTrackerMap;
+    protected LinkedList<C> authTrackersToRemove;
     
     public AdvancedHostManager(IAdvancedMessageRegistry<C> registry, IAdvancedHostEventsListener<C> eventsListener,
-                               IClientFactory<C> clientFactory, int port) throws IOException
+                               IClientFactory<C> clientFactory, String clientName, int port) throws IOException
     {
         super(registry, eventsListener, clientFactory, port);
         advancedRegistry = registry;
         advancedEventsListener = eventsListener;
+        
+        this.clientName = clientName;
+        sessionIdentifier = UUID.randomUUID();
+        
         clientTimeOutTrackerMap = new LockedObject<>(new HashMap<>());
+        clientAuthTrackerMap = new LockedObject<>(new HashMap<>());
+        authTrackersToRemove = new LinkedList<>();
     }
     
     @Override
@@ -36,6 +48,20 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         
         clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
                 clientTimeOutTrackerMap1.values().forEach(TimeOutTracker::update));
+        
+        if(authTrackersToRemove.size() > 0)
+        {
+            clientAuthTrackerMap.exclusiveGet(clientAuthTrackerMap1 ->
+            {
+                authTrackersToRemove.forEach(clientAuthTrackerMap1::remove);
+                clientAuthTrackerMap1.values().forEach(AuthTracker::update);
+            });
+        }
+        else
+        {
+            clientAuthTrackerMap.shared(clientAuthTrackerMap1 ->
+                    clientAuthTrackerMap1.values().forEach(AuthTracker::update));
+        }
     }
     
     @Override
@@ -57,6 +83,22 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
                     TimeOutTracker tracker = clientTimeOutTrackerMap1.get(c);
                     tracker.reset();
                 }));
+    }
+    
+    @Override
+    public void connectionSocketCreated()
+    {
+        super.connectionSocketCreated();
+    }
+    
+    @Override
+    protected void clientConnected(C client)
+    {
+        clientAuthTrackerMap.exclusiveGet(authTrackers1 ->
+                authTrackers1.put(client, new AuthTracker<>(client, authTrackersToRemove)));
+        super.clientConnected(client);
+        System.out.println("sending!");
+        sendMessageToClient(client, advancedRegistry.authRequest());
     }
     
     @Override
@@ -83,7 +125,7 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
         {
             sendMessageToClientUnsafe(client, advancedRegistry.requestPing());
         }
-        catch(IOException e)
+        catch(IOException ignored)
         {
         }
     }
@@ -95,5 +137,54 @@ public class AdvancedHostManager<C extends IClient> extends HostManager<C>
             closeClient(client);
             advancedEventsListener.clientLostConnection(client);
         }
+    }
+    
+    @Override
+    public String getName()
+    {
+        return clientName;
+    }
+    
+    @Override
+    public void kickClient(C client)
+    {
+        sendMessageToClient(client, advancedRegistry.kickClient());
+        closeClient(client);
+    }
+    
+    @Override
+    public void kickClient(C client, String message)
+    {
+        sendMessageToClient(client, advancedRegistry.kickClient(message));
+        closeClient(client);
+    }
+    
+    @Override
+    public void authenticate(C client, String name, UUID identifier)
+    {
+        System.out.println("auth!!");
+        
+        name = name.trim();
+        
+        authTrackersToRemove.add(client);
+        
+        if(name.length() >= 3)
+        {
+            client.setName(name);
+            client.setUUID(identifier);
+            advancedEventsListener.clientAuthSuccessful(client);
+        }
+        else
+        {
+            closeClient(client);
+            kickClient(client, "Authentication failed.");
+            advancedEventsListener.clientAuthUnsuccessful(client);
+        }
+    }
+    
+    @Override
+    public UUID getSessionIdentifier()
+    {
+        return sessionIdentifier;
     }
 }

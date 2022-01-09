@@ -19,18 +19,18 @@ import java.util.function.Consumer;
 
 public class HostManager<C extends IClient> extends ConnectionInteractor<C> implements IHostManager<C>
 {
-    public IHostEventsListener<C> eventsListener;
-    public IClientFactory<C> clientFactory;
+    protected IHostEventsListener<C> eventsListener;
+    protected IClientFactory<C> clientFactory;
     
-    public ServerSocket serverSocket;
+    protected ServerSocket serverSocket;
     
-    public C hostClient;
+    protected C hostClient;
     
     protected LockedObject<LinkedList<C>> clientsList;
     protected LockedObject<HashMap<Thread, C>> threadClientMap;
     protected LockedObject<HashMap<C, Connection<C>>> clientConnectionMap;
     
-    public CircularBuffer writeBuffer;
+    protected CircularBuffer writeBuffer;
     
     public HostManager(IMessageRegistry<C> registry, IHostEventsListener<C> eventsListener, IClientFactory<C> clientFactory, int port) throws IOException
     {
@@ -40,8 +40,9 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         
         serverSocket = new ServerSocket(port);
         serverSocket.setSoTimeout(100);
-        
+    
         hostClient = clientFactory.makeHost();
+        hostClient.setStatus(ClientStatus.CONNECTED);
         
         clientsList = new LockedObject<>(new LinkedList<>());
         threadClientMap = new LockedObject<>(new HashMap<>());
@@ -50,7 +51,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         writeBuffer = new CircularBuffer();
         
         clientsList.getUnsafe().add(hostClient);
-        mainThreadMessages.getUnsafe().add(() -> eventsListener.clientConnected(hostClient));
+        mainThreadMessages.getUnsafe().add(() -> clientConnected(hostClient));
     }
     
     @Override
@@ -137,11 +138,14 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                 
                 String ip = socket.getRemoteSocketAddress().toString();
                 C client = clientFactory.makeClient(ip);
+    
+                clientConnectionMap.exclusiveGet(clientConnectionMap1 ->
+                        clientConnectionMap1.put(client, connection));
+    
+                threadClientMap.exclusiveGet(threadClientMap1 ->
+                        threadClientMap1.put(Thread.currentThread(), client));
                 
                 addClient(connection, client);
-                
-                mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
-                        mainThreadMessages1.add(() -> eventsListener.clientConnected(client)));
                 
                 return socket;
             }
@@ -164,19 +168,24 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         return null;
     }
     
+    @Override
+    public void connectionSocketCreated()
+    {
+        Thread t = Thread.currentThread();
+        threadClientMap.shared(threadClientMap1 ->
+                runOnMainThreadSafely(() -> clientConnected(threadClientMap1.get(t))));
+    }
+    
+    protected void clientConnected(C client)
+    {
+        client.setStatus(ClientStatus.CONNECTED);
+        eventsListener.clientConnected(client);
+    }
+    
     public void addClient(Connection<C> connection, C client)
     {
         clientsList.exclusiveGet(clientsList1 ->
-        {
-            clientsList1.add(client);
-            client.changeStatus(ClientStatus.CONNECTED);
-        });
-        
-        clientConnectionMap.exclusiveGet(clientConnectionMap1 ->
-                clientConnectionMap1.put(client, connection));
-        
-        threadClientMap.exclusiveGet(threadClientMap1 ->
-                threadClientMap1.put(Thread.currentThread(), client));
+                clientsList1.add(client));
     }
     
     public void removeClientByThread(Consumer<C> consumer)
@@ -192,8 +201,6 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         
         clientsList.exclusiveGet(clientsList1 ->
                 clientsList1.remove(client));
-        
-        client.changeStatus(ClientStatus.DISCONNECTED);
     }
     
     @Override
@@ -204,7 +211,11 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
             removeClient(client);
             
             mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
-                    mainThreadMessages1.add(() -> eventsListener.clientSocketClosed(client)));
+                    mainThreadMessages1.add(() ->
+                    {
+                        client.setStatus(ClientStatus.DISCONNECTED);
+                        eventsListener.clientSocketClosed(client);
+                    }));
         });
     }
     

@@ -122,7 +122,7 @@ public class LudoScreen extends Screen implements ILudoScreen
     
     public void sendMessage()
     {
-        Ludo.instance().getNetworking().clientManager.sendMessageToServer(new ChatMessage(Ludo.instance().getNetworking().name, inputWidget.getText()));
+        Ludo.instance().getNetworking().clientManager.sendMessageToServer(new ChatMessage("", inputWidget.getText()));
         inputWidget.clearText();
     }
     

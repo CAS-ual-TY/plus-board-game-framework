@@ -1,6 +1,7 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IAdvancedClientEventsListener;
+import sweng_plus.framework.networking.interfaces.IAdvancedClientManager;
 import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
 import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.util.LockedObject;
@@ -8,21 +9,28 @@ import sweng_plus.framework.networking.util.TimeOutTracker;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
-public class AdvancedClientManager<C extends IClient> extends ClientManager<C>
+public class AdvancedClientManager<C extends IClient> extends ClientManager<C> implements IAdvancedClientManager
 {
-    public IAdvancedMessageRegistry<C> advancedRegistry;
-    public IAdvancedClientEventsListener advancedEventsListener;
+    protected IAdvancedMessageRegistry<C> advancedRegistry;
+    protected IAdvancedClientEventsListener advancedEventsListener;
+    
+    protected String name;
+    
+    protected UUID sessionIdentifier;
+    protected UUID clientIdentifier;
     
     protected LockedObject<TimeOutTracker> timeOutTracker;
     
     public AdvancedClientManager(IAdvancedMessageRegistry<C> registry, IAdvancedClientEventsListener eventsListener,
-                                 String ip, int port) throws IOException
+                                 String name, String ip, int port) throws IOException
     {
         super(registry, eventsListener, ip, port);
         advancedRegistry = registry;
         advancedEventsListener = eventsListener;
+        this.name = name;
         
         timeOutTracker = new LockedObject<>(new TimeOutTracker(this::sendPing, this::lostConnection));
     }
@@ -63,7 +71,7 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C>
         {
             sendMessageToServerUnsafe(advancedRegistry.requestPing());
         }
-        catch(IOException e)
+        catch(IOException ignored)
         {
         }
     }
@@ -75,5 +83,25 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C>
             close();
             advancedEventsListener.lostConnection();
         }
+    }
+    
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+    
+    @Override
+    public void setSessionIdentifier(UUID sessionIdentifier)
+    {
+        this.sessionIdentifier = sessionIdentifier;
+        
+        clientIdentifier = UUID.randomUUID(); //TODO
+    }
+    
+    @Override
+    public UUID getClientIdentifierForSession()
+    {
+        return clientIdentifier;
     }
 }

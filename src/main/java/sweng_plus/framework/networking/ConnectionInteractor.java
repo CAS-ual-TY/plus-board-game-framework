@@ -62,6 +62,12 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     }
     
     @Override
+    public void connectionSocketCreated()
+    {
+    
+    }
+    
+    @Override
     public void receivedMessage(Consumer<Optional<C>> message)
     {
         getClientForConnThread(Thread.currentThread(), client -> receivedMessage(message, client));

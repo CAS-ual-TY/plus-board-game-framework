@@ -17,4 +17,8 @@ public interface IAdvancedMessageRegistry<C extends IClient> extends IMessageReg
     <M> M orderlyDisconnected();
     
     <M> M disconnectedDueToException();
+    
+    <M> M authRequest();
+    
+    <M> M authResponse();
 }

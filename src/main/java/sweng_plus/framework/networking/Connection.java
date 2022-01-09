@@ -42,6 +42,8 @@ public class Connection<C extends IClient> implements Runnable
                 return;
             }
             
+            connectionInteractor.connectionSocketCreated();
+            
             socket.setSoTimeout(100);
             out = socket.getOutputStream();
         }

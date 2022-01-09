@@ -6,9 +6,7 @@ import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.EngineUtil;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.networking.AdvancedMessageRegistry;
-import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
-import sweng_plus.framework.networking.interfaces.IClientManager;
-import sweng_plus.framework.networking.interfaces.IHostManager;
+import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontHelper;
 import sweng_plus.framework.userinterface.gui.font.FontInfo;
@@ -39,8 +37,8 @@ public class ChatGame implements IGame
     public IAdvancedMessageRegistry<ChatClient> protocol;
     public ChatEventsListener listener;
     
-    public IClientManager clientManager;
-    public IHostManager<ChatClient> hostManager;
+    public IAdvancedClientManager clientManager;
+    public IAdvancedHostManager<ChatClient> hostManager;
     
     public String name;
     
@@ -93,11 +91,9 @@ public class ChatGame implements IGame
         
         listener = new ChatEventsListener();
         
-        protocol = new AdvancedMessageRegistry<>(8, (byte) 0, (byte) 1, (byte) 2, () -> clientManager, () -> hostManager, listener, listener);
-        protocol.registerMessage((byte) 3, ChatMessage.Handler::encodeMessage, ChatMessage.Handler::decodeMessage,
+        protocol = new AdvancedMessageRegistry<>(8, (byte) 0, (byte) 1, (byte) 2, (byte) 3, () -> clientManager, () -> hostManager, listener, listener);
+        protocol.registerMessage((byte) 4, ChatMessage.Handler::encodeMessage, ChatMessage.Handler::decodeMessage,
                 ChatMessage.Handler::handleMessage, ChatMessage.class);
-        protocol.registerMessage((byte) 4, ChatNameMessage.Handler::encodeMessage, ChatNameMessage.Handler::decodeMessage,
-                ChatNameMessage.Handler::handleMessage, ChatNameMessage.class);
         
         GL11.glClearColor(0.5F, 0.5F, 1F, 1F);
     }

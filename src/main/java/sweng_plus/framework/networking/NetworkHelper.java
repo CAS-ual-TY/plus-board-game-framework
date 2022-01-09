@@ -38,11 +38,12 @@ public class NetworkHelper
         return hostManager;
     }
     
-    public static <C extends IClient> IHostManager<C> advancedHost(IAdvancedMessageRegistry<C> registry,
-                                                                   IAdvancedHostEventsListener<C> eventsListener,
-                                                                   IClientFactory<C> clientFactory, int port) throws IOException
+    public static <C extends IAdvancedClient> IAdvancedHostManager<C> advancedHost(IAdvancedMessageRegistry<C> registry,
+                                                                                   IAdvancedHostEventsListener<C> eventsListener,
+                                                                                   IClientFactory<C> clientFactory,
+                                                                                   String clientName, int port) throws IOException
     {
-        AdvancedHostManager<C> hostManager = new AdvancedHostManager<>(registry, eventsListener, clientFactory, port);
+        AdvancedHostManager<C> hostManager = new AdvancedHostManager<>(registry, eventsListener, clientFactory, clientName, port);
         Thread thread = new Thread(hostManager);
         thread.start();
         return hostManager;
@@ -69,11 +70,11 @@ public class NetworkHelper
         return clientManager;
     }
     
-    public static <C extends IClient> IClientManager advancedConnect(IAdvancedMessageRegistry<C> registry,
-                                                                     IAdvancedClientEventsListener eventsListener,
-                                                                     String ip, int port) throws IOException
+    public static <C extends IAdvancedClient> IAdvancedClientManager advancedConnect(IAdvancedMessageRegistry<C> registry,
+                                                                                     IAdvancedClientEventsListener eventsListener,
+                                                                                     String name, String ip, int port) throws IOException
     {
-        AdvancedClientManager<C> clientManager = new AdvancedClientManager<>(registry, eventsListener, ip, port);
+        AdvancedClientManager<C> clientManager = new AdvancedClientManager<>(registry, eventsListener, name, ip, port);
         Thread thread = new Thread(clientManager);
         thread.start();
         return clientManager;

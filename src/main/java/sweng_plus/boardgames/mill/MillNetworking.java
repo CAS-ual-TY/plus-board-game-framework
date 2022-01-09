@@ -15,12 +15,12 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
 {
     public final Mill mill;
     
-    public IMessageRegistry<MillClient> protocol;
+    public IAdvancedMessageRegistry<MillClient> protocol;
     
     public String name;
     
-    public IClientManager clientManager;
-    public IHostManager<MillClient> hostManager;
+    public IAdvancedClientManager clientManager;
+    public IAdvancedHostManager<MillClient> hostManager;
     
     public MillNetworking(Mill mill)
     {
@@ -28,12 +28,12 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         initProtocol();
     }
     
-    public IClientManager getClientManager()
+    public IAdvancedClientManager getClientManager()
     {
         return clientManager;
     }
     
-    public IHostManager<MillClient> getHostManager()
+    public IAdvancedHostManager<MillClient> getHostManager()
     {
         return hostManager;
     }
@@ -41,7 +41,7 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
     protected void initProtocol()
     {
         byte messageID = 0;
-        protocol = new AdvancedMessageRegistry<>(32, messageID++, messageID++, messageID++,
+        protocol = new AdvancedMessageRegistry<>(32, messageID++, messageID++, messageID++, messageID++,
                 this::getClientManager, this::getHostManager,
                 this, this);
     
@@ -82,7 +82,7 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         
         hostManager = null;
         mill.names.clear();
-        clientManager = NetworkHelper.connect(protocol, this, ip, port);
+        clientManager = NetworkHelper.advancedConnect(protocol, this, name, ip, port);
         
         mill.setScreen(new NameScreen(mill));
         
@@ -96,7 +96,7 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         name = playerName;
         
         mill.names.clear();
-        hostManager = NetworkHelper.host(protocol, this, MillClient::new, port);
+        hostManager = NetworkHelper.advancedHost(protocol, this, MillClient::new, name, port);
         clientManager = hostManager;
         
         mill.setScreen(new NameScreen(mill));
@@ -116,7 +116,7 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
     }
     
     @Override
-    public void clientConnected(MillClient client)
+    public void clientAuthSuccessful(MillClient client)
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
         

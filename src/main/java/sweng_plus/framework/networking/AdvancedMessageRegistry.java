@@ -1,6 +1,7 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.*;
+import sweng_plus.framework.networking.messages.AuthMessage;
 import sweng_plus.framework.networking.messages.KickClientMessage;
 import sweng_plus.framework.networking.messages.LeaveServerMessage;
 import sweng_plus.framework.networking.messages.PingMessage;
@@ -8,29 +9,36 @@ import sweng_plus.framework.networking.messages.PingMessage;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unchecked")
-public class AdvancedMessageRegistry<C extends IClient> extends MessageRegistry<C> implements IAdvancedMessageRegistry<C>
+public class AdvancedMessageRegistry<C extends IAdvancedClient> extends MessageRegistry<C> implements IAdvancedMessageRegistry<C>
 {
-    public AdvancedMessageRegistry(int messages, byte pingID, byte kickID, byte leaveID,
-                                   Supplier<IClientManager> clientManager, Supplier<IHostManager<C>> hostManager,
+    protected Supplier<IAdvancedClientManager> clientManager;
+    protected Supplier<IAdvancedHostManager<C>> hostManager;
+    
+    protected IAdvancedClientEventsListener clientEventsListener;
+    protected IAdvancedHostEventsListener<C> hostEventsListener;
+    
+    public AdvancedMessageRegistry(int messages, byte pingID, byte kickID, byte leaveID, byte authID,
+                                   Supplier<IAdvancedClientManager> clientManager, Supplier<IAdvancedHostManager<C>> hostManager,
                                    IAdvancedClientEventsListener clientEventsListener,
                                    IAdvancedHostEventsListener<C> hostEventsListener)
     {
         super(messages);
-        registerMessages(pingID, kickID, leaveID, clientManager, hostManager, clientEventsListener, hostEventsListener);
+        this.clientManager = clientManager;
+        this.hostManager = hostManager;
+        this.clientEventsListener = clientEventsListener;
+        this.hostEventsListener = hostEventsListener;
+        registerMessages(pingID, kickID, leaveID, authID);
     }
     
-    protected void registerMessages(byte pingID, byte kickID, byte leaveID,
-                                    Supplier<IClientManager> clientManager, Supplier<IHostManager<C>> hostManager,
-                                    IAdvancedClientEventsListener clientEventsListener,
-                                    IAdvancedHostEventsListener<C> hostEventsListener)
+    protected void registerMessages(byte pingID, byte kickID, byte leaveID, byte authID)
     {
-        registerPingMessage(pingID, clientManager, hostManager);
-        registerKickClientMessage(kickID, clientManager, clientEventsListener);
-        registerLeaveServerMessage(leaveID, hostManager, hostEventsListener);
+        registerPingMessage(pingID);
+        registerKickClientMessage(kickID);
+        registerLeaveServerMessage(leaveID);
+        registerAuthMessage(authID);
     }
     
-    protected AdvancedMessageRegistry<C> registerPingMessage(byte id, Supplier<IClientManager> clientManager,
-                                                             Supplier<IHostManager<C>> hostManager)
+    protected AdvancedMessageRegistry<C> registerPingMessage(byte id)
     {
         registerMessage(id, PingMessage.Handler::encodeMessage, PingMessage.Handler::decodeMessage,
                 (clientOptional, message) ->
@@ -45,8 +53,7 @@ public class AdvancedMessageRegistry<C extends IClient> extends MessageRegistry<
         return this;
     }
     
-    protected AdvancedMessageRegistry<C> registerKickClientMessage(byte id, Supplier<IClientManager> clientManager,
-                                                                   IAdvancedClientEventsListener eventsListener)
+    protected AdvancedMessageRegistry<C> registerKickClientMessage(byte id)
     {
         registerMessage(id, KickClientMessage.Handler::encodeMessage, KickClientMessage.Handler::decodeMessage,
                 (clientOptional, message) ->
@@ -57,29 +64,28 @@ public class AdvancedMessageRegistry<C extends IClient> extends MessageRegistry<
                             if(message.code() == KickClientMessage.UNKNOWN)
                             {
                                 clientManager1.close();
-                                clientManager1.runOnMainThreadSafely(eventsListener::forcedDisconnected);
+                                clientManager1.runOnMainThreadSafely(clientEventsListener::forcedDisconnected);
                             }
                             else if(message.code() == KickClientMessage.SERVER_CLOSED)
                             {
                                 clientManager1.close();
-                                clientManager1.runOnMainThreadSafely(eventsListener::serverClosed);
+                                clientManager1.runOnMainThreadSafely(clientEventsListener::serverClosed);
                             }
                             else if(message.code() == KickClientMessage.CLIENT_KICKED)
                             {
                                 clientManager1.close();
-                                clientManager1.runOnMainThreadSafely(eventsListener::kickedFromServer);
+                                clientManager1.runOnMainThreadSafely(clientEventsListener::kickedFromServer);
                             }
                             else if(message.code() == KickClientMessage.CLIENT_KICKED_MESSAGE)
                             {
                                 clientManager1.close();
-                                clientManager1.runOnMainThreadSafely(() -> eventsListener.kickedFromServerWithMessage(message.message()));
+                                clientManager1.runOnMainThreadSafely(() -> clientEventsListener.kickedFromServerWithMessage(message.message()));
                             }
                         }), KickClientMessage.class);
         return this;
     }
     
-    protected AdvancedMessageRegistry<C> registerLeaveServerMessage(byte id, Supplier<IHostManager<C>> hostManager,
-                                                                    IAdvancedHostEventsListener<C> eventsListener)
+    protected AdvancedMessageRegistry<C> registerLeaveServerMessage(byte id)
     {
         registerMessage(id, LeaveServerMessage.Handler::encodeMessage, LeaveServerMessage.Handler::decodeMessage,
                 (clientOptional, message) ->
@@ -91,15 +97,39 @@ public class AdvancedMessageRegistry<C extends IClient> extends MessageRegistry<
                             {
                                 hostManager1.closeClient(client);
                                 hostManager1.runOnMainThreadSafely(
-                                        () -> eventsListener.clientDisconnectedOrderly(client));
+                                        () -> hostEventsListener.clientDisconnectedOrderly(client));
                             }
                             else if(message.code() == LeaveServerMessage.DISCONNECTED_DUE_TO_EXCEPTION)
                             {
                                 hostManager1.closeClient(client);
                                 hostManager1.runOnMainThreadSafely(
-                                        () -> eventsListener.clientDisconnectedDueToException(client));
+                                        () -> hostEventsListener.clientDisconnectedDueToException(client));
                             }
                         }), LeaveServerMessage.class);
+        return this;
+    }
+    
+    protected AdvancedMessageRegistry<C> registerAuthMessage(byte id)
+    {
+        registerMessage(id, AuthMessage.Handler::encodeMessage, AuthMessage.Handler::decodeMessage,
+                (clientOptional, message) ->
+                        clientOptional.ifPresentOrElse(client ->
+                        {
+                            if(message.code() == AuthMessage.CLIENT_RESPONSE)
+                            {
+                                IAdvancedHostManager<C> hostManager1 = hostManager.get();
+                                hostManager1.runOnMainThreadSafely(
+                                        () -> hostManager1.authenticate(client, message.name(), message.identifier()));
+                            }
+                        }, () ->
+                        {
+                            if(message.code() == AuthMessage.SERVER_REQUEST)
+                            {
+                                IAdvancedClientManager clientManager1 = clientManager.get();
+                                clientManager1.setSessionIdentifier(message.identifier());
+                                clientManager1.sendMessageToServer(authResponse());
+                            }
+                        }), AuthMessage.class);
         return this;
     }
     
@@ -149,5 +179,18 @@ public class AdvancedMessageRegistry<C extends IClient> extends MessageRegistry<
     public LeaveServerMessage disconnectedDueToException()
     {
         return new LeaveServerMessage(LeaveServerMessage.DISCONNECTED_DUE_TO_EXCEPTION);
+    }
+    
+    @Override
+    public AuthMessage authRequest()
+    {
+        return new AuthMessage(AuthMessage.SERVER_REQUEST, hostManager.get().getSessionIdentifier(), "");
+    }
+    
+    @Override
+    public AuthMessage authResponse()
+    {
+        IAdvancedClientManager clientManager1 = clientManager.get();
+        return new AuthMessage(AuthMessage.CLIENT_RESPONSE, clientManager1.getClientIdentifierForSession(), clientManager1.getName());
     }
 }

@@ -72,7 +72,7 @@ public class ChatScreen extends Screen
     
     public void addMessage(String sender, String message, long timestamp)
     {
-        if(!sender.isEmpty())
+        if(sender != null && !sender.isEmpty())
         {
             message = sender + ": " + message;
         }

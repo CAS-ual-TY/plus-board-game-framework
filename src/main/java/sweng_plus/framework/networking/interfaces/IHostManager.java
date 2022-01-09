@@ -64,14 +64,9 @@ public interface IHostManager<C extends IClient> extends IClientManager
     
     void closeClient(C client);
     
-    default void disconnectClient(C client)
-    {
-        closeClient(client);
-    }
-    
     default void failedToSendMessageToClient(C client)
     {
-        disconnectClient(client);
+        closeClient(client);
     }
     
     /**

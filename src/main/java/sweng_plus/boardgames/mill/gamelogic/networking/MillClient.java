@@ -1,10 +1,10 @@
 package sweng_plus.boardgames.mill.gamelogic.networking;
 
-import sweng_plus.framework.networking.Client;
+import sweng_plus.framework.networking.AdvancedClient;
 import sweng_plus.framework.networking.util.ClientStatus;
 import sweng_plus.framework.networking.util.NetworkRole;
 
-public class MillClient extends Client
+public class MillClient extends AdvancedClient
 {
     public String name;
     public int teamIndex;
@@ -16,11 +16,13 @@ public class MillClient extends Client
         teamIndex = -1;
     }
     
+    @Override
     public void setName(String name)
     {
         this.name = name;
     }
     
+    @Override
     public String getName()
     {
         return name;
