@@ -4,7 +4,7 @@ import sweng_plus.boardgames.ludo.gamelogic.networking.ChatMessage;
 
 public interface IMillScreen
 {
-    void figureSelected(int figure);
+    void figureNodeSelected(int figure, int node);
     
     void gameWon(int winningTeamIndex);
     
