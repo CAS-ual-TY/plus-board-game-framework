@@ -2,7 +2,9 @@ package sweng_plus.boardgames.mill.gui;
 
 import sweng_plus.boardgames.mill.Mill;
 import sweng_plus.boardgames.mill.gamelogic.MillBoard;
+import sweng_plus.boardgames.mill.gamelogic.MillFigure;
 import sweng_plus.boardgames.mill.gamelogic.MillGameLogic;
+import sweng_plus.boardgames.mill.gamelogic.MillNode;
 import sweng_plus.boardgames.mill.gui.util.MillStyles;
 import sweng_plus.boardgames.mill.gui.util.MillTextures;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
@@ -139,25 +141,27 @@ public class MillScreen extends Screen implements IMillScreen
     {
         
         /*
-        if(!logic.gameWon)
+        if(logic.gameWon() != null)
         {
             System.out.println("Screen: newTurn");
             
             logic.setTurnTeam(turnTeam);
-            logic.startPhaseRoll();
+            logic.startPhaseSelectFigure();
             
             if(logic.currentTeamIndex == thisPlayerID)
             {
                 requestDice();
             }
         }
-        */
+        
+         */
+        
     }
     
     @Override
-    public void figureSelected(int figure)
+    public void figureNodeSelected(int figure, int node)
     {
-        /*
+        
         System.out.println("Screen: figureSelected");
         
         MillFigure selectedFigure = logic.getFigureForIndex(figure);
@@ -165,35 +169,43 @@ public class MillScreen extends Screen implements IMillScreen
         if(selectedFigure != null)
         {
             MillNode startNode = selectedFigure.getCurrentNode();
-            MillNode endNode = logic.getTargetNode(selectedFigure);
+            MillNode endNode = logic.getNodeForIndex(node);
             
             logic.startPhaseMoveFigure(figure);
             
             Runnable onEnd = () ->
             {
-                logic.endPhaseMoveFigure(selectedFigure, endNode).ifPresentOrElse((hitFigure) ->
+                
+                if(logic.endPhaseMoveFigure(selectedFigure, endNode))
                 {
-                    MillNode outsideNode = logic.millBoard.getFreeOutsideNode(hitFigure);
-                    hitFigure.getCurrentNode().removeFigure(hitFigure);
+                    logic.startPhaseTakeFigure();
+                    // TODO Take Figure
+                    
+                    /*
+                    MillNode outsideNode = logic.millBoard.getFreeOutsideNode(takenFigure);
+                    takenFigure.getCurrentNode().removeFigure(takenFigure);
                     
                     Runnable onEnd2 = () ->
                     {
-                        logic.getMillBoard().moveFigure(hitFigure, outsideNode);
+                        logic.getMillBoard().moveFigure(takenFigure, outsideNode);
                         logic.endPhaseSelectFigure(figure);
                         newTurn(logic.currentTeamIndex);
                     };
                     
-                    screenHolder.setScreen(new FigureAnimationScreen(this, onEnd2, hitFigure, endNode,
+                    screenHolder.setScreen(new FigureAnimationScreen(this, onEnd2, takenFigure, endNode,
                             outsideNode, false, true, true));
-                }, () ->
+                            
+                     */
+                }
+                else
                 {
                     logic.endPhaseSelectFigure(figure);
                     newTurn(logic.currentTeamIndex);
-                });
+                }
             };
             
-            screenHolder.setScreen(new FigureAnimationScreen(this, onEnd, selectedFigure, startNode, endNode,
-                    true, !endNode.isOccupied(), false));
+            //screenHolder.setScreen(new FigureAnimationScreen(this, onEnd, selectedFigure, startNode, endNode,
+            //        true, !endNode.isOccupied(), false));
         }
         else
         {
@@ -201,19 +213,16 @@ public class MillScreen extends Screen implements IMillScreen
             
             newTurn(logic.currentTeamIndex);
         }
-        */
     }
     
     @Override
     public void gameWon(int winningTeamIndex)
     {
-        /*
+        
         System.out.println("Screen: gameWon");
         
         screenHolder.setScreen(new WinScreen(this, logic.teams[winningTeamIndex].getName()));
         
-        logic.gameWon = true;
-        */
     }
     /*
     @Override

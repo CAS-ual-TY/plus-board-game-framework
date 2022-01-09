@@ -36,10 +36,10 @@ public class MillExtensionScreen extends WrappedScreen implements IMillScreen
     }
 
     @Override
-    public void figureSelected(int figure)
+    public void figureNodeSelected(int figure, int node)
     {
         returnToSubScreen();
-        ((MillScreen) subScreen).figureSelected(figure);
+        ((MillScreen) subScreen).figureNodeSelected(figure, node);
     }
     
     @Override
