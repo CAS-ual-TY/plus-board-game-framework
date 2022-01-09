@@ -12,12 +12,12 @@ public class MillStyles
 {
     public static BaseStyle makeActiveButtonBackground()
     {
-        return new CorneredTextureStyle(MillTextures.activeButton);
+        return new ColoredQuadStyle(new Color4f(200,200,200)).stack(new ColoredBorderStyle(Color4f.GREY, 4));
     }
     
     public static BaseStyle makeInactiveButtonBackground()
     {
-        return new CorneredTextureStyle(MillTextures.inactiveButton);
+        return new ColoredQuadStyle(new Color4f(235,235,235)).stack(new ColoredBorderStyle(Color4f.BLACK, 4));
     }
     
     public static BaseStyle makeActiveButtonStyle(String text)

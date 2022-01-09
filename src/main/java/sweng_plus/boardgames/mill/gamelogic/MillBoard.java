@@ -7,6 +7,8 @@ import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class MillBoard extends NodeBoard<MillNode, MillFigure>
 {
@@ -46,6 +48,14 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
         return -1;
     }
     
+    public TeamColor getTeamFromIndex(int teamIndex)
+    {
+        if(teamIndex > 0 && teamIndex < millTeams.length) {
+            return millTeams[teamIndex].color();
+        }
+        return null;
+    }
+    
     public List<MillFigure> getActiveTeamFigures(TeamColor team)
     {
         return millTeams[getTeamIndex(team)].activeFigures();
@@ -56,23 +66,30 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
         return millTeams[getTeamIndex(team)].takenFigures();
     }
     
-    public void takeFigure(TeamColor team, MillFigure figure)
+    public MillNode takeFigure(TeamColor team, MillFigure figure)
     {
+        MillNode outsideNode = null;
         if(team.equals(figure.getTeam()))
         {
             getActiveTeamFigures(team).remove(figure);
             millTeams[getTeamIndex(team)].takenFigures().add(figure);
-            
-            moveFigure(figure, getFreeOutsideNode(team));
+    
+            outsideNode = getFreeOutsideNode(team);
+            moveFigure(figure, outsideNode);
         }
+        return outsideNode;
     }
-    public void takeFigure(MillFigure figure)
+    public MillNode takeFigure(MillFigure figure)
     {
-        takeFigure(figure.getTeam(), figure);
+        return takeFigure(figure.getTeam(), figure);
     }
     
     public List<MillNode> getFieldNodes() {
         return fieldNodes;
+    }
+    
+    public List<MillNode> getFreeFieldNodes() {
+        return fieldNodes.stream().filter(Predicate.not(MillNode::isOccupied)).collect(Collectors.toList());
     }
     
     public MillNode getFieldNode(int index) {
