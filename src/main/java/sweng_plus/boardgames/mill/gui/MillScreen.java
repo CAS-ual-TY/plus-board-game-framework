@@ -2,30 +2,20 @@ package sweng_plus.boardgames.mill.gui;
 
 import sweng_plus.boardgames.mill.Mill;
 import sweng_plus.boardgames.mill.gamelogic.MillBoard;
-import sweng_plus.boardgames.mill.gamelogic.MillFigure;
 import sweng_plus.boardgames.mill.gamelogic.MillGameLogic;
-import sweng_plus.boardgames.mill.gamelogic.MillNode;
-import sweng_plus.boardgames.mill.gui.*;
 import sweng_plus.boardgames.mill.gui.util.MillStyles;
 import sweng_plus.boardgames.mill.gui.util.MillTextures;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
-import sweng_plus.framework.userinterface.gui.style.FunctionalTextStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
-import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class MillScreen extends Screen implements IMillScreen
 {
@@ -69,6 +59,17 @@ public class MillScreen extends Screen implements IMillScreen
         widgets.add(sendChatWidget = new FunctionalButtonWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), MillStyles.makeButtonStyle(">"), this::sendMessage));
         widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), MillStyles.makeActiveInputStyle(() -> inputWidget, AnchorPoint.L), MillStyles.makeInactiveInputStyle(() -> inputWidget, AnchorPoint.L), (w) -> sendMessage()));
         //widgets.add(chatWidget = new SimpleWidget(screenHolder, new Dimensions(chatWidth, 0, AnchorPoint.BR, 0, -chatHeight), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL, Color4f.BLACK)));
+    }
+    
+    @Override
+    public void render(float deltaTick, int mouseX, int mouseY)
+    {
+        Color4f.NEUTRAL.glColor4f();
+        int x = screenW / 2 - MillTextures.background.getWidth() / 2;
+        int y = screenH / 2 - MillTextures.background.getHeight() / 2;
+        MillTextures.background.render(x, y);
+        
+        super.render(deltaTick, mouseX, mouseY);
     }
     
     @Override

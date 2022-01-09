@@ -97,7 +97,7 @@ public class Mill implements IGame
         
         networking = new MillNetworking(this);
         
-        GL11.glClearColor(245 / 255f, 238 / 255f, 176 / 255f, 1f);
+        GL11.glClearColor(227 / 255f, 209 / 255f, 192 / 255f, 1f);
         screen = new MenuScreen(this);
     }
     
