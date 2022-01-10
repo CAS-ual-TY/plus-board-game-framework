@@ -25,12 +25,12 @@ public class MillBoardWidget extends Widget
         renderHorizontal(dimensions.x - 3 * size, dimensions.x + 3 * size, dimensions.y + 3 * size);
         renderVertical(dimensions.x - 3 * size, dimensions.y - 3 * size, dimensions.y + 3 * size);
         renderVertical(dimensions.x + 3 * size, dimensions.y - 3 * size, dimensions.y + 3 * size);
-    
+        
         renderHorizontal(dimensions.x - 2 * size, dimensions.x + 2 * size, dimensions.y - 2 * size);
         renderHorizontal(dimensions.x - 2 * size, dimensions.x + 2 * size, dimensions.y + 2 * size);
         renderVertical(dimensions.x - 2 * size, dimensions.y - 2 * size, dimensions.y + 2 * size);
         renderVertical(dimensions.x + 2 * size, dimensions.y - 2 * size, dimensions.y + 2 * size);
-    
+        
         renderHorizontal(dimensions.x - size, dimensions.x + size, dimensions.y - size);
         renderHorizontal(dimensions.x - size, dimensions.x + size, dimensions.y + size);
         renderVertical(dimensions.x - size, dimensions.y - size, dimensions.y + size);
