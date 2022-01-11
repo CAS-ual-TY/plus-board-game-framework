@@ -69,6 +69,10 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         protocol.registerMessage(messageID++, FigureTakenMessage.Handler::encodeMessage,
                 FigureTakenMessage.Handler::decodeMessage, FigureTakenMessage.Handler::handleMessage,
                 FigureTakenMessage.class);
+        
+        protocol.registerMessage(messageID++, WinMessage.Handler::encodeMessage,
+                WinMessage.Handler::decodeMessage, WinMessage.Handler::handleMessage,
+                WinMessage.class);
     }
     
     public void cleanup()

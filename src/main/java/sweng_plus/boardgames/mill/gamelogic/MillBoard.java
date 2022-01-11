@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class MillBoard extends NodeBoard<MillNode, MillFigure>
 {
-    public static final int FIGURES_PER_TEAM = 9;
+    public static final int FIGURES_PER_TEAM = 4;
     public static final int MAX_FIGURES_TO_JUMP = 3;
     public static final int NUM_CIRCLES = 3;
     public static final int NODES_PER_CIRCLE = 8;

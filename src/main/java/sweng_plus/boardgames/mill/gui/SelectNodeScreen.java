@@ -15,7 +15,6 @@ public class SelectNodeScreen extends MillExtensionScreen
     {
         super(subScreen);
         
-        //widgets.addAll(List.of(MillBoardMapper.createEmptyNodeButtonWidgets(subScreen.screenHolder, subScreen.board, MillScreen.BOARD_SIZE, (node) -> { returnToSubScreen(); consumer.accept(node);})));
         widgets.addAll(List.of(MillBoardMapper.createNodeButtonWidgets(subScreen.screenHolder, subScreen.board, MillScreen.BOARD_SIZE, (node) -> { returnToSubScreen(); consumer.accept(node);}, selectedFigure)));
         
     }

@@ -70,7 +70,6 @@ public class MillGameLogic
         }
         
         nextTeam();
-
     }
     
     public void startPhaseSelectTargetNode(MillFigure figure)
@@ -299,7 +298,7 @@ public class MillGameLogic
             }
         }
         else {
-            node = millBoard.getFieldNode((index + 1)%MillBoard.NODES_PER_CIRCLE);
+            node = millBoard.getFieldNode(Math.floorMod(index + 1, MillBoard.NODES_PER_CIRCLE) + Math.floorDiv(index, MillBoard.NODES_PER_CIRCLE)*MillBoard.NODES_PER_CIRCLE);
             if(node.isOccupied()) {
                 updateInMillStatus(node.getFigures().get(0));
             }
@@ -308,36 +307,14 @@ public class MillGameLogic
                 updateInMillStatus(node.getFigures().get(0));
             }
     
-            if (index <= MillBoard.NODES_PER_CIRCLE)
+            
+            if (index <= MillBoard.NODES_PER_CIRCLE*3)
             {
-                node = millBoard.getFieldNode(index + MillBoard.NODES_PER_CIRCLE);
+                node = millBoard.getFieldNode((index + MillBoard.NODES_PER_CIRCLE) % (MillBoard.NUM_CIRCLES*MillBoard.NODES_PER_CIRCLE));
                 if(node.isOccupied()) {
                     updateInMillStatus(node.getFigures().get(0));
                 }
-                node = millBoard.getFieldNode(index + 2 * MillBoard.NODES_PER_CIRCLE);
-                if(node.isOccupied()) {
-                    updateInMillStatus(node.getFigures().get(0));
-                }
-            }
-            else if (index <= MillBoard.NODES_PER_CIRCLE*2)
-            {
-                node = millBoard.getFieldNode(index - MillBoard.NODES_PER_CIRCLE);
-                if(node.isOccupied()) {
-                    updateInMillStatus(node.getFigures().get(0));
-                }
-                node = millBoard.getFieldNode(index + MillBoard.NODES_PER_CIRCLE);
-                if(node.isOccupied()) {
-                    updateInMillStatus(node.getFigures().get(0));
-                }
-            }
-            else if (index <= MillBoard.NODES_PER_CIRCLE*3)
-            {
-        
-                node = millBoard.getFieldNode(index - 2 * MillBoard.NODES_PER_CIRCLE);
-                if(node.isOccupied()) {
-                    updateInMillStatus(node.getFigures().get(0));
-                }
-                node = millBoard.getFieldNode(index - MillBoard.NODES_PER_CIRCLE);
+                node = millBoard.getFieldNode((index + 2 * MillBoard.NODES_PER_CIRCLE)% (MillBoard.NUM_CIRCLES*MillBoard.NODES_PER_CIRCLE));
                 if(node.isOccupied()) {
                     updateInMillStatus(node.getFigures().get(0));
                 }
