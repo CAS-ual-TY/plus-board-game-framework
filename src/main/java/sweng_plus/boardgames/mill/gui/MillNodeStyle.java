@@ -1,7 +1,10 @@
 package sweng_plus.boardgames.mill.gui;
 
 import sweng_plus.boardgames.mill.gamelogic.MillNode;
+import sweng_plus.boardgames.mill.gui.util.MillTextures;
+import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.userinterface.gui.style.BaseStyle;
+import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 public class MillNodeStyle extends BaseStyle
@@ -16,6 +19,17 @@ public class MillNodeStyle extends BaseStyle
     @Override
     public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
     {
-    
+        if(node.isOccupied()) {
+            Color4f.NEUTRAL.glColor4f();
+            if(node.getFigures().get(0).getTeam() == TeamColor.BLACK)
+            {
+                MillTextures.figureBlack.render(widget.getDimensions().x, widget.getDimensions().y);
+            }
+            else if(node.getFigures().get(0).getTeam() == TeamColor.WHITE)
+            {
+                MillTextures.figureWhite.render(widget.getDimensions().x, widget.getDimensions().y);
+            }
+        }
+        
     }
 }

@@ -1,9 +1,6 @@
 package sweng_plus.boardgames.mill;
 
-import sweng_plus.boardgames.mill.gamelogic.networking.MillClient;
-import sweng_plus.boardgames.mill.gamelogic.networking.SendNameMessage;
-import sweng_plus.boardgames.mill.gamelogic.networking.SendNamesMessage;
-import sweng_plus.boardgames.mill.gamelogic.networking.StartGameMessage;
+import sweng_plus.boardgames.mill.gamelogic.networking.*;
 import sweng_plus.boardgames.mill.gui.NameScreen;
 import sweng_plus.framework.networking.AdvancedMessageRegistry;
 import sweng_plus.framework.networking.NetworkHelper;
@@ -56,6 +53,22 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         protocol.registerMessage(messageID++, StartGameMessage.Handler::encodeMessage,
                 StartGameMessage.Handler::decodeMessage, StartGameMessage.Handler::handleMessage,
                 StartGameMessage.class);
+    
+        protocol.registerMessage(messageID++, TellServerFigureNodeSelectedMessage.Handler::encodeMessage,
+                TellServerFigureNodeSelectedMessage.Handler::decodeMessage, TellServerFigureNodeSelectedMessage.Handler::handleMessage,
+                TellServerFigureNodeSelectedMessage.class);
+        
+        protocol.registerMessage(messageID++, FigureNodeSelectedMessage.Handler::encodeMessage,
+                FigureNodeSelectedMessage.Handler::decodeMessage, FigureNodeSelectedMessage.Handler::handleMessage,
+                FigureNodeSelectedMessage.class);
+        
+        protocol.registerMessage(messageID++, TellServerFigureTakenMessage.Handler::encodeMessage,
+                TellServerFigureTakenMessage.Handler::decodeMessage, TellServerFigureTakenMessage.Handler::handleMessage,
+                TellServerFigureTakenMessage.class);
+        
+        protocol.registerMessage(messageID++, FigureTakenMessage.Handler::encodeMessage,
+                FigureTakenMessage.Handler::decodeMessage, FigureTakenMessage.Handler::handleMessage,
+                FigureTakenMessage.class);
     }
     
     public void cleanup()

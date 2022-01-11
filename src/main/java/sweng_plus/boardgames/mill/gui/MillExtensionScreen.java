@@ -1,7 +1,5 @@
 package sweng_plus.boardgames.mill.gui;
 
-import sweng_plus.boardgames.mill.gui.IMillScreen;
-import sweng_plus.boardgames.mill.gui.MillScreen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
@@ -16,7 +14,6 @@ public class MillExtensionScreen extends WrappedScreen implements IMillScreen
     {
         super(subScreen);
         universalWidgets = new LinkedList<>();
-        subScreen.removeUniversalWidgets(universalWidgets::add);
         widgets.addAll(universalWidgets);
     }
     
@@ -26,20 +23,25 @@ public class MillExtensionScreen extends WrappedScreen implements IMillScreen
         // move widgets back to MillScreen for init
         // then get them back
         universalWidgets.forEach(widgets::remove);
-        ((MillScreen) subScreen).reAddUniversalWidgets();
         
         super.initScreen(screenW, screenH);
         
         universalWidgets.clear();
-        ((MillScreen) subScreen).removeUniversalWidgets(universalWidgets::add);
         widgets.addAll(universalWidgets);
     }
-
+    
     @Override
     public void figureNodeSelected(int figure, int node)
     {
         returnToSubScreen();
         ((MillScreen) subScreen).figureNodeSelected(figure, node);
+    }
+    
+    @Override
+    public void figureTaken(int figure)
+    {
+        returnToSubScreen();
+        ((MillScreen) subScreen).figureTaken(figure);
     }
     
     @Override
@@ -49,18 +51,15 @@ public class MillExtensionScreen extends WrappedScreen implements IMillScreen
         ((MillScreen) subScreen).gameWon(winningTeamIndex);
     }
     
-    /*
-    @Override
-    public void chat(ChatMessage message)
-    {
-        ((MillScreen) subScreen).chat(message);
-    }
-    */
-    
     @Override
     public void returnToSubScreen()
     {
-        ((MillScreen) subScreen).reAddUniversalWidgets();
         super.returnToSubScreen();
+    }
+    
+    @Override
+    public void renderBackground(float deltaTick)
+    {
+        subScreen.render(deltaTick, -1, -1);
     }
 }

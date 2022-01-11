@@ -105,7 +105,7 @@ public class Mill implements IGame
     {
         if(gameLogic == null)
         {
-            gameLogic = new MillGameLogic(TeamColor.getTeams(teamCount), networking.isHost());
+            gameLogic = new MillGameLogic(TeamColor.TEAMS_BLACK_WHITE, networking.isHost());
         }
         
         if(isServer)

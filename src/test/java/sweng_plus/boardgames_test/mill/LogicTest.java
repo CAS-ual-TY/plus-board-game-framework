@@ -16,7 +16,7 @@ public class LogicTest
     private MillGameLogic logic;
     @BeforeEach
     public void init() {
-        logic = new MillGameLogic(new TeamColor[] {TeamColor.RED, TeamColor.BLUE}, false);
+        logic = new MillGameLogic(new TeamColor[] {TeamColor.WHITE, TeamColor.BLACK}, false);
     }
     
     @Test

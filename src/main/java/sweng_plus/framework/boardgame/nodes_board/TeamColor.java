@@ -18,6 +18,7 @@ public class TeamColor
     public static final TeamColor PURPLE = new TeamColor("Purple", Color4f.PURPLE);
     public static final TeamColor CYAN = new TeamColor("Cyan", Color4f.CYAN);
     
+    public static final TeamColor[] TEAMS_BLACK_WHITE = {BLACK, WHITE};
     public static final TeamColor[] TEAMS_2 = {RED, BLUE};
     public static final TeamColor[] TEAMS_3 = {RED, GREEN, BLUE};
     public static final TeamColor[] TEAMS_4 = {RED, YELLOW, GREEN, BLUE};

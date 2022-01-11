@@ -5,36 +5,29 @@ import sweng_plus.boardgames.mill.gamelogic.MillBoard;
 import sweng_plus.boardgames.mill.gamelogic.MillFigure;
 import sweng_plus.boardgames.mill.gamelogic.MillGameLogic;
 import sweng_plus.boardgames.mill.gamelogic.MillNode;
-import sweng_plus.boardgames.mill.gui.util.MillStyles;
+import sweng_plus.boardgames.mill.gamelogic.networking.TellServerFigureNodeSelectedMessage;
+import sweng_plus.boardgames.mill.gamelogic.networking.TellServerFigureTakenMessage;
+import sweng_plus.boardgames.mill.gui.util.MillBoardMapper;
 import sweng_plus.boardgames.mill.gui.util.MillTextures;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
-import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class MillScreen extends Screen implements IMillScreen
 {
+    public static final int BOARD_SIZE = 128;
+    
     public final MillGameLogic logic;
     
     public final MillBoard board;
-    //public final HashMap<MillNode, MillNodeWidget> nodeWidgetMap;
-    
     public int thisPlayerID;
     
-    public FontRenderer chatFontRenderer;
-    public int chatWidth;
-    public int chatHeight;
-    public Widget sendChatWidget;
-    public InputWidget inputWidget;
-    public Widget chatWidget;
-    //public List<ChatMessage> chatMessages;
     
     public MillScreen(IScreenHolder screenHolder, MillGameLogic logic)
     {
@@ -42,25 +35,17 @@ public class MillScreen extends Screen implements IMillScreen
         
         this.logic = logic;
         board = logic.getMillBoard();
-        
-        //noinspection ThisEscapedInObjectConstruction
-        //nodeWidgetMap = MillBoardMapper.mapMillBoard(this, board, MillTextures.node, MillTextures.figure);
-        //widgets.addAll(nodeWidgetMap.values());
+
+        widgets.addAll(List.of(MillBoardMapper.createSimpleWidgets(getScreenHolder(), board, BOARD_SIZE)));
         
         // sort widgets (nodes), render top to bottom so bottom widgets are in front
         // and make figures render on top of nodes above (= behind) them
         widgets.sort(Widget.TOP_TO_BOTTOM_SORTER);
-        
+    
+        widgets.add(0, new MillBoardWidget(getScreenHolder(), new Dimensions(AnchorPoint.M), BOARD_SIZE));
+    
         thisPlayerID = -1;
         
-        chatFontRenderer = Mill.instance().fontRenderer24;
-        chatWidth = 600;
-        chatHeight = chatFontRenderer.getHeight() + chatFontRenderer.getHeight() / 2;
-        //chatMessages = new LinkedList<>();
-        
-        widgets.add(sendChatWidget = new FunctionalButtonWidget(screenHolder, new Dimensions(chatHeight, chatHeight, AnchorPoint.BR), MillStyles.makeButtonStyle(">"), this::sendMessage));
-        widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(chatWidth - chatHeight, chatHeight, AnchorPoint.BR, -chatHeight, 0), MillStyles.makeActiveInputStyle(() -> inputWidget, AnchorPoint.L), MillStyles.makeInactiveInputStyle(() -> inputWidget, AnchorPoint.L), (w) -> sendMessage()));
-        //widgets.add(chatWidget = new SimpleWidget(screenHolder, new Dimensions(chatWidth, 0, AnchorPoint.BR, 0, -chatHeight), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL, Color4f.BLACK)));
     }
     
     @Override
@@ -78,93 +63,70 @@ public class MillScreen extends Screen implements IMillScreen
     public void initScreen(int screenW, int screenH)
     {
         super.initScreen(screenW, screenH);
-        /*
-        int right = nodeWidgetMap.values().stream().mapToInt(w -> w.getDimensions().x + w.getDimensions().w * 2)
-                .max().orElse(screenW - 600);
-        
-        chatWidth = screenW - right;
-        
-        inputWidget.getDimensions().w = chatWidth - chatHeight;
-        chatWidget.getDimensions().w = chatWidth;
-        
-        inputWidget.initWidget(this);
-        chatWidget.initWidget(this);
-         */
     }
     
     public boolean isTurnPlayer()
     {
-        //return thisPlayerID == logic.currentTeamIndex;
-        return false;
+        return thisPlayerID == logic.getCurrentTeamIndex();
     }
     
-    /*
-    public List<String> getChat()
-    {
-        return chatMessages.stream().map(m -> m.sender() + ": " + m.message())
-                .map(s -> chatFontRenderer.splitStringToWidth(chatWidth, s)).flatMap(Collection::stream)
-                .collect(Collectors.toList());
-    }
-     */
-    
-    public void removeUniversalWidgets(Consumer<Widget> consumer)
-    {
-        widgets.remove(sendChatWidget);
-        widgets.remove(inputWidget);
-        widgets.remove(chatWidget);
+    // TODO // Figur gewaehlt
+    public void methode1(MillNode node) {
         
-        consumer.accept(sendChatWidget);
-        consumer.accept(inputWidget);
-        consumer.accept(chatWidget);
+        requestNode(node.getFigures().get(0));
     }
     
-    public void reAddUniversalWidgets()
-    {
-        widgets.add(sendChatWidget);
-        widgets.add(inputWidget);
-        widgets.add(chatWidget);
+    // TODO // Node gewaehlt
+    public Consumer<MillNode> methode2(MillFigure figure) {
+        return (node) -> Mill.instance().getNetworking().getClientManager().sendMessageToServer(new TellServerFigureNodeSelectedMessage(figure.getIndex(), node.getIndex()));
     }
     
-    public void sendMessage()
-    {
-        //Mill.instance().getNetworking().clientManager.sendMessageToServer(new ChatMessage(Mill.instance().getNetworking().name, inputWidget.getText()));
-        //inputWidget.clearText();
+    // TODO // Figur gewaehlt
+    public void methode3(MillFigure figure) {
+        Mill.instance().getNetworking().getClientManager().sendMessageToServer(new TellServerFigureTakenMessage(figure.getIndex()));
     }
     
     public void requestFigure()
     {
         System.out.println("Screen: requestFigure");
-        screenHolder.setScreen(new SelectFigureScreen(this));
+        screenHolder.setScreen(new SelectFigureScreen(this, logic.getCurrentTeam(), this::methode1));
+    }
+    
+    public void requestNode(MillFigure selectedFigure) {
+        System.out.println("Screen: requestNode");
+        System.out.println(selectedFigure.getIndex());
+        screenHolder.setScreen(new SelectNodeScreen(this, logic.getCurrentTeam(), methode2(selectedFigure), selectedFigure));
+    }
+    
+    //@Override
+    public void requestTakeFigure() {
+        System.out.println("Screen: requestTakeFigure");
+        
+        screenHolder.setScreen(new TakeFigureScreen(this, logic.getOtherTeam(), this::methode3));
     }
     
     public void newTurn(int turnTeam)
     {
-        
-        /*
-        if(logic.gameWon() != null)
+        if(!logic.isGameWon())
         {
             System.out.println("Screen: newTurn");
             
             logic.setTurnTeam(turnTeam);
             logic.startPhaseSelectFigure();
             
-            if(logic.currentTeamIndex == thisPlayerID)
+            if(logic.getCurrentTeamIndex() == thisPlayerID)
             {
-                requestDice();
+                requestFigure();
             }
         }
-        
-         */
-        
     }
     
     @Override
     public void figureNodeSelected(int figure, int node)
     {
+        System.out.println("Screen: figureNodeSelected");
         
-        System.out.println("Screen: figureSelected");
-        
-        MillFigure selectedFigure = logic.getFigureForIndex(figure);
+        MillFigure selectedFigure = logic.getMovableFigureForIndex(figure);
         
         if(selectedFigure != null)
         {
@@ -173,46 +135,49 @@ public class MillScreen extends Screen implements IMillScreen
             
             logic.startPhaseMoveFigure(figure);
             
-            Runnable onEnd = () ->
-            {
-                
                 if(logic.endPhaseMoveFigure(selectedFigure, endNode))
                 {
                     logic.startPhaseTakeFigure();
-                    // TODO Take Figure
-                    
-                    /*
-                    MillNode outsideNode = logic.millBoard.getFreeOutsideNode(takenFigure);
-                    takenFigure.getCurrentNode().removeFigure(takenFigure);
-                    
-                    Runnable onEnd2 = () ->
+    
+                    if (!logic.getTakeableFigure().isEmpty())
                     {
-                        logic.getMillBoard().moveFigure(takenFigure, outsideNode);
-                        logic.endPhaseSelectFigure(figure);
-                        newTurn(logic.currentTeamIndex);
-                    };
-                    
-                    screenHolder.setScreen(new FigureAnimationScreen(this, onEnd2, takenFigure, endNode,
-                            outsideNode, false, true, true));
-                            
-                     */
+                        if (thisPlayerID == logic.getCurrentTeamIndex()) {
+                            requestTakeFigure();
+                        }
+                    }
+                    else
+                    {
+                        endTurn();
+                    }
                 }
                 else
                 {
-                    logic.endPhaseSelectFigure(figure);
-                    newTurn(logic.currentTeamIndex);
+                    endTurn();
                 }
-            };
-            
-            //screenHolder.setScreen(new FigureAnimationScreen(this, onEnd, selectedFigure, startNode, endNode,
-            //        true, !endNode.isOccupied(), false));
         }
         else
         {
-            logic.endPhaseSelectFigure(figure);
-            
-            newTurn(logic.currentTeamIndex);
+            endTurn();
         }
+    }
+    
+    @Override
+    public void figureTaken(int figure)
+    {
+        System.out.println("Screen: figureTaken");
+    
+        MillFigure selectedFigure = logic.getTakeableFigureForIndex(figure);
+    
+        if(selectedFigure != null)
+        {
+            logic.endPhaseTakeFigure(selectedFigure);
+        }
+        endTurn();
+    }
+    
+    private void endTurn() {
+        logic.endPhaseSelectFigure();
+        newTurn(logic.getCurrentTeamIndex());
     }
     
     @Override
@@ -224,12 +189,4 @@ public class MillScreen extends Screen implements IMillScreen
         screenHolder.setScreen(new WinScreen(this, logic.teams[winningTeamIndex].getName()));
         
     }
-    /*
-    @Override
-    public void chat(ChatMessage message)
-    {
-        chatMessages.add(message);
-        System.out.println("chat: " + chatWidget.getDimensions().x + " / " + chatWidget.getDimensions().y);
-    }
-     */
 }

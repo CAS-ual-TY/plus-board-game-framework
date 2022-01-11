@@ -7,17 +7,16 @@ import java.io.IOException;
 
 public class MillTextures
 {
-    public static Texture activeButton;
-    public static Texture inactiveButton;
-    public static Texture node;
+    public static Texture figureBlack;
+    public static Texture figureWhite;
     public static Texture logo;
     public static Texture background;
     
     public static void load() throws IOException
     {
-        activeButton = TextureHelper.createTexture("/textures/button_active.png");
-        inactiveButton = TextureHelper.createTexture("/textures/button_inactive.png");
-        node = TextureHelper.createTexture("/textures/node.png");
+    
+        figureBlack = TextureHelper.createTexture("/textures/mill_figure_black.png");
+        figureWhite = TextureHelper.createTexture("/textures/mill_figure_white.png");
         logo = TextureHelper.createTexture("/textures/background/logo2.png");
         background = TextureHelper.createTexture("/textures/background/background.png");
     }

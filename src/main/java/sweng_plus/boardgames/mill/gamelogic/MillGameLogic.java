@@ -1,10 +1,7 @@
 package sweng_plus.boardgames.mill.gamelogic;
 
 import sweng_plus.boardgames.mill.Mill;
-import sweng_plus.boardgames.mill.gamelogic.networking.FigureNodeSelectedMessage;
-import sweng_plus.boardgames.mill.gamelogic.networking.MillClient;
-import sweng_plus.boardgames.mill.gamelogic.networking.StartGameMessage;
-import sweng_plus.boardgames.mill.gamelogic.networking.WinMessage;
+import sweng_plus.boardgames.mill.gamelogic.networking.*;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 
 import java.util.*;
@@ -16,7 +13,7 @@ public class MillGameLogic
     private final boolean isServer;
     
     private MillBoard millBoard;
-    public int currentTeamIndex;
+    private int currentTeamIndex;
     
     protected Map<MillFigure, List<MillNode>> movableFigures;
     protected List<MillFigure> takeableFigures;
@@ -41,7 +38,7 @@ public class MillGameLogic
     public void startGame()
     {
         System.out.println("                Logic: startGame");
-        currentTeamIndex = 0;
+        setCurrentTeamIndex(0);
     
         if(isServer)
         {
@@ -49,7 +46,7 @@ public class MillGameLogic
             {
                 Mill.instance().getNetworking().getHostManager()
                         .sendMessageToClient(client,
-                                new StartGameMessage(client.getTeamIndex(), teams.length, currentTeamIndex));
+                                new StartGameMessage(client.getTeamIndex(), teams.length, getCurrentTeamIndex()));
             }
         }
     }
@@ -60,14 +57,14 @@ public class MillGameLogic
         movableFigures = getMovableFigures();
     }
     
-    public void endPhaseSelectFigure(int figure)
+    public void endPhaseSelectFigure()
     {
         System.out.println("                Logic: endPhaseSelectFigure");
         
-        if(isServer && isGameWon(currentTeamIndex))
+        if(isServer && isWinningTeam(getCurrentTeamIndex()))
         {
             Mill.instance().getNetworking().getHostManager().sendMessageToAllClients(
-                    new WinMessage(currentTeamIndex));
+                    new WinMessage(getCurrentTeamIndex()));
             return;
         }
         
@@ -89,12 +86,15 @@ public class MillGameLogic
                     new FigureNodeSelectedMessage(selectedFigure, selectedNode));
         }
     }
-    /*
-    public void tellClientsNodeSelected(int selectedNode)
-    {
     
+    public void tellClientsFigureTaken(int selectedFigure)
+    {
+        if(isServer)
+        {
+            Mill.instance().getNetworking().getHostManager().sendMessageToAllClients(
+                    new FigureTakenMessage(selectedFigure));
+        }
     }
-     */
     
     public MillFigure startPhaseMoveFigure(int selectedFigure)
     {
@@ -102,7 +102,7 @@ public class MillGameLogic
         
         if(selectedFigure >= 0)
         {
-            MillFigure figure = getFigureForIndex(selectedFigure);
+            MillFigure figure = getMovableFigureForIndex(selectedFigure);
             if(figure != null)
             {
                 MillNode oldNode = figure.getCurrentNode();
@@ -121,22 +121,6 @@ public class MillGameLogic
             return null;
         }
     }
-    /*
-    public MillNode getTargetNode(MillFigure figure)
-    {
-        System.out.println("                Logic: getTargetNode");
-        
-        if(figure != null)
-        {
-            return movableFigures.get(figure).get(0);
-        }
-        else
-        {
-            return null;
-        }
-    }
-    
-     */
     
     public boolean endPhaseMoveFigure(MillFigure figure, MillNode target)
     {
@@ -159,12 +143,29 @@ public class MillGameLogic
     public void startPhaseTakeFigure()
     {
         System.out.println("                Logic: startPhaseTakeFigure");
-        takeableFigures = millBoard.getActiveTeamFigures(millBoard.getTeamFromIndex((currentTeamIndex+1)%teams.length));
+        takeableFigures = millBoard.getActiveTeamFigures(millBoard.getTeamFromIndex((getCurrentTeamIndex() +1)%teams.length)).stream().filter(figure -> figure.isAlreadyPlaced() && !figure.isInMill()).collect(Collectors.toList());
     }
     
-    public MillFigure getFigureForIndex(int selectedFigure)
+    public void endPhaseTakeFigure(MillFigure figure)
+    {
+        System.out.println("                Logic: endPhaseTakeFigure");
+        
+        moveFigureToOutside(figure);
+    }
+    
+    public MillFigure getMovableFigureForIndex(int selectedFigure)
     {
         return movableFigures.keySet().stream().filter(fig -> fig.getIndex() == selectedFigure).findFirst().orElse(null);
+    }
+    
+    public List<MillFigure> getTakeableFigure()
+    {
+        return takeableFigures;
+    }
+    
+    public MillFigure getTakeableFigureForIndex(int selectedFigure)
+    {
+        return takeableFigures.stream().filter(fig -> fig.getIndex() == selectedFigure).findFirst().orElse(null);
     }
     
     public MillNode getNodeForIndex(int node)
@@ -189,15 +190,13 @@ public class MillGameLogic
     
         if(index % 2 == 0)
         {
-            
-    
             if(checkForMillAndSetStatus(movedFigure,
                     millBoard.getFieldNode((index + 1) % MillBoard.NODES_PER_CIRCLE + Math.floorDiv(index, MillBoard.NODES_PER_CIRCLE)*MillBoard.NODES_PER_CIRCLE),
-                    millBoard.getFieldNode((index + 2) % MillBoard.NODES_PER_CIRCLE)))
+                    millBoard.getFieldNode((index + 2) % MillBoard.NODES_PER_CIRCLE + Math.floorDiv(index, MillBoard.NODES_PER_CIRCLE)*MillBoard.NODES_PER_CIRCLE)))
             {
                 mill = true;
             }
-            if(checkForMillAndSetStatus(movedFigure,
+            else if(checkForMillAndSetStatus(movedFigure,
                     millBoard.getFieldNode(Math.floorMod(index - 1, MillBoard.NODES_PER_CIRCLE) + Math.floorDiv(index, MillBoard.NODES_PER_CIRCLE)*MillBoard.NODES_PER_CIRCLE),   // Math.floorMod for positive remainder
                     millBoard.getFieldNode(Math.floorMod(index - 2, MillBoard.NODES_PER_CIRCLE) + Math.floorDiv(index, MillBoard.NODES_PER_CIRCLE)*MillBoard.NODES_PER_CIRCLE)))
             {
@@ -215,7 +214,7 @@ public class MillGameLogic
                 mill = true;
             }
     
-            if(index <= MillBoard.NODES_PER_CIRCLE - 1)
+            else if(index <= MillBoard.NODES_PER_CIRCLE - 1)
             {
                 if(checkForMillAndSetStatus(movedFigure,
                         millBoard.getFieldNode(index + MillBoard.NODES_PER_CIRCLE),
@@ -270,6 +269,12 @@ public class MillGameLogic
         //          + 2 if <= 7
         //          +/- 1 if > 7 && <= 15
         //          - 2 if > 15
+    
+        // outside or invalid node - no action required
+        if(startNode.getIndex() >= millBoard.getFieldNodes().size())
+        {
+            return;
+        }
         
         // TODO requires testing
         int index = startNode.getIndex();
@@ -348,18 +353,22 @@ public class MillGameLogic
         figure.setInMill(isMillCreated(figure));
     }
     
-    public TeamColor gameWon() {
+    private TeamColor getLosingTeam() {
         for(TeamColor team : teams)
         {
-            if(millBoard.getActiveTeamFigures(team).size() < 3) {
+            if(millBoard.getActiveTeamFigures(team).size() < 3) {   // Game is lost if own team has less than 3 active figures
                 return team;
             }
         }
         return null;
     }
     
-    public boolean isGameWon(int teamIndex) {
-        return !(millBoard.getTeamFromIndex(teamIndex).equals(gameWon()));  // other Team has less than 3 active figures
+    public boolean isWinningTeam(int teamIndex) {
+        return (getLosingTeam() != null && millBoard.getTeamFromIndex(teamIndex) != (getLosingTeam()));  // other Team has less than 3 active figures
+    }
+    
+    public boolean isGameWon() {
+        return getLosingTeam() != null;  // other Team has less than 3 active figures
     }
     
     public Map<MillFigure, List<MillNode>> getMovableFigures()
@@ -373,9 +382,9 @@ public class MillGameLogic
             movableFigures = new HashMap<>(MillBoard.FIGURES_PER_TEAM);
 
             // normal moving - only 1 node away
-            if(millBoard.getActiveTeamFigures(teams[currentTeamIndex]).size() > MillBoard.MAX_FIGURES_TO_JUMP)
+            if(millBoard.getActiveTeamFigures(teams[getCurrentTeamIndex()]).size() > MillBoard.MAX_FIGURES_TO_JUMP)
             {
-                for(MillFigure teamFigure : millBoard.getActiveTeamFigures(teams[currentTeamIndex]))
+                for(MillFigure teamFigure : millBoard.getActiveTeamFigures(teams[getCurrentTeamIndex()]))
                 {
                     List<MillNode> nodes = millBoard.getForwardAndBackwardNodes(teamFigure, 1, millNode -> !millNode.isOccupied());
                     if(!nodes.isEmpty())
@@ -386,7 +395,7 @@ public class MillGameLogic
             }
             else
             {
-                for(MillFigure teamFigure : millBoard.getActiveTeamFigures(teams[currentTeamIndex]))
+                for(MillFigure teamFigure : millBoard.getActiveTeamFigures(teams[getCurrentTeamIndex()]))
                 {
                     List<MillNode> nodes = millBoard.getFieldNodes().stream().filter(millNode -> !millNode.isOccupied()).collect(Collectors.toList());
                     if(!nodes.isEmpty())
@@ -401,7 +410,7 @@ public class MillGameLogic
     
     public List<MillFigure> getUnplacedFigures()
     {
-        return millBoard.getActiveTeamFigures(teams[currentTeamIndex]).stream().filter(figure -> !figure.isAlreadyPlaced()).collect(Collectors.toList());
+        return millBoard.getActiveTeamFigures(teams[getCurrentTeamIndex()]).stream().filter(figure -> !figure.isAlreadyPlaced()).collect(Collectors.toList());
     }
     
     private MillNode takeFigure(MillFigure figure)
@@ -411,10 +420,33 @@ public class MillGameLogic
     
     private void nextTeam()
     {
-        currentTeamIndex = (currentTeamIndex + 1) % teams.length;
+        setCurrentTeamIndex((getCurrentTeamIndex() + 1) % teams.length);
     }
     
+    public void setTurnTeam(int team)
+    {
+        setCurrentTeamIndex(team);
+    }
     
+    public int getCurrentTeamIndex()
+    {
+        return currentTeamIndex;
+    }
+    
+    public TeamColor getCurrentTeam()
+    {
+        return teams[currentTeamIndex];
+    }
+    
+    public TeamColor getOtherTeam()
+    {
+        return teams[(currentTeamIndex+1)%teams.length];
+    }
+    
+    public void setCurrentTeamIndex(int currentTeamIndex)
+    {
+        this.currentTeamIndex = currentTeamIndex;
+    }
     
     
     // TODO Figur auswählen
