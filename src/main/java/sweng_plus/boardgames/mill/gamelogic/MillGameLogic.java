@@ -65,13 +65,6 @@ public class MillGameLogic
     {
         System.out.println("                Logic: endPhaseSelectFigure");
         
-        if(isServer && isWinningTeam(getCurrentTeamIndex()))
-        {
-            Mill.instance().getNetworking().getHostManager().sendMessageToAllClients(
-                    new WinMessage(getCurrentTeamIndex()));
-            return;
-        }
-        
         nextTeam();
     }
     
@@ -96,6 +89,13 @@ public class MillGameLogic
         {
             Mill.instance().getNetworking().getHostManager().sendMessageToAllClients(
                     new FigureTakenMessage(selectedFigure));
+            
+            if(isGameWon())
+            {
+                Mill.instance().getNetworking().getHostManager().sendMessageToAllClients(
+                        new WinMessage((millBoard.getTeamIndex(getLosingTeam()) + 1) % 2));
+                
+            }
         }
     }
     
