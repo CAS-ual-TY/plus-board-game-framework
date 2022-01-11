@@ -38,6 +38,7 @@ public class MillGameLogic
     public void startGame()
     {
         System.out.println("                Logic: startGame");
+        //setCurrentTeamIndex(getMillBoard().getTeamIndex(TeamColor.WHITE));
         setCurrentTeamIndex(0);
     
         if(isServer)
@@ -109,7 +110,6 @@ public class MillGameLogic
                 figure.getCurrentNode().removeFigure(figure);
                 figure.setCurrentNode(null);
     
-                // TODO mill status updaten
                 updateMillStatusForNeighbours(oldNode);
                 
                 
@@ -183,7 +183,6 @@ public class MillGameLogic
         //          +/- 1 if > 7 && <= 15
         //          - 2 if > 15
     
-        // TODO requires testing
         int index = movedFigure.getCurrentNode().getIndex();
     
         boolean mill = false;
@@ -214,7 +213,7 @@ public class MillGameLogic
                 mill = true;
             }
     
-            else if(index <= MillBoard.NODES_PER_CIRCLE - 1)
+            if(index <= MillBoard.NODES_PER_CIRCLE - 1)
             {
                 if(checkForMillAndSetStatus(movedFigure,
                         millBoard.getFieldNode(index + MillBoard.NODES_PER_CIRCLE),
@@ -232,7 +231,7 @@ public class MillGameLogic
                     mill = true;
                 }
             }
-            else if (index < MillBoard.NODES_PER_CIRCLE*3 - 1)
+            else if (index <= MillBoard.NODES_PER_CIRCLE*3 - 1)
             {
                 if(checkForMillAndSetStatus(movedFigure,
                         millBoard.getFieldNode(index - 2 * MillBoard.NODES_PER_CIRCLE),
@@ -276,7 +275,6 @@ public class MillGameLogic
             return;
         }
         
-        // TODO requires testing
         int index = startNode.getIndex();
         
         MillNode node;
@@ -310,7 +308,7 @@ public class MillGameLogic
                 updateInMillStatus(node.getFigures().get(0));
             }
     
-            if (index <= 7)
+            if (index <= MillBoard.NODES_PER_CIRCLE)
             {
                 node = millBoard.getFieldNode(index + MillBoard.NODES_PER_CIRCLE);
                 if(node.isOccupied()) {
@@ -321,7 +319,7 @@ public class MillGameLogic
                     updateInMillStatus(node.getFigures().get(0));
                 }
             }
-            else if (index <= 15)
+            else if (index <= MillBoard.NODES_PER_CIRCLE*2)
             {
                 node = millBoard.getFieldNode(index - MillBoard.NODES_PER_CIRCLE);
                 if(node.isOccupied()) {
@@ -332,7 +330,7 @@ public class MillGameLogic
                     updateInMillStatus(node.getFigures().get(0));
                 }
             }
-            else
+            else if (index <= MillBoard.NODES_PER_CIRCLE*3)
             {
         
                 node = millBoard.getFieldNode(index - 2 * MillBoard.NODES_PER_CIRCLE);
@@ -447,12 +445,4 @@ public class MillGameLogic
     {
         this.currentTeamIndex = currentTeamIndex;
     }
-    
-    
-    // TODO Figur auswählen
-        // TODO Aufbau oder Zugphase
-    // TODO Zielfeld auswählen
-    // TODO auf Mühle prüfen
-    // TODO gegnerische Figur zum Entfernen auswählen
-        // TODO Wincondition
 }

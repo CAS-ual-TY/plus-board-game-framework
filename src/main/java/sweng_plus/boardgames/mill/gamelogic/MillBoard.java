@@ -33,15 +33,6 @@ public class MillBoard extends NodeBoard<MillNode, MillFigure>
         {
             allNodes.addAll(List.of(millTeam.outsideNodes()));
         }
-    
-        for(MillNode forwardNode : fieldNodes.get(5).getForwardNodes())
-        {
-            System.out.println(forwardNode.getIndex());
-        }
-        for(MillNode forwardNode : fieldNodes.get(5).getBackwardNodes())
-        {
-            System.out.println(forwardNode.getIndex());
-        }
     }
     
     @Override

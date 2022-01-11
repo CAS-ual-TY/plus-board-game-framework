@@ -70,39 +70,36 @@ public class MillScreen extends Screen implements IMillScreen
         return thisPlayerID == logic.getCurrentTeamIndex();
     }
     
-    // TODO // Figur gewaehlt
-    public void methode1(MillNode node) {
+    public void moveFigureSelectAction(MillNode node) {
         
         requestNode(node.getFigures().get(0));
     }
     
-    // TODO // Node gewaehlt
-    public Consumer<MillNode> methode2(MillFigure figure) {
+    public Consumer<MillNode> nodeSelectAction(MillFigure figure) {
         return (node) -> Mill.instance().getNetworking().getClientManager().sendMessageToServer(new TellServerFigureNodeSelectedMessage(figure.getIndex(), node.getIndex()));
     }
     
-    // TODO // Figur gewaehlt
-    public void methode3(MillFigure figure) {
+    public void takenFigureSelectedAction(MillFigure figure) {
         Mill.instance().getNetworking().getClientManager().sendMessageToServer(new TellServerFigureTakenMessage(figure.getIndex()));
     }
     
     public void requestFigure()
     {
         System.out.println("Screen: requestFigure");
-        screenHolder.setScreen(new SelectFigureScreen(this, logic.getCurrentTeam(), this::methode1));
+        screenHolder.setScreen(new SelectFigureScreen(this, logic.getCurrentTeam(), this::moveFigureSelectAction));
     }
     
     public void requestNode(MillFigure selectedFigure) {
         System.out.println("Screen: requestNode");
         System.out.println(selectedFigure.getIndex());
-        screenHolder.setScreen(new SelectNodeScreen(this, logic.getCurrentTeam(), methode2(selectedFigure), selectedFigure));
+        screenHolder.setScreen(new SelectNodeScreen(this, logic.getCurrentTeam(), nodeSelectAction(selectedFigure), selectedFigure));
     }
     
     //@Override
     public void requestTakeFigure() {
         System.out.println("Screen: requestTakeFigure");
         
-        screenHolder.setScreen(new TakeFigureScreen(this, logic.getOtherTeam(), this::methode3));
+        screenHolder.setScreen(new TakeFigureScreen(this, logic.getOtherTeam(), this::takenFigureSelectedAction));
     }
     
     public void newTurn(int turnTeam)
