@@ -41,19 +41,19 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         protocol = new AdvancedMessageRegistry<>(32, messageID++, messageID++, messageID++, messageID++,
                 this::getClientManager, this::getHostManager,
                 this, this);
-    
+        
         protocol.registerMessage(messageID++, SendNameMessage.Handler::encodeMessage,
                 SendNameMessage.Handler::decodeMessage, SendNameMessage.Handler::handleMessage,
                 SendNameMessage.class);
-    
+        
         protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
-    
+        
         protocol.registerMessage(messageID++, StartGameMessage.Handler::encodeMessage,
                 StartGameMessage.Handler::decodeMessage, StartGameMessage.Handler::handleMessage,
                 StartGameMessage.class);
-    
+        
         protocol.registerMessage(messageID++, TellServerFigureNodeSelectedMessage.Handler::encodeMessage,
                 TellServerFigureNodeSelectedMessage.Handler::decodeMessage, TellServerFigureNodeSelectedMessage.Handler::handleMessage,
                 TellServerFigureNodeSelectedMessage.class);

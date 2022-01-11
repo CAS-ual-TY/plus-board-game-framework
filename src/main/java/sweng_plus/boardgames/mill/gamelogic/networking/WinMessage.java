@@ -1,7 +1,6 @@
 package sweng_plus.boardgames.mill.gamelogic.networking;
 
 
-
 import sweng_plus.boardgames.mill.Mill;
 import sweng_plus.boardgames.mill.gui.IMillScreen;
 import sweng_plus.framework.networking.util.CircularBuffer;

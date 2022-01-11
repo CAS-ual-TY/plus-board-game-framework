@@ -15,8 +15,8 @@ public class MillFigure extends TeamNodeFigure<MillNode, MillFigure>
         super(team);
         this.index = index;
         
-        this.alreadyPlaced = false;
-        this.inMill = false;
+        alreadyPlaced = false;
+        inMill = false;
     }
     
     public int getIndex()

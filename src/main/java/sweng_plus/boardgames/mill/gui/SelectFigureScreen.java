@@ -13,7 +13,10 @@ public class SelectFigureScreen extends MillExtensionScreen
     {
         super(subScreen);
         
-        widgets.addAll(List.of(MillBoardMapper.createMovableTeamButtonWidgets(subScreen.screenHolder, subScreen.board, MillScreen.BOARD_SIZE, (node) -> { returnToSubScreen(); consumer.accept(node);}, team)));
+        widgets.addAll(List.of(MillBoardMapper.createMovableTeamButtonWidgets(subScreen.screenHolder, subScreen.board, MillScreen.BOARD_SIZE, (node) -> {
+            returnToSubScreen();
+            consumer.accept(node);
+        }, team)));
         
     }
 }

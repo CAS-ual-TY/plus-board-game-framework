@@ -10,12 +10,15 @@ import java.util.function.Consumer;
 
 public class SelectNodeScreen extends MillExtensionScreen
 {
-  
+    
     public SelectNodeScreen(MillScreen subScreen, TeamColor team, Consumer<MillNode> consumer, MillFigure selectedFigure)
     {
         super(subScreen);
         
-        widgets.addAll(List.of(MillBoardMapper.createNodeButtonWidgets(subScreen.screenHolder, subScreen.board, MillScreen.BOARD_SIZE, (node) -> { returnToSubScreen(); consumer.accept(node);}, selectedFigure)));
+        widgets.addAll(List.of(MillBoardMapper.createNodeButtonWidgets(subScreen.screenHolder, subScreen.board, MillScreen.BOARD_SIZE, (node) -> {
+            returnToSubScreen();
+            consumer.accept(node);
+        }, selectedFigure)));
         
     }
 }

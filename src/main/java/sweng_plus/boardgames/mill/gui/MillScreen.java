@@ -35,15 +35,15 @@ public class MillScreen extends Screen implements IMillScreen
         
         this.logic = logic;
         board = logic.getMillBoard();
-
+        
         widgets.addAll(List.of(MillBoardMapper.createSimpleWidgets(getScreenHolder(), board, BOARD_SIZE)));
         
         // sort widgets (nodes), render top to bottom so bottom widgets are in front
         // and make figures render on top of nodes above (= behind) them
         widgets.sort(Widget.TOP_TO_BOTTOM_SORTER);
-    
+        
         widgets.add(0, new MillBoardWidget(getScreenHolder(), new Dimensions(AnchorPoint.M), BOARD_SIZE));
-    
+        
         thisPlayerID = -1;
         
     }
@@ -70,16 +70,19 @@ public class MillScreen extends Screen implements IMillScreen
         return thisPlayerID == logic.getCurrentTeamIndex();
     }
     
-    public void moveFigureSelectAction(MillNode node) {
+    public void moveFigureSelectAction(MillNode node)
+    {
         
         requestNode(node.getFigures().get(0));
     }
     
-    public Consumer<MillNode> nodeSelectAction(MillFigure figure) {
+    public Consumer<MillNode> nodeSelectAction(MillFigure figure)
+    {
         return (node) -> Mill.instance().getNetworking().getClientManager().sendMessageToServer(new TellServerFigureNodeSelectedMessage(figure.getIndex(), node.getIndex()));
     }
     
-    public void takenFigureSelectedAction(MillFigure figure) {
+    public void takenFigureSelectedAction(MillFigure figure)
+    {
         Mill.instance().getNetworking().getClientManager().sendMessageToServer(new TellServerFigureTakenMessage(figure.getIndex()));
     }
     
@@ -89,14 +92,16 @@ public class MillScreen extends Screen implements IMillScreen
         screenHolder.setScreen(new SelectFigureScreen(this, logic.getCurrentTeam(), this::moveFigureSelectAction));
     }
     
-    public void requestNode(MillFigure selectedFigure) {
+    public void requestNode(MillFigure selectedFigure)
+    {
         System.out.println("Screen: requestNode");
         System.out.println(selectedFigure.getIndex());
         screenHolder.setScreen(new SelectNodeScreen(this, logic.getCurrentTeam(), nodeSelectAction(selectedFigure), selectedFigure));
     }
     
     //@Override
-    public void requestTakeFigure() {
+    public void requestTakeFigure()
+    {
         System.out.println("Screen: requestTakeFigure");
         
         screenHolder.setScreen(new TakeFigureScreen(this, logic.getOtherTeam(), this::takenFigureSelectedAction));
@@ -132,25 +137,26 @@ public class MillScreen extends Screen implements IMillScreen
             
             logic.startPhaseMoveFigure(figure);
             
-                if(logic.endPhaseMoveFigure(selectedFigure, endNode))
+            if(logic.endPhaseMoveFigure(selectedFigure, endNode))
+            {
+                logic.startPhaseTakeFigure();
+                
+                if(!logic.getTakeableFigure().isEmpty())
                 {
-                    logic.startPhaseTakeFigure();
-    
-                    if (!logic.getTakeableFigure().isEmpty())
+                    if(thisPlayerID == logic.getCurrentTeamIndex())
                     {
-                        if (thisPlayerID == logic.getCurrentTeamIndex()) {
-                            requestTakeFigure();
-                        }
-                    }
-                    else
-                    {
-                        endTurn();
+                        requestTakeFigure();
                     }
                 }
                 else
                 {
                     endTurn();
                 }
+            }
+            else
+            {
+                endTurn();
+            }
         }
         else
         {
@@ -162,9 +168,9 @@ public class MillScreen extends Screen implements IMillScreen
     public void figureTaken(int figure)
     {
         System.out.println("Screen: figureTaken");
-    
+        
         MillFigure selectedFigure = logic.getTakeableFigureForIndex(figure);
-    
+        
         if(selectedFigure != null)
         {
             logic.endPhaseTakeFigure(selectedFigure);
@@ -172,7 +178,8 @@ public class MillScreen extends Screen implements IMillScreen
         endTurn();
     }
     
-    private void endTurn() {
+    private void endTurn()
+    {
         logic.endPhaseSelectFigure();
         newTurn(logic.getCurrentTeamIndex());
     }

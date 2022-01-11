@@ -4,7 +4,6 @@ import sweng_plus.boardgames.mill.Mill;
 import sweng_plus.boardgames.mill.gui.IMillScreen;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public record FigureNodeSelectedMessage(int figureID, int nodeId)

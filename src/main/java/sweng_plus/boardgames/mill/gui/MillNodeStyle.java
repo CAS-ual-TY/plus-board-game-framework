@@ -19,7 +19,8 @@ public class MillNodeStyle extends BaseStyle
     @Override
     public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
     {
-        if(node.isOccupied()) {
+        if(node.isOccupied())
+        {
             Color4f.NEUTRAL.glColor4f();
             if(node.getFigures().get(0).getTeam() == TeamColor.BLACK)
             {
