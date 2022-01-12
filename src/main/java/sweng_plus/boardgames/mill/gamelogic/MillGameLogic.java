@@ -41,8 +41,8 @@ public class MillGameLogic
     public void startGame()
     {
         System.out.println("                Logic: startGame");
-        //setCurrentTeamIndex(getMillBoard().getTeamIndex(TeamColor.WHITE));
-        setCurrentTeamIndex(0);
+        setCurrentTeamIndex(getMillBoard().getTeamIndex(TeamColor.WHITE));
+        //setCurrentTeamIndex(0);
         
         if(isServer)
         {
