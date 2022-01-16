@@ -17,16 +17,16 @@ public class MenuScreen extends Screen
         super(screenHolder);
         
         Dimensions hostDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -415);
-        widgets.add(new FunctionalButtonWidget(screenHolder, hostDims, LudoStyles.makeButtonStyle("Neues Spiel"), this::host));
+        widgets.add(new FunctionalButtonWidget(screenHolder, hostDims, LudoStyles.makeButtonStyle("menu.main.new_game"), this::host));
         
         Dimensions connectDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -310);
-        widgets.add(new FunctionalButtonWidget(screenHolder, connectDims, LudoStyles.makeButtonStyle("Spiel beitreten"), this::connect));
+        widgets.add(new FunctionalButtonWidget(screenHolder, connectDims, LudoStyles.makeButtonStyle("menu.main.join_game"), this::connect));
         
         Dimensions optionsDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -205);
-        widgets.add(new FunctionalButtonWidget(screenHolder, optionsDims, LudoStyles.makeButtonStyle("Einstellungen"), this::options));
+        widgets.add(new FunctionalButtonWidget(screenHolder, optionsDims, LudoStyles.makeButtonStyle("menu.main.settings"), this::options));
         
         Dimensions exitDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -100);
-        widgets.add(new FunctionalButtonWidget(screenHolder, exitDims, LudoStyles.makeButtonStyle("Beenden"), this::exit));
+        widgets.add(new FunctionalButtonWidget(screenHolder, exitDims, LudoStyles.makeButtonStyle("menu.main.quit"), this::exit));
     }
     
     private void host()

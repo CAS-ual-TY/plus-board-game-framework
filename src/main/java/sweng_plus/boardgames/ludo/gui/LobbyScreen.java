@@ -11,9 +11,9 @@ import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-public class NameScreen extends Screen
+public class LobbyScreen extends Screen
 {
-    public NameScreen(IScreenHolder screenHolder)
+    public LobbyScreen(IScreenHolder screenHolder)
     {
         super(screenHolder);
         
@@ -21,7 +21,7 @@ public class NameScreen extends Screen
         widgets.add(new SimpleWidget(screenHolder, textDims, new TextStyle(Ludo.instance().fontRenderer64, Ludo.instance().names, Color4f.BLACK)));
         
         Dimensions cancelDims = new Dimensions(350, 80, AnchorPoint.L, 100, 400);
-        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, LudoStyles.makeButtonStyle("Zurück zum Menü"), this::cancel));
+        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, LudoStyles.makeButtonStyle("menu.lobby.back"), this::cancel));
     }
     
     private void cancel()

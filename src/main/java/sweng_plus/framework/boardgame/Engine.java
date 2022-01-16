@@ -1,11 +1,14 @@
 package sweng_plus.framework.boardgame;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import sweng_plus.framework.i18n.I18n;
 import sweng_plus.framework.userinterface.Window;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.input.InputHandler;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -13,7 +16,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Engine implements Runnable
 {
-    public static final Gson GSON = new Gson();
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     
     public static final float FULL_DELTA_TICK = 0.0F;
     
@@ -23,6 +26,8 @@ public class Engine implements Runnable
     
     protected Window window;
     protected InputHandler inputHandler;
+    
+    public static I18n I18N;
     
     public Engine(IGame game)
     {
@@ -65,6 +70,7 @@ public class Engine implements Runnable
         inputHandler = window.getInputHandler();
         inputHandler.setup();
         initOpenGL();
+        initI18n();
         
         game.init();
     }
@@ -183,6 +189,20 @@ public class Engine implements Runnable
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+    
+    protected void initI18n()
+    {
+        I18N = new I18n();
+        
+        try
+        {
+            I18N.initializeI18N(game.getDefaultLocale());
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public boolean isBeingClosed() // Threadsafe

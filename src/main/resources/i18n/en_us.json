@@ -1,0 +1,17 @@
+{
+  "lang": "eng",
+  "lang2": "eng2",
+  "menu.main.new_game": "New Game",
+  "menu.main.join_game": "Join Game",
+  "menu.main.settings": "Settings",
+  "menu.main.quit": "Quit",
+  "menu.connect.name": "Name",
+  "menu.connect.ip": "IP",
+  "menu.connect.port": "Port",
+  "menu.host.name": "Name",
+  "menu.host.port": "Port",
+  "menu.cancel": "Cancel",
+  "menu.ready": "Ready",
+  "menu.lobby.back": "Back to menu",
+  "ludo.roll_dice": "Roll Dice"
+}

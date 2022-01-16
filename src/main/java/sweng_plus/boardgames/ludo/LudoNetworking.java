@@ -1,7 +1,7 @@
 package sweng_plus.boardgames.ludo;
 
 import sweng_plus.boardgames.ludo.gamelogic.networking.*;
-import sweng_plus.boardgames.ludo.gui.NameScreen;
+import sweng_plus.boardgames.ludo.gui.LobbyScreen;
 import sweng_plus.framework.networking.AdvancedMessageRegistry;
 import sweng_plus.framework.networking.NetworkHelper;
 import sweng_plus.framework.networking.interfaces.*;
@@ -101,7 +101,7 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
         ludo.names.clear();
         clientManager = NetworkHelper.advancedConnect(protocol, this, playerName, ip, port);
         
-        ludo.setScreen(new NameScreen(ludo));
+        ludo.setScreen(new LobbyScreen(ludo));
         
         clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
@@ -114,7 +114,7 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
         hostManager = NetworkHelper.advancedHost(protocol, this, LudoClient::new, playerName, port);
         clientManager = hostManager;
         
-        ludo.setScreen(new NameScreen(ludo));
+        ludo.setScreen(new LobbyScreen(ludo));
         
         clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }

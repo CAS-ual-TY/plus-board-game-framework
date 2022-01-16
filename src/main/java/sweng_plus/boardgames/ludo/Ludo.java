@@ -160,6 +160,12 @@ public class Ludo implements IGame
         this.screen = screen;
     }
     
+    @Override
+    public String getDefaultLocale()
+    {
+        return "de_de";
+    }
+    
     public static void main(String... args)
     {
         new Engine(new Ludo()).run();

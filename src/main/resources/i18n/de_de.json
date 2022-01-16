@@ -1,0 +1,17 @@
+{
+  "lang": "ger",
+  "lang2": "ger2",
+  "menu.main.new_game": "Neues Spiel",
+  "menu.main.join_game": "Spiel beitreten",
+  "menu.main.settings": "Einstellungen",
+  "menu.main.quit": "Beenden",
+  "menu.connect.name": "Name",
+  "menu.connect.ip": "IP",
+  "menu.connect.port": "Port",
+  "menu.host.name": "Name",
+  "menu.host.port": "Port",
+  "menu.cancel": "Abbruch",
+  "menu.ready": "Fertig",
+  "menu.lobby.back": "Zurück zum Menü",
+  "ludo.roll_dice": "Würfeln"
+}
