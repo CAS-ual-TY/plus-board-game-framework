@@ -1,6 +1,4 @@
 {
-  "lang": "ger",
-  "lang2": "ger2",
   "menu.main.new_game": "Neues Spiel",
   "menu.main.join_game": "Spiel beitreten",
   "menu.main.settings": "Einstellungen",
@@ -13,5 +11,7 @@
   "menu.cancel": "Abbruch",
   "menu.ready": "Fertig",
   "menu.lobby.back": "Zurück zum Menü",
-  "ludo.roll_dice": "Würfeln"
+  "ludo.roll_dice": "Würfeln",
+  "ludo.win.prefix": "",
+  "ludo.win.suffix": "hat gewonnen"
 }
