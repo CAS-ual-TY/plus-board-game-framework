@@ -1,5 +1,6 @@
 package sweng_plus.framework.boardgame;
 
+import com.google.gson.Gson;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import sweng_plus.framework.userinterface.Window;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -12,7 +13,10 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Engine implements Runnable
 {
+    public static final Gson GSON = new Gson();
+    
     public static final float FULL_DELTA_TICK = 0.0F;
+    
     protected static Engine instance;
     
     protected final IGame game;
