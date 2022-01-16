@@ -22,10 +22,24 @@ public class LobbyScreen extends Screen
         
         Dimensions cancelDims = new Dimensions(350, 80, AnchorPoint.L, 100, 400);
         widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, LudoStyles.makeButtonStyle("menu.lobby.back"), this::cancel));
+        
+        if(Ludo.instance().getNetworking().isHost())
+        {
+            Dimensions startDims = new Dimensions(350, 80, AnchorPoint.R, -100, 400);
+            widgets.add(new FunctionalButtonWidget(screenHolder, startDims, LudoStyles.makeButtonStyle("ludo.start_game"), this::start));
+        }
     }
     
     private void cancel()
     {
         screenHolder.setScreen(new MenuScreen(screenHolder));
+    }
+    
+    private void start()
+    {
+        if(Ludo.instance().getNetworking().getHostManager().getAllClients().size() >= 2)
+        {
+            Ludo.instance().startGame(true, Ludo.instance().getNetworking().getHostManager().getAllClients().size());
+        }
     }
 }

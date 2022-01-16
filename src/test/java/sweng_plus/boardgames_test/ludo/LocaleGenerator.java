@@ -34,6 +34,7 @@ public class LocaleGenerator
         LocaleGenerator.add("menu.ready", "Fertig", "Ready");
         
         LocaleGenerator.add("menu.lobby.back", "Zurück zum Menü", "Back to menu");
+        LocaleGenerator.add("ludo.start_game", "Spiel starten", "Start game");
         
         // Ludo Roll Screen
         LocaleGenerator.add("ludo.roll_dice", "Würfeln", "Roll Dice");
