@@ -8,7 +8,7 @@ public interface ILudoScreen
     
     void figureSelected(int figure);
     
-    void gameWon(int winningTeamIndex);
+    void gameWon(String winnerName);
     
     void chat(ChatMessage message);
 }

@@ -49,10 +49,10 @@ public class LudoExtensionScreen extends WrappedScreen implements ILudoScreen
     }
     
     @Override
-    public void gameWon(int winningTeamIndex)
+    public void gameWon(String winnerName)
     {
         returnToSubScreen();
-        ((LudoScreen) subScreen).gameWon(winningTeamIndex);
+        ((LudoScreen) subScreen).gameWon(winnerName);
     }
     
     @Override

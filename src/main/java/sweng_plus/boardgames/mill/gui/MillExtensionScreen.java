@@ -45,10 +45,10 @@ public class MillExtensionScreen extends WrappedScreen implements IMillScreen
     }
     
     @Override
-    public void gameWon(int winningTeamIndex)
+    public void gameWon(String winnerName)
     {
         returnToSubScreen();
-        ((MillScreen) subScreen).gameWon(winningTeamIndex);
+        ((MillScreen) subScreen).gameWon(winnerName);
     }
     
     @Override

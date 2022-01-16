@@ -6,5 +6,5 @@ public interface IMillScreen
     
     void figureTaken(int figure);
     
-    void gameWon(int winningTeamIndex);
+    void gameWon(String winnerName);
 }

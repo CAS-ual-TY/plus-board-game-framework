@@ -3,6 +3,7 @@ package sweng_plus.boardgames.mill.gamelogic;
 import sweng_plus.boardgames.mill.Mill;
 import sweng_plus.boardgames.mill.gamelogic.networking.*;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
+import sweng_plus.framework.networking.interfaces.IAdvancedHostManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -87,13 +88,14 @@ public class MillGameLogic
     {
         if(isServer)
         {
-            Mill.instance().getNetworking().getHostManager().sendMessageToAllClients(
+            IAdvancedHostManager<MillClient> hostManager = Mill.instance().getNetworking().getHostManager();
+            hostManager.sendMessageToAllClients(
                     new FigureTakenMessage(selectedFigure));
             
             if(isGameWon())
             {
-                Mill.instance().getNetworking().getHostManager().sendMessageToAllClients(
-                        new WinMessage((millBoard.getTeamIndex(getLosingTeam()) + 1) % 2));
+                hostManager.sendMessageToAllClients(
+                        new WinMessage(hostManager.getAllClients().get((millBoard.getTeamIndex(getLosingTeam()) + 1) % 2).getName()));
                 
             }
         }

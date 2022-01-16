@@ -4,6 +4,7 @@ import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gamelogic.networking.*;
 import sweng_plus.framework.boardgame.nodes_board.Dice;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
+import sweng_plus.framework.networking.interfaces.IAdvancedHostManager;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -109,8 +110,9 @@ public class LudoGameLogic
         
         if(isServer && isGameWon(currentTeamIndex))
         {
-            Ludo.instance().getNetworking().getHostManager().sendMessageToAllClients(
-                    new WinMessage(currentTeamIndex));
+            IAdvancedHostManager<LudoClient> hostManager = Ludo.instance().getNetworking().getHostManager();
+            hostManager.sendMessageToAllClients(
+                    new WinMessage(hostManager.getAllClients().get(currentTeamIndex).getName()));
             return;
         }
         

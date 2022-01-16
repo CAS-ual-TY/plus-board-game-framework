@@ -232,11 +232,11 @@ public class LudoScreen extends Screen implements ILudoScreen
     }
     
     @Override
-    public void gameWon(int winningTeamIndex)
+    public void gameWon(String winnerName)
     {
         System.out.println("Screen: gameWon");
         
-        screenHolder.setScreen(new WinScreen(this, logic.teams[winningTeamIndex].getName()));
+        screenHolder.setScreen(new WinScreen(this, winnerName));
         
         logic.gameWon = true;
     }
