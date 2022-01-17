@@ -3,7 +3,6 @@ package sweng_plus.framework.boardgame;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import sweng_plus.framework.i18n.I18n;
 import sweng_plus.framework.userinterface.Window;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.input.InputHandler;

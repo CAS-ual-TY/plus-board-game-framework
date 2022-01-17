@@ -1,4 +1,4 @@
-package sweng_plus.framework.i18n;
+package sweng_plus.framework.boardgame;
 
 import com.google.gson.stream.JsonReader;
 import sweng_plus.framework.boardgame.Engine;
