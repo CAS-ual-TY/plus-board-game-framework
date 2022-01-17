@@ -1,17 +1,25 @@
 package sweng_plus.boardgames.ludo.gui;
 
+import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gui.util.LudoStyles;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.boardgame.I18N;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
+import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
+import java.io.IOException;
+
 public class MenuScreen extends Screen
 {
+    protected ButtonWidget germanButton;
+    protected ButtonWidget englishButton;
+    
     public MenuScreen(IScreenHolder screenHolder)
     {
         super(screenHolder);
@@ -27,6 +35,19 @@ public class MenuScreen extends Screen
         
         Dimensions exitDims = new Dimensions(700, 80, AnchorPoint.BR, -120, -100);
         widgets.add(new FunctionalButtonWidget(screenHolder, exitDims, LudoStyles.makeButtonStyle("menu.main.quit"), this::exit));
+        
+        Dimensions langButtonDimensions = new Dimensions(80, 80, AnchorPoint.TR, -25, 25);
+        germanButton = new FunctionalButtonWidget(screenHolder, langButtonDimensions, LudoStyles.makeButtonStyle("DE"), this::switchToGerman);
+        englishButton = new FunctionalButtonWidget(screenHolder, langButtonDimensions, LudoStyles.makeButtonStyle("EN"), this::switchToEnglish);
+        
+        if(Ludo.instance().getDefaultLocale().equals(Ludo.LOCALE_DE_DE))
+        {
+            widgets.add(englishButton);
+        }
+        else
+        {
+            widgets.add(germanButton);
+        }
     }
     
     private void host()
@@ -68,5 +89,35 @@ public class MenuScreen extends Screen
         LudoTextures.logo.render(900, 50, LudoTextures.logo.getWidth(), LudoTextures.logo.getHeight(), 0, 0, LudoTextures.logo.getWidth(), LudoTextures.logo.getHeight());
         
         super.render(deltaTick, mouseX, mouseY);
+    }
+    
+    public void switchToGerman()
+    {
+        try
+        {
+            I18N.initializeI18N(Ludo.LOCALE_DE_DE);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        
+        widgets.remove(germanButton);
+        widgets.add(englishButton);
+    }
+    
+    public void switchToEnglish()
+    {
+        try
+        {
+            I18N.initializeI18N(Ludo.LOCALE_EN_US);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        
+        widgets.remove(englishButton);
+        widgets.add(germanButton);
     }
 }

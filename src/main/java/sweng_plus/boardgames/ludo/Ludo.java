@@ -25,6 +25,9 @@ public class Ludo implements IGame
 {
     private static Ludo instance;
     
+    public static final String LOCALE_DE_DE = "de_de";
+    public static final String LOCALE_EN_US = "en_us";
+    
     private Screen screen;
     
     public FontRenderer fontRenderer64;
@@ -81,7 +84,7 @@ public class Ludo implements IGame
     @Override
     public String getWindowTitle()
     {
-        return "Ludo";
+        return "Mensch ärgere Dich nicht!";
     }
     
     @Override
@@ -163,7 +166,7 @@ public class Ludo implements IGame
     @Override
     public String getDefaultLocale()
     {
-        return "de_de";
+        return LOCALE_DE_DE;
     }
     
     public static void main(String... args)
