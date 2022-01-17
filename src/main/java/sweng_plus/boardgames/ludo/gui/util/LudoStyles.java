@@ -1,6 +1,7 @@
 package sweng_plus.boardgames.ludo.gui.util;
 
 import sweng_plus.boardgames.ludo.Ludo;
+import sweng_plus.framework.boardgame.gui.style.I18NStyle;
 import sweng_plus.framework.userinterface.gui.style.*;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;

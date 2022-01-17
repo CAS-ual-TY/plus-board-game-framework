@@ -1,7 +1,8 @@
-package sweng_plus.framework.userinterface.gui.style;
+package sweng_plus.framework.boardgame.gui.style;
 
 import sweng_plus.framework.boardgame.I18N;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
+import sweng_plus.framework.userinterface.gui.style.FunctionalTextStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 

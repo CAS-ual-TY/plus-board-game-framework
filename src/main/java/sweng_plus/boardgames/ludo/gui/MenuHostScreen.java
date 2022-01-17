@@ -4,7 +4,7 @@ import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gui.util.LudoStyles;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
-import sweng_plus.framework.userinterface.gui.style.I18NStyle;
+import sweng_plus.framework.boardgame.gui.style.I18NStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;

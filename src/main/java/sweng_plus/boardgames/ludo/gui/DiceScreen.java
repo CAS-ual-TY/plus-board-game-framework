@@ -5,7 +5,7 @@ import sweng_plus.boardgames.ludo.gamelogic.networking.RollMessage;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.userinterface.gui.style.CorneredTextureStyle;
 import sweng_plus.framework.userinterface.gui.style.HoverStyle;
-import sweng_plus.framework.userinterface.gui.style.I18NStyle;
+import sweng_plus.framework.boardgame.gui.style.I18NStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
