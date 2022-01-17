@@ -55,11 +55,11 @@ public class ClientSessionManager implements IClientSessionManager
         {
             file.createNewFile();
         }
-    
+        
         try(FileReader reader = new FileReader(file))
         {
             JsonObject json = Engine.GSON.fromJson(reader, JsonObject.class);
-        
+            
             if(json != null)
             {
                 for(Entry<String, JsonElement> entry : json.entrySet())
@@ -84,12 +84,12 @@ public class ClientSessionManager implements IClientSessionManager
         try(FileWriter writer = new FileWriter(file))
         {
             JsonObject json = new JsonObject();
-        
+            
             for(Entry<UUID, UUID> entry : sessionIdentifiers.entrySet())
             {
                 json.addProperty(entry.getKey().toString(), entry.getValue().toString());
             }
-        
+            
             Engine.GSON.toJson(json, writer);
         }
         catch(ClassCastException | IllegalStateException e)

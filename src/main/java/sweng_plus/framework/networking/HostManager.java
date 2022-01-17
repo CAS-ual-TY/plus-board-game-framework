@@ -40,7 +40,7 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
         
         serverSocket = new ServerSocket(port);
         serverSocket.setSoTimeout(100);
-    
+        
         hostClient = clientFactory.makeHost();
         hostClient.setStatus(ClientStatus.CONNECTED);
         
@@ -138,10 +138,10 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
                 
                 String ip = socket.getRemoteSocketAddress().toString();
                 C client = clientFactory.makeClient(ip);
-    
+                
                 clientConnectionMap.exclusiveGet(clientConnectionMap1 ->
                         clientConnectionMap1.put(client, connection));
-    
+                
                 threadClientMap.exclusiveGet(threadClientMap1 ->
                         threadClientMap1.put(Thread.currentThread(), client));
                 
