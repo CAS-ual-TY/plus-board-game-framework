@@ -7,7 +7,6 @@ import sweng_plus.framework.userinterface.Window;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.input.InputHandler;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -67,7 +66,6 @@ public class Engine implements Runnable
         inputHandler = window.getInputHandler();
         inputHandler.setup();
         initOpenGL();
-        initI18n();
         
         game.init();
     }
@@ -186,18 +184,6 @@ public class Engine implements Runnable
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
-    
-    protected void initI18n()
-    {
-        try
-        {
-            I18N.initializeI18N(game.getDefaultLocale());
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
     }
     
     public boolean isBeingClosed() // Threadsafe

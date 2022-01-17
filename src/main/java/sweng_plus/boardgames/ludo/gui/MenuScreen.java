@@ -39,15 +39,7 @@ public class MenuScreen extends Screen
         Dimensions langButtonDimensions = new Dimensions(80, 80, AnchorPoint.TR, -25, 25);
         germanButton = new FunctionalButtonWidget(screenHolder, langButtonDimensions, LudoStyles.makeButtonStyle("DE"), this::switchToGerman);
         englishButton = new FunctionalButtonWidget(screenHolder, langButtonDimensions, LudoStyles.makeButtonStyle("EN"), this::switchToEnglish);
-        
-        if(Ludo.instance().getDefaultLocale().equals(Ludo.LOCALE_DE_DE))
-        {
-            widgets.add(englishButton);
-        }
-        else
-        {
-            widgets.add(germanButton);
-        }
+        widgets.add(englishButton);
     }
     
     private void host()

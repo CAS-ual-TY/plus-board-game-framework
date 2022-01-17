@@ -8,6 +8,7 @@ import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.EngineUtil;
+import sweng_plus.framework.boardgame.I18N;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -113,6 +114,15 @@ public class Ludo implements IGame
             throw new RuntimeException("failed to load font.", e);
         }
         
+        try
+        {
+            I18N.initializeI18N(LOCALE_DE_DE);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_SPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_BACKSPACE);
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_ESCAPE);
@@ -161,12 +171,6 @@ public class Ludo implements IGame
     public void setScreen(Screen screen)
     {
         this.screen = screen;
-    }
-    
-    @Override
-    public String getDefaultLocale()
-    {
-        return LOCALE_DE_DE;
     }
     
     public static void main(String... args)
