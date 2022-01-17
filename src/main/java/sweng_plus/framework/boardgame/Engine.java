@@ -192,7 +192,7 @@ public class Engine implements Runnable
     {
         try
         {
-            I18n.initializeI18N(game.getDefaultLocale());
+            I18N.initializeI18N(game.getDefaultLocale());
         }
         catch(IOException e)
         {

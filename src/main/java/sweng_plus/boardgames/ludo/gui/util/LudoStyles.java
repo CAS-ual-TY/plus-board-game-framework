@@ -22,12 +22,12 @@ public class LudoStyles
     
     public static BaseStyle makeActiveButtonStyle(String text)
     {
-        return makeActiveButtonBackground().stack(new I18nStyle(Ludo.instance().fontRenderer32, text, Color4f.BLACK));
+        return makeActiveButtonBackground().stack(new I18NStyle(Ludo.instance().fontRenderer32, text, Color4f.BLACK));
     }
     
     public static BaseStyle makeInactiveButtonStyle(String text)
     {
-        return makeInactiveButtonBackground().stack(new I18nStyle(Ludo.instance().fontRenderer32, text, Color4f.BLACK));
+        return makeInactiveButtonBackground().stack(new I18NStyle(Ludo.instance().fontRenderer32, text, Color4f.BLACK));
     }
     
     public static BaseStyle makeButtonStyle(String text)

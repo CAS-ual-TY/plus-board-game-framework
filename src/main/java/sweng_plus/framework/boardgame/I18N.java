@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class I18n
+public class I18N
 {
     private static Map<String, String> map;
     
