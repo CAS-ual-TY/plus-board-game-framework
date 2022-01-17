@@ -1,6 +1,8 @@
 package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.*;
+import sweng_plus.framework.networking.util.ClientSessionManager;
+import sweng_plus.framework.networking.util.HostSessionManager;
 import sweng_plus.framework.networking.util.IClientFactory;
 
 import java.io.IOException;
@@ -41,12 +43,21 @@ public class NetworkHelper
     public static <C extends IAdvancedClient> IAdvancedHostManager<C> advancedHost(IAdvancedMessageRegistry<C> registry,
                                                                                    IAdvancedHostEventsListener<C> eventsListener,
                                                                                    IClientFactory<C> clientFactory,
+                                                                                   IHostSessionManager sessionManager,
                                                                                    String clientName, int port) throws IOException
     {
-        AdvancedHostManager<C> hostManager = new AdvancedHostManager<>(registry, eventsListener, clientFactory, clientName, port);
+        AdvancedHostManager<C> hostManager = new AdvancedHostManager<>(registry, eventsListener, clientFactory, sessionManager, clientName, port);
         Thread thread = new Thread(hostManager);
         thread.start();
         return hostManager;
+    }
+    
+    public static <C extends IAdvancedClient> IAdvancedHostManager<C> advancedHost(IAdvancedMessageRegistry<C> registry,
+                                                                                   IAdvancedHostEventsListener<C> eventsListener,
+                                                                                   IClientFactory<C> clientFactory,
+                                                                                   String clientName, int port) throws IOException
+    {
+        return advancedHost(registry, eventsListener, clientFactory, new HostSessionManager(), clientName, port);
     }
     
     /**
@@ -72,9 +83,37 @@ public class NetworkHelper
     
     public static <C extends IAdvancedClient> IAdvancedClientManager advancedConnect(IAdvancedMessageRegistry<C> registry,
                                                                                      IAdvancedClientEventsListener eventsListener,
+                                                                                     IClientSessionManager sessionManager,
                                                                                      String name, String ip, int port) throws IOException
     {
-        AdvancedClientManager<C> clientManager = new AdvancedClientManager<>(registry, eventsListener, name, ip, port);
+        AdvancedClientManager<C> clientManager = new AdvancedClientManager<>(registry, eventsListener, sessionManager, name, ip, port);
+        Thread thread = new Thread(clientManager);
+        thread.start();
+        return clientManager;
+    }
+    
+    public static <C extends IAdvancedClient> IAdvancedClientManager advancedConnect(IAdvancedMessageRegistry<C> registry,
+                                                                                     IAdvancedClientEventsListener eventsListener,
+                                                                                     String name, String ip, int port) throws IOException
+    {
+        ClientSessionManager clientSessionManager = new ClientSessionManager();
+        AdvancedClientManager<C> clientManager = new AdvancedClientManager<>(registry, eventsListener, clientSessionManager, name, ip, port)
+        {
+            @Override
+            public void close()
+            {
+                super.close();
+                
+                try
+                {
+                    clientSessionManager.writeToFile();
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        };
         Thread thread = new Thread(clientManager);
         thread.start();
         return clientManager;
