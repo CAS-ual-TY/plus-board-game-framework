@@ -26,8 +26,6 @@ public class Engine implements Runnable
     protected Window window;
     protected InputHandler inputHandler;
     
-    public static I18n I18N;
-    
     public Engine(IGame game)
     {
         this.game = game;
@@ -192,11 +190,9 @@ public class Engine implements Runnable
     
     protected void initI18n()
     {
-        I18N = new I18n();
-        
         try
         {
-            I18N.initializeI18N(game.getDefaultLocale());
+            I18n.initializeI18N(game.getDefaultLocale());
         }
         catch(IOException e)
         {

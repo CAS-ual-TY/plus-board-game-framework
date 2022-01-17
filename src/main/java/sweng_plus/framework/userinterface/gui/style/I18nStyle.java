@@ -1,6 +1,6 @@
 package sweng_plus.framework.userinterface.gui.style;
 
-import sweng_plus.framework.boardgame.Engine;
+import sweng_plus.framework.boardgame.I18n;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
@@ -12,7 +12,7 @@ public class I18nStyle extends FunctionalTextStyle
 {
     public I18nStyle(FontRenderer fontRenderer, List<String> text, AnchorPoint anchorPoint, Color4f color)
     {
-        super(fontRenderer, () -> text.stream().map(Engine.I18N::translate).collect(Collectors.toList()), anchorPoint, color);
+        super(fontRenderer, () -> text.stream().map(I18n::translate).collect(Collectors.toList()), anchorPoint, color);
     }
     
     public I18nStyle(FontRenderer fontRenderer, List<String> text, AnchorPoint anchorPoint)
