@@ -10,6 +10,7 @@ public class LudoFigure extends TeamNodeFigure<LudoNode, LudoFigure>
     public LudoFigure(TeamColor color, int index)
     {
         super(color);
+        this.index = index;
     }
     
     public int getIndex()
