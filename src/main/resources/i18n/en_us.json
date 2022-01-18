@@ -11,6 +11,7 @@
   "menu.cancel": "Cancel",
   "menu.ready": "Ready",
   "menu.lobby.back": "Back to menu",
+  "ludo.start_game": "Start game",
   "ludo.roll_dice": "Roll Dice",
   "ludo.win.prefix": "",
   "ludo.win.suffix": "has won"

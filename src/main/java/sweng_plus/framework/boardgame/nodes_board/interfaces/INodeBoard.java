@@ -83,11 +83,12 @@ public interface INodeBoard<N extends INode<F, N>, F extends INodeFigure<N, F>>
         {
             figure.getCurrentNode().removeFigure(figure);
         }
-    
+        
         placeFigure(figure, target);
     }
     
-    default void placeFigure(F figure, N target) {
+    default void placeFigure(F figure, N target)
+    {
         if(!isFigureOnBoard(figure) || !isNodeOnBoard(target))
         {
             return;

@@ -80,9 +80,4 @@ public interface IGame extends IScreenHolder
     {
         return 20;
     }
-    
-    default String getDefaultLocale()
-    {
-        return "en_us";
-    }
 }

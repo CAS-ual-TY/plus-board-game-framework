@@ -1,9 +1,6 @@
 package sweng_plus.framework.networking;
 
-import sweng_plus.framework.networking.interfaces.IAdvancedClientEventsListener;
-import sweng_plus.framework.networking.interfaces.IAdvancedClientManager;
-import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
-import sweng_plus.framework.networking.interfaces.IClient;
+import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.networking.util.LockedObject;
 import sweng_plus.framework.networking.util.TimeOutTracker;
 
@@ -16,6 +13,7 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C> i
 {
     protected IAdvancedMessageRegistry<C> advancedRegistry;
     protected IAdvancedClientEventsListener advancedEventsListener;
+    protected IClientSessionManager sessionManager;
     
     protected String name;
     
@@ -25,11 +23,12 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C> i
     protected LockedObject<TimeOutTracker> timeOutTracker;
     
     public AdvancedClientManager(IAdvancedMessageRegistry<C> registry, IAdvancedClientEventsListener eventsListener,
-                                 String name, String ip, int port) throws IOException
+                                 IClientSessionManager sessionManager, String name, String ip, int port) throws IOException
     {
         super(registry, eventsListener, ip, port);
         advancedRegistry = registry;
         advancedEventsListener = eventsListener;
+        this.sessionManager = sessionManager;
         this.name = name;
         
         timeOutTracker = new LockedObject<>(new TimeOutTracker(this::sendPing, this::lostConnection));
@@ -102,6 +101,6 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C> i
     @Override
     public UUID getClientIdentifierForSession()
     {
-        return clientIdentifier;
+        return sessionManager.getIdentifierForSession(sessionIdentifier);
     }
 }

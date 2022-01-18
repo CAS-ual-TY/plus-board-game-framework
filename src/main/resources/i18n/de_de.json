@@ -11,6 +11,7 @@
   "menu.cancel": "Abbruch",
   "menu.ready": "Fertig",
   "menu.lobby.back": "Zurück zum Menü",
+  "ludo.start_game": "Spiel starten",
   "ludo.roll_dice": "Würfeln",
   "ludo.win.prefix": "",
   "ludo.win.suffix": "hat gewonnen"

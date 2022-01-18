@@ -4,7 +4,7 @@ import sweng_plus.boardgames.ludo.Ludo;
 import sweng_plus.boardgames.ludo.gui.util.LudoStyles;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.WrappedScreen;
-import sweng_plus.framework.userinterface.gui.style.I18nStyle;
+import sweng_plus.framework.boardgame.gui.style.I18NStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
@@ -26,7 +26,7 @@ public class MenuConnectScreen extends WrappedScreen
         super(subScreen);
         
         Dimensions nameTextDims = new Dimensions(400, 0, AnchorPoint.M, 0, -260);
-        widgets.add(new SimpleWidget(screenHolder, nameTextDims, new I18nStyle(Ludo.instance().fontRenderer48, "menu.connect.name", Color4f.WHITE)));
+        widgets.add(new SimpleWidget(screenHolder, nameTextDims, new I18NStyle(Ludo.instance().fontRenderer48, "menu.connect.name", Color4f.WHITE)));
         
         Dimensions nameInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, -180);
         inputWidgetName = new InputWidget(screenHolder, nameInputDims, LudoStyles.makeActiveInputStyle(() -> inputWidgetName), LudoStyles.makeInactiveInputStyle(() -> inputWidgetName))
@@ -34,7 +34,7 @@ public class MenuConnectScreen extends WrappedScreen
         widgets.add(inputWidgetName);
         
         Dimensions ipTextDims = new Dimensions(400, 0, AnchorPoint.M, 0, -80);
-        widgets.add(new SimpleWidget(screenHolder, ipTextDims, new I18nStyle(Ludo.instance().fontRenderer48, "menu.connect.ip", Color4f.WHITE)));
+        widgets.add(new SimpleWidget(screenHolder, ipTextDims, new I18NStyle(Ludo.instance().fontRenderer48, "menu.connect.ip", Color4f.WHITE)));
         
         Dimensions ipInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 0);
         inputWidgetIP = new InputWidget(screenHolder, ipInputDims, LudoStyles.makeActiveInputStyle(() -> inputWidgetIP), LudoStyles.makeInactiveInputStyle(() -> inputWidgetIP))
@@ -42,7 +42,7 @@ public class MenuConnectScreen extends WrappedScreen
         widgets.add(inputWidgetIP);
         
         Dimensions portTextDims = new Dimensions(400, 0, AnchorPoint.M, 0, 100);
-        widgets.add(new SimpleWidget(screenHolder, portTextDims, new I18nStyle(Ludo.instance().fontRenderer48, "menu.connect.port", Color4f.WHITE)));
+        widgets.add(new SimpleWidget(screenHolder, portTextDims, new I18NStyle(Ludo.instance().fontRenderer48, "menu.connect.port", Color4f.WHITE)));
         
         Dimensions portInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 180);
         inputWidgetPort = new InputWidget(screenHolder, portInputDims, LudoStyles.makeActiveInputStyle(() -> inputWidgetPort), LudoStyles.makeInactiveInputStyle(() -> inputWidgetPort))

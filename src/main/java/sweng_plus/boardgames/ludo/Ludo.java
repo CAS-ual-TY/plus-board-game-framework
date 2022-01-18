@@ -8,6 +8,7 @@ import sweng_plus.boardgames.ludo.gui.MenuScreen;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.boardgame.EngineUtil;
+import sweng_plus.framework.boardgame.I18N;
 import sweng_plus.framework.boardgame.IGame;
 import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.userinterface.gui.Screen;
@@ -24,6 +25,9 @@ import java.util.ArrayList;
 public class Ludo implements IGame
 {
     private static Ludo instance;
+    
+    public static final String LOCALE_DE_DE = "de_de";
+    public static final String LOCALE_EN_US = "en_us";
     
     private Screen screen;
     
@@ -81,7 +85,7 @@ public class Ludo implements IGame
     @Override
     public String getWindowTitle()
     {
-        return "Ludo";
+        return "Mensch ärgere Dich nicht!";
     }
     
     @Override
@@ -108,6 +112,15 @@ public class Ludo implements IGame
         catch(IOException e)
         {
             throw new RuntimeException("failed to load font.", e);
+        }
+        
+        try
+        {
+            I18N.initializeI18N(LOCALE_DE_DE);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
         }
         
         Engine.instance().getInputHandler().registerKeyTracking(GLFW.GLFW_KEY_SPACE);
@@ -158,12 +171,6 @@ public class Ludo implements IGame
     public void setScreen(Screen screen)
     {
         this.screen = screen;
-    }
-    
-    @Override
-    public String getDefaultLocale()
-    {
-        return "de_de";
     }
     
     public static void main(String... args)

@@ -60,9 +60,9 @@ public class ChatMenuConnectScreen extends StackedScreen
         String nameInput = inputWidgetName.getText();
         String ipInput = inputWidgetIP.getText();
         String portInput = inputWidgetPort.getText();
-    
+        
         ChatGame.instance().name = nameInput;
-    
+        
         try
         {
             ChatGame.instance().clientManager = NetworkHelper.advancedConnect(ChatGame.instance().protocol,

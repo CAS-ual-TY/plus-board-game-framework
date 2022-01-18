@@ -1,9 +1,6 @@
 package sweng_plus.framework.networking;
 
-import sweng_plus.framework.networking.interfaces.IAdvancedClient;
-import sweng_plus.framework.networking.interfaces.IAdvancedHostEventsListener;
-import sweng_plus.framework.networking.interfaces.IAdvancedHostManager;
-import sweng_plus.framework.networking.interfaces.IAdvancedMessageRegistry;
+import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.networking.util.*;
 
 import java.io.IOException;
@@ -17,24 +14,23 @@ public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<
 {
     protected IAdvancedMessageRegistry<C> advancedRegistry;
     protected IAdvancedHostEventsListener<C> advancedEventsListener;
+    protected IHostSessionManager sessionManager;
     
     protected String clientName;
-    
-    protected UUID sessionIdentifier;
     
     protected LockedObject<HashMap<C, TimeOutTracker>> clientTimeOutTrackerMap;
     protected LockedObject<HashMap<C, AuthTracker<C>>> clientAuthTrackerMap;
     protected LinkedList<C> authTrackersToRemove;
     
     public AdvancedHostManager(IAdvancedMessageRegistry<C> registry, IAdvancedHostEventsListener<C> eventsListener,
-                               IClientFactory<C> clientFactory, String clientName, int port) throws IOException
+                               IClientFactory<C> clientFactory, IHostSessionManager sessionManager, String clientName, int port) throws IOException
     {
         super(registry, eventsListener, clientFactory, port);
         advancedRegistry = registry;
         advancedEventsListener = eventsListener;
+        this.sessionManager = sessionManager;
         
         this.clientName = clientName;
-        sessionIdentifier = UUID.randomUUID();
         
         clientTimeOutTrackerMap = new LockedObject<>(new HashMap<>());
         clientAuthTrackerMap = new LockedObject<>(new HashMap<>());
@@ -185,6 +181,6 @@ public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<
     @Override
     public UUID getSessionIdentifier()
     {
-        return sessionIdentifier;
+        return sessionManager.getSessionIdentifier();
     }
 }

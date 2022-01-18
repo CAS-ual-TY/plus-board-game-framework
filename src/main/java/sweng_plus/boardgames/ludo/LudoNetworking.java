@@ -134,10 +134,5 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
     public void clientAuthSuccessful(LudoClient client)
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
-        
-        if(hostManager.getAllClients().size() >= 2) //TODO START
-        {
-            ludo.startGame(true, hostManager.getAllClients().size());
-        }
     }
 }
