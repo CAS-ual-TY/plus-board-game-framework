@@ -33,6 +33,7 @@ public class LobbyScreen extends Screen
     private void cancel()
     {
         screenHolder.setScreen(new MenuScreen(screenHolder));
+        Ludo.instance().getNetworking().getClientManager().close();
     }
     
     private void start()

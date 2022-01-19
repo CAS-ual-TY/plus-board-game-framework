@@ -40,10 +40,6 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
                 this::getClientManager, this::getHostManager,
                 this, this);
         
-        protocol.registerMessage(messageID++, SendNameMessage.Handler::encodeMessage,
-                SendNameMessage.Handler::decodeMessage, SendNameMessage.Handler::handleMessage,
-                SendNameMessage.class);
-        
         protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
@@ -102,8 +98,6 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
         clientManager = NetworkHelper.advancedConnect(protocol, this, playerName, ip, port);
         
         ludo.setScreen(new LobbyScreen(ludo));
-        
-        clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
     
     public void host(String playerName, int port) throws IOException
@@ -115,8 +109,6 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
         clientManager = hostManager;
         
         ludo.setScreen(new LobbyScreen(ludo));
-        
-        clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
     
     public boolean isHost()
@@ -127,12 +119,13 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
     @Override
     public void clientDisconnectedOrderly(LudoClient client)
     {
-    
+        Ludo.instance().getNetworking().getHostManager().sendMessageToAllClients(SendNamesMessage.makeNamesMessage());
     }
     
     @Override
     public void clientAuthSuccessful(LudoClient client)
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
+        Ludo.instance().getNetworking().getHostManager().sendMessageToAllClients(SendNamesMessage.makeNamesMessage());
     }
 }
