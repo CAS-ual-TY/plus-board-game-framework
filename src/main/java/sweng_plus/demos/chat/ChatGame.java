@@ -30,11 +30,7 @@ public class ChatGame implements IGame
     
     private Screen screen;
     
-    public FontRenderer fontRenderer64;
     public FontRenderer fontRenderer;
-    public FontRenderer fontRenderer32;
-    public FontRenderer fontRenderer24;
-    public FontRenderer fontRenderer16;
     
     public IAdvancedMessageRegistry<ChatClient> protocol;
     public ChatEventsListener listener;
@@ -64,7 +60,7 @@ public class ChatGame implements IGame
     @Override
     public String getWindowIconResource()
     {
-        return "/icon.png";
+        return "/chat_demo/icon.png";
     }
     
     @Override

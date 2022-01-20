@@ -26,8 +26,8 @@ public class Ludo implements IGame
 {
     private static Ludo instance;
     
-    public static final String LOCALE_DE_DE = "de_de";
-    public static final String LOCALE_EN_US = "en_us";
+    public static final String LOCALE_DE_DE = "/ludo/i18n/de_de.json";
+    public static final String LOCALE_EN_US = "/ludo/i18n/en_us.json";
     
     private Screen screen;
     
@@ -91,7 +91,7 @@ public class Ludo implements IGame
     @Override
     public String getWindowIconResource()
     {
-        return "/icon.png";
+        return "/ludo/icon.png";
     }
     
     @Override

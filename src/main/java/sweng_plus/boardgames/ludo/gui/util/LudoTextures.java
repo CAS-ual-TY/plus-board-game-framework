@@ -25,12 +25,12 @@ public class LudoTextures
     
     public static void load() throws IOException
     {
-        activeButton = TextureHelper.createTexture("/textures/button_active.png");
-        inactiveButton = TextureHelper.createTexture("/textures/button_inactive.png");
-        node = TextureHelper.createTexture("/textures/node.png");
-        figure = TextureHelper.createTexture("/textures/figure.png");
-        figureHuge = TextureHelper.createTexture("/textures/background/figure_huge.png");
-        logo = TextureHelper.createTexture("/textures/background/logo.png");
+        activeButton = TextureHelper.createTexture("/ludo/textures/button_active.png");
+        inactiveButton = TextureHelper.createTexture("/ludo/textures/button_inactive.png");
+        node = TextureHelper.createTexture("/ludo/textures/node.png");
+        figure = TextureHelper.createTexture("/ludo/textures/figure.png");
+        figureHuge = TextureHelper.createTexture("/ludo/textures/background/figure_huge.png");
+        logo = TextureHelper.createTexture("/ludo/textures/background/logo.png");
         
         dices = new Texture[6];
         diceAnim = new SpriteTexture[dices.length][];
@@ -39,9 +39,9 @@ public class LudoTextures
         
         for(int dice = 0; dice < dices.length; ++dice)
         {
-            dices[dice] = TextureHelper.createTexture("/textures/dice/dice_" + (dice + 1) + ".png");
+            dices[dice] = TextureHelper.createTexture("/ludo/textures/dice/dice_" + (dice + 1) + ".png");
             
-            diceAnim[dice] = TextureHelper.createTexture("/textures/dice/anim_" + (dice + 1) + "/sprites.png").makeSprites(64, 64);
+            diceAnim[dice] = TextureHelper.createTexture("/ludo/textures/dice/anim_" + (dice + 1) + "/sprites.png").makeSprites(64, 64);
             diceAnimPositions[dice] = new Vector2i[diceAnim[dice].length];
             
             for(int i = 0; i < diceAnimPositions[dice].length; i++)
@@ -50,7 +50,7 @@ public class LudoTextures
             }
             
             diceAnimLast[dice] = 0;
-            try(BufferedReader reader = EngineUtil.getResourceReader("/textures/dice/anim_" + (dice + 1) + "/coordinates.txt"))
+            try(BufferedReader reader = EngineUtil.getResourceReader("/ludo/textures/dice/anim_" + (dice + 1) + "/coordinates.txt"))
             {
                 int index, left, top, right, bottom;
                 int w, h;

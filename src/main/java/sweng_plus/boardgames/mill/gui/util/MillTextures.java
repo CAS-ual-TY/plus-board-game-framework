@@ -15,9 +15,9 @@ public class MillTextures
     public static void load() throws IOException
     {
         
-        figureBlack = TextureHelper.createTexture("/textures/mill_figure_black.png");
-        figureWhite = TextureHelper.createTexture("/textures/mill_figure_white.png");
-        logo = TextureHelper.createTexture("/textures/background/logo2.png");
-        background = TextureHelper.createTexture("/textures/background/background.png");
+        figureBlack = TextureHelper.createTexture("/mill/textures/mill_figure_black.png");
+        figureWhite = TextureHelper.createTexture("/mill/textures/mill_figure_white.png");
+        logo = TextureHelper.createTexture("/mill/textures/logo.png");
+        background = TextureHelper.createTexture("/mill/textures/background.png");
     }
 }

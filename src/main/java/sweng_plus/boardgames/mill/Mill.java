@@ -127,7 +127,7 @@ public class Mill implements IGame
     @Override
     public String getWindowIconResource()
     {
-        return "/textures/mill_figure_black.png";
+        return "/mill/icon.png";
     }
     
     @Override
