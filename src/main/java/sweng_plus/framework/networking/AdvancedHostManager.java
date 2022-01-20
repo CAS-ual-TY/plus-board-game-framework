@@ -18,6 +18,8 @@ public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<
     
     protected String clientName;
     
+    protected HashMap<UUID, C> uuidClientsMap;
+    
     protected LockedObject<HashMap<C, TimeOutTracker>> clientTimeOutTrackerMap;
     protected LockedObject<HashMap<C, AuthTracker<C>>> clientAuthTrackerMap;
     protected LinkedList<C> authTrackersToRemove;
@@ -31,6 +33,8 @@ public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<
         this.sessionManager = sessionManager;
         
         this.clientName = clientName;
+        
+        uuidClientsMap = new HashMap<>();
         
         clientTimeOutTrackerMap = new LockedObject<>(new HashMap<>());
         clientAuthTrackerMap = new LockedObject<>(new HashMap<>());
@@ -164,11 +168,21 @@ public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<
         
         authTrackersToRemove.add(client);
         
-        if(name.length() >= 3)
+        if(advancedEventsListener.authPredicate(identifier, name))
         {
             client.setName(name);
             client.setUUID(identifier);
-            advancedEventsListener.clientAuthSuccessful(client);
+            
+            C old = uuidClientsMap.put(identifier, client);
+            
+            if(old != null)
+            {
+                advancedEventsListener.clientReconnected(old, client);
+            }
+            else
+            {
+                advancedEventsListener.clientAuthSuccessful(client);
+            }
         }
         else
         {
