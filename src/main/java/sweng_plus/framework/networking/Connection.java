@@ -12,7 +12,7 @@ import java.net.SocketTimeoutException;
 
 public class Connection<C extends IClient> implements Runnable
 {
-    public SocketSupplier<C> socketSuppler;
+    public SocketSupplier<C> socketSupplier;
     public IConnectionInteractor<C> connectionInteractor;
     
     public CircularBuffer readBuffer;
@@ -22,9 +22,9 @@ public class Connection<C extends IClient> implements Runnable
     public Socket socket;
     public OutputStream out;
     
-    public Connection(SocketSupplier<C> socketSuppler, IConnectionInteractor<C> connectionInteractor)
+    public Connection(SocketSupplier<C> socketSupplier, IConnectionInteractor<C> connectionInteractor)
     {
-        this.socketSuppler = socketSuppler;
+        this.socketSupplier = socketSupplier;
         this.connectionInteractor = connectionInteractor;
         
         readBuffer = new CircularBuffer();
@@ -35,7 +35,7 @@ public class Connection<C extends IClient> implements Runnable
     {
         try
         {
-            socket = socketSuppler.makeOrGetSocket(this);
+            socket = socketSupplier.makeOrGetSocket(this);
             
             if(socket == null)
             {
