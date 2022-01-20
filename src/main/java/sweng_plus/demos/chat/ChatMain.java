@@ -24,9 +24,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class ChatGame implements IGame
+public class ChatMain implements IGame
 {
-    private static ChatGame instance;
+    private static ChatMain instance;
     
     private Screen screen;
     
@@ -40,13 +40,13 @@ public class ChatGame implements IGame
     
     public String name;
     
-    public ChatGame()
+    public ChatMain()
     {
         //noinspection ThisEscapedInObjectConstruction
         instance = this;
     }
     
-    public static ChatGame instance()
+    public static ChatMain instance()
     {
         return instance;
     }
@@ -181,6 +181,6 @@ public class ChatGame implements IGame
     
     public static void main(String... args)
     {
-        new Engine(new ChatGame()).run();
+        new Engine(new ChatMain()).run();
     }
 }

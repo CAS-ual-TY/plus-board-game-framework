@@ -9,7 +9,7 @@ public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvan
 {
     private void displayScreen(List<String> message)
     {
-        ChatGame.instance().setScreen(new ChatDisconnectedScreen(ChatGame.instance(), message));
+        ChatMain.instance().setScreen(new ChatDisconnectedScreen(ChatMain.instance(), message));
     }
     
     private void displayScreen(String message)
@@ -44,12 +44,12 @@ public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvan
     @Override
     public void clientDisconnectedOrderly(ChatClient client)
     {
-        ChatGame.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(client.getName() + " disconnected."));
+        ChatMain.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(client.getName() + " disconnected."));
     }
     
     @Override
     public void clientAuthSuccessful(ChatClient client)
     {
-        ChatGame.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(client.getName() + " connected."));
+        ChatMain.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(client.getName() + " connected."));
     }
 }

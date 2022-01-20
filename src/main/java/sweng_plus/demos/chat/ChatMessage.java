@@ -79,8 +79,8 @@ public record ChatMessage(byte type, String sender, String message, long timesta
         public static void handleMessage(Optional<ChatClient> clientOptional, ChatMessage msg)
         {
             clientOptional.ifPresentOrElse(
-                    (client) -> ChatGame.instance().hostManager.sendMessageToAllClients(serverToClient(client, msg.message())),
-                    () -> ((ChatScreen) ChatGame.instance().getScreen())
+                    (client) -> ChatMain.instance().hostManager.sendMessageToAllClients(serverToClient(client, msg.message())),
+                    () -> ((ChatScreen) ChatMain.instance().getScreen())
                             .addMessage(msg.sender(), msg.message(), msg.timestamp())
             );
         }

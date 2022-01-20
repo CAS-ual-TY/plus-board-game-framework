@@ -31,20 +31,20 @@ public class ChatScreen extends Screen
     {
         super(screenHolder);
         
-        chatFontRenderer = ChatGame.instance().fontRenderer;
+        chatFontRenderer = ChatMain.instance().fontRenderer;
         
         Dimensions leaveDimensions = new Dimensions(400, 100, AnchorPoint.BL);
         Dimensions sendDimensions = new Dimensions(100, 100, AnchorPoint.BR);
         
-        widgets.add(new FunctionalButtonWidget(screenHolder, leaveDimensions, ChatGame.hoverStyle("Leave"), this::leave));
-        widgets.add(new FunctionalButtonWidget(screenHolder, sendDimensions, ChatGame.hoverStyle(">"), this::sendMessage));
+        widgets.add(new FunctionalButtonWidget(screenHolder, leaveDimensions, ChatMain.hoverStyle("Leave"), this::leave));
+        widgets.add(new FunctionalButtonWidget(screenHolder, sendDimensions, ChatMain.hoverStyle(">"), this::sendMessage));
         
         chatMessages = new LinkedList<>();
         
         widgets.add(chatWidget = new SimpleWidget(screenHolder, new Dimensions(CHAT_WIDTH, 100, AnchorPoint.BR, 0, -100), new FunctionalTextStyle(chatFontRenderer, this::getChat, AnchorPoint.BL, Color4f.BLACK)));
         widgets.add(inputWidget = new InputWidget(screenHolder, new Dimensions(CHAT_WIDTH - 100, 100, AnchorPoint.BR, -100, 0),
-                ChatGame.activeStyle(() -> inputWidget.getTextAsList(), AnchorPoint.L),
-                ChatGame.inactiveStyle(() -> inputWidget.getTextAsList(), AnchorPoint.L), this::enter));
+                ChatMain.activeStyle(() -> inputWidget.getTextAsList(), AnchorPoint.L),
+                ChatMain.inactiveStyle(() -> inputWidget.getTextAsList(), AnchorPoint.L), this::enter));
     }
     
     @Override
@@ -65,9 +65,9 @@ public class ChatScreen extends Screen
     
     private void leave(ButtonWidget buttonWidget, int mouseX, int mouseY, int mods)
     {
-        ChatGame.instance().clientManager.close();
+        ChatMain.instance().clientManager.close();
         screenHolder.setScreen(new ChatDisconnectedScreen(screenHolder,
-                ChatGame.instance().hostManager != null ? List.of("Closed the server.") : List.of("Disconnected.")));
+                ChatMain.instance().hostManager != null ? List.of("Closed the server.") : List.of("Disconnected.")));
     }
     
     public void addMessage(String sender, String message, long timestamp)
@@ -91,7 +91,7 @@ public class ChatScreen extends Screen
         
         if(!text.isEmpty())
         {
-            ChatGame.instance().clientManager.sendMessageToServer(ChatMessage.clientToServer(text));
+            ChatMain.instance().clientManager.sendMessageToServer(ChatMessage.clientToServer(text));
         }
         
         inputWidget.clearText();

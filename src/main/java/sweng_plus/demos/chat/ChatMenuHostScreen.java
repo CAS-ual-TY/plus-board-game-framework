@@ -23,26 +23,26 @@ public class ChatMenuHostScreen extends StackedScreen
         super(subScreen);
         
         Dimensions nameDims = new Dimensions(400, 80, AnchorPoint.M, 0, -280);
-        widgets.add(new SimpleWidget(screenHolder, nameDims, new TextStyle(ChatGame.instance().fontRenderer, "Name:", Color4f.WHITE)));
+        widgets.add(new SimpleWidget(screenHolder, nameDims, new TextStyle(ChatMain.instance().fontRenderer, "Name:", Color4f.WHITE)));
         
         Dimensions inputDimsName = new Dimensions(500, 80, AnchorPoint.M, 0, -200);
-        inputWidgetName = new InputWidget(screenHolder, inputDimsName, ChatGame.activeStyle(() -> inputWidgetName.getTextAsList()), ChatGame.inactiveStyle(() -> inputWidgetName.getTextAsList()))
+        inputWidgetName = new InputWidget(screenHolder, inputDimsName, ChatMain.activeStyle(() -> inputWidgetName.getTextAsList()), ChatMain.inactiveStyle(() -> inputWidgetName.getTextAsList()))
                 .setText("Host");
         widgets.add(inputWidgetName);
         
         Dimensions textDims = new Dimensions(400, 80, AnchorPoint.M, 0, -100);
-        widgets.add(new SimpleWidget(screenHolder, textDims, new TextStyle(ChatGame.instance().fontRenderer, "Port:", Color4f.WHITE)));
+        widgets.add(new SimpleWidget(screenHolder, textDims, new TextStyle(ChatMain.instance().fontRenderer, "Port:", Color4f.WHITE)));
         
         Dimensions inputDims = new Dimensions(500, 80, AnchorPoint.M, 0, -20);
-        inputWidgetPort = new InputWidget(screenHolder, inputDims, ChatGame.activeStyle(() -> inputWidgetPort.getTextAsList()), ChatGame.inactiveStyle(() -> inputWidgetPort.getTextAsList()))
+        inputWidgetPort = new InputWidget(screenHolder, inputDims, ChatMain.activeStyle(() -> inputWidgetPort.getTextAsList()), ChatMain.inactiveStyle(() -> inputWidgetPort.getTextAsList()))
                 .setText("25555");
         widgets.add(inputWidgetPort);
         
         Dimensions acceptDims = new Dimensions(500, 80, AnchorPoint.M, 0, 180);
-        widgets.add(new FunctionalButtonWidget(screenHolder, acceptDims, ChatGame.hoverStyle("Host"), this::accept));
+        widgets.add(new FunctionalButtonWidget(screenHolder, acceptDims, ChatMain.hoverStyle("Host"), this::accept));
         
         Dimensions cancelDims = new Dimensions(500, 80, AnchorPoint.M, 0, 280);
-        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, ChatGame.hoverStyle("Cancel"), this::cancel));
+        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, ChatMain.hoverStyle("Cancel"), this::cancel));
     }
     
     private void accept()
@@ -50,14 +50,14 @@ public class ChatMenuHostScreen extends StackedScreen
         String portInput = inputWidgetPort.getText();
         String nameInput = inputWidgetName.getText();
         
-        ChatGame.instance().name = nameInput;
+        ChatMain.instance().name = nameInput;
         
         try
         {
-            ChatGame.instance().hostManager = NetworkHelper.advancedHost(ChatGame.instance().protocol,
-                    ChatGame.instance().listener, ChatClient::new, nameInput, Integer.parseInt(portInput));
-            ChatGame.instance().clientManager = ChatGame.instance().hostManager;
-            ChatGame.instance().setScreen(new ChatScreen(screenHolder));
+            ChatMain.instance().hostManager = NetworkHelper.advancedHost(ChatMain.instance().protocol,
+                    ChatMain.instance().listener, ChatClient::new, nameInput, Integer.parseInt(portInput));
+            ChatMain.instance().clientManager = ChatMain.instance().hostManager;
+            ChatMain.instance().setScreen(new ChatScreen(screenHolder));
         }
         catch(IOException e)
         {

@@ -25,34 +25,34 @@ public class ChatMenuConnectScreen extends StackedScreen
         super(subScreen);
         
         Dimensions nameTextDims = new Dimensions(400, 80, AnchorPoint.M, 0, -360);
-        widgets.add(new SimpleWidget(screenHolder, nameTextDims, new TextStyle(ChatGame.instance().fontRenderer, "Name:", Color4f.WHITE)));
+        widgets.add(new SimpleWidget(screenHolder, nameTextDims, new TextStyle(ChatMain.instance().fontRenderer, "Name:", Color4f.WHITE)));
         
         Dimensions nameInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, -280);
-        inputWidgetName = new InputWidget(screenHolder, nameInputDims, ChatGame.activeStyle(() -> inputWidgetName.getTextAsList()), ChatGame.inactiveStyle(() -> inputWidgetName.getTextAsList()))
+        inputWidgetName = new InputWidget(screenHolder, nameInputDims, ChatMain.activeStyle(() -> inputWidgetName.getTextAsList()), ChatMain.inactiveStyle(() -> inputWidgetName.getTextAsList()))
                 .setText(generateRandomPlayer());
         widgets.add(inputWidgetName);
         
         Dimensions ipTextDims = new Dimensions(400, 80, AnchorPoint.M, 0, -180);
-        widgets.add(new SimpleWidget(screenHolder, ipTextDims, new TextStyle(ChatGame.instance().fontRenderer, "IP:", Color4f.WHITE)));
+        widgets.add(new SimpleWidget(screenHolder, ipTextDims, new TextStyle(ChatMain.instance().fontRenderer, "IP:", Color4f.WHITE)));
         
         Dimensions ipInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, -100);
-        inputWidgetIP = new InputWidget(screenHolder, ipInputDims, ChatGame.activeStyle(() -> inputWidgetIP.getTextAsList()), ChatGame.inactiveStyle(() -> inputWidgetIP.getTextAsList()))
+        inputWidgetIP = new InputWidget(screenHolder, ipInputDims, ChatMain.activeStyle(() -> inputWidgetIP.getTextAsList()), ChatMain.inactiveStyle(() -> inputWidgetIP.getTextAsList()))
                 .setText("localhost");
         widgets.add(inputWidgetIP);
         
         Dimensions portTextDims = new Dimensions(400, 80, AnchorPoint.M, 0, 0);
-        widgets.add(new SimpleWidget(screenHolder, portTextDims, new TextStyle(ChatGame.instance().fontRenderer, "Port:", Color4f.WHITE)));
+        widgets.add(new SimpleWidget(screenHolder, portTextDims, new TextStyle(ChatMain.instance().fontRenderer, "Port:", Color4f.WHITE)));
         
         Dimensions portInputDims = new Dimensions(500, 80, AnchorPoint.M, 0, 80);
-        inputWidgetPort = new InputWidget(screenHolder, portInputDims, ChatGame.activeStyle(() -> inputWidgetPort.getTextAsList()), ChatGame.inactiveStyle(() -> inputWidgetPort.getTextAsList()))
+        inputWidgetPort = new InputWidget(screenHolder, portInputDims, ChatMain.activeStyle(() -> inputWidgetPort.getTextAsList()), ChatMain.inactiveStyle(() -> inputWidgetPort.getTextAsList()))
                 .setText("25555");
         widgets.add(inputWidgetPort);
         
         Dimensions acceptDims = new Dimensions(500, 80, AnchorPoint.M, 0, 260);
-        widgets.add(new FunctionalButtonWidget(screenHolder, acceptDims, ChatGame.hoverStyle("Connect"), this::accept));
+        widgets.add(new FunctionalButtonWidget(screenHolder, acceptDims, ChatMain.hoverStyle("Connect"), this::accept));
         
         Dimensions cancelDims = new Dimensions(500, 80, AnchorPoint.M, 0, 360);
-        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, ChatGame.hoverStyle("Cancel"), this::cancel));
+        widgets.add(new FunctionalButtonWidget(screenHolder, cancelDims, ChatMain.hoverStyle("Cancel"), this::cancel));
     }
     
     private void accept()
@@ -61,13 +61,13 @@ public class ChatMenuConnectScreen extends StackedScreen
         String ipInput = inputWidgetIP.getText();
         String portInput = inputWidgetPort.getText();
         
-        ChatGame.instance().name = nameInput;
+        ChatMain.instance().name = nameInput;
         
         try
         {
-            ChatGame.instance().clientManager = NetworkHelper.advancedConnect(ChatGame.instance().protocol,
-                    ChatGame.instance().listener, nameInput, ipInput, Integer.parseInt(portInput));
-            ChatGame.instance().setScreen(new ChatScreen(screenHolder));
+            ChatMain.instance().clientManager = NetworkHelper.advancedConnect(ChatMain.instance().protocol,
+                    ChatMain.instance().listener, nameInput, ipInput, Integer.parseInt(portInput));
+            ChatMain.instance().setScreen(new ChatScreen(screenHolder));
         }
         catch(IOException e)
         {
