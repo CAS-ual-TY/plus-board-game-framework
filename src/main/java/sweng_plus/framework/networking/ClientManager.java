@@ -18,6 +18,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     protected OutputStream out;
     protected CircularBuffer writeBuffer;
     
+    protected Connection<C> connection;
     protected Thread thread;
     
     public ClientManager(IMessageRegistry<C> registry, IClientEventsListener eventsListener, String ip, int port) throws IOException
@@ -32,7 +33,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public void run() // Network Manager Thread
     {
-        thread = new Thread(new Connection<>((connection) -> socket, this));
+        thread = new Thread(connection = new Connection<>((connection) -> socket, this));
         thread.start();
         
         super.run();
@@ -41,11 +42,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     @Override
     public <M> void sendMessageToServerUnsafe(M message) throws IOException // Main Thread
     {
-        if(!socket.isClosed())
-        {
-            getMessageRegistry().encodeMessage(writeBuffer, message);
-            writeBuffer.writeToOutputStream(out);
-        }
+        connection.sendMessage(message);
     }
     
     @Override
@@ -55,7 +52,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
-    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler)
+    public <M> void receivedMessage(M msg, byte uMsgPosition, IMessageHandler<M, C> handler)
     {
         connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
                 connectionThreadMessages1.add(() -> handler.handleMessage(Optional.empty(), msg)));

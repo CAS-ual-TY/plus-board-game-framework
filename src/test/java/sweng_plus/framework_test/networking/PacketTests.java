@@ -18,9 +18,9 @@ public class PacketTests
         MessageRegistry<IClient> r = new MessageRegistry(2);
         r.registerMessage((byte) 0, TestMessage.Handler::encodeMessage, TestMessage.Handler::decodeMessage,
                 TestMessage.Handler::handleMessage, TestMessage.class);
-        r.encodeMessage(buffer, msg);
+        r.encodeMessage(buffer, msg, (byte)0);
         
-        r.<TestMessage>decodeMessage(buffer, (msg2, handler) ->
+        r.<TestMessage>decodeMessage(buffer, (msg2, uMsgPosition, handler) ->
         {
             Assertions.assertTrue(buffer.isEmpty());
             Assertions.assertEquals(msg.message, msg2.message);

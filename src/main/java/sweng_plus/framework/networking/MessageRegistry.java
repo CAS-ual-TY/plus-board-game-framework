@@ -3,8 +3,6 @@ package sweng_plus.framework.networking;
 import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
-import java.util.function.BiConsumer;
-
 @SuppressWarnings("unchecked")
 public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
 {
@@ -66,7 +64,7 @@ public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
     }
     
     @Override
-    public <M> void encodeMessage(CircularBuffer writeBuffer, M message, BiConsumer<M, IMessageHandler<M, C>> messageHandlerConsumer)
+    public <M> void encodeMessage(CircularBuffer writeBuffer, M message, byte uMsgPosition, IMessageHandlerConsumer<M, C> messageHandlerConsumer)
     {
         writeBuffer.startWriting();
         
@@ -77,6 +75,8 @@ public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
         byte messageID = getIDForMessage(message);
         writeBuffer.writeByte(messageID);
         
+        writeBuffer.writeByte(uMsgPosition);
+        
         IMessageEncoder<M> encoder = (IMessageEncoder<M>) encoders[messageID];
         encoder.encodeMessage(writeBuffer, message);
         
@@ -85,23 +85,24 @@ public class MessageRegistry<C extends IClient> implements IMessageRegistry<C>
         short newSize = (short) writeBuffer.size();
         writeBuffer.setShort(oldPos, (short) (newSize - oldSize));
         
-        messageHandlerConsumer.accept(message, (IMessageHandler<M, C>) handlers[messageID]);
+        messageHandlerConsumer.accept(message, uMsgPosition, (IMessageHandler<M, C>) handlers[messageID]);
     }
     
     @Override
-    public <M> M decodeMessage(CircularBuffer readBuffer, BiConsumer<M, IMessageHandler<M, C>> messageHandlerConsumer)
+    public <M> M decodeMessage(CircularBuffer readBuffer, IMessageHandlerConsumer<M, C> messageHandlerConsumer)
     {
         readBuffer.startReading();
         
         short size = readBuffer.readShort();
         byte messageID = readBuffer.readByte();
+        byte uMsgPosition = readBuffer.readByte();
         
         IMessageDecoder<M> decoder = (IMessageDecoder<M>) decoders[messageID];
         M message = decoder.decodeMessage(readBuffer);
         
         readBuffer.endReading();
         
-        messageHandlerConsumer.accept(message, (IMessageHandler<M, C>) handlers[messageID]);
+        messageHandlerConsumer.accept(message, uMsgPosition, (IMessageHandler<M, C>) handlers[messageID]);
         
         return message;
     }

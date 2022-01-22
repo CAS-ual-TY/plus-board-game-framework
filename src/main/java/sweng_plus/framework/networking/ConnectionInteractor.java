@@ -68,7 +68,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     }
     
     @Override
-    public abstract <M> void receivedMessage(M msg, IMessageHandler<M, C> handler);
+    public abstract <M> void receivedMessage(M msg, byte uMsgPosition, IMessageHandler<M, C> handler);
     
     public void runOnMainThreadSafely(Runnable r)
     {

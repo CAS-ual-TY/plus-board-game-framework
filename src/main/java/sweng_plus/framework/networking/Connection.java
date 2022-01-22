@@ -16,6 +16,7 @@ public class Connection<C extends IClient> implements Runnable
     public IConnectionInteractor<C> connectionInteractor;
     
     public CircularBuffer readBuffer;
+    public CircularBuffer writeBuffer;
     
     // kann entweder Client -> Server socket sein (einfach der Socket)
     // oder ein serverSocket.accept() call
@@ -28,6 +29,7 @@ public class Connection<C extends IClient> implements Runnable
         this.connectionInteractor = connectionInteractor;
         
         readBuffer = new CircularBuffer();
+        writeBuffer = new CircularBuffer();
     }
     
     @Override
@@ -64,8 +66,8 @@ public class Connection<C extends IClient> implements Runnable
                     
                     while(connectionInteractor.getMessageRegistry().canDecodeMessage(readBuffer))
                     {
-                        connectionInteractor.getMessageRegistry().decodeMessage(readBuffer, (msg, handler) ->
-                                connectionInteractor.receivedMessage(msg, handler)
+                        connectionInteractor.getMessageRegistry().decodeMessage(readBuffer, (msg, uMsgPosition, handler) ->
+                                connectionInteractor.receivedMessage(msg, uMsgPosition, handler)
                         );
                     }
                 }
@@ -77,6 +79,15 @@ public class Connection<C extends IClient> implements Runnable
         catch(IOException e)
         {
             connectionInteractor.connectionSocketClosedWithException(e);
+        }
+    }
+    
+    public <M> void sendMessage(M msg) throws IOException
+    {
+        if(!socket.isClosed())
+        {
+            connectionInteractor.getMessageRegistry().encodeMessage(writeBuffer, msg, (byte) 0); // TODO uMsgPos
+            writeBuffer.writeToOutputStream(out);
         }
     }
     

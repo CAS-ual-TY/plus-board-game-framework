@@ -71,9 +71,9 @@ public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<
     }
     
     @Override
-    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler, C client)
+    public <M> void receivedMessage(M msg, byte uMsgPosition, IMessageHandler<M, C> handler, C client)
     {
-        super.receivedMessage(msg, handler, client);
+        super.receivedMessage(msg, uMsgPosition, handler, client);
         
         clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
         {

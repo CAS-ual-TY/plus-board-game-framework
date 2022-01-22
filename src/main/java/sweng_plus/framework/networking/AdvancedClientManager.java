@@ -56,10 +56,10 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C> i
     }
     
     @Override
-    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler)
+    public <M> void receivedMessage(M msg, byte uMsgPosition, IMessageHandler<M, C> handler)
     {
         timeOutTracker.exclusiveGet(TimeOutTracker::reset);
-        super.receivedMessage(msg, handler);
+        super.receivedMessage(msg, uMsgPosition, handler);
     }
     
     public void sendPing()

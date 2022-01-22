@@ -3,8 +3,6 @@ package sweng_plus.framework.networking.interfaces;
 import sweng_plus.framework.networking.MessageRegistry;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
-import java.util.function.BiConsumer;
-
 /**
  * Used as a client-server protocol.
  */
@@ -41,14 +39,14 @@ public interface IMessageRegistry<C extends IClient>
      * @param messageHandlerConsumer A way to access the involved {@link IMessageHandler} without having to
      *                               call the potentially costly {@link #getHandlerForMessage(M)}.
      */
-    <M> void encodeMessage(CircularBuffer writeBuffer, M message, BiConsumer<M, IMessageHandler<M, C>> messageHandlerConsumer);
+    <M> void encodeMessage(CircularBuffer writeBuffer, M message, byte uMsgPosition, IMessageHandlerConsumer<M, C> messageHandlerConsumer);
     
     /**
-     * Simplified version of {@link #encodeMessage(CircularBuffer, Object, BiConsumer)}.
+     * Simplified version of {@link #encodeMessage(CircularBuffer, Object, byte, IMessageHandlerConsumer)}.
      */
-    default <M> void encodeMessage(CircularBuffer writeBuffer, M message)
+    default <M> void encodeMessage(CircularBuffer writeBuffer, M message, byte uMsgPosition)
     {
-        encodeMessage(writeBuffer, message, (msg, handler) -> {});
+        encodeMessage(writeBuffer, message, uMsgPosition, (msg, uMsgPosition1, handler) -> {});
     }
     
     /**
@@ -60,14 +58,14 @@ public interface IMessageRegistry<C extends IClient>
      *                               call the potentially costly {@link #getHandlerForMessage(M)}.
      * @return The message.
      */
-    <M> M decodeMessage(CircularBuffer readBuffer, BiConsumer<M, IMessageHandler<M, C>> messageHandlerConsumer);
+    <M> M decodeMessage(CircularBuffer readBuffer, IMessageHandlerConsumer<M, C> messageHandlerConsumer);
     
     /**
-     * Simplified version of {@link #decodeMessage(CircularBuffer, BiConsumer)}.
+     * Simplified version of {@link #decodeMessage(CircularBuffer, IMessageHandlerConsumer)}.
      */
     default <M> M decodeMessage(CircularBuffer readBuffer)
     {
-        return decodeMessage(readBuffer, (msg, handler) -> {});
+        return decodeMessage(readBuffer, (msg, uMsgPosition, handler) -> {});
     }
     
     /**
@@ -87,4 +85,10 @@ public interface IMessageRegistry<C extends IClient>
      * @return True if the given {@link CircularBuffer} contains bytes which can be read and decoded into a message.
      */
     boolean canDecodeMessage(CircularBuffer buffer);
+    
+    @FunctionalInterface
+    interface IMessageHandlerConsumer<M, C extends IClient>
+    {
+        void accept(M msg, byte uMsgPosition, IMessageHandler<M, C> handler);
+    }
 }
