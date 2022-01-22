@@ -92,7 +92,7 @@ public class Engine implements Runnable
         long lastMillis = System.currentTimeMillis();
         float deltaTick;
         
-        Screen screen = null;
+        Screen screen = game.getScreen();
         
         // Render Schleife wiederholen, bis das Fenster geschlossen wird
         while(!isBeingClosed())
@@ -104,13 +104,8 @@ public class Engine implements Runnable
             currentMillis += System.currentTimeMillis() - lastMillis;
             lastMillis = System.currentTimeMillis();
             
-            if(window.getWasResized() || game.getScreen() != screen)
+            if(window.getWasResized())
             {
-                if(game.getScreen() != screen)
-                {
-                    screen = game.getScreen();
-                }
-                
                 glViewport(0, 0, window.getWindowW(), window.getWindowH());
                 glMatrixMode(GL_PROJECTION);
                 glLoadIdentity();
@@ -127,6 +122,12 @@ public class Engine implements Runnable
                 
                 game.update();
                 screen.update(inputHandler.getMouseX(), inputHandler.getMouseY());
+                
+                if(game.getScreen() != screen)
+                {
+                    screen = game.getScreen();
+                    screen.initScreen(window.getScreenW(), window.getScreenH());
+                }
                 
                 currentMillis %= millisPerTick;
             }

@@ -54,7 +54,7 @@ public class Window
         
         windowResized(windowW, windowH);
         
-        wasResized = false;
+        wasResized = true;
         
         glfwDefaultWindowHints(); // "Window Hints" = z.B. Fenster skalierbar? Fenster sichtbar? etc.
     }
