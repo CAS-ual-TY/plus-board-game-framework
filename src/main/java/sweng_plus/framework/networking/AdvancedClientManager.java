@@ -16,7 +16,6 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C> i
     protected String name;
     
     protected UUID sessionIdentifier;
-    protected UUID clientIdentifier;
     
     protected LockedObject<TimeOutTracker> timeOutTracker;
     
@@ -92,8 +91,6 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C> i
     public void setSessionIdentifier(UUID sessionIdentifier)
     {
         this.sessionIdentifier = sessionIdentifier;
-        
-        clientIdentifier = UUID.randomUUID(); //TODO
     }
     
     @Override
