@@ -1,9 +1,6 @@
 package sweng_plus.framework.networking;
 
-import sweng_plus.framework.networking.interfaces.IClient;
-import sweng_plus.framework.networking.interfaces.IHostEventsListener;
-import sweng_plus.framework.networking.interfaces.IHostManager;
-import sweng_plus.framework.networking.interfaces.IMessageRegistry;
+import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.networking.util.*;
 
 import java.io.IOException;
@@ -204,6 +201,19 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
+    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler)
+    {
+        getClientForConnThread(Thread.currentThread(), (client) ->
+                receivedMessage(msg, handler, client));
+    }
+    
+    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler, C client)
+    {
+        connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
+                connectionThreadMessages1.add(() -> handler.handleMessage(Optional.of(client), msg)));
+    }
+    
+    @Override
     public void connectionSocketClosed() // Connection Thread
     {
         removeClientByThread(client ->
@@ -253,9 +263,9 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    protected void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer)
+    protected void getClientForConnThread(Thread thread, Consumer<C> consumer)
     {
-        threadClientMap.shared(threadClientMap1 -> consumer.accept(Optional.of(threadClientMap1.get(thread))));
+        threadClientMap.shared(threadClientMap1 -> consumer.accept(threadClientMap1.get(thread)));
     }
     
     @Override

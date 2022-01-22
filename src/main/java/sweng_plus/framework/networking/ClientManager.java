@@ -1,9 +1,6 @@
 package sweng_plus.framework.networking;
 
-import sweng_plus.framework.networking.interfaces.IClient;
-import sweng_plus.framework.networking.interfaces.IClientEventsListener;
-import sweng_plus.framework.networking.interfaces.IClientManager;
-import sweng_plus.framework.networking.interfaces.IMessageRegistry;
+import sweng_plus.framework.networking.interfaces.*;
 import sweng_plus.framework.networking.util.CircularBuffer;
 
 import java.io.IOException;
@@ -58,6 +55,13 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
+    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler)
+    {
+        connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
+                connectionThreadMessages1.add(() -> handler.handleMessage(Optional.empty(), msg)));
+    }
+    
+    @Override
     public void connectionSocketClosed() // Connection Thread
     {
         mainThreadMessages.exclusiveGet(mainThreadMessages1 ->
@@ -91,9 +95,9 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
-    protected void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer)
+    protected void getClientForConnThread(Thread thread, Consumer<C> consumer)
     {
-        consumer.accept(Optional.empty());
+        consumer.accept(null);
     }
     
     @Override

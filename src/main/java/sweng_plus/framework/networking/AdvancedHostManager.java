@@ -6,9 +6,7 @@ import sweng_plus.framework.networking.util.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<C> implements IAdvancedHostManager<C>
 {
@@ -73,16 +71,15 @@ public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<
     }
     
     @Override
-    public void receivedMessage(Consumer<Optional<C>> message, Optional<C> client)
+    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler, C client)
     {
-        super.receivedMessage(message, client);
+        super.receivedMessage(msg, handler, client);
         
-        client.ifPresent(c ->
-                clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
-                {
-                    TimeOutTracker tracker = clientTimeOutTrackerMap1.get(c);
-                    tracker.reset();
-                }));
+        clientTimeOutTrackerMap.shared(clientTimeOutTrackerMap1 ->
+        {
+            TimeOutTracker tracker = clientTimeOutTrackerMap1.get(client);
+            tracker.reset();
+        });
     }
     
     @Override

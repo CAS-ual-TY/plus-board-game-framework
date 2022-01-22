@@ -5,9 +5,7 @@ import sweng_plus.framework.networking.util.LockedObject;
 import sweng_plus.framework.networking.util.TimeOutTracker;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class AdvancedClientManager<C extends IClient> extends ClientManager<C> implements IAdvancedClientManager
 {
@@ -58,10 +56,10 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C> i
     }
     
     @Override
-    public void receivedMessage(Consumer<Optional<C>> message)
+    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler)
     {
         timeOutTracker.exclusiveGet(TimeOutTracker::reset);
-        super.receivedMessage(message);
+        super.receivedMessage(msg, handler);
     }
     
     public void sendPing()

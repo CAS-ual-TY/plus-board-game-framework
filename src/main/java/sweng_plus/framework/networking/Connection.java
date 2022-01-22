@@ -65,7 +65,7 @@ public class Connection<C extends IClient> implements Runnable
                     while(connectionInteractor.getMessageRegistry().canDecodeMessage(readBuffer))
                     {
                         connectionInteractor.getMessageRegistry().decodeMessage(readBuffer, (msg, handler) ->
-                                connectionInteractor.receivedMessage((client) -> handler.handleMessage(client, msg))
+                                connectionInteractor.receivedMessage(msg, handler)
                         );
                     }
                 }

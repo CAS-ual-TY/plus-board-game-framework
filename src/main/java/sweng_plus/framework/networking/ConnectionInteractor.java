@@ -2,13 +2,13 @@ package sweng_plus.framework.networking;
 
 import sweng_plus.framework.networking.interfaces.IClient;
 import sweng_plus.framework.networking.interfaces.IConnectionInteractor;
+import sweng_plus.framework.networking.interfaces.IMessageHandler;
 import sweng_plus.framework.networking.interfaces.IMessageRegistry;
 import sweng_plus.framework.networking.util.LockedObject;
 
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public abstract class ConnectionInteractor<C extends IClient> implements IConnectionInteractor<C>, Runnable, Closeable
@@ -68,16 +68,7 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     }
     
     @Override
-    public void receivedMessage(Consumer<Optional<C>> message)
-    {
-        getClientForConnThread(Thread.currentThread(), client -> receivedMessage(message, client));
-    }
-    
-    public void receivedMessage(Consumer<Optional<C>> message, Optional<C> client)
-    {
-        connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
-                connectionThreadMessages1.add(() -> message.accept(client)));
-    }
+    public abstract <M> void receivedMessage(M msg, IMessageHandler<M, C> handler);
     
     public void runOnMainThreadSafely(Runnable r)
     {
@@ -96,5 +87,5 @@ public abstract class ConnectionInteractor<C extends IClient> implements IConnec
     @Override
     public abstract void connectionSocketClosedWithException(Exception e);
     
-    protected abstract void getClientForConnThread(Thread thread, Consumer<Optional<C>> consumer);
+    protected abstract void getClientForConnThread(Thread thread, Consumer<C> consumer);
 }
