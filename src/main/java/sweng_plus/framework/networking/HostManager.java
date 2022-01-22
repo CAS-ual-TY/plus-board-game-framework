@@ -196,13 +196,13 @@ public class HostManager<C extends IClient> extends ConnectionInteractor<C> impl
     }
     
     @Override
-    public <M> void receivedMessage(M msg, byte uMsgPosition, IMessageHandler<M, C> handler)
+    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler)
     {
         getClientForConnThread(Thread.currentThread(), (client) ->
-                receivedMessage(msg, uMsgPosition, handler, client));
+                receivedMessage(msg, handler, client));
     }
     
-    public <M> void receivedMessage(M msg, byte uMsgPosition, IMessageHandler<M, C> handler, C client)
+    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler, C client)
     {
         connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
                 connectionThreadMessages1.add(() -> handler.handleMessage(Optional.of(client), msg)));

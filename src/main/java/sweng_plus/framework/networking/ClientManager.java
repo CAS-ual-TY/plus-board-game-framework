@@ -52,7 +52,7 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
-    public <M> void receivedMessage(M msg, byte uMsgPosition, IMessageHandler<M, C> handler)
+    public <M> void receivedMessage(M msg, IMessageHandler<M, C> handler)
     {
         connectionThreadMessages.exclusiveGet(connectionThreadMessages1 ->
                 connectionThreadMessages1.add(() -> handler.handleMessage(Optional.empty(), msg)));

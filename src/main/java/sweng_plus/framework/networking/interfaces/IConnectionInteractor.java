@@ -4,7 +4,7 @@ public interface IConnectionInteractor<C extends IClient>
 {
     void connectionSocketCreated(); // Connection Thread
     
-    <M> void receivedMessage(M msg, byte uMsgPosition, IMessageHandler<M, C> handler); // Connection Thread
+    <M> void receivedMessage(M msg, IMessageHandler<M, C> handler); // Connection Thread
     
     IMessageRegistry<C> getMessageRegistry(); // Connection Thread
     
