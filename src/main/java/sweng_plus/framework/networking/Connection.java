@@ -20,7 +20,7 @@ public class Connection<C extends IClient> implements Runnable
     public IConnectionInteractor<C> connectionInteractor;
     
     public ArrayList<TrackedMessage<?, C>> trackedMessages;
-    public Comparator<TrackedMessage<?, C>> trackedMessageComparator;
+    public Comparator<TrackedMessage<?, ?>> trackedMessageComparator;
     
     public CircularBuffer readBuffer;
     public CircularBuffer writeBuffer;

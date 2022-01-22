@@ -15,6 +15,8 @@ public class NetworkHelper
      * ever connected to this server including the host itself.
      * These {@link IClient} object are used for interaction.</p>
      *
+     * <p>Messages received are automatically ran the same order they were sent in.</p>
+     *
      * <p>The {@link IHostManager} object extends {@link IClientManager} to also simulate
      * a client connected to a server. So it also allows usage as client for sending messages to the server
      * and receiving messages from the server.</p>
@@ -46,6 +48,8 @@ public class NetworkHelper
      * clients are connected to this server including the host itself.
      * These {@link IAdvancedClient} object are used for interaction.</p>
      *
+     * <p>Messages received are automatically ran the same order they were sent in.</p>
+     *
      * <p>Additionally, this implementation contains a built-in advanced protocol to detect if a client has lost connection,
      * simple authentication and capabilities to orderly disconnect or kick clients.
      * Also, the server is orderly closed (all clients are orderly disconnected) when closing the connection.</p>
@@ -76,7 +80,9 @@ public class NetworkHelper
     }
     
     /**
-     * Connects to a server socket and returns an {@link IClientManager} object for sending and receiving messages.
+     * <p>Connects to a server socket and returns an {@link IClientManager} object for sending and receiving messages.</p>
+     *
+     * <p>Messages received are automatically ran the same order they were sent in.</p>
      *
      * @param registry       The used message protocol which must be the same on both client and server.
      * @param eventsListener A listener for any client-networking related events.
@@ -99,6 +105,8 @@ public class NetworkHelper
     
     /**
      * <p>Connects to a server socket and returns an {@link IAdvancedClientManager} object for sending and receiving messages.</p>
+     *
+     * <p>Messages received are automatically ran the same order they were sent in.</p>
      *
      * <p>Contains a built-in advanced protocol to detect if the server has been closed, the client has been kicked,
      * or the connection has been lost. Also, the client is orderly disconnected when closing the connection.</p>

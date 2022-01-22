@@ -1,7 +1,5 @@
 package sweng_plus.framework.networking.util;
 
-import sweng_plus.framework.networking.interfaces.IClient;
-
 import java.util.Comparator;
 
 public class MessageTracker
@@ -38,7 +36,7 @@ public class MessageTracker
         position++;
     }
     
-    public <C extends IClient> Comparator<TrackedMessage<?, C>> makeComparator()
+    public Comparator<TrackedMessage<?, ?>> makeComparator()
     {
         return (msg1, msg2) ->
         {
