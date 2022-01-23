@@ -5,7 +5,7 @@ public interface IClientEventsListener
     /**
      * Called after the connection socket has closed orderly without an exception thrown.
      */
-    default void socketClosed() // Called from main thread
+    default void socketClosed()
     {
     
     }
@@ -15,7 +15,7 @@ public interface IClientEventsListener
      *
      * @param e The thrown exception.
      */
-    default void socketClosedWithException(Exception e) // Called from main thread
+    default void socketClosedWithException(Exception e)
     {
         socketClosed();
     }
