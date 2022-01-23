@@ -63,6 +63,7 @@ public class NetworkHelper
      *
      * @param registry      The used message protocol which must be the same on both client and server.
      * @param clientFactory A factory creating instances of {@link IAdvancedClient}.
+     * @param clientName    The host-client's name.
      * @param port          The port to host on.
      * @param <C>           The type extending {@link IAdvancedClient} used for representing clients.
      * @return An {@link IAdvancedHostManager} object for interacting with clients.
@@ -113,9 +114,10 @@ public class NetworkHelper
      *
      * @param registry       The used message protocol which must be the same on both client and server.
      * @param eventsListener A listener for any client-networking related events.
-     * @param ip            The IP to connect to.
-     * @param port          The port to connect to.
-     * @param <C>           The type extending {@link IAdvancedClient} used for representing clients.
+     * @param name           The client's name.
+     * @param ip             The IP to connect to.
+     * @param port           The port to connect to.
+     * @param <C>            The type extending {@link IAdvancedClient} used for representing clients.
      * @return An {@link IAdvancedClientManager} object for interacting with the server.
      * @throws IOException
      */
