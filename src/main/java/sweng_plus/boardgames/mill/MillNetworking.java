@@ -42,10 +42,6 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
                 this::getClientManager, this::getHostManager,
                 this, this);
         
-        protocol.registerMessage(messageID++, SendNameMessage.Handler::encodeMessage,
-                SendNameMessage.Handler::decodeMessage, SendNameMessage.Handler::handleMessage,
-                SendNameMessage.class);
-        
         protocol.registerMessage(messageID++, SendNamesMessage.Handler::encodeMessage,
                 SendNamesMessage.Handler::decodeMessage, SendNamesMessage.Handler::handleMessage,
                 SendNamesMessage.class);
@@ -102,8 +98,6 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         clientManager = NetworkHelper.advancedConnect(protocol, this, name, ip, port);
         
         mill.setScreen(new NameScreen(mill));
-        
-        clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
     
     public void host(String playerName, int port) throws IOException
@@ -117,8 +111,6 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         clientManager = hostManager;
         
         mill.setScreen(new NameScreen(mill));
-        
-        clientManager.sendMessageToServer(new SendNameMessage(playerName));
     }
     
     public boolean isHost()
@@ -136,6 +128,8 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
     public void clientAuthSuccessful(MillClient client)
     {
         client.setTeamIndex(hostManager.getAllClients().size() - 1);
+        
+        hostManager.sendMessageToAllClients(SendNamesMessage.makeNamesMessage());
         
         if(hostManager.getAllClients().size() >= 2) //TODO START
         {
