@@ -50,8 +50,10 @@ public class PacketTests
         
         for(int i = 0; i < 10; ++i)
         {
-            list.add(rand.nextInt(list.size() + 1), new TrackedMessage<Integer, IClient>(list.size(), null, nr++));
+            list.add(rand.nextInt(list.size() + 1), new TrackedMessage<>(list.size(), null, nr++));
         }
+        
+        list.add(rand.nextInt(list.size() + 1), new TrackedMessage<>(list.size(), null, (byte) (tracker.get() - 1)));
         
         //System.out.println(list.stream().map(TrackedMessage::msg).collect(Collectors.toList()));
         //System.out.println(list.stream().map(TrackedMessage::uMsgPosition).map(Byte::toUnsignedInt).collect(Collectors.toList()));
