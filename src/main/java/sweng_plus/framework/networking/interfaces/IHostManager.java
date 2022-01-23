@@ -6,33 +6,25 @@ import java.util.List;
 public interface IHostManager<C extends IClient> extends IClientManager<C>
 {
     /**
-     * @return The used protocol. Must be the same on all clients and the server.
-     */
-    @Override
-    IMessageRegistry<C> getMessageRegistry();
-    
-    /**
-     * Sends a message to the given client. The message must be registered
-     * in the used {@link IMessageRegistry} (= protocol).
+     * Sends a message to the given client. The message must be registered in the used protocol.
      *
-     * @param client  The {@link IClient} to send a message to.
+     * @param client  The {@link C} instance representing the client to send a message to.
      * @param message The message to be sent to the given client.
      * @param <M>     The type of the message.
      * @throws IOException
-     * @see #sendMessageToClient(IClient, Object)
+     * @see #sendMessageToClient(C, Object)
      */
     <M> void sendMessageToClientUnsafe(C client, M message) throws IOException; // Main Thread
     
     /**
-     * <p>Sends a message to the given {@link IClient}. The message must be registered
-     * in the used {@link IMessageRegistry} (= protocol).</p>
+     * <p>Sends a message to the given client. The message must be registered in the used protocol.</p>
      *
-     * <p>If an {@link IOException} is thrown, it is caught and then {@link #failedToSendMessageToClient(IClient, IOException)} is run.</p>
+     * <p>If an {@link IOException} is thrown, it is caught
+     * and then {@link #failedToSendMessageToClient(C, IOException)} is run.</p>
      *
-     * @param client  The {@link IClient} to send a message to.
+     * @param client  The {@link C} instance representing the client to send a message to.
      * @param message The message to be sent to the given client.
      * @param <M>     The type of the message.
-     * @throws IOException
      * @see #sendMessageToClient(IClient, Object)
      */
     default <M> void sendMessageToClient(C client, M message) // Main Thread
@@ -48,14 +40,15 @@ public interface IHostManager<C extends IClient> extends IClientManager<C>
     }
     
     /**
-     * <p>Sends a message to all {@link IClient}s which are currently connected to the server.</p>
+     * <p>Sends a message to all clients which are currently connected to the server.</p>
      *
-     * <p>If an {@link IOException} is thrown, it is caught and then {@link #failedToSendMessageToClient(IClient, IOException)} is run.
-     * This is done for each client individually, meaning that it may fail for a single client, but work for all others.</p>
+     * <p>If an {@link IOException} is thrown, it is caught
+     * and then {@link #failedToSendMessageToClient(C, IOException)} is run.
+     * This is done for each client individually, meaning that it may fail for a single client,
+     * but work for all others.</p>
      *
      * @param message The message to be sent to all clients.
      * @param <M>     The type of the message.
-     * @throws IOException
      */
     default <M> void sendMessageToAllClients(M message) // Main Thread
     {
@@ -66,15 +59,16 @@ public interface IHostManager<C extends IClient> extends IClientManager<C>
     }
     
     /**
-     * <p>Sends a message to all {@link IClient}s which are currently connected to the server except a given one.</p>
+     * <p>Sends a message to all clients which are currently connected to the server except a given one.</p>
      *
-     * <p>If an {@link IOException} is thrown, it is caught and then {@link #failedToSendMessageToClient(IClient, IOException)} is run.
-     * This is done for each client individually, meaning that it may fail for a single client, but work for all others.</p>
+     * <p>If an {@link IOException} is thrown, it is caught
+     * and then {@link #failedToSendMessageToClient(C, IOException)} is run.
+     * This is done for each client individually, meaning that it may fail for a single client
+     * but work for all others.</p>
      *
-     * @param client  The client to not send a message to.
+     * @param client  The {@link C} instance representing the client to not send a message to.
      * @param message The message to be sent to all clients except the given one.
      * @param <M>     The type of the message.
-     * @throws IOException
      * @see #sendMessageToAllClients(Object)
      * @see #sendMessageToAllClientsExceptHost(Object)
      */
@@ -90,16 +84,17 @@ public interface IHostManager<C extends IClient> extends IClientManager<C>
     }
     
     /**
-     * <p>Sends a message to all {@link IClient}s which are currently connected to the server except the host-client.</p>
+     * <p>Sends a message to all clients which are currently connected to the server except the host-client.</p>
      *
-     * <p>If an {@link IOException} is thrown, it is caught and then {@link #failedToSendMessageToClient(IClient, IOException)} is run.
-     * This is done for each client individually, meaning that it may fail for a single client, but work for all others.</p>
+     * <p>If an {@link IOException} is thrown, it is caught
+     * and then {@link #failedToSendMessageToClient(C, IOException)} is run.
+     * This is done for each client individually, meaning that it may fail for a single client,
+     * but work for all others.</p>
      *
-     * @param message The message to be sent to all clients except the given one.
+     * @param message The message to be sent to all clients except the host-client.
      * @param <M>     The type of the message.
-     * @throws IOException
      * @see #sendMessageToAllClients(Object)
-     * @see #sendMessageToAllClientsExcept(IClient, Object)
+     * @see #sendMessageToAllClientsExcept(C, Object)
      */
     default <M> void sendMessageToAllClientsExceptHost(M message) // Main Thread
     {
@@ -114,7 +109,7 @@ public interface IHostManager<C extends IClient> extends IClientManager<C>
     void closeClient(C client);
     
     /**
-     * Called by {@link #sendMessageToClient(IClient, Object)}.
+     * Called by {@link #sendMessageToClient(C, Object)}.
      *
      * @param e The thrown exception after failing to send a message.
      */
@@ -124,12 +119,12 @@ public interface IHostManager<C extends IClient> extends IClientManager<C>
     }
     
     /**
-     * @return all clients represented as {@link IClient} objects which are connected to this server.
+     * @return all clients represented as {@link C} instances which are connected to this server.
      */
     List<C> getAllClients(); // Main Thread
     
     /**
-     * @return The {@link IClient} representing the host.
+     * @return The {@link C} instance representing the host.
      */
     C getHostClient(); // Main Thread
     

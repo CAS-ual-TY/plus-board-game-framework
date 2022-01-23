@@ -11,17 +11,22 @@ public interface IClientManager<C extends IClient> extends Closeable
     IMessageRegistry<C> getMessageRegistry();
     
     /**
-     * Sends a message to the server. The message must be registered in the used {@link IMessageRegistry} (= protocol).
+     * Calling this method runs the handlers of all received messages and runs all polled events.
+     */
+    void update(); // Main Thread
+    
+    /**
+     * Sends a message to the server. The message must be registered in the used protocol.
      *
      * @param message The message to be sent to the server.
      * @param <M>     The type of the message.
      * @throws IOException
      * @see #sendMessageToServer(Object)
      */
-    <M> void sendMessageToServerUnsafe(M message) throws IOException; // Main Thread
+    <M> void sendMessageToServerUnsafe(M message) throws IOException;
     
     /**
-     * <p>Sends a message to the server. The message must be registered in the used {@link IMessageRegistry} (= protocol).</p>
+     * <p>Sends a message to the server. The message must be registered in the used protocol.</p>
      *
      * <p>If an {@link IOException} is thrown, it is caught and then {@link #failedToSendMessage(IOException)} is run.</p>
      *
@@ -42,13 +47,7 @@ public interface IClientManager<C extends IClient> extends Closeable
     }
     
     /**
-     * All received messages are decoded according to the used {@link IMessageRegistry}
-     * and turned into a {@link Runnable}. This method then runs them all.
-     */
-    void update(); // Main Thread
-    
-    /**
-     * Runs a {@link Runnable} on the main thread when {@link #update()} is called next. Used by networking threads.
+     * Polls a {@link Runnable} for when {@link #update()} is called next. Used by networking threads.
      *
      * @param r
      */
