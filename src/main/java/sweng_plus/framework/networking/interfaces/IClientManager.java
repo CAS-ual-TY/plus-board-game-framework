@@ -17,7 +17,7 @@ public interface IClientManager extends Closeable
     /**
      * <p>Sends a message to the server. The message must be registered in the used {@link IMessageRegistry} (= protocol).</p>
      *
-     * <p>If an {@link IOException} is thrown, it is caught and then {@link #failedToSendMessage()} is run.</p>
+     * <p>If an {@link IOException} is thrown, it is caught and then {@link #failedToSendMessage(IOException)} is run.</p>
      *
      * @param message The message to be sent to the server.
      * @param <M>     The type of the message.
