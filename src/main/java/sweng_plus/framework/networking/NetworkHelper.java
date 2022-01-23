@@ -94,9 +94,9 @@ public class NetworkHelper
      * @throws IOException
      * @see #advancedConnect(IAdvancedMessageRegistry, IAdvancedClientEventsListener, String, String, int)
      */
-    public static <C extends IClient> IClientManager connect(IMessageRegistry<C> registry,
-                                                             IClientEventsListener eventsListener,
-                                                             String ip, int port) throws IOException
+    public static <C extends IClient> IClientManager<C> connect(IMessageRegistry<C> registry,
+                                                                IClientEventsListener eventsListener,
+                                                                String ip, int port) throws IOException
     {
         ClientManager<C> clientManager = new ClientManager<>(registry, eventsListener, ip, port);
         Thread thread = new Thread(clientManager);
@@ -121,9 +121,9 @@ public class NetworkHelper
      * @return An {@link IAdvancedClientManager} object for interacting with the server.
      * @throws IOException
      */
-    public static <C extends IAdvancedClient> IAdvancedClientManager advancedConnect(IAdvancedMessageRegistry<C> registry,
-                                                                                     IAdvancedClientEventsListener eventsListener,
-                                                                                     String name, String ip, int port) throws IOException
+    public static <C extends IAdvancedClient> IAdvancedClientManager<C> advancedConnect(IAdvancedMessageRegistry<C> registry,
+                                                                                        IAdvancedClientEventsListener eventsListener,
+                                                                                        String name, String ip, int port) throws IOException
     {
         ClientSessionManager clientSessionManager = new ClientSessionManager();
         AdvancedClientManager<C> clientManager = new AdvancedClientManager<>(registry, eventsListener, clientSessionManager, name, ip, port)

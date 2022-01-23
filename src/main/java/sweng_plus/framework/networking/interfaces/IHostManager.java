@@ -3,10 +3,16 @@ package sweng_plus.framework.networking.interfaces;
 import java.io.IOException;
 import java.util.List;
 
-public interface IHostManager<C extends IClient> extends IClientManager
+public interface IHostManager<C extends IClient> extends IClientManager<C>
 {
     /**
-     * Sends a message to the given {@link IClient}. The message must be registered
+     * @return The used protocol. Must be the same on all clients and the server.
+     */
+    @Override
+    IMessageRegistry<C> getMessageRegistry();
+    
+    /**
+     * Sends a message to the given client. The message must be registered
      * in the used {@link IMessageRegistry} (= protocol).
      *
      * @param client  The {@link IClient} to send a message to.

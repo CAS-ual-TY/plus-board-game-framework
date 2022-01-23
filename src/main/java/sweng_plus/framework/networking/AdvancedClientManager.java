@@ -7,7 +7,7 @@ import sweng_plus.framework.networking.util.TimeOutTracker;
 import java.io.IOException;
 import java.util.UUID;
 
-public class AdvancedClientManager<C extends IClient> extends ClientManager<C> implements IAdvancedClientManager
+public class AdvancedClientManager<C extends IAdvancedClient> extends ClientManager<C> implements IAdvancedClientManager<C>
 {
     protected IAdvancedMessageRegistry<C> advancedRegistry;
     protected IAdvancedClientEventsListener advancedEventsListener;
@@ -29,6 +29,12 @@ public class AdvancedClientManager<C extends IClient> extends ClientManager<C> i
         this.name = name;
         
         timeOutTracker = new LockedObject<>(new TimeOutTracker(this::sendPing, this::lostConnection));
+    }
+    
+    @Override
+    public IAdvancedMessageRegistry<C> getMessageRegistry()
+    {
+        return advancedRegistry;
     }
     
     @Override

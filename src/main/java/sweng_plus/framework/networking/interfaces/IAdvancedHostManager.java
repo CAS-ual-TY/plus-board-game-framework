@@ -2,8 +2,14 @@ package sweng_plus.framework.networking.interfaces;
 
 import java.util.UUID;
 
-public interface IAdvancedHostManager<C extends IAdvancedClient> extends IHostManager<C>, IAdvancedClientManager
+public interface IAdvancedHostManager<C extends IAdvancedClient> extends IHostManager<C>, IAdvancedClientManager<C>
 {
+    /**
+     * @return The used protocol. Must be the same on all clients and the server.
+     */
+    @Override
+    IAdvancedMessageRegistry<C> getMessageRegistry();
+    
     /**
      * Orderly kicks a client from the server (the client is notified about the kick)
      * and closes the connection to the client server-side.

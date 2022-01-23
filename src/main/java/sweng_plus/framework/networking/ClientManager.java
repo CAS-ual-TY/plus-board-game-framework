@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager
+public class ClientManager<C extends IClient> extends ConnectionInteractor<C> implements IClientManager<C>
 {
     protected IClientEventsListener eventsListener;
     

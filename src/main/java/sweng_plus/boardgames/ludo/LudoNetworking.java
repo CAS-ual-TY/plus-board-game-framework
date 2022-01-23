@@ -14,7 +14,7 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
     
     public IAdvancedMessageRegistry<LudoClient> protocol;
     
-    public IAdvancedClientManager clientManager;
+    public IAdvancedClientManager<LudoClient> clientManager;
     public IAdvancedHostManager<LudoClient> hostManager;
     
     public LudoNetworking(Ludo ludo)
@@ -23,7 +23,7 @@ public class LudoNetworking implements IAdvancedClientEventsListener, IAdvancedH
         initProtocol();
     }
     
-    public IAdvancedClientManager getClientManager()
+    public IAdvancedClientManager<LudoClient> getClientManager()
     {
         return clientManager;
     }

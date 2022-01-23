@@ -40,6 +40,12 @@ public class AdvancedHostManager<C extends IAdvancedClient> extends HostManager<
     }
     
     @Override
+    public IAdvancedMessageRegistry<C> getMessageRegistry()
+    {
+        return advancedRegistry;
+    }
+    
+    @Override
     public void update()
     {
         super.update();

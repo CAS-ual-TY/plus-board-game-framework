@@ -16,7 +16,7 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
     
     public String name;
     
-    public IAdvancedClientManager clientManager;
+    public IAdvancedClientManager<MillClient> clientManager;
     public IAdvancedHostManager<MillClient> hostManager;
     
     public MillNetworking(Mill mill)
@@ -25,7 +25,7 @@ public class MillNetworking implements IAdvancedClientEventsListener, IAdvancedH
         initProtocol();
     }
     
-    public IAdvancedClientManager getClientManager()
+    public IAdvancedClientManager<MillClient> getClientManager()
     {
         return clientManager;
     }

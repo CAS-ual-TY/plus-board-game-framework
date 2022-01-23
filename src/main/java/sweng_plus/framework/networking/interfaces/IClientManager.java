@@ -3,8 +3,13 @@ package sweng_plus.framework.networking.interfaces;
 import java.io.Closeable;
 import java.io.IOException;
 
-public interface IClientManager extends Closeable
+public interface IClientManager<C extends IClient> extends Closeable
 {
+    /**
+     * @return The used protocol. Must be the same on all clients and the server.
+     */
+    IMessageRegistry<C> getMessageRegistry();
+    
     /**
      * Sends a message to the server. The message must be registered in the used {@link IMessageRegistry} (= protocol).
      *
