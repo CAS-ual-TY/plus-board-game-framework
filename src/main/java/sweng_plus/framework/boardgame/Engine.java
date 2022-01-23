@@ -121,6 +121,13 @@ public class Engine implements Runnable
                 inputHandler.postUpdate();
                 
                 game.update();
+                
+                if(game.getScreen() != screen)
+                {
+                    screen = game.getScreen();
+                    screen.initScreen(window.getScreenW(), window.getScreenH());
+                }
+                
                 screen.update(inputHandler.getMouseX(), inputHandler.getMouseY());
                 
                 if(game.getScreen() != screen)
