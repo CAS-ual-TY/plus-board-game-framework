@@ -46,6 +46,13 @@ public class ClientManager<C extends IClient> extends ConnectionInteractor<C> im
     }
     
     @Override
+    public void failedToSendMessage(IOException e)
+    {
+        IClientManager.super.failedToSendMessage(e);
+        eventsListener.socketClosedWithException(e);
+    }
+    
+    @Override
     public void update() // Main Thread
     {
         super.runMessages();
