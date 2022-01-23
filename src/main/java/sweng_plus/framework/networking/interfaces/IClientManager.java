@@ -11,7 +11,7 @@ public interface IClientManager extends Closeable
      * @param message The message to be sent to the server.
      * @param <M>     The type of the message.
      * @throws IOException
-     * @see #sendMessageToServer(Object) 
+     * @see #sendMessageToServer(Object)
      */
     <M> void sendMessageToServerUnsafe(M message) throws IOException; // Main Thread
     
@@ -60,7 +60,7 @@ public interface IClientManager extends Closeable
     } // Main Thread
     
     /**
-     * Closes the client-side connection and all associated resources and threads.
+     * Closes the connection client-side and closes the socket and all associated resources and threads.
      */
     @Override
     void close(); // Main Thread
