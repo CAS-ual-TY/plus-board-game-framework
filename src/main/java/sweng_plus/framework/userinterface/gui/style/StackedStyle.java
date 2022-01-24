@@ -1,6 +1,6 @@
 package sweng_plus.framework.userinterface.gui.style;
 
-import sweng_plus.framework.userinterface.gui.widget.base.Widget;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -69,8 +69,15 @@ public class StackedStyle extends BaseStyle
     }
     
     @Override
-    public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
+    public void initStyle(Dimensions parentDimensions)
     {
-        styles.forEach(style -> style.renderWidget(widget, deltaTick, mouseX, mouseY));
+        super.initStyle(parentDimensions);
+        styles.forEach(style -> style.initStyle(dimensions));
+    }
+    
+    @Override
+    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    {
+        styles.forEach(style -> style.renderStyle(deltaTick, mouseX, mouseY));
     }
 }

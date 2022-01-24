@@ -2,7 +2,6 @@ package sweng_plus.framework.userinterface.gui.style;
 
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 public class CorneredTextureStyle extends BaseStyle
 {
@@ -22,10 +21,10 @@ public class CorneredTextureStyle extends BaseStyle
     }
     
     @Override
-    public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
+    public void renderStyle(float deltaTick, int mouseX, int mouseY)
     {
         color.glColor4f();
         
-        texture.renderCornered(widget.getDimensions().x, widget.getDimensions().y, widget.getDimensions().w, widget.getDimensions().h);
+        texture.renderCornered(dimensions.x, dimensions.y, dimensions.w, dimensions.h);
     }
 }

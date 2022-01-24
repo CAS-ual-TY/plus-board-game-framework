@@ -3,8 +3,6 @@ package sweng_plus.framework.userinterface.gui.style;
 import sweng_plus.framework.userinterface.gui.font.FontRenderer;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
-import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.util.Collection;
 import java.util.List;
@@ -42,17 +40,16 @@ public class FunctionalTextStyle extends BaseStyle
     }
     
     @Override
-    public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
+    public void renderStyle(float deltaTick, int mouseX, int mouseY)
     {
-        Dimensions dims = widget.getDimensions();
-        List<String> text = this.text.get().stream().map(line -> fontRenderer.splitStringToWidth(dims.w, line))
+        List<String> text = this.text.get().stream().map(line -> fontRenderer.splitStringToWidth(dimensions.w, line))
                 .flatMap(Collection::stream).collect(Collectors.toList());
         
         int textHeight = fontRenderer.getTextHeight(text);
         int textWidth = fontRenderer.getTextWidth(text);
         
-        int x = dims.x + anchorPoint.widthToX(dims.w);
-        int y = dims.y + anchorPoint.heightToY(dims.h) - anchorPoint.heightToY(textHeight);
+        int x = dimensions.x + anchorPoint.widthToX(dimensions.w);
+        int y = dimensions.y + anchorPoint.heightToY(dimensions.h) - anchorPoint.heightToY(textHeight);
         
         color.glColor4f();
         if(anchorPoint.POS_X == 0.0F)

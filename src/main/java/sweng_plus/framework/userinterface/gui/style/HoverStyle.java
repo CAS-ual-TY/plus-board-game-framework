@@ -1,6 +1,6 @@
 package sweng_plus.framework.userinterface.gui.style;
 
-import sweng_plus.framework.userinterface.gui.widget.base.Widget;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 public class HoverStyle extends BaseStyle
 {
@@ -14,15 +14,24 @@ public class HoverStyle extends BaseStyle
     }
     
     @Override
-    public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
+    public void initStyle(Dimensions parentDimensions)
     {
-        if(widget.updateMouseOver(mouseX, mouseY))
+        super.initStyle(parentDimensions);
+        
+        unhovered.initStyle(dimensions);
+        hovered.initStyle(dimensions);
+    }
+    
+    @Override
+    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    {
+        if(dimensions.isMouseOver(mouseX, mouseY))
         {
-            hovered.renderWidget(widget, deltaTick, mouseX, mouseY);
+            hovered.renderStyle(deltaTick, mouseX, mouseY);
         }
         else
         {
-            unhovered.renderWidget(widget, deltaTick, mouseX, mouseY);
+            unhovered.renderStyle(deltaTick, mouseX, mouseY);
         }
     }
 }

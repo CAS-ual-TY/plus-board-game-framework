@@ -2,6 +2,7 @@ package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
+import sweng_plus.framework.userinterface.gui.IWidgetParent;
 import sweng_plus.framework.userinterface.gui.style.IStyle;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
@@ -22,15 +23,23 @@ public class SelectableWidget extends Widget
     }
     
     @Override
+    public void initWidget(IWidgetParent parent)
+    {
+        super.initWidget(parent);
+        activeStyle.initStyle(dimensions);
+        inactiveStyle.initStyle(dimensions);
+    }
+    
+    @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
         if(isSelected)
         {
-            activeStyle.renderWidget(this, deltaTick, mouseX, mouseY);
+            activeStyle.renderStyle(deltaTick, mouseX, mouseY);
         }
         else
         {
-            inactiveStyle.renderWidget(this, deltaTick, mouseX, mouseY);
+            inactiveStyle.renderStyle(deltaTick, mouseX, mouseY);
         }
     }
     

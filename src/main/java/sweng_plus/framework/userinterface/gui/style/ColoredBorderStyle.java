@@ -1,7 +1,6 @@
 package sweng_plus.framework.userinterface.gui.style;
 
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -24,12 +23,12 @@ public class ColoredBorderStyle extends BaseStyle
     }
     
     @Override
-    public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
+    public void renderStyle(float deltaTick, int mouseX, int mouseY)
     {
-        int x1o = widget.getDimensions().x;
-        int x2o = widget.getDimensions().x + widget.getDimensions().w;
-        int y1o = widget.getDimensions().y;
-        int y2o = widget.getDimensions().y + widget.getDimensions().h;
+        int x1o = dimensions.x;
+        int x2o = dimensions.x + dimensions.w;
+        int y1o = dimensions.y;
+        int y2o = dimensions.y + dimensions.h;
         
         int x1i = x1o;
         int x2i = x2o;
