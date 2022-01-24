@@ -22,14 +22,6 @@ public interface IMessageRegistry<C extends IClient>
      */
     <M> MessageRegistry<C> registerMessage(byte id, IMessageEncoder<M> encoder, IMessageDecoder<M> decoder, IMessageHandler<M, C> handler, Class<M> messageClass) throws IllegalArgumentException;
     
-    @SuppressWarnings("unchecked")
-    default <M> MessageRegistry<C> registerSimpleMessage(byte id, Runnable runnable, M dummyInstance)
-    {
-        return registerMessage(id,
-                (buf, msg) -> {}, (buf) -> dummyInstance, (clientOptional, message) -> runnable.run(),
-                (Class<M>) dummyInstance.getClass());
-    }
-    
     /**
      * Encode a message and write it to the given {@link CircularBuffer}.
      *
@@ -42,7 +34,7 @@ public interface IMessageRegistry<C extends IClient>
     <M> void encodeMessage(CircularBuffer writeBuffer, M message, byte uMsgPosition, IMessageHandlerConsumer<M, C> messageHandlerConsumer);
     
     /**
-     * Simplified version of {@link #encodeMessage(CircularBuffer, Object, byte, IMessageHandlerConsumer)}.
+     * Simplified version of {@link #encodeMessage(CircularBuffer, M, byte, IMessageHandlerConsumer)}.
      */
     default <M> void encodeMessage(CircularBuffer writeBuffer, M message, byte uMsgPosition)
     {

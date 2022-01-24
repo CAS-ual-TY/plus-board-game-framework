@@ -14,7 +14,7 @@ public interface IAdvancedHostManager<C extends IAdvancedClient> extends IHostMa
      * Orderly kicks a client from the server (the client is notified about the kick)
      * and closes the connection to the client server-side.
      *
-     * @param client The {@link IAdvancedClient} to kick.
+     * @param client The {@link C} instance representing the client to be kicked.
      */
     void kickClient(C client);
     
@@ -22,7 +22,7 @@ public interface IAdvancedHostManager<C extends IAdvancedClient> extends IHostMa
      * Orderly kicks a client from the server (the client is notified about the kick with a given message)
      * and closes the connection to the client server-side.
      *
-     * @param client  The {@link IAdvancedClient} to kick.
+     * @param client  The {@link C} instance representing the client to be kicked.
      * @param message The message which can represent the kick reason or kick justification.
      */
     default void kickClient(C client, String message)
@@ -33,7 +33,7 @@ public interface IAdvancedHostManager<C extends IAdvancedClient> extends IHostMa
     /**
      * Called when the client answers the authentication request of the server.
      *
-     * @param client     The {@link IAdvancedClient} which authenticated.
+     * @param client     The {@link C} instance representing the client that authenticated.
      * @param name       The name of the client.
      * @param identifier The identifier of the client.
      */
