@@ -139,7 +139,7 @@ public class ChatMain implements IGame
     
     public static BaseStyle activeStyle(Supplier<List<String>> text, AnchorPoint anchor)
     {
-        return activeStyle().stack(new FunctionalTextStyle(instance().fontRenderer, text, anchor, Color4f.GREY));
+        return activeStyle().stack(new MarginStyle(new FunctionalTextStyle(instance().fontRenderer, text, anchor, Color4f.GREY), 20));
     }
     
     public static BaseStyle activeStyle(Supplier<List<String>> text)
@@ -160,7 +160,7 @@ public class ChatMain implements IGame
     
     public static BaseStyle inactiveStyle(Supplier<List<String>> text, AnchorPoint anchor)
     {
-        return inactiveStyle().stack(new FunctionalTextStyle(instance().fontRenderer, text, anchor, Color4f.BLACK));
+        return inactiveStyle().stack(new MarginStyle(new FunctionalTextStyle(instance().fontRenderer, text, anchor, Color4f.BLACK), 20));
     }
     
     public static BaseStyle inactiveStyle(Supplier<List<String>> text)

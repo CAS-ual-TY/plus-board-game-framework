@@ -18,8 +18,11 @@ public class Dimensions implements Cloneable
     public AnchorPoint headAnchor;
     public AnchorPoint innerAnchor;
     
-    public Dimensions(int w, int h, AnchorPoint headAnchor, AnchorPoint innerAnchor, int offX, int offY)
+    protected Dimensions(int x, int y, int w, int h, AnchorPoint headAnchor, AnchorPoint innerAnchor, int offX, int offY)
     {
+        this.x = x;
+        this.y = y;
+        
         this.w = w;
         this.h = h;
         
@@ -28,6 +31,11 @@ public class Dimensions implements Cloneable
         
         this.headAnchor = headAnchor;
         this.innerAnchor = innerAnchor;
+    }
+    
+    public Dimensions(int w, int h, AnchorPoint headAnchor, AnchorPoint innerAnchor, int offX, int offY)
+    {
+        this(0, 0, w, h, headAnchor, innerAnchor, offX, offY);
     }
     
     public Dimensions(int w, int h, AnchorPoint headAnchor, AnchorPoint innerAnchor)
@@ -81,7 +89,7 @@ public class Dimensions implements Cloneable
     @Override
     public Dimensions clone()
     {
-        return new Dimensions(w, h, headAnchor, innerAnchor, offX, offY);
+        return new Dimensions(x, y, w, h, headAnchor, innerAnchor, offX, offY);
     }
     
     @Override
