@@ -19,7 +19,7 @@ public class Widget implements IWidget
         this.dimensions = dimensions;
     }
     
-    public boolean updateMouseOver(float deltaTick, int mouseX, int mouseY)
+    public boolean updateMouseOver(int mouseX, int mouseY)
     {
         return isMouseOver = dimensions.isMouseOver(mouseX, mouseY);
     }

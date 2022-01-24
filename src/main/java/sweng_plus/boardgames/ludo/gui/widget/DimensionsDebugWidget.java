@@ -44,7 +44,7 @@ public class DimensionsDebugWidget extends Widget
                 int y1 = widget.getDimensions().y;
                 int y2 = widget.getDimensions().y + widget.getDimensions().h;
                 
-                if(widget.updateMouseOver(deltaTick, mouseX, mouseY))
+                if(widget.updateMouseOver(mouseX, mouseY))
                 {
                     hoverColor.glColor4f();
                 }

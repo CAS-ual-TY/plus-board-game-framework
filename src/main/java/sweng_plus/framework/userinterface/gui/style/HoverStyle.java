@@ -16,7 +16,7 @@ public class HoverStyle extends BaseStyle
     @Override
     public void renderWidget(Widget widget, float deltaTick, int mouseX, int mouseY)
     {
-        if(widget.updateMouseOver(deltaTick, mouseX, mouseY))
+        if(widget.updateMouseOver(mouseX, mouseY))
         {
             hovered.renderWidget(widget, deltaTick, mouseX, mouseY);
         }

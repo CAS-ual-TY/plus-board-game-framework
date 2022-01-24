@@ -1,7 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
-import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.style.IStyle;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
@@ -16,7 +15,7 @@ public abstract class ButtonWidget extends SimpleWidget
     @Override
     public void mouseButtonPressed(int mouseX, int mouseY, int mouseButton, int mods)
     {
-        if(updateMouseOver(Engine.FULL_DELTA_TICK, mouseX, mouseY) && mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT)
+        if(updateMouseOver(mouseX, mouseY) && mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT)
         {
             clicked(mouseX, mouseY, mods);
         }

@@ -23,7 +23,7 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
     }
     
     @Override
-    public boolean updateMouseOver(float deltaTick, int mouseX, int mouseY)
+    public boolean updateMouseOver(int mouseX, int mouseY)
     {
         int x = dimensions.x + dimensions.w / 2;
         int y = dimensions.y + dimensions.h / 2;
@@ -35,7 +35,7 @@ public class SelectableFigureWidget extends FunctionalButtonWidget
     {
         nodeWidget.render(deltaTick, mouseX, mouseY);
         
-        if(active && updateMouseOver(deltaTick, mouseX, mouseY))
+        if(active && updateMouseOver(mouseX, mouseY))
         {
             Color4f.HALF_VISIBLE.glColor4f();
             nodeWidget.renderFigure();

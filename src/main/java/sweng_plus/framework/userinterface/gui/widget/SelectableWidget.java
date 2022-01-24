@@ -1,7 +1,6 @@
 package sweng_plus.framework.userinterface.gui.widget;
 
 import org.lwjgl.glfw.GLFW;
-import sweng_plus.framework.boardgame.Engine;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.style.IStyle;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
@@ -40,7 +39,7 @@ public class SelectableWidget extends Widget
     {
         if(mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT)
         {
-            isSelected = updateMouseOver(Engine.FULL_DELTA_TICK, mouseX, mouseY);
+            isSelected = updateMouseOver(mouseX, mouseY);
         }
     }
 }
