@@ -94,7 +94,7 @@ public class Engine implements Runnable
         
         Screen screen = game.getScreen();
         
-        // Render Schleife wiederholen, bis das Fenster geschlossen wird
+        // Repeat rendering loop, until window is closed or game is exited
         while(!isBeingClosed())
         {
             window.preUpdate();
@@ -143,7 +143,7 @@ public class Engine implements Runnable
             
             glPushMatrix();
             
-            // vielleicht zu HZ von Monitor limitieren? s. GLFWVidMode
+            // maybe limit to monitor framerate?
             game.render(deltaTick);
             screen.render(deltaTick, inputHandler.getMouseX(), inputHandler.getMouseY());
             
@@ -158,17 +158,17 @@ public class Engine implements Runnable
     protected void createWindow()
     {
         window = new Window(game.getWindowTitle(), game.getWindowIconResource(), game)
-                .hint(GLFW_VISIBLE, GLFW_FALSE) // Setzt das Fenster unsichtbar
-                .hint(GLFW_RESIZABLE, GLFW_TRUE); // Setzt das Fenster skalierbar
+                .hint(GLFW_VISIBLE, GLFW_FALSE)
+                .hint(GLFW_RESIZABLE, GLFW_TRUE);
     }
     
     protected void initGLFW()
     {
-        // Fehlernachrichten in System.err ausgeben
+        // Print errors to System.err
         GLFWErrorCallback.createPrint(System.err).set();
         
-        // GLFW initialisieren, das meiste von GLFW funktioniert sonst nicht
-        // Returnt false wenns nicht geklappt hat
+        // Init GLFW, otherwise GLFW will not work
+        // Returns false if an error occurred
         if(!glfwInit())
         {
             throw new IllegalStateException("Unable to initialize GLFW");
@@ -177,7 +177,7 @@ public class Engine implements Runnable
     
     protected void cleanupGLFW()
     {
-        // GLFW terminieren, Fehler callback free'n
+        // End GLFW, free error callback
         glfwTerminate();
         //noinspection ConstantConditions
         glfwSetErrorCallback(null).free();
