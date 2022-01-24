@@ -71,6 +71,8 @@ public class TextureHelper
         
         TEXTURE_MAP.put(name, texture);
         
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
         return texture;
     }
     
