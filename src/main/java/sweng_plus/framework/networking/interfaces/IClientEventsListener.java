@@ -3,7 +3,7 @@ package sweng_plus.framework.networking.interfaces;
 public interface IClientEventsListener
 {
     /**
-     * Called after the connection socket has closed orderly without an exception thrown.
+     * Called after the connection socket has been closed without an exception thrown.
      */
     default void socketClosed()
     {
@@ -11,7 +11,7 @@ public interface IClientEventsListener
     }
     
     /**
-     * Called after the connection socket has closed with an exception thrown.
+     * Called after the connection socket has been closed with an exception thrown.
      *
      * @param e The thrown exception.
      */

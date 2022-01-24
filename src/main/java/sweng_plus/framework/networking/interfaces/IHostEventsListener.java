@@ -10,7 +10,7 @@ public interface IHostEventsListener<C extends IClient>
     void clientConnected(C client);
     
     /**
-     * Called after a client connection socket has closed without an exception thrown.
+     * Called after a client connection socket has been closed without an exception thrown.
      *
      * @param client The {@link C} instance representing the client the socket has closed of.
      */
@@ -20,7 +20,7 @@ public interface IHostEventsListener<C extends IClient>
     }
     
     /**
-     * Called after a client connection socket has closed without an exception thrown.
+     * Called after a client connection socket has been closed with an exception thrown.
      *
      * @param client The {@link C} instance representing the client the socket has closed of.
      * @param e      The thrown exception.
