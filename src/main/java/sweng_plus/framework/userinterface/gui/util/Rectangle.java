@@ -29,4 +29,15 @@ public class Rectangle implements Cloneable
     {
         return new Rectangle(x, y, w, h);
     }
+    
+    @Override
+    public String toString()
+    {
+        return "Rectangle{" +
+                "x=" + x +
+                ", y=" + y +
+                ", w=" + w +
+                ", h=" + h +
+                '}';
+    }
 }
