@@ -6,7 +6,7 @@ import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 public class ChatMenuScreen extends Screen
 {

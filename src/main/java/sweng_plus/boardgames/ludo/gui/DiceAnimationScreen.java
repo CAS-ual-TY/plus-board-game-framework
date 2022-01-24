@@ -3,7 +3,7 @@ package sweng_plus.boardgames.ludo.gui;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.DiceAnimationWidget;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 public class DiceAnimationScreen extends LudoExtensionScreen
 {

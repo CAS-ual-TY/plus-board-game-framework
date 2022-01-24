@@ -1,7 +1,7 @@
 package sweng_plus.framework.userinterface.gui.style;
 
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Rectangle;
 
 public class MarginStyle extends BaseStyle
 {
@@ -29,7 +29,7 @@ public class MarginStyle extends BaseStyle
     }
     
     @Override
-    public void initStyle(Dimensions parentDimensions)
+    public void initStyle(Rectangle parentDimensions)
     {
         super.initStyle(parentDimensions.clone());
         

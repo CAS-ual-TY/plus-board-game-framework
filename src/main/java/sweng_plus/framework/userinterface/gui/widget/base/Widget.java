@@ -2,6 +2,7 @@ package sweng_plus.framework.userinterface.gui.widget.base;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.IWidgetParent;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 import java.util.Comparator;
 

@@ -1,17 +1,9 @@
-package sweng_plus.framework.userinterface.gui.widget.base;
-
-import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
+package sweng_plus.framework.userinterface.gui.util;
 
 import java.util.Objects;
 
-public class Dimensions implements Cloneable
+public class Dimensions extends Rectangle
 {
-    public int x;
-    public int y;
-    
-    public int w;
-    public int h;
-    
     public int offX;
     public int offY;
     
@@ -20,11 +12,7 @@ public class Dimensions implements Cloneable
     
     protected Dimensions(int x, int y, int w, int h, AnchorPoint headAnchor, AnchorPoint innerAnchor, int offX, int offY)
     {
-        this.x = x;
-        this.y = y;
-        
-        this.w = w;
-        this.h = h;
+        super(x, y, w, h);
         
         this.offX = offX;
         this.offY = offY;
@@ -79,13 +67,6 @@ public class Dimensions implements Cloneable
         y = screenY + headAnchor.heightToY(screenH) - innerAnchor.heightToY(h) + offY;
     }
     
-    public boolean isMouseOver(int mouseX, int mouseY)
-    {
-        return mouseX >= x && mouseX < x + w
-                && mouseY >= y && mouseY < y + h;
-    }
-    
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public Dimensions clone()
     {

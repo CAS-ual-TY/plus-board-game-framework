@@ -8,7 +8,7 @@ import sweng_plus.framework.boardgame.nodes_board.TeamColor;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 public class LudoNodeWidget extends NodeWidget<LudoNodeWidget, LudoNode, LudoFigure>
 {

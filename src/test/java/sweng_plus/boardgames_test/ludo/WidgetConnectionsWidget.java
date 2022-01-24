@@ -6,7 +6,7 @@ import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.LudoNodeWidget;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.util.List;

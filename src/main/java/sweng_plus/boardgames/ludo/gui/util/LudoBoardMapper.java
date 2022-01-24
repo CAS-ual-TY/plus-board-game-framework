@@ -10,7 +10,7 @@ import sweng_plus.framework.boardgame.gui.BoardWidgetMapper;
 import sweng_plus.framework.userinterface.gui.Screen;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 import java.util.HashMap;
 

@@ -1,6 +1,6 @@
 package sweng_plus.framework.userinterface.gui.style;
 
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Rectangle;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -69,7 +69,7 @@ public class StackedStyle extends BaseStyle
     }
     
     @Override
-    public void initStyle(Dimensions parentDimensions)
+    public void initStyle(Rectangle parentDimensions)
     {
         super.initStyle(parentDimensions);
         styles.forEach(style -> style.initStyle(dimensions));

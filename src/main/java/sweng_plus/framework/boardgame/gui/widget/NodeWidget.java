@@ -3,7 +3,7 @@ package sweng_plus.framework.boardgame.gui.widget;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INode;
 import sweng_plus.framework.boardgame.nodes_board.interfaces.INodeFigure;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.util.ArrayList;

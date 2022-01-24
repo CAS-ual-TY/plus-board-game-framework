@@ -2,7 +2,7 @@ package sweng_plus.boardgames.mill.gui;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import static org.lwjgl.opengl.GL11.*;

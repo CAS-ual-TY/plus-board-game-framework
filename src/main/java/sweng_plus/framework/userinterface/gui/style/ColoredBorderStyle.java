@@ -1,7 +1,7 @@
 package sweng_plus.framework.userinterface.gui.style;
 
 import sweng_plus.framework.userinterface.gui.util.Color4f;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Rectangle;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -34,7 +34,7 @@ public class ColoredBorderStyle extends BaseStyle
     }
     
     @Override
-    public void initStyle(Dimensions parentDimensions)
+    public void initStyle(Rectangle parentDimensions)
     {
         super.initStyle(parentDimensions);
         

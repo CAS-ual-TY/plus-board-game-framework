@@ -6,7 +6,7 @@ import sweng_plus.boardgames.ludo.gamelogic.LudoNodeType;
 import sweng_plus.boardgames.ludo.gui.util.LudoTextures;
 import sweng_plus.boardgames.ludo.gui.widget.FigureAnimationWidget;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 public class FigureAnimationScreen extends LudoExtensionScreen
 {

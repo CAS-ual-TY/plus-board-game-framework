@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 import sweng_plus.boardgames.ludo.gamelogic.LudoFigure;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.texture.Texture;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 public class FigureAnimationWidget extends Widget

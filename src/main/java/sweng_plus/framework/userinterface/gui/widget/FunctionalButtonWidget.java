@@ -2,7 +2,7 @@ package sweng_plus.framework.userinterface.gui.widget;
 
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.style.IStyle;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 public class FunctionalButtonWidget extends ButtonWidget
 {

@@ -19,7 +19,7 @@ import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.FunctionalButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.InputWidget;
 import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 import java.util.Collection;

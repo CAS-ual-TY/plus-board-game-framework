@@ -9,7 +9,7 @@ import sweng_plus.framework.userinterface.gui.style.TextureStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.widget.ButtonWidget;
 import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 import sweng_plus.framework.userinterface.gui.widget.base.Widget;
 
 public class SelectFigureScreen extends LudoExtensionScreen

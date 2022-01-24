@@ -1,6 +1,6 @@
 package sweng_plus.framework.userinterface.gui.style;
 
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Rectangle;
 
 public class EmptyStyle extends BaseStyle
 {
@@ -9,7 +9,7 @@ public class EmptyStyle extends BaseStyle
     private EmptyStyle() {}
     
     @Override
-    public void initStyle(Dimensions parentDimensions)
+    public void initStyle(Rectangle parentDimensions)
     {
     }
 }

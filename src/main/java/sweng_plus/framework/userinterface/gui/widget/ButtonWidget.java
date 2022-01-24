@@ -3,7 +3,7 @@ package sweng_plus.framework.userinterface.gui.widget;
 import org.lwjgl.glfw.GLFW;
 import sweng_plus.framework.userinterface.gui.IScreenHolder;
 import sweng_plus.framework.userinterface.gui.style.IStyle;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 public abstract class ButtonWidget extends SimpleWidget
 {

@@ -6,7 +6,7 @@ import sweng_plus.framework.userinterface.gui.style.TextStyle;
 import sweng_plus.framework.userinterface.gui.util.AnchorPoint;
 import sweng_plus.framework.userinterface.gui.util.Color4f;
 import sweng_plus.framework.userinterface.gui.widget.SimpleWidget;
-import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+import sweng_plus.framework.userinterface.gui.util.Dimensions;
 
 public class WinScreen extends MillExtensionScreen
 {
