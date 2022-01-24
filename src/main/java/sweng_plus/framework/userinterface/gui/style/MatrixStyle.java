@@ -16,14 +16,14 @@ public class MatrixStyle extends BaseStyle
     
     public MatrixStyle(IStyle[][] subStyles, float[] horizontalParts, float[] verticalParts)
     {
-        if(subStyles.length != verticalParts.length)
+        if(subStyles.length == 0 || subStyles.length != verticalParts.length)
         {
             throw new IllegalArgumentException();
         }
         
         for(IStyle[] row : subStyles)
         {
-            if(row.length != horizontalParts.length)
+            if(row.length == 0 || row.length != horizontalParts.length)
             {
                 throw new IllegalArgumentException();
             }
