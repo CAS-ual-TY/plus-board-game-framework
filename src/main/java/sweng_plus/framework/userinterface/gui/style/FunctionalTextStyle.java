@@ -40,7 +40,7 @@ public class FunctionalTextStyle extends BaseStyle
     }
     
     @Override
-    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    public void render(float deltaTick, int mouseX, int mouseY)
     {
         List<String> text = this.text.get().stream().map(line -> fontRenderer.splitStringToWidth(dimensions.w, line))
                 .flatMap(Collection::stream).collect(Collectors.toList());

@@ -1,10 +1,9 @@
 package sweng_plus.framework.userinterface.gui.style;
 
+import sweng_plus.framework.userinterface.gui.IRenderable;
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-public interface IStyle
+public interface IStyle extends IRenderable
 {
     void initStyle(Dimensions parentDimensions);
-    
-    void renderStyle(float deltaTick, int mouseX, int mouseY);
 }

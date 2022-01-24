@@ -1,5 +1,7 @@
 package sweng_plus.framework.userinterface.gui.style;
 
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
+
 public class EmptyStyle extends BaseStyle
 {
     public static final EmptyStyle EMPTY_STYLE = new EmptyStyle();
@@ -7,8 +9,7 @@ public class EmptyStyle extends BaseStyle
     private EmptyStyle() {}
     
     @Override
-    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    public void initStyle(Dimensions parentDimensions)
     {
-    
     }
 }

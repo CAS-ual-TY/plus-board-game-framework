@@ -21,7 +21,7 @@ public class CorneredTextureStyle extends BaseStyle
     }
     
     @Override
-    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    public void render(float deltaTick, int mouseX, int mouseY)
     {
         color.glColor4f();
         

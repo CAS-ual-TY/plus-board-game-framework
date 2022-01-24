@@ -24,8 +24,14 @@ public class SimpleWidget extends Widget
     }
     
     @Override
+    public void update(int mouseX, int mouseY)
+    {
+        style.update(mouseX, mouseY);
+    }
+    
+    @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
-        style.renderStyle(deltaTick, mouseX, mouseY);
+        style.render(deltaTick, mouseX, mouseY);
     }
 }

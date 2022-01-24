@@ -2,7 +2,7 @@ package sweng_plus.framework.userinterface.gui.style;
 
 import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
-public abstract class BaseStyle implements IStyle
+public class BaseStyle implements IStyle
 {
     protected Dimensions dimensions;
     
@@ -15,6 +15,18 @@ public abstract class BaseStyle implements IStyle
     public void initStyle(Dimensions parentDimensions)
     {
         dimensions = parentDimensions;
+    }
+    
+    @Override
+    public void update(int mouseX, int mouseY)
+    {
+    
+    }
+    
+    @Override
+    public void render(float deltaTick, int mouseX, int mouseY)
+    {
+    
     }
     
     public BaseStyle stack(IStyle style)

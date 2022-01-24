@@ -16,7 +16,7 @@ public class MillNodeStyle extends BaseStyle
     }
     
     @Override
-    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    public void render(float deltaTick, int mouseX, int mouseY)
     {
         if(node.isOccupied())
         {
@@ -30,6 +30,5 @@ public class MillNodeStyle extends BaseStyle
                 MillTextures.figureWhite.render(dimensions.x, dimensions.y);
             }
         }
-        
     }
 }

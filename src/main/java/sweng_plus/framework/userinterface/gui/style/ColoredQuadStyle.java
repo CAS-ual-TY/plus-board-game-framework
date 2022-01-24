@@ -14,7 +14,7 @@ public class ColoredQuadStyle extends BaseStyle
     }
     
     @Override
-    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    public void render(float deltaTick, int mouseX, int mouseY)
     {
         int x1 = dimensions.x;
         int x2 = dimensions.x + dimensions.w;

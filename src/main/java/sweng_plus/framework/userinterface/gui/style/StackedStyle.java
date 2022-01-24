@@ -76,8 +76,8 @@ public class StackedStyle extends BaseStyle
     }
     
     @Override
-    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    public void render(float deltaTick, int mouseX, int mouseY)
     {
-        styles.forEach(style -> style.renderStyle(deltaTick, mouseX, mouseY));
+        styles.forEach(style -> style.render(deltaTick, mouseX, mouseY));
     }
 }

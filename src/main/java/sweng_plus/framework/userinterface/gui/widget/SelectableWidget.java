@@ -31,15 +31,22 @@ public class SelectableWidget extends Widget
     }
     
     @Override
+    public void update(int mouseX, int mouseY)
+    {
+        activeStyle.update(mouseX, mouseY);
+        inactiveStyle.update(mouseX, mouseY);
+    }
+    
+    @Override
     public void render(float deltaTick, int mouseX, int mouseY)
     {
         if(isSelected)
         {
-            activeStyle.renderStyle(deltaTick, mouseX, mouseY);
+            activeStyle.render(deltaTick, mouseX, mouseY);
         }
         else
         {
-            inactiveStyle.renderStyle(deltaTick, mouseX, mouseY);
+            inactiveStyle.render(deltaTick, mouseX, mouseY);
         }
     }
     

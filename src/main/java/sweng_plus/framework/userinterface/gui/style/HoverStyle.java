@@ -23,15 +23,15 @@ public class HoverStyle extends BaseStyle
     }
     
     @Override
-    public void renderStyle(float deltaTick, int mouseX, int mouseY)
+    public void render(float deltaTick, int mouseX, int mouseY)
     {
         if(dimensions.isMouseOver(mouseX, mouseY))
         {
-            hovered.renderStyle(deltaTick, mouseX, mouseY);
+            hovered.render(deltaTick, mouseX, mouseY);
         }
         else
         {
-            unhovered.renderStyle(deltaTick, mouseX, mouseY);
+            unhovered.render(deltaTick, mouseX, mouseY);
         }
     }
 }
