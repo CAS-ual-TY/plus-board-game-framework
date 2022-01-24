@@ -1,6 +1,7 @@
 package sweng_plus.framework.userinterface.gui.style;
 
 import sweng_plus.framework.userinterface.gui.util.Color4f;
+import sweng_plus.framework.userinterface.gui.widget.base.Dimensions;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -9,6 +10,16 @@ public class ColoredBorderStyle extends BaseStyle
     protected Color4f color;
     protected int border;
     protected boolean inside;
+    
+    protected int x1o;
+    protected int x2o;
+    protected int y1o;
+    protected int y2o;
+    
+    protected int x1i;
+    protected int x2i;
+    protected int y1i;
+    protected int y2i;
     
     public ColoredBorderStyle(Color4f color, int border, boolean inside)
     {
@@ -23,17 +34,19 @@ public class ColoredBorderStyle extends BaseStyle
     }
     
     @Override
-    public void render(float deltaTick, int mouseX, int mouseY)
+    public void initStyle(Dimensions parentDimensions)
     {
-        int x1o = dimensions.x;
-        int x2o = dimensions.x + dimensions.w;
-        int y1o = dimensions.y;
-        int y2o = dimensions.y + dimensions.h;
+        super.initStyle(parentDimensions);
         
-        int x1i = x1o;
-        int x2i = x2o;
-        int y1i = y1o;
-        int y2i = y2o;
+        x1o = dimensions.x;
+        x2o = dimensions.x + dimensions.w;
+        y1o = dimensions.y;
+        y2o = dimensions.y + dimensions.h;
+        
+        x1i = x1o;
+        x2i = x2o;
+        y1i = y1o;
+        y2i = y2o;
         
         if(inside)
         {
@@ -49,7 +62,11 @@ public class ColoredBorderStyle extends BaseStyle
             y1o -= border;
             y2o += border;
         }
-        
+    }
+    
+    @Override
+    public void render(float deltaTick, int mouseX, int mouseY)
+    {
         color.glColor4f();
         
         glBegin(GL_QUADS);
