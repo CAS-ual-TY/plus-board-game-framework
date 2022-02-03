@@ -96,6 +96,7 @@ public class MenuScreen extends Screen
         
         widgets.remove(germanButton);
         widgets.add(englishButton);
+        englishButton.initWidget(this);
     }
     
     public void switchToEnglish()
@@ -111,5 +112,6 @@ public class MenuScreen extends Screen
         
         widgets.remove(englishButton);
         widgets.add(germanButton);
+        germanButton.initWidget(this);
     }
 }
