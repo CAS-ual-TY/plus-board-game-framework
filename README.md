@@ -30,13 +30,13 @@ A `Screen` basically defines the graphical user interface presented to the playe
 
 The `Dimensions` class represents the position and size of every widget. Widgets are adaptive to the screen size. They are based on an `AnchorPoint` and offset from that point. These anchor points are always relative to the screen size. The anchor points are as follows:
 
-(-- img of anchor points --)
+![anchor_points](https://user-images.githubusercontent.com/41904979/152374529-2b61b445-87bd-4bc0-bb0f-062d4cbd3870.png)
 
 There is also a second, inner anchor point, however, for each widget. This inner anchor point defines the zero point coordinate of every widget.
 
 The following image shows different widgets with different widths and heights (either 100 or 200), different horizontal and vertical offsets (+/- 200), different anchor points (eg. the yellow, green and blue widgets use the anchor point `M` which stands for "middle", red widgets use the anchor points `M`, `R` and `BR` in clockwise order), different inner anchor points (`BR` for the red widgets, `M` for the yellow one, `BL` for the green one and `T` for the blue one); the black line represents the offset, the point where the black line is connected with the widget represents the inner anchor points and the other side of the black line represents the main anchor point:
 
-(-- img of widgets --)
+![widgets](https://user-images.githubusercontent.com/41904979/152374578-31287968-5e59-457d-96aa-68587c044d0a.png)
 
 **Styles**
 
