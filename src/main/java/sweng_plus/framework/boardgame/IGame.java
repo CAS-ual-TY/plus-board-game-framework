@@ -18,13 +18,13 @@ public interface IGame extends IScreenHolder
      * Main setup method. Called after GLFW is initialized, the window is created
      * and after the input handler and OpenGL are initialized.
      */
-    default void init() {}
+    void init();
     
     /**
      * Main cleanup method. Called before the input handler is cleaned up, before the window is destroyed
      * and before GLFW is cleaned up.
      */
-    default void cleanup() {}
+    void cleanup();
     
     /**
      * Auxiliary cleanup method. Called after everything is cleaned up and after the window is destroyed.
