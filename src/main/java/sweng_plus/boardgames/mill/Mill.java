@@ -162,7 +162,6 @@ public class Mill implements IGame
     
     public static void main(String... args)
     {
-        
-        new Engine(new Mill()).run();
+        Engine.runGame(new Mill());
     }
 }

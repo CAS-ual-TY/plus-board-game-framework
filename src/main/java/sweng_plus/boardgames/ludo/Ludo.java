@@ -175,6 +175,6 @@ public class Ludo implements IGame
     
     public static void main(String... args)
     {
-        new Engine(new Ludo()).run();
+        Engine.runGame(new Ludo());
     }
 }

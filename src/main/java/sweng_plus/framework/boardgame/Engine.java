@@ -203,4 +203,9 @@ public class Engine implements Runnable
     {
         window.close();
     }
+    
+    public static void runGame(IGame game)
+    {
+        new Engine(game).run();
+    }
 }

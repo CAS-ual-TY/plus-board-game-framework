@@ -181,6 +181,6 @@ public class ChatMain implements IGame
     
     public static void main(String... args)
     {
-        new Engine(new ChatMain()).run();
+        Engine.runGame(new ChatMain());
     }
 }
