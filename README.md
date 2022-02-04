@@ -6,7 +6,29 @@ A custom made board game framework including a (graphical) user interface framew
 
 ## About
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+This repository and project was made as part of the Software Practicum course of the Paris Lodron University of Salzburg in the winter semester 2021/22. The goal was to create a board game framework which allows you to easily implement multiplayer board games and also to create a board game with it.
+
+Next is a list of projects implemented using this framework. For more images and screenshots of the games you can also check out our [January 20th, 2022 presentation pdf](https://github.com/CAS-ual-TY/plus-board-game-framework/blob/main/presentation_jan_20_2022.pdf).
+
+**Board Game Framework**
+
+For the framework we implemented two independent sub-frameworks - the (graphical) user interface framework and the networking framework. Built on top of these we built the actual game engine and board game framework. It is worth mentioning again that the sub-frameworks can be used independently.
+
+**Ludo**
+
+The first board game we implemented was Ludo (De.: "Mensch ärgere Dich nicht!"). You are able to host games or connect to lobbies. The game is fully animated - moving the figures or rolling the dice plays an animation. The game can also be played with 2-6 players, with the board being adaptive to the amount of players who join (the algorithm theoretically allows to create a board for an infinite amount of players, but the screen size is not big enough to support that let alone other components like networking etc.). The game is built on textures entirely and supports both English and German.
+
+![ludo](https://user-images.githubusercontent.com/41904979/152607421-5371831d-1b42-41a0-a6c3-9ca67ee5b971.png)
+
+**Mill**
+
+We implemented Mill (De.: "Mühle") in a single day of actual work time to proof how easily you can make a board game using our framework. This is the second project we implemented using it.
+
+![mill](https://user-images.githubusercontent.com/41904979/152607434-3801c0e3-79ef-48ee-a3ad-404edaa4503a.png)
+
+**Online Chat Demo**
+
+To test the advanced networking framework a simple online chat "game" has been implemented with custom screens or chat notifications for different networking events, like when someone connects, disconnectes or reconnects, when the server is closed, then the connection has been lost, ... The demo is kept relatively basic compared to the games we have implemented and can be used as an example on how to effectively use this framework.
 
 ---
 
@@ -28,7 +50,7 @@ A `Screen` basically defines the graphical user interface presented to the playe
 
 **Dimensions**
 
-The `Dimensions` class represents the position and size of every widget. Widgets are adaptive to the screen size. They are based on an `AnchorPoint` and offset from that point. These anchor points are always relative to the screen size. The anchor points are as follows:
+The `Dimensions` class represents the position and size of every widget. Widgets are adaptive to the screen size both in position and size. They are based on an `AnchorPoint` and offset from that point. These anchor points are always relative to the screen size. The anchor points are as follows:
 
 ![anchor_points](https://user-images.githubusercontent.com/41904979/152374529-2b61b445-87bd-4bc0-bb0f-062d4cbd3870.png)
 
