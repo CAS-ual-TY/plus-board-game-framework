@@ -62,7 +62,7 @@ public class DimensionsDebugWidget extends Widget
             }
         }
         
-        GL11.glLineWidth(2F);
+        GL11.glLineWidth(4F);
         
         for(IWidget w : screen.getWidgets())
         {
@@ -71,8 +71,8 @@ public class DimensionsDebugWidget extends Widget
                 int x1 = widget.getDimensions().headAnchor.widthToX(screen.screenW);
                 int y1 = widget.getDimensions().headAnchor.heightToY(screen.screenH);
                 
-                int x2 = widget.getDimensions().x + widget.getDimensions().headAnchor.widthToX(widget.getDimensions().w);
-                int y2 = widget.getDimensions().y + widget.getDimensions().headAnchor.heightToY(widget.getDimensions().h);
+                int x2 = widget.getDimensions().x + widget.getDimensions().innerAnchor.widthToX(widget.getDimensions().w);
+                int y2 = widget.getDimensions().y + widget.getDimensions().innerAnchor.heightToY(widget.getDimensions().h);
                 
                 lineColor.glColor4f();
                 
