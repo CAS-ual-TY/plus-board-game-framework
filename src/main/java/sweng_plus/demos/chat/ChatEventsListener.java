@@ -52,4 +52,17 @@ public class ChatEventsListener implements IAdvancedClientEventsListener, IAdvan
     {
         ChatMain.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(client.getName() + " connected."));
     }
+    
+    @Override
+    public void clientReconnected(ChatClient oldClient, ChatClient newClient)
+    {
+        if(oldClient.getName().equals(newClient.getName()))
+        {
+            ChatMain.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(newClient.getName() + " reconnected."));
+        }
+        else
+        {
+            ChatMain.instance().hostManager.sendMessageToAllClients(ChatMessage.announcement(oldClient.getName() + " reconnected as " + newClient.getName() + "."));
+        }
+    }
 }

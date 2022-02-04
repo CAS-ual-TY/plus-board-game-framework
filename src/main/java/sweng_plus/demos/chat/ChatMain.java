@@ -35,7 +35,7 @@ public class ChatMain implements IGame
     public IAdvancedMessageRegistry<ChatClient> protocol;
     public ChatEventsListener listener;
     
-    public IAdvancedClientManager clientManager;
+    public IAdvancedClientManager<ChatClient> clientManager;
     public IAdvancedHostManager<ChatClient> hostManager;
     
     public String name;
