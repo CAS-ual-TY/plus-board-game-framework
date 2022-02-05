@@ -12,17 +12,17 @@ Next is a list of projects implemented using this framework. For more images and
 
 **Board Game Framework**
 
-For the framework we implemented two independent sub-frameworks - the (graphical) user interface framework and the networking framework. Built on top of these we built the actual game engine and board game framework. It is worth mentioning again that the sub-frameworks can be used independently.
+For the framework we implemented two independent sub-frameworks: the (graphical) user interface framework and the networking framework. The game engine and board game framework was built on top of these independent sub-frameworks. It is worth mentioning again that the sub-frameworks can be used independently.
 
 **Ludo**
 
-The first board game we implemented was Ludo (De.: "Mensch ärgere Dich nicht!"). You are able to host games or connect to lobbies. The game is fully animated - moving the figures or rolling the dice plays an animation. The game can also be played with 2-6 players, with the board being adaptive to the amount of players who join (the algorithm theoretically allows to create a board for an infinite amount of players, but the screen size is not big enough to support that let alone other components like networking etc.). The game is built on textures entirely and supports both English and German. Additionally, there is also a usable ingame chat for the players.
+The first board game we implemented was Ludo (De.: "Mensch ärgere Dich nicht!"). You are able to host games or connect to lobbies. The game is fully animated - moving the figures or rolling the dice plays an animation. The board is adaptable to allow multiplayer games of 2-6 players. The algorithm theoretically allows for the creation of a board with an infinite number of players, but the screen size is not big enough to support that. The game is built on textures entirely and supports both English and German. Additionally, there is also a usable ingame chat for the players.
 
 ![ludo](https://user-images.githubusercontent.com/41904979/152607421-5371831d-1b42-41a0-a6c3-9ca67ee5b971.png)
 
 **Mill**
 
-We implemented Mill (De.: "Mühle") in a single day of actual work time to proof how easily you can make a board game using this framework. This is the second game project we implemented.
+We implemented Mill (De.: "Mühle") in a single day of actual work time to prove how easily you can make a board game using this framework. This is the second game project we implemented.
 
 ![mill](https://user-images.githubusercontent.com/41904979/152607434-3801c0e3-79ef-48ee-a3ad-404edaa4503a.png)
 
