@@ -22,7 +22,7 @@ The first board game we implemented was Ludo (De.: "Mensch ärgere Dich nicht!")
 
 **Mill**
 
-We implemented Mill (De.: "Mühle") in a single day of actual work time to proof how easily you can make a board game using our framework. This is the second project we implemented using it.
+We implemented Mill (De.: "Mühle") in a single day of actual work time to proof how easily you can make a board game using this framework. This is the second game project we implemented.
 
 ![mill](https://user-images.githubusercontent.com/41904979/152607434-3801c0e3-79ef-48ee-a3ad-404edaa4503a.png)
 
@@ -68,7 +68,7 @@ The `Style` class defines the visual representation of widgets. Styles can be eg
 
 **Introduction**
 
-*There are actually two different networking systems: The basic system and the advanced one. We only consider the advanced systems with all advanced classes and interfaces.*
+*There are actually two different networking systems: The basic system and the advanced one. We only consider the advanced system with all "Advanced" classes and interfaces.*
 
 Networking is designed to be very easily usable. It uses a Host-Client structure (a host is a server that is also a client) and the entire multithreaded functionality is hidden behind simple interfaces which only interact with the main thread.
 
